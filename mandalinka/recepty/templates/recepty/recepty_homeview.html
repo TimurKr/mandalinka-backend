@@ -1,24 +1,15 @@
-{% load static %}
+{% etends "recepty/layout.html" %}
 
-<!DOCTYPE html>
-<html lang="sk">
-    <head>
-        <title>Mandalinkine recepty</title>
-        <link href="{% static 'recepty/style.css' %}" rel="stylesheet">
-    </head>
+{% block body %}
+<h1>
+    Pozrite si naše recepty
+</h1>
 
-    <body>
-        <h1>
-            Pozrite si naše recepty
-        </h1>
+<a href="novy_recept">Pridajte nový recept tu!</a>
+<br/><br/>
 
-        <a href="novy_recept">Pridajte nový recept tu!</a>
-        <br/><br/>
-
-        {% for recept in recepty %}
-        <div>
-            {{ recept.nazov }}
-        </div>
-        {% endfor %}
-    </body>
-</html>
+{% for recept in recepty %}
+<div>
+    {{ recept.nazov }}
+</div>
+{% endfor %}

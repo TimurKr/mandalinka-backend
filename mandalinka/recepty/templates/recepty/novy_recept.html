@@ -1,18 +1,13 @@
-{% load static %}
+{% etends "recepty/layout.html" %}
 
-<!DOCTYPE html>
-<html lang = "sk">
-    <head>
-        <title>Mandalinkine recepty</title>
-        <link href="{% static 'recepty/style.css' %}" rel="stylesheet">
-    </head>
-    <body>
-        <h1>Pridajte recept:</h1>
-        <br/><br/>
-        <form>
-            <input type="text" name="nazov">
-            <input type="image" name="thumbnail">
-            <input type="submit">
-        </form>
-    </body>
-</html>
+{% block body %}
+    <h1>Pridajte recept:</h1>
+
+    <br /><br />
+
+    <form>
+        <input type="text" name="nazov">
+        <input type="image" name="thumbnail">
+        <input type="submit">
+    </form>
+{% block end %}
