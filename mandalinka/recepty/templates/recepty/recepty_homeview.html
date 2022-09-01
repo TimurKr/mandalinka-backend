@@ -5,12 +5,12 @@
         Pozrite si naše recepty
     </h1>
 
-    <a href="novy_recept">Pridajte nový recept tu!</a>
+    <a href="{% url 'recepty:novy_recept' %}">Pridajte nový recept tu!</a>
     <br /><br />
 
-    {% for recept in recepty %}
+    {% for recipe in recipes %}
     <div>
-        {{ recept.nazov }}
+        {{ recipe.nazov }}
     </div>
     {% endfor %}
 {% endblock %}

@@ -5,9 +5,11 @@
 
     <br /><br />
 
-    <form>
-        <input type="text" name="nazov">
-        <input type="image" name="thumbnail">
+    <form action="{% url 'recepty:novy_recept' %}" method="post">
+        {% csrf_token %}
+        {{ form }}
         <input type="submit">
     </form>
+
+    <a href="{% url 'recepty:index'%}">Naspäť</a>
 {% endblock %}
