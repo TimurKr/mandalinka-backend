@@ -3,7 +3,6 @@ from django.http import HttpResponse
 
 # Create your views here.
 def index(request):
-    return HttpResponse("Táto stránka bude zobrazovať zoznam pridaných receptov")
-
+    return render(request, "recepty/recepty_homeview.html")
 def novy_recept(request):
     return HttpResponse("Na tejto stránke sa budú pridávať nové recepty")
