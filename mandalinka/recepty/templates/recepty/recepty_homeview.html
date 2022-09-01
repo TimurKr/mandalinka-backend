@@ -11,9 +11,14 @@
         <h1>
             Pozrite si naše recepty
         </h1>
-        <ul>
-            <li>Recept</li>
-            <li>Recept</li>
-        </ul>
+
+        <a href="novy_recept">Pridajte nový recept tu!</a>
+        <br/><br/>
+
+        {% for recept in recepty %}
+        <div>
+            {{ recept.nazov }}
+        </div>
+        {% endfor %}
     </body>
 </html>
