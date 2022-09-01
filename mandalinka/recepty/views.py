@@ -1,5 +1,7 @@
 from xmlrpc.client import boolean
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django import forms
 
 class Step():
@@ -14,7 +16,8 @@ class Step():
 
 class Recipe():
     thumbnail = None
-    title = "Mandalinkový koláč"
+    title = None
+    prep_time = None
     steps = [Step() for i in range(6)]
 
     def __init__(self) -> None:
@@ -22,7 +25,6 @@ class Recipe():
 
 class NewRecipeForm(forms.Form):
     title = forms.CharField(label="Názov jedla")
-    thumbnail = forms.ImageField(label="Thumbnail", required=False)
     prep_time = forms.IntegerField(label="Čas prípravy", 
     min_value=1, max_value=90, required=False)
 
@@ -35,11 +37,15 @@ def index(request):
     })
 
 def novy_recept(request):
-    if request.method is "POST":
+    if request.method == "POST":
+
         form = NewRecipeForm(request.POST)
         if form.is_valid():
             recipe = Recipe()
-            recipes.title = form.cleaned_data["title"]
+            recipe.title = form.cleaned_data["title"]
+            recipe.prep_time = form.cleaned_data["prep_time"]
+            recipes.append(recipe)
+            return HttpResponseRedirect(reverse("recepty:index"))
 
         else:
             return render(request, "recepty/novy_recept.html", {

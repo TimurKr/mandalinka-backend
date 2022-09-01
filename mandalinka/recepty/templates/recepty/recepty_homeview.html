@@ -8,9 +8,15 @@
     <a href="{% url 'recepty:novy_recept' %}">Pridajte nový recept tu!</a>
     <br /><br />
 
+    <h5> Máme {{ recipes|length }} receptov:</h5>
+
     {% for recipe in recipes %}
-    <div>
-        {{ recipe.nazov }}
-    </div>
+        <div>
+            Názov: {{ recipe.title }} <br>
+            Príprava: {{ recipe.prep_time }} m
+            <br /><br />
+        </div>
+    {% empty %}
+        <div>Žiadne recepty</div>
     {% endfor %}
 {% endblock %}
