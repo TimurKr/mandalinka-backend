@@ -4,6 +4,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django import forms
 
+from recepty.models import Recipe_mod
+
 class Step():
     
     thumbnail = None
@@ -28,12 +30,10 @@ class NewRecipeForm(forms.Form):
     prep_time = forms.IntegerField(label="Čas prípravy", 
     min_value=1, max_value=90, required=False)
 
-recipes = []
-
 # Create your views here.
 def index(request):
     return render(request, "recepty/recepty_homeview.html", {
-        "recipes": recipes
+        "recipes": Recipe_mod.objects.all()
     })
 
 def novy_recept(request):
@@ -41,10 +41,8 @@ def novy_recept(request):
 
         form = NewRecipeForm(request.POST)
         if form.is_valid():
-            recipe = Recipe()
-            recipe.title = form.cleaned_data["title"]
-            recipe.prep_time = form.cleaned_data["prep_time"]
-            recipes.append(recipe)
+            r = Recipe_mod(title=form.cleaned_data["title"], prep_time=form.cleaned_data["prep_time"])
+            r.save()
             return HttpResponseRedirect(reverse("recepty:index"))
 
         else:

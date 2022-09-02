@@ -1,3 +1,7 @@
+body{
+    background-image: url("food_bg.jpg");
+}
+
 h1 {
     font-size: xx-large ;
     font-family:sans-serif;
