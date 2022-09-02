@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 
-class Recipe_mod(models.Model):
+class Recipe(models.Model):
     title = models.CharField(max_length=20)
     prep_time = models.IntegerField()
 

@@ -1,14 +1,21 @@
 {% extends "recepty/layout.html" %}
 
 {% block body %}
-    <h1>Pridajte recept:</h1>
 
-    <br /><br />
-
-    <form action="{% url 'recepty:novy_recept' %}" method="post">
+    <form class="frm p-3" action="{% url 'recepty:novy_recept' %}" method="post">
         {% csrf_token %}
-        {{ form }}
-        <input type="submit">
+        <div class="alert alert-danger" >{{ form.non_field_errors }}</div>
+        <div class="form-group pt-3">
+            <div class="alert alert-danger" >{{ form.title.errors }}</div>
+			<label for="{{ form.title.id_for_label }}">Title</label>
+			{{ form.title }}
+		</div>
+        <div class="form-group pt-3">
+            <div class="alert alert-danger" >{{ form.prep_time.errors }}</div>
+            <label for="{{ form.prep_time.id_for_label }}">Preparation time:</label>
+            {{ form.prep_time }}
+        </div>
+        <button class="btn btn-dark" type="submit"> Pridaj! </button>
     </form>
 
     <a href="{% url 'recepty:index'%}">Naspäť</a>

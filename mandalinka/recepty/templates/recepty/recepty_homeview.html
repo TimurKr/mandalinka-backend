@@ -1,22 +1,26 @@
 {% extends "recepty/layout.html" %}
 
 {% block body %}
-    <h1>
-        Pozrite si naše recepty
-    </h1>
 
-    <a href="{% url 'recepty:novy_recept' %}">Pridajte nový recept tu!</a>
-    <br /><br />
+    <button id="pridaj_novy" class="btn btn-dark mb-3">Pridajte nový recept tu!</button>
 
-    <h5> Máme {{ recipes|length }} receptov:</h5>
-
+    {% with num_rec=recipes|length %}
+    <h5 class="card p-3"> Máme {{ num_rec }} recept{% if num_rec > 4 or num_rec == 0 %}ov{% elif num_rec > 1 %}y{% endif %}:</h5>
+    {% endwith %}
     {% for recipe in recipes %}
-        <div>
-            Názov: {{ recipe.title }} <br>
-            Príprava: {{ recipe.prep_time }} m
-            <br /><br />
+        <div class="card m-4">
+            <div class="card-body">
+                <h5 class="card-title">Názov: {{ recipe.title }} </h5>
+                <h6 class="card-subtitle mb-2 text-muted">Príprava: {{ recipe.prep_time }} m</h6>
+                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor ut perspiciatis itaque fugit et explicabo placeat, autem consequuntur veritatis iste magni quam laudantium aspernatur. Eum dolorum quasi exercitationem assumenda corporis?</p>
+            </div>
         </div>
     {% empty %}
         <div>Žiadne recepty</div>
     {% endfor %}
+<script type="text/javascript">
+    document.getElementById("pridaj_novy").onclick = function () {
+        location.href = "{% url 'recepty:novy_recept' %}";
+    };
+</script>
 {% endblock %}
