@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Recipe, Ingredient, Alergen, IngredientInstance
+from .models import Recipe, Ingredient, Alergen, IngredientInstance, Steps
 
 # Site customizations
 class IngredientInstanceInline(admin.TabularInline):
@@ -9,8 +9,12 @@ class IngredientInstanceInline(admin.TabularInline):
 
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ("id", "title", "description")
-    filter_horizontal = ("ingredients",)
+    filter_horizontal = ("ingredients","steps")
     inlines = (IngredientInstanceInline,)
+
+class StepsAdmin(admin.ModelAdmin):
+    list_display = ("id", "step")
+    filter_horizontal = ("recipes",)
 
 class IngredientAdmin(admin.ModelAdmin):
     list_display = ("id", "title", "unit")
@@ -27,3 +31,5 @@ admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Alergen)
 admin.site.register(IngredientInstance)
+admin.site.register(Steps, StepsAdmin)
+
