@@ -5,40 +5,67 @@
 
 <head>
     <title>Mandalinkine recepty</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link href="{% static 'favicon.ico' %}" rel="shortcut icon" type="image/png">
     <link href="{% static 'recepty/style.css' %}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
-    <header class="p-3 mb-3 bg-dark text-white">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
         <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <h1>{{ head }}</h1>
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
-            <li><a href="#" class="nav-link px-2 text-white">Features</a></li>
-            <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
-            <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
-            <li><a href="#" class="nav-link px-2 text-white">About</a></li>
-            </ul>
 
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-            <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
-            </form>
+            <a href="#" class="navbar-brand-primary-lg">Mandalinka</a>
 
-            <div class="text-end">
-            <button type="button" class="btn btn-outline-light me-2">Login</button>
-            <button type="button" class="btn btn-warning">Sign-up</button>
+            <button 
+                class="navbar-toggler" 
+                type="button" 
+                data-bs-toggle="collapse" 
+                data-bs-target="#navmenu"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navmenu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a href="#Why-us" class="nav-link">Prečo mandalinka?</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#How-does-it-work" class="nav-link">Ako fungujeme?</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#FAQs" class="nav-link">FAQs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-primary" role="button" href="#Login">Prihlásiť sa</a>
+                     </li>
+                </ul>
+            </div>
+        
+        </div>
+    </nav>
+
+    <section class="bg-secondary text-primary p-5 text-center">
+        <div class="container">
+            <div>
+                <div>
+
+                </div>
+                
             </div>
         </div>
-        </div>
-    </header>
+    </section>
+
+
+
     <div class="container-fluid">
         {% block body %}
         {% endblock %}
     </div>
-    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 </body>
 
 </html>
