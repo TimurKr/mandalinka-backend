@@ -1,0 +1,13 @@
+{% extends "home/layout.html" %}
+
+{% block body %}
+    {% if message %}
+        <div>{{ message }}</div>
+    {% endif %}
+    <form class="frm p-3" action="{% url 'home:login' %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button class="btn btn-dark" type="submit"> Prihlas ma! </button>
+    </form>
+
+{% endblock %}
