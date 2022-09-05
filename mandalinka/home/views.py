@@ -1,6 +1,9 @@
 from django.views.generic import TemplateView
+from django.shortcuts import render
+from recepty.models import Recipe
 
-
-
-class HomePageView(TemplateView):
-    template_name = "home/home.html"
+    # Create your views here.
+def landing_page(request):
+    return render(request, "home/landing_page.html", {
+        "recipes": Recipe.objects.all(),
+    })

@@ -59,12 +59,6 @@ class Ingredient(models.Model):
     def __str__(self):
         return f"{self.title}"
 
-class Steps(models.Model):
-    step = models.TextField(max_length=250, help_text="Krok: ")
-    step_img = models.ImageField(upload_to=f"recepty/static/photos/", help_text="Pridajte obrazok kuk kroku", default=None)
-    step_no = models.IntegerField(verbose_name="Krok cislo:", help_text="Zadaj poradie kroku")
-    def __str__(self):
-        return f"text: {self.step} \n img: {self.step_img}"
 
 class Recipe(models.Model):
     title = models.CharField(max_length=63, unique=True, help_text="Názov receptu")
@@ -73,7 +67,10 @@ class Recipe(models.Model):
     ingredients = models.ManyToManyField(Ingredient, through=IngredientInstance, blank=False, help_text="Zvolte všetky ingrediencie", related_name="Recipes")
     thumbnail = models.ImageField(upload_to=f"recepty/static/photos/", help_text="Pridajte thumbnail", default=None)
 
-    steps = models.ManyToManyField(Steps, blank=False, help_text="Pridajte kroky", related_name="recipes")
+    # steps = models.TextField(max_length=1027, verbose_name=f"Kroky", help_text=f"Zadajte kroky postupu")
+    # step_1_img = models.ImageField(upload_to=f"recepty/static/photos/", help_text="Pridajte thumbnail", default=None)
+
+    # Price
 
     def __str__(self):
         return f"{self.title}"
