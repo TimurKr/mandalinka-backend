@@ -13,9 +13,8 @@ class NewRecipeForm(forms.Form):
 
 # Create your views here.
 def index(request):
-    return render(request, "recepty/recepty_homeview.html", {
+    return render(request, "recepty/landing_page.html", {
         "recipes": Recipe.objects.all(),
-        "head":"Pozrite si naše recepty"
     })
 
 def novy_recept(request):

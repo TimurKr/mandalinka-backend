@@ -1,0 +1,21 @@
+$primary: #ff7913;
+$secondary: #082d16;
+$body-bg:   $secondary;
+$h1-font-size:  5rem;
+
+
+h1 {
+    font-family: 'Times New Roman', Times, serif;
+    color: $primary;
+}
+
+.frm{
+    background-color: rgba(209, 192, 138, 0.7);
+}
+
+.alert:empty{
+    display: none;
+}
+
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+
