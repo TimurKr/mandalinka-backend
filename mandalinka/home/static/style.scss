@@ -17,5 +17,15 @@ h1 {
     display: none;
 }
 
-@import "../node_modules/bootstrap/scss/bootstrap.scss";
+div.scrollmenu {
+    background-color:$secondary;
+    overflow: auto;
+    white-space: nowrap;
+  }
+  
+div.scrollmenu div {
+    display: inline-block;
+ }
+
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
 

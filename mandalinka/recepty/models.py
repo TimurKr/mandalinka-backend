@@ -53,7 +53,9 @@ class Ingredient(models.Model):
     UNITS_TO_SELECT = [
         ("", "Zvolte jednotku"),
         ("g", "gramy"),
-        ("ml", "mililitre")]
+        ("ml", "mililitre"),
+        ("ks", "kusy"), 
+        ]
     unit = models.CharField(max_length=3, choices=UNITS_TO_SELECT, verbose_name="Jednotka", help_text="Zvolte jednotku")
 
     alergens = models.ManyToManyField(Alergen, blank=True, help_text="Zvolte všetky alergény:", verbose_name="Alergény", related_name="Ingredients")
@@ -65,7 +67,7 @@ class Step(models.Model):
     step = models.TextField(max_length=250, help_text="Krok: ")
     step_img = models.ImageField(upload_to=f"recepty/static/photos/", help_text="Pridajte obrazok ku kroku", default=None)
     step_no = models.IntegerField(verbose_name="Krok cislo:", help_text="Zadaj poradie kroku")
-    recipe = models.ForeignKey("Recipe", on_delete=models.CASCADE,related_name="Recipes",default=1, blank=True)
+    recipe = models.ForeignKey("Recipe", on_delete=models.CASCADE, related_name="Recipes", null=True, blank=True)
     
     class Meta:
         # ensuring each recipe has only one unique step_no
@@ -73,7 +75,7 @@ class Step(models.Model):
             models.UniqueConstraint(fields=['step_no', 'recipe'], name='Each recipe has a unique set of steps')
         ]
     def __str__(self):
-        return f"text: {self.step} \n img: {self.step_img}"
+        return f"text: {self.step}"
 
 class Recipe(models.Model):
     title = models.CharField(max_length=63, unique=True, help_text="Názov receptu")
