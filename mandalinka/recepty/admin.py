@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Recipe, Ingredient, Alergen, IngredientInstance, Steps
+from .models import Recipe, Ingredient, Alergen, IngredientInstance, Step
 
 # Site customizations
 class IngredientInstanceInline(admin.TabularInline):
@@ -31,5 +31,5 @@ admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Alergen)
 admin.site.register(IngredientInstance)
-admin.site.register(Steps, StepsAdmin)
+admin.site.register(Step, StepsAdmin)
 
