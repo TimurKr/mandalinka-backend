@@ -1,3 +1,5 @@
+from enum import unique
+from pyexpat import model
 from django.db import models
 from django.core.validators import RegexValidator
 
@@ -61,8 +63,15 @@ class Ingredient(models.Model):
 
 class Steps(models.Model):
     step = models.TextField(max_length=250, help_text="Krok: ")
-    step_img = models.ImageField(upload_to=f"recepty/static/photos/", help_text="Pridajte obrazok kuk kroku", default=None)
+    step_img = models.ImageField(upload_to=f"recepty/static/photos/", help_text="Pridajte obrazok ku kroku", default=None)
     step_no = models.IntegerField(verbose_name="Krok cislo:", help_text="Zadaj poradie kroku")
+    recipe = models.ForeignKey("Recipe", on_delete=models.CASCADE,related_name="Recipes",default=1)
+    
+    class Meta:
+        # ensuring each recipe has only one unique step_no
+        constraints = [
+            models.UniqueConstraint(fields=['step_no', 'recipe'], name='Each recipe has a unique set of steps')
+        ]
     def __str__(self):
         return f"text: {self.step} \n img: {self.step_img}"
 
