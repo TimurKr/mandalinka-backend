@@ -1,5 +1,5 @@
 $primary: #ff7913;
-$secondary: #03d4df;
+$secondary: #026127;
 $body-bg:   $secondary;
 $h1-font-size:  5rem;
 
@@ -10,7 +10,7 @@ h1 {
 }
 
 .frm{
-    background-color: rgba(209, 192, 138, 0.7);
+    background-color: $primary;
 }
 
 .alert:empty{
