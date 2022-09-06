@@ -41,9 +41,15 @@
                     <li class="nav-item">
                         <a href="#FAQs" class="nav-link">FAQs</a>
                     </li>
+                    {% if request.user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="btn btn-outline-primary" role="button" href="#Login">Prihlásiť sa</a>
-                     </li>
+                        <a class="btn btn-outline-primary" role="button" href="{% url 'home:logout' %}">Odhlásiť sa</a>
+                    </li>                    
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="btn btn-outline-primary" role="button" href="{% url 'home:login' %}">Prihlásiť sa</a>
+                    </li>   
+                    {% endif %}
                 </ul>
             </div>
         

@@ -1,13 +1,24 @@
-{% extends "home/layout.html" %}
+{% extends "home/login_logout_layout.html" %}
 
 {% block body %}
+
+<section class="vh-100 bg-secondary">
     {% if message %}
-        <div>{{ message }}</div>
+        F
+        <div class="alert alert-{{message_type}}" role="alert">
+            {{ message }}
+        </div>
     {% endif %}
-    <form class="frm p-3" action="{% url 'home:login' %}" method="post">
-        {% csrf_token %}
-        {{ form }}
-        <button class="btn btn-dark" type="submit"> Prihlas ma! </button>
-    </form>
+
+    <div class="w-50 h-50 w-md-75 container-md position-absolute top-50 start-50 translate-middle p-5">
+        <form class="frm p-3" action="{% url 'home:login' %}" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <button class="btn btn-success" type="submit"> Prihlas ma! </button>
+        </form>
+</section>
+    
+
+
 
 {% endblock %}

@@ -37,9 +37,11 @@ def login_view(request):
         # Otherwise, return login page again with new context
         else:
             return render(request, "home/login.html", {
-                "message": "Invalid Credentials",
+                "message": "Meno alebo heslo nesprávne",
+                "message_type": "danger",
                 "form": form
             })
+
     return render(request, "home/login.html", {
         "form": LoginForm()
     })
@@ -47,6 +49,7 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return render(request, "home/login.html", {
-                "message": "Logged Out",
+                "message": "Boli ste úspešne odhlásený",
+                "message_type": "success",
                 "form": LoginForm()
             })
