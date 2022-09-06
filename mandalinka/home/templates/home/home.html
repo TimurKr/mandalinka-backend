@@ -1,0 +1,12 @@
+{% extends "home/layout.html" %}
+
+{% block body %}
+    <h1>Jeden pomaranč sa zaľúbil raz do Darinky Mandalinky</h1>    
+    <h1> Ale, ale, ale... {% if request.user.first_name %}{{request.user.first_name}}{% elif request.user.username %}{{request.user.username}}{% else %}niekto{% endif %} je zase hladný</h1>
+    {% if request.user.is_authenticated %}
+        <button onclick="location.href = '{% url 'home:logout' %}'">Odhlas ma</button>
+    {% else %}
+        <button onclick="location.href = '{% url 'home:login' %}'">Prihlas ma</button>
+    {% endif %}
+
+{% endblock %}
