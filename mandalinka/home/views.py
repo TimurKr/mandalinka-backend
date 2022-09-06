@@ -1,14 +1,5 @@
 from django.views.generic import TemplateView
-<<<<<<< HEAD
-from django.shortcuts import render
-from recepty.models import Recipe
 
-    # Create your views here.
-def landing_page(request):
-    return render(request, "home/landing_page.html", {
-        "recipes": Recipe.objects.all(),
-    })
-=======
 from django import forms
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
@@ -59,4 +50,3 @@ def logout_view(request):
                 "message": "Logged Out",
                 "form": LoginForm()
             })
->>>>>>> 5eed795bccf3da02612bfbee7b6f0110a8837eb6
