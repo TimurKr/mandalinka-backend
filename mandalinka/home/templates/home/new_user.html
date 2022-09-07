@@ -1,0 +1,17 @@
+{% extends "home/login_logout_layout.html" %}
+
+{% block body %}
+
+<section class="vh-100 bg-secondary">
+    <div class="w-50 h-50 w-md-75 container-md position-absolute top-50 start-50 translate-middle p-5">
+        <form class="frm p-3" action="{% url 'home:login' %}" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <button class="btn btn-success" type="submit"> Prihlas ma! </button>
+        </form>
+</section>
+    
+
+
+
+{% endblock %}

@@ -55,4 +55,7 @@ def logout_view(request):
             })
 
 def new_user_view(request):
-    pass
+    if request.method == "POST":
+        print(request.POST)
+    
+    return render(request, "home/new_user.html")
