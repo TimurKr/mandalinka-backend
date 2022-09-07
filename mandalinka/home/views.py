@@ -1,19 +1,17 @@
 from django.views.generic import TemplateView
 
-from django import forms
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 from django.contrib.auth import authenticate, login, logout
 
+from home.forms import *
+
 class HomePageView(TemplateView):
     template_name = "home/home.html"
 
-class LoginForm(forms.Form):
-    username = forms.CharField(label="username", widget=forms.TextInput({'class':'form-control'}))
-    password = forms.CharField(label="password", widget=forms.PasswordInput())
- 
+
 # Create your views here.
 def index(request):
     return render(request, "home/home.html")
@@ -55,7 +53,15 @@ def logout_view(request):
             })
 
 def new_user_view(request):
-    if request.method == "POST":
-        print(request.POST)
-    
-    return render(request, "home/new_user.html")
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return HttpResponseRedirect(reverse("home:home"))
+    else:
+        form = SignupForm()
+    return render(request, 'home/new_user.html', {'form': form})

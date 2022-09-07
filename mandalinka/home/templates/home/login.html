@@ -8,7 +8,11 @@
             {% csrf_token %}
             {{ form }}
             <button class="btn btn-success" type="submit"> Prihlas ma! </button>
+            <p>Nie masz konta?</p>
+            <button class="btn btn-success" onclick="location.href='{% url 'home:new_user' %}'" type="button">Vytvor konto</button>
         </form>
+
+        
 </section>
     
 
