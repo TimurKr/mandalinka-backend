@@ -48,8 +48,11 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return render(request, "home/login.html", {
-                "message": "Boli ste úspešne odhlásený",
+    return render(request, "home/home.html", {
+                "message": "Boli ste úspešne odhlásený!",
                 "message_type": "success",
                 "form": LoginForm()
             })
+
+def new_user_view(request):
+    pass
