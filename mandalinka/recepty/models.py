@@ -42,8 +42,10 @@ class Alergen(models.Model):
 class IngredientInstance(models.Model):
     ingredient = models.ForeignKey("Ingredient", on_delete=models.PROTECT)
     recipe = models.ForeignKey("RecipeVersion", on_delete=models.CASCADE)
-    amount = models.IntegerField(primary_key=True, verbose_name="Množstvo", help_text="Zadajte množstvo danej potraviny")
+    amount = models.IntegerField(verbose_name="Množstvo", help_text="Zadajte množstvo danej potraviny")
 
+    def __str__(self):
+        return f"{self.amount} {self.ingredient.unit} {self.ingredient}"
 
 class Ingredient(models.Model):
     title = models.CharField(max_length=31, unique=True, verbose_name="Názov", help_text="Názov ingrediencie")
@@ -60,6 +62,9 @@ class Ingredient(models.Model):
 
     alergens = models.ManyToManyField(Alergen, blank=True, help_text="Zvolte všetky alergény:", verbose_name="Alergény", related_name="Ingredients")
 
+    date_created = models.DateTimeField(auto_now_add=True, verbose_name="Čas vzniku")
+    date_modified = models.DateTimeField(auto_now=True, verbose_name="Naposledy upravené")
+
     def __str__(self):
         return f"{self.title}"
 
@@ -67,13 +72,15 @@ class Step(models.Model):
     step = models.TextField(max_length=250, help_text="Krok: ")
     step_img = models.ImageField(upload_to=f"recepty/static/photos/", help_text="Pridajte obrazok ku kroku", default=None)
     step_no = models.IntegerField(verbose_name="Krok cislo:", help_text="Zadaj poradie kroku")
-    recipe = models.ForeignKey("RecipeVersion", on_delete=models.CASCADE, related_name="Recipes", null=True, blank=True)
+    recipe = models.ForeignKey("RecipeVersion", on_delete=models.CASCADE, related_name="Steps", null=True, blank=True)
     
-    class Meta:
-        # ensuring each recipe has only one unique step_no
-        constraints = [
-            models.UniqueConstraint(fields=['step_no', 'recipe'], name='Each recipe has a unique set of steps')
-        ]
+    date_modified = models.DateTimeField(auto_now=True, verbose_name="Naposledy upravené")
+
+    # class Meta:
+    #     # ensuring each recipe has only one unique step_no
+    #     constraints = [
+    #         models.UniqueConstraint(fields=['recipe','step_no'], name='unique_step_number')
+    #     ]
 
     def __str__(self):
         return f"text: {self.step}"
@@ -82,17 +89,84 @@ class Recipe(models.Model):
     title = models.CharField(max_length=63, unique=True, help_text="Názov receptu")
     description = models.TextField(max_length=127, verbose_name="Opis jedla", help_text="Zadajte stručný opis jedla")
     thumbnail = models.ImageField(upload_to=f"recepty/static/photos/", help_text="Pridajte thumbnail", default=None)
+    active = models.BooleanField(default=True, verbose_name="Aktívny")
 
-    # Price
+    date_created = models.DateTimeField(auto_now_add=True, verbose_name="Čas vzniku")
+    date_modified = models.DateTimeField(auto_now=True, verbose_name="Naposledy upravené")
 
     def __str__(self):
         return f"{self.title}"
+
+    def cost(self):
+        # Needs attention
+        pass
+
+    def deactivate():
+        # deactivates all of its verions
+        pass
 
 class RecipeVersion(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="recipe_versions")
     version = models.IntegerField(verbose_name="Verzia receptu", help_text="Zadajte koľkatá je to verzia receptu")
     prep_time = models.IntegerField(verbose_name="Čas prípravy", help_text="Zadajte dĺžku prípravy")
-    ingredients = models.ManyToManyField(Ingredient, through=IngredientInstance, blank=False, help_text="Zvolte všetky ingrediencie", related_name="recipes")
-    steps = models.ManyToManyField(Step, blank=False, help_text="Pridajte kroky", related_name="recipes")
+    ingredients = models.ManyToManyField(Ingredient, through=IngredientInstance, help_text="Zvolte všetky ingrediencie", related_name="recipes")
+    steps = models.ManyToManyField(Step, blank=True, verbose_name="Kroky", help_text="Pridajte kroky", related_name="recipes")
 
+    date_created = models.DateTimeField(auto_now_add=True, verbose_name="Čas vzniku")
+    date_modified = models.DateTimeField(auto_now=True, verbose_name="Naposledy upravené")
+    
+    active = models.BooleanField(default=True, verbose_name="Aktívny")
+
+    def __str__(self):
+        return f"{self.recipe} v.{self.version}"
+
+    def avg_rating(self):
+        rating_sum = 0
+        rating_num = 0
+        for recipeuse in self.uses.all():
+            for r in recipeuse.ratings.all():
+                if r.taste:
+                    rating_sum += int(r.amount)
+                    rating_num += 1
+        if rating_num:
+            return rating_sum/rating_num
+        return "No ratings"
+
+class RecipeInstance(models.Model):
+    recipe_version = models.ForeignKey(RecipeVersion, on_delete=models.PROTECT, related_name="uses")
+    date_to_be_used = models.DateField()
+
+    date_created = models.DateTimeField(auto_now_add=True, verbose_name="Čas vzniku")
+    date_modified = models.DateTimeField(auto_now=True, verbose_name="Naposledy upravené")
+
+    def __str__(self):
+        return f"{self.recipe_version} zo dňa {self.date_to_be_used}"
+
+
+class Rating(models.Model):
+    recipe_instance = models.ForeignKey(RecipeInstance, on_delete=models.CASCADE, related_name="ratings")
+
+    choices_amount = [("1", "Porcia bola malá"),
+        ("2", "Porcia mohla byť trochu väčšia"), 
+        ("3", "Porcia bola akurát"),
+        ("4", "Stačilo by trochu menej"),
+        ("5", "Porcia bola príliš veľká")]
+    amount = models.CharField(blank=True, default=None, null=True, max_length=1, choices=choices_amount, verbose_name="Hodnotenie množstva", help_text="Sedelo množstvo jedla s objednanou porciou?")
+    
+    choices_stars = [("1", "1"), 
+        ("2", "2"), 
+        ("3", "3"), 
+        ("4", "4"), 
+        ("5", "5")]
+    taste = models.CharField(blank=True, default=None, null=True, max_length=1, choices=choices_stars, verbose_name="Chuť", help_text="Viac je lepšie")
+    delivery = models.CharField(blank=True, default=None, null=True, max_length=1, choices=choices_stars, verbose_name="Doručenie", help_text="Viac je lepšie")
+    
+    date_created = models.DateTimeField(auto_now_add=True, verbose_name="Čas vzniku")
+    date_modified = models.DateTimeField(auto_now=True, verbose_name="Naposledy upravené")
+
+    def __str__(self):
+        amount = '*' * int(self.amount)
+        taste = '*' * int(self.taste)
+        delivery = '*' * int(self.delivery)
+        return f"Množstvo: {amount}\nChuť: {taste}\nMnožstvo {delivery}"
 
