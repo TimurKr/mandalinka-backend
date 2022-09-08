@@ -1,17 +1,21 @@
-{% extends "home/login_logout_layout.html" %}
+{% extends "home/login_layout.html" %}
 
 {% block body %}
 
-<section class="vh-100 bg-secondary">
-    <div class="w-50 h-50 w-md-75 container-md position-absolute top-50 start-50 translate-middle p-5">
-        <form class="frm p-3" action="{% url 'home:login' %}" method="post">
+    <div class="container-fluid login-window position-absolute top-50 start-50 translate-middle rounded-5 shadow-lg">
+        <h2 class="text-center mt-3 fw-semibold">Login</h2>
+        <form class="frm px-5 pb-3" action="{% url 'home:login' %}" method="post">
             {% csrf_token %}
             {{ form }}
-            <button class="btn btn-success" type="submit"> Prihlas ma! </button>
-        </form>
-</section>
-    
-
-
+            <div class="row">
+                <div class="col">
+                    <a class="position-relative top-0 start-50 translate-middle-x w-100 btn btn-outline-dark mt-3 rounded-5" type="submit"> Zaregistrovať sa </a>
+                </div>
+                <div class="col">
+                    <button class="position-relative top-0 start-50 translate-middle-x w-100 btn btn-primary mt-3 rounded-5" type="submit"> Prihlásiť sa </button>
+                </div>
+            </div>
+        </form>   
+    </div> 
 
 {% endblock %}
