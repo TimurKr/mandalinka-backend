@@ -4,8 +4,9 @@ from address.forms import AddressField
 from django import forms
 
 class LoginForm(forms.Form):
-    username = forms.CharField(label="username", widget=forms.TextInput({'class':'form-control'}))
-    password = forms.CharField(label="password", widget=forms.PasswordInput())
+    username = forms.CharField(label="username", widget=forms.TextInput({'class':'form-control rounded-5 opacity-25 shadow'}))
+    password = forms.CharField(label="password", widget=forms.PasswordInput({'class':'form-control rounded-5 opacity-25 shodow'}))
+ 
  
 class SignupForm(UserCreationForm):
     COUNTRIES = (

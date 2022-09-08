@@ -10,15 +10,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
     
-    <body>
-        {% if message %}
+    <body class="login">
+        <section class="vh-100 position-relative">
+            <div class="position-absolute top-0 start-0">
+                <a href="{% url 'home:home' %}">
+                    <img class="img-fluid m-4" width=75rem 
+                    src="{% static 'favicon.ico' %}" alt="favicon">
+                </a>
+            </div>
+            
+            {% if message %}
             <div class="alert alert-{{ message_type }} mx-5 my-1 alert-dismissible fade show" role="alert">
                 {{ message }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        {% endif %}
+            {% endif %}
 
-        {% block body %}
+        {% block body %}s
         {% endblock %}
+        
+    </section>
     </body>
 </html>
