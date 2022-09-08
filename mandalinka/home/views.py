@@ -61,7 +61,10 @@ def new_user_view(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return HttpResponseRedirect(reverse("home:home"))
+            return render(request, "home/home.html", {
+                "message": f"{username}, Vaše konto bolo úspešne zaregistrované",
+                "message_type": "success",
+            })
     else:
         form = SignupForm()
     return render(request, 'home/new_user.html', {'form': form})

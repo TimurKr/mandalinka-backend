@@ -6,9 +6,19 @@
     <div class="w-50 h-50 w-md-75 container-md position-absolute top-50 start-50 translate-middle p-5">
         <form class="frm p-3" action="{% url 'home:new_user' %}" method="post">
             {% csrf_token %}
-            {{ form.as_div }}
-            <button class="btn btn-success" type="submit"> Vytvor konto! </button>
+            <div class="alert alert-danger" >{{ form.non_field_errors }}</div>
+            {% for elem in form %}
+                <div class="form-group pt-3">
+                    <div class="alert alert-danger" >{{ elem.errors }}</div>
+                    <p> {{ elem.help_text }} </p>
+                    <label for="{{ elem.id_for_label }}">
+                        {{ elem }}
+                    </label>
+                </div>
+            {% endfor %}
+            <button class="btn btn-success" type="submit">Vytvor konto</button>
         </form>
+    </div>
 </section>
 
 {% endblock %}
