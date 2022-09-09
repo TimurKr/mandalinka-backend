@@ -8,13 +8,40 @@
             {% csrf_token %}
             <div class="alert alert-danger" >{{ form.non_field_errors }}</div>
             {% for elem in form %}
+                
                 <div class="form-group pt-3">
                     <div class="alert alert-danger" >{{ elem.errors }}</div>
                     <p> {{ elem.help_text }} </p>
                     <label for="{{ elem.id_for_label }}">
                         {{ elem }}
+                        {% if elem.label == "district" %}
+                            <datalist id="districts">
+                                {% for district in districts %}
+                                    <option value="{{ district.district }}"></option>
+                                {% endfor %}
+                            </datalist>
+                        {% elif elem.label == "city" %}
+                            <datalist id="cities">
+                                {% for city in cities %}
+                                    <option value="{{ city.city }}"></option>
+                                {% endfor %}
+                            </datalist>
+                        {% elif elem.label == "postal" %}
+                            <datalist id="postal_codes">
+                                {% for postal in postal_codes %}
+                                    <option value="{{ postal.code }}"></option>
+                                {% endfor %}
+                            </datalist>
+                        {% elif elem.label == "street" %}
+                            <datalist id="streets">
+                                {% for street in streets %}
+                                    <option value="{{ street.street }}"></option>
+                                {% endfor %}
+                            </datalist>
+                        {% endif %}
                     </label>
                 </div>
+                
             {% endfor %}
             <button class="btn btn-success" type="submit">Vytvor konto</button>
         </form>

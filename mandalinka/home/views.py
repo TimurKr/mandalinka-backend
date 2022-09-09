@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 
 from home.forms import *
+from home.models import Cities, Districts, PostalCodes, Streets
 
 class HomePageView(TemplateView):
     template_name = "home/home.html"
@@ -53,6 +54,7 @@ def logout_view(request):
             })
 
 def new_user_view(request):
+
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
@@ -61,10 +63,30 @@ def new_user_view(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
+            print(user.id)
+            user = UserProfile.objects.get(user_name_id=user.id)
+            user.phone = form.cleaned_data.get("phone")
+            user.street = form.cleaned_data.get("street")
+            user.house_no =form.cleaned_data.get("house_no")
+            user.city = form.cleaned_data.get("city")
+            user.district = form.cleaned_data.get("district")
+            user.postal = form.cleaned_data.get("postal")
+            user.country = form.cleaned_data.get("country")
+            user.save()
             return render(request, "home/home.html", {
                 "message": f"{username}, Vaše konto bolo úspešne zaregistrované",
                 "message_type": "success",
             })
     else:
         form = SignupForm()
-    return render(request, 'home/new_user.html', {'form': form})
+    districts = Districts.objects.all()
+    cities = Cities.objects.all()
+    postal_codes = PostalCodes.objects.all()
+    streets = Streets.objects.all()
+    return render(request, 'home/new_user.html',
+                    {'form': form,
+                     'districts': districts,
+                     'cities': cities,
+                     'postal_codes': postal_codes,
+                     'streets': streets
+    })

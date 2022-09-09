@@ -25,7 +25,7 @@
             {{ form }}
             <div class="row">
                 <div class="col-12 col-sm-6">
-                    <a class="btn btn-outline-dark w-100 mt-3 px-2 rounded-5 shadow" type="submit"> Zaregistrovať sa </a>
+                    <button class="btn btn-outline-dark w-100 mt-3 px-2 rounded-5 shadow" onclick="location.href='{% url 'home:new_user' %}'" type="button"> Zaregistrovať sa </button>
                 </div>
                 <div class="col-12 col-sm-6">
                     <button class="btn btn-primary w-100 mt-3 px-2 rounded-5 shadow" type="submit"> Prihlásiť sa </button>

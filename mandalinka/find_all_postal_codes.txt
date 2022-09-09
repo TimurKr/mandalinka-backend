@@ -1,0 +1,3 @@
+//download a file https://www.posta.sk/sluzby/postove-smerovacie-cisla - export the POBoxy.xls?? to csv and run
+
+cat POBoxy.csv | awk 'BEGIN {FS=","} ; {print $6}' | tail -n +3 | sed "s/ //g" > psc.txt
