@@ -12,11 +12,14 @@ class HomePageView(TemplateView):
 
 class LoginForm(forms.Form):
     username = forms.CharField(label="username", widget=forms.TextInput({'class':'form-control rounded-5 opacity-25 shadow'}))
-    password = forms.CharField(label="password", widget=forms.PasswordInput({'class':'form-control rounded-5 opacity-25 shodow'}))
+    password = forms.CharField(label="password", widget=forms.PasswordInput({'class':'form-control rounded-5 opacity-25 shadow'}))
  
 # Create your views here.
+
+# Je toto vôbec niekedy použité??
 def index(request):
     return render(request, "home/home.html")
+
 
 def login_view(request):
     
