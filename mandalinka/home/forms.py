@@ -1,9 +1,10 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from home.models import Districts, Cities, PostalCodes
+from home.models import CityDistrictPostal, Districts, Cities, PostalCodes
 from django import forms
 from django.core.exceptions import ValidationError
 from home.models import UserProfile
+from django.utils.safestring import mark_safe
 
 class LoginForm(forms.Form):
     username = forms.CharField(label="username", widget=forms.TextInput({'class':'form-control rounded-5 opacity-25 shadow'}))
@@ -20,13 +21,13 @@ class SignupForm(UserCreationForm):
         ("SK","CZ"),
     )
     email = forms.EmailField(label="Email", max_length=254, help_text='Emailová adresa')
-    phone = forms.CharField(label="Ulica",help_text='Tel.číslo:',required=True, widget=forms.TextInput(attrs={'value':'+421'}))
+    phone = forms.CharField(min_length=5, label="Ulica",help_text='Tel.číslo:',required=True, widget=forms.TextInput(attrs={'value':'+421'}))
 
     street = forms.CharField(label="street",help_text='Ulica:',required=False, widget=forms.TextInput(attrs={'list':'streets'}))
     house_no = forms.CharField(label="house_no",help_text='Číslo domu:', required=True)
     district = forms.CharField(label="district",help_text='Okres:',required=True, widget=forms.TextInput(attrs={'list':'districts'}))
     city = forms.CharField(label="city",help_text='Mesto:',required=True, widget=forms.TextInput(attrs={'list':'cities'}))
-    postal = forms.CharField(label="postal", help_text='PSČ:',required=True, widget=forms.TextInput(attrs={'list':'postal_codes'}))
+    postal = forms.CharField(min_length=5, max_length=5,label="postal", help_text='PSČ:',required=True, widget=forms.TextInput(attrs={'list':'postal_codes'}))
     country = forms.ChoiceField(label="country",choices=COUNTRIES, required=True, help_text='Krajina:')
     
     class Meta:
@@ -48,8 +49,8 @@ class SignupForm(UserCreationForm):
         data = self.cleaned_data['phone']
         if data[:4] not in ["+421", "+420"]:
             raise ValidationError("Unknown or missing dialing code")
-        if len(data) < 5:
-            raise ValidationError("Phone number too short (must contain at least 5 numbers)")
+        #if len(data) < 5:
+         #   raise ValidationError("Phone number too short (must contain at least 5 numbers)")
 
         return data
     
@@ -84,3 +85,25 @@ class SignupForm(UserCreationForm):
         if data not in ["SK", "CZ"]:
             raise ValidationError("Unknown country - make sure you choose from given list and use special characters")
         return data
+
+    def clean(self):
+        cleaned_data = super().clean()
+        city = cleaned_data.get("city")
+        district = cleaned_data.get("district")
+        postal = cleaned_data.get("postal")
+        valid_city = CityDistrictPostal.objects.filter(city=city, district=district, postal=postal)
+        if not valid_city:
+            # There is no such combination - the user probably user wrong postal code or district
+            
+            for_city = CityDistrictPostal.objects.filter(city=city)
+            if not for_city:
+                raise ValidationError(
+                    f"We could not find city {city} in out database. Check the spelling, choose from suggested names or contact the admin"
+                )
+            message = f'We only have following districts and postal codes associated with city <strong>{city}</strong>: <ul>'
+            for obj in for_city:
+                message += f'<li>District: <strong>{obj.district}</strong>, Postal code: <strong>{obj.postal}</strong></li>'
+            message += "</ul>"
+            raise ValidationError(
+                mark_safe(message)
+            )

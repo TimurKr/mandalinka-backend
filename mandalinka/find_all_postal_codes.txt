@@ -1,3 +1,5 @@
-//download a file https://www.posta.sk/sluzby/postove-smerovacie-cisla - export the POBoxy.xls?? to csv and run
+//download a file https://www.posta.sk/sluzby/postove-smerovacie-cisla - export the OBCE.xls?? to csv and run
 
-cat POBoxy.csv | awk 'BEGIN {FS=","} ; {print $6}' | tail -n +3 | sed "s/ //g" > psc.txt
+cat OBCE.csv | awk -F "," '{print $4}' | sed 's/\(.*\) \(.*\)/\1\2/' | tail +2 | sed '/^$/d' | uniq > psc.txt
+
+

@@ -1,0 +1,2916 @@
+Ábelová,Lučenec,98513
+Abovce,Rimavská Sobota,98044
+Abrahám,Galanta,92545
+Abrahámovce,Bardejov,08641
+Abrahámovce,Kežmarok,05972
+Abrahámovce - Pikovce,Kežmarok,05972
+Abramová,Turčianske Teplice,03822
+Abranovce,Prešov,08252
+Adamovské Kochanovce,Trenčín,91305
+Adidovce,Humenné,06732
+Alekšince,Nitra,95122
+Andovce,Nové Zámky,94123
+Andrejová,Bardejov,08637
+Ardanovce,Topoľčany,95606
+Ardovo,Rožňava,04955
+Arnutovce,Spišská Nová Ves,05313
+Báb,Nitra,95134
+Babie,Vranov nad Topľou,09431
+Babín,Námestovo,02952
+Babiná,Zvolen,96261
+Babindol,Nitra,95153
+Babinec,Rimavská Sobota,98026
+Bacúch,Brezno,97664
+Bacúrov,Zvolen,96261
+Báč,Dunajská Streda,93030
+Bačka,Trebišov,07684
+Bačkov,Trebišov,07661
+Bačkovík,Košice - okolie,04445
+Baďan,Banská Štiavnica,96901
+Bádice,Nitra,95146
+Báhoň,Pezinok,90084
+Bajany,Michalovce,07254
+Bajč,Komárno,94654
+Bajerov,Prešov,08241
+Bajerovce,Sabinov,08273
+Bajka,Levice,93551
+Bajtava,Nové Zámky,94365
+Baka,Dunajská Streda,93004
+Baláže,Banská Bystrica,97611
+Baldovce,Levoča,05304
+Balog nad Ipľom,Veľký Krtíš,99111
+Baloň,Dunajská Streda,93008
+Baňa,Stropkov,09101
+Baňa Lucia,Košice - okolie,04425
+Banka,Piešťany,92101
+Bánov,Nové Zámky,94101
+Banská Belá,Banská Štiavnica,96615
+Banské,Vranov nad Topľou,09412
+Banský Studenec,Banská Štiavnica,96901
+Bara,Trebišov,07632
+Barca,Rimavská Sobota,98251
+Bardejovské Kúpele,Bardejov,08631
+Bardoňovo,Nové Zámky,94149
+Bartošova Lehôtka,Žiar nad Hronom,96701
+Bartošovce,Bardejov,08642
+Baška,Košice - okolie,04016
+Baškovce,Humenné,06723
+Baškovce,Sobrance,07301
+Bašovce,Piešťany,92201
+Batizovce,Poprad,05935
+Bátka,Rimavská Sobota,98021
+Bátorová,Veľký Krtíš,99126
+Bátorove Kosihy,Komárno,94634
+Bátovce,Levice,93503
+Beckovská Vieska,Nové Mesto n.Váhom,91631
+Beharovce,Levoča,05305
+Becherov,Bardejov,08635
+Belá,Žilina,01305
+Belá,Nové Zámky,94353
+Belá nad Cirochou,Snina,06781
+Beladice,Zlaté Moravce,95175
+Belá-Dulice,Martin,03811
+Belejovce,Svidník,08901
+Belek,Nové Zámky,94148
+Belín,Rimavská Sobota,98001
+Belina,Lučenec,98601
+Belince,Topoľčany,95612
+Bellova Ves,Dunajská Streda,93052
+Beloveža,Bardejov,08614
+Beluj,Banská Štiavnica,96901
+Beluša,Púchov,01861
+Belža,Košice - okolie,04458
+Beňadiková,Liptovský Mikuláš,03204
+Beňadikovce,Svidník,09042
+Beňadovo,Námestovo,02963
+Beňatina,Sobrance,07264
+Beniakovce,Košice - okolie,04442
+Benice,Martin,03842
+Benkovce,Vranov nad Topľou,09402
+Beňuš,Brezno,97664
+Bernátovce,Košice - okolie,04413
+Bernolákovo,Senec,90027
+Bertotovce,Prešov,08235
+Beša,Levice,93536
+Beša,Michalovce,07672
+Bešeňov,Nové Zámky,94141
+Bešeňová,Ružomberok,03483
+Betlanovce,Spišská Nová Ves,05315
+Betliar,Rožňava,04921
+Bezdedov - Vieska,Púchov,02001
+Bežovce,Sobrance,07253
+Bidovce,Košice - okolie,04445
+Biel,Trebišov,07641
+Biele Vody,Brezno,97653
+Bielovce,Levice,93574
+Biely Kostol,Trnava,91934
+Bijacovce,Levoča,05306
+Bílkove Humence,Senica,90877
+Bíňa,Nové Zámky,94356
+Bíňovce,Trnava,91907
+Biskupice,Lučenec,98601
+Biskupová,Topoľčany,95607
+Bitarová,Žilina,01004
+Blahová,Dunajská Streda,93052
+Blatná na Ostrove,Dunajská Streda,93032
+Blatná Polianka,Sobrance,07244
+Blatné,Senec,90082
+Blatné Remety,Sobrance,07244
+Blatné Revištia,Sobrance,07243
+Blatnica,Martin,03815
+Blažice,Košice - okolie,04416
+Blažková,Čadca,02311
+Blažovce,Turčianske Teplice,03844
+Blesovce,Topoľčany,95601
+Blhovce,Rimavská Sobota,98032
+Bobot,Trenčín,91325
+Bobrov,Námestovo,02942
+Bobrovček,Liptovský Mikuláš,03221
+Bobrovec,Liptovský Mikuláš,03221
+Bobrovec-Škorupovo,Liptovský Mikuláš,03105
+Bobrovník,Liptovský Mikuláš,03223
+Bočiar,Košice - okolie,04457
+Bodíky,Dunajská Streda,93031
+Bodiná,Považská Bystrica,01815
+Bodorová,Turčianske Teplice,03845
+Bodovce,Sabinov,08266
+Bodovka - Krivosúd,Trenčín,91311
+Bodružal,Svidník,09005
+Bodza,Komárno,94616
+Bodzianske Lúky,Komárno,94614
+Bogliarka,Bardejov,08604
+Bohdanovce,Košice - okolie,04416
+Bohdanovce nad Trnavou,Trnava,91909
+Boheľov,Dunajská Streda,92901
+Bohunice,Ilava,01852
+Bohunice,Levice,93505
+Bohúňovo,Rožňava,04912
+Bojná,Topoľčany,95601
+Bojničky,Hlohovec,92055
+Boľ,Trebišov,07653
+Boldog,Senec,92526
+Boleráz,Trnava,91908
+Bolešov,Ilava,01853
+Boliarov,Košice - okolie,04447
+Boľkovce,Lučenec,98401
+Borcová,Turčianske Teplice,03844
+Borčany,Bánovce nad Bebravou,95636
+Borčice,Ilava,01853
+Borda,Košice - okolie,04445
+Borinka,Malacky,90032
+Borová,Trnava,91961
+Borovce,Piešťany,92209
+Borský Mikuláš,Senica,90877
+Borský Svätý Jur,Senica,90879
+Borša,Trebišov,07632
+Bory,Levice,93587
+Bošáca,Nové Mesto n.Váhom,91307
+Bošany,Partizánske,95618
+Boťany,Trebišov,07643
+Boťany - Kolónia,Trebišov,07642
+Bottovo,Rimavská Sobota,98041
+Bôrka,Rožňava,04942
+Bracovce,Michalovce,07205
+Branč,Nitra,95113
+Branovo,Nové Zámky,94131
+Braväcovo,Brezno,97664
+Brdárka,Rožňava,04934
+Brehov,Trebišov,07605
+Brehy,Žarnovica,96801
+Brekov,Humenné,06601
+Brestov,Humenné,06601
+Brestov,Prešov,08205
+Brestov nad Laborcom,Medzilaborce,06701
+Brestovany,Trnava,91927
+Brestové,Nové Mesto n.Váhom,91642
+Brestovec,Komárno,94617
+Bretejovce,Prešov,08203
+Bretka,Rožňava,98046
+Breza,Námestovo,02953
+Brezany,Žilina,01004
+Brezina,Trebišov,07612
+Breziny,Zvolen,96261
+Breznica,Stropkov,09101
+Breznička,Poltár,98502
+Breznička,Stropkov,09101
+Brezolupy,Bánovce nad Bebravou,95701
+Brezov,Bardejov,08701
+Brezová pod Bradlom,Myjava,90613
+Brezovec,Snina,06773
+Brezovica,Sabinov,08274
+Brezovica,Tvrdošín,02801
+Brezovička,Sabinov,08274
+Brezovka,Bardejov,08611
+Brežany,Prešov,08241
+Brhlovce,Levice,93502
+Brieštie,Turčianske Teplice,03822
+Brodské,Skalica,90885
+Brodzany,Partizánske,95842
+Brunovce,Nové Mesto n.Váhom,91625
+Brusnica,Stropkov,09031
+Brusník,Veľký Krtíš,99101
+Brusno,Banská Bystrica,97662
+Brutovce,Levoča,05373
+Bruty,Nové Zámky,94355
+Brvnište,Považská Bystrica,01812
+Brzotín,Rožňava,04951
+Buclovany,Bardejov,08643
+Búč,Komárno,94635
+Bučany,Trnava,91928
+Bučkovec,Nové Mesto n.Váhom,91642
+Budča,Zvolen,96233
+Budikovany,Rimavská Sobota,98023
+Budimír,Košice - okolie,04443
+Budiná,Lučenec,98512
+Budince,Michalovce,07677
+Budiš,Turčianske Teplice,03823
+Budmerice,Pezinok,90086
+Budulov,Košice - okolie,04501
+Buglovce,Levoča,05304
+Buková,Trnava,91910
+Bukovce,Stropkov,09022
+Bukovec,Myjava,90614
+Bukovec,Košice - okolie,04420
+Bukovina,Liptovský Mikuláš,03223
+Bulhary,Lučenec,98601
+Bunetice,Košice - okolie,04447
+Bunkovce,Sobrance,07244
+Bušince,Veľký Krtíš,99122
+Bušovce,Kežmarok,05993
+Buzica,Košice - okolie,04473
+Buzice,Košice - okolie,04413
+Buzitka,Lučenec,98541
+Byster,Košice - okolie,04441
+Bystrá,Brezno,97701
+Bystrá,Stropkov,09023
+Bystrany,Spišská Nová Ves,05362
+Bystré,Vranov nad Topľou,09434
+Bystričany,Prievidza,97245
+Bystrička,Martin,03804
+Byšta,Trebišov,07613
+Bytča,Bytča,01401
+Bzenica,Žiar nad Hronom,96601
+Bzenica,Žiar nad Hronom,96602
+Bzenov,Prešov,08242
+Bzince pod Javorinou,Nové Mesto n.Váhom,91611
+Bziny,Dolný Kubín,02601
+Bzovík,Krupina,96241
+Bzovská Lehôtka,Zvolen,96262
+Bžany,Stropkov,09033
+Cabaj-Čápor,Nitra,95117
+Cabov,Vranov nad Topľou,09414
+Cakov,Rimavská Sobota,98042
+Cejkov,Trebišov,07605
+Cernina,Svidník,09016
+Cerová,Senica,90633
+Cerovo,Krupina,96252
+Cestice,Košice - okolie,04471
+Cetuna,Nové Mesto n.Váhom,91611
+Cífer,Trnava,91943
+Cigeľ,Prievidza,97101
+Cigeľka,Bardejov,08602
+Cigla,Svidník,08637
+Cimenná,Bánovce nad Bebravou,95637
+Cinobaňa,Poltár,98522
+Cinobaňa - Žihľava,Poltár,98545
+Čab,Nitra,95124
+Čabalovce,Medzilaborce,06716
+Čabiny,Medzilaborce,06702
+Čabradský Vrbovok,Krupina,96251
+Čachtice,Nové Mesto n.Váhom,91621
+Čajkov,Levice,93524
+Čaka,Levice,93568
+Čakajovce,Nitra,95143
+Čakanovce,Košice - okolie,04445
+Čakanovce,Lučenec,98558
+Čakany,Dunajská Streda,93040
+Čaklov,Vranov nad Topľou,09435
+Čalovec,Komárno,94602
+Čamovce,Lučenec,98601
+Čaňa,Košice - okolie,04414
+Čaradice,Zlaté Moravce,95301
+Čáry,Senica,90843
+Častá,Pezinok,90089
+Častkov,Senica,90604
+Častkovce,Nové Mesto n.Váhom,91627
+Čata,Levice,93563
+Čataj,Senec,90083
+Čavoj,Prievidza,97229
+Čebovce,Veľký Krtíš,99125
+Čečehov,Michalovce,07211
+Čečejovce,Košice - okolie,04471
+Čechy,Nové Zámky,94132
+Čechynce,Nitra,95107
+Čeľadice,Nitra,95103
+Čeľadince,Topoľčany,95616
+Čeláre,Veľký Krtíš,99122
+Čelkova Lehota,Považská Bystrica,01816
+Čelovce,Veľký Krtíš,99141
+Čelovce,Prešov,08214
+Čeľovce,Trebišov,07617
+Čenkovce,Dunajská Streda,93039
+Čereňany,Prievidza,97246
+Čerenčany,Rimavská Sobota,97901
+Čerhov,Trebišov,07681
+Čerín - Čačín,Banská Bystrica,97401
+Čermany,Topoľčany,95608
+Černík,Nové Zámky,94105
+Černina,Humenné,06723
+Černochov,Trebišov,07632
+Černochov Vrch,Nové Mesto n.Váhom,91601
+Čertižné,Medzilaborce,06752
+Červená Voda,Sabinov,08301
+Červeňany,Veľký Krtíš,99101
+Červenica,Prešov,08207
+Červenica pri Sabinove,Sabinov,08256
+Červeník,Hlohovec,92042
+Červený Hrádok,Zlaté Moravce,95182
+Červený Kameň,Ilava,01856
+Červený Kláštor,Kežmarok,05906
+České Brezovo,Poltár,98503
+Čičarovce,Michalovce,07671
+Čičava,Vranov nad Topľou,09301
+Čičmany,Žilina,01315
+Číčov,Komárno,94619
+Čierna,Trebišov,07643
+Čierna Hora,Gelnica,05333
+Čierna Lehota,Bánovce nad Bebravou,95653
+Čierna Lehota,Rožňava,04936
+Čierna nad Tisou,Trebišov,07643
+Čierna Voda,Galanta,92506
+Čierne,Čadca,02313
+Čierne Kľačany,Zlaté Moravce,95305
+Čierne nad Topľou,Vranov nad Topľou,09434
+Čierne Pole,Michalovce,07901
+Čierny Balog,Brezno,97652
+Čierny Brod,Galanta,92508
+Čierny Chrbát,Komárno,94603
+Čierny Potok,Rimavská Sobota,98031
+Čifáre,Nitra,95161
+Čiližská Radvaň,Dunajská Streda,93008
+Čimhová,Tvrdošín,02712
+Čirč,Stará Ľubovňa,06542
+Číž,Rimavská Sobota,98043
+Čižatice,Košice - okolie,04447
+Čoltovo,Rožňava,04912
+Čremošné,Turčianske Teplice,03901
+Čučma,Rožňava,04801
+Čukalovce,Snina,06735
+Ďačov,Sabinov,08271
+Dačov Lom,Veľký Krtíš,99135
+Daletice,Sabinov,08263
+Danišovce,Spišská Nová Ves,05322
+Ďanová,Martin,03842
+Ďapalovce,Vranov nad Topľou,09405
+Dargov,Trebišov,07661
+Davidov,Vranov nad Topľou,09303
+Debraď,Košice - okolie,04501
+Dedačov,Humenné,06712
+Dedina Mládeže,Komárno,94603
+Dedinka,Nové Zámky,94150
+Dedinky,Rožňava,04973
+Dechtice,Trnava,91953
+Dekýš,Banská Štiavnica,96901
+Demandice,Levice,93585
+Demänovská Dolina,Liptovský Mikuláš,03101
+Demjata,Prešov,08213
+Detrík,Vranov nad Topľou,09431
+Detva,Detva,96212
+Detvianska Huta,Detva,96205
+Devičany,Levice,93504
+Devičie,Krupina,96265
+Dežerice,Bánovce nad Bebravou,95703
+Diaková,Martin,03802
+Diakovce,Šaľa,92581
+Diviacka Nová Ves,Prievidza,97224
+Diviaky nad Nitricou,Prievidza,97225
+Divín,Lučenec,98552
+Divina,Žilina,01331
+Divinka,Žilina,01331
+Dlhá,Trnava,91901
+Dlhá nad Kysucou,Čadca,02354
+Dlhá nad Oravou,Dolný Kubín,02755
+Dlhá nad Váhom,Šaľa,92705
+Dlhá Ves,Rožňava,04955
+Dlhé Klčovo,Vranov nad Topľou,09413
+Dlhé nad Cirochou,Snina,06782
+Dlhé Pole,Žilina,01332
+Dlhé Stráže,Levoča,05401
+Dlhoňa,Svidník,09002
+Dlžín,Prievidza,97226
+Dobogov,Košice - okolie,04471
+Dobrá,Trebišov,07641
+Dobrá Voda,Trnava,91954
+Dobrianky,Vranov nad Topľou,09423
+Dobroč,Lučenec,98553
+Dobrohošť,Dunajská Streda,93031
+Dobroslava,Svidník,09001
+Dobšiná,Rožňava,04925
+Dohňany,Púchov,02051
+Dojč,Senica,90602
+Doľany,Pezinok,90088
+Doľany,Levoča,05302
+Dolinka,Veľký Krtíš,99128
+Dolná Breznica,Púchov,02061
+Dolná Krupá,Trnava,91965
+Dolná Lehota,Brezno,97698
+Dolná Mariková,Považská Bystrica,01802
+Dolná Mičiná,Banská Bystrica,97401
+Dolná Poruba,Trenčín,91443
+Dolná Seč,Levice,93531
+Dolná Streda,Galanta,92563
+Dolná Strehová,Veľký Krtíš,99102
+Dolná Trnávka,Žiar nad Hronom,96621
+Dolná Ves,Žiar nad Hronom,96701
+Dolná Ždaňa,Žiar nad Hronom,96601
+Dolné Dubové,Trnava,91952
+Dolné Kočkovce,Púchov,02001
+Dolné Lefantovce,Nitra,95145
+Dolné Lovčice,Trnava,91927
+Dolné Mladonice,Krupina,96241
+Dolné Naštice,Bánovce nad Bebravou,95701
+Dolné Obdokovce,Nitra,95102
+Dolné Orešany,Trnava,91902
+Dolné Otrokovce,Hlohovec,92061
+Dolné Plachtince,Veľký Krtíš,99124
+Dolné Saliby,Galanta,92502
+Dolné Semerovce,Levice,93585
+Dolné Srnie,Nové Mesto n.Váhom,91641
+Dolné Strháre,Veľký Krtíš,99103
+Dolné Trhovište,Hlohovec,92061
+Dolné Vestenice,Prievidza,97223
+Dolné Zahorany,Rimavská Sobota,98542
+Dolné Zelenice,Hlohovec,92052
+Dolný Badín,Krupina,96251
+Dolný Bar,Dunajská Streda,93014
+Dolný Harmanec,Banská Bystrica,97603
+Dolný Hričov,Žilina,01341
+Dolný Chotár,Galanta,92541
+Dolný Kalník,Martin,03802
+Dolný Kubín,Dolný Kubín,02601
+Dolný Lieskov,Považská Bystrica,018 21
+Dolný Lopašov,Piešťany,92204
+Dolný Ohaj,Nové Zámky,94143
+Dolný Pial,Levice,93537
+Dolný Štál,Dunajská Streda,93010
+Dolný Vadičov,Kysucké Nové Mesto,02345
+Dolný Vinodol,Nitra,95106
+Domadice,Levice,93587
+Domaníky,Krupina,96265
+Domaniža,Považská Bystrica,01816
+Domaňovce,Levoča,05302
+Donovaly,Banská Bystrica,97639
+Drábsko,Brezno,97653
+Drahňov,Michalovce,07674
+Drahovce,Piešťany,92241
+Dravce,Levoča,05314
+Dražice,Rimavská Sobota,98023
+Dražkovce,Martin,03802
+Drážovce,Krupina,96268
+Drienčany,Rimavská Sobota,98023
+Drienica,Sabinov,08301
+Drienov,Prešov,08204
+Drienovec,Košice - okolie,04401
+Drienovo,Krupina,96251
+Drienovská Nová Ves,Prešov,08201
+Drietoma,Trenčín,91303
+Drňa,Rimavská Sobota,98003
+Drnava,Rožňava,04942
+Družstevná pri Hornáde,Košice - okolie,04431
+Drženice,Levice,93503
+Držkovce,Revúca,98262
+Ďubákovo,Poltár,98507
+Dubinné,Bardejov,08612
+Dubnica nad Váhom,Ilava,01841
+Dubnička,Bánovce nad Bebravou,95703
+Dubník,Nové Zámky,94135
+Dubno,Rimavská Sobota,98035
+Dubodiel,Trenčín,91323
+Dubová,Pezinok,90090
+Dubová,Svidník,09011
+Dubovany,Piešťany,92208
+Dubovce,Skalica,90862
+Dubové,Zvolen,96261
+Dubové,Turčianske Teplice,03823
+Dubovec,Rimavská Sobota,98041
+Dubovica,Sabinov,08271
+Dúbrava,Levoča,05305
+Dúbrava,Liptovský Mikuláš,03212
+Dúbrava,Snina,06773
+Dúbravica,Banská Bystrica,97633
+Dúbravka,Michalovce,07215
+Dúbravy,Detva,96212
+Ducové,Piešťany,92221
+Dudince,Krupina,96271
+Dukovce,Svidník,08644
+Dulov,Ilava,01852
+Dulova Ves,Prešov,08252
+Dulovce,Komárno,94656
+Dulovo,Rimavská Sobota,98021
+Dunajov,Čadca,02302
+Dunajská Lužná,Senec,90042
+Dunajský Klátov,Dunajská Streda,93021
+Duplín,Stropkov,09101
+Ďurčiná,Žilina,01501
+Ďurďoš,Vranov nad Topľou,09431
+Ďurďošík,Košice - okolie,04445
+Ďurďové,Považská Bystrica,01822
+Ďurkov,Košice - okolie,04419
+Ďurková,Stará Ľubovňa,06541
+Ďurkovce,Veľký Krtíš,99127
+Dvorany nad Nitrou,Topoľčany,95611
+Dvorec,Bánovce nad Bebravou,95655
+Dvorianky,Trebišov,07662
+Dvorníky,Hlohovec,92056
+Dvorníky-Včeláre,Košice - okolie,04402
+Dvory nad Žitavou,Nové Zámky,94131
+Egreš,Trebišov,07501
+Fačkov,Žilina,01315
+Falkušovce,Michalovce,07205
+Farná,Levice,93566
+Fekišovce,Sobrance,07233
+Figa,Rimavská Sobota,98251
+Fijaš,Svidník,08701
+Fiľakovo,Lučenec,98601
+Fiľakovské Kováče,Lučenec,98601
+Fintice,Prešov,08216
+Folkušová,Martin,03842
+Forbasy,Stará Ľubovňa,06501
+Frička,Bardejov,08602
+Fričkovce,Bardejov,08642
+Fričovce,Prešov,08237
+Fulianka,Prešov,08212
+Gabčíkovo,Dunajská Streda,93005
+Gaboltov,Bardejov,08602
+Gajary,Malacky,90061
+Galovany,Liptovský Mikuláš,03211
+Gáň,Galanta,92401
+Gánovce,Poprad,05801
+Gaškovce,Púchov,02053
+Gbeľany,Žilina,01302
+Gbelce,Nové Zámky,94342
+Gbely,Skalica,90845
+Gbely - Cunín,Skalica,90848
+Gelnica,Gelnica,05601
+Gemer,Revúca,98201
+Gemerček,Rimavská Sobota,98031
+Gemerská Hôrka,Rožňava,04912
+Gemerská Panica,Rožňava,98046
+Gemerská Poloma,Rožňava,04922
+Gemerská Ves,Revúca,98262
+Gemerské Dechtáre,Rimavská Sobota,98004
+Gemerské Michalovce,Rimavská Sobota,98252
+Gemerské Teplice,Revúca,04916
+Gemerský Jablonec,Rimavská Sobota,98035
+Gemerský Sad,Revúca,04913
+Geraltov,Prešov,08267
+Gerlachov,Poprad,05942
+Gerlachov,Bardejov,08604
+Giglovce,Vranov nad Topľou,09405
+Giraltovce,Svidník,08701
+Girovce,Vranov nad Topľou,09406
+Glabušovce,Veľký Krtíš,99122
+Gočaltovo,Rožňava,04932
+Gočovo,Rožňava,04924
+Golianovo,Nitra,95108
+Gomboš,Košice - okolie,04455
+Gortva,Rimavská Sobota,98002
+Gôtovany,Liptovský Mikuláš,03214
+Grajciar,Košice - okolie,04457
+Granč-Petrovce,Levoča,05305
+Gregorova Vieska,Lučenec,98556
+Gregorovce,Revúca,98252
+Gregorovce,Prešov,08266
+Gribov,Stropkov,09022
+Gruzovce,Humenné,06722
+Gyňov,Košice - okolie,04414
+Habovka,Tvrdošín,02732
+Habura,Medzilaborce,06752
+Hačava,Košice - okolie,04402
+Háj,Turčianske Teplice,03901
+Háj,Košice - okolie,04402
+Hájiky - Maky,Poltár,98701
+Hajná Nová Ves,Topoľčany,95603
+Hajnáčka,Rimavská Sobota,98033
+Hájske,Šaľa,95133
+Hajtovka,Stará Ľubovňa,06545
+Haláčovce,Bánovce nad Bebravou,95655
+Haligovce,Stará Ľubovňa,06534
+Haluzice,Nové Mesto n.Váhom,91307
+Hamuliakovo,Senec,90043
+Hanigovce,Sabinov,08256
+Haniska,Košice - okolie,04457
+Haniska,Prešov,08001
+Hanková,Rožňava,04934
+Hankovce,Bardejov,08646
+Hankovce,Humenné,06712
+Hanušovce nad Topľou,Vranov nad Topľou,09431
+Harakovce,Levoča,05305
+Harhaj,Bardejov,08645
+Harichovce,Spišská Nová Ves,05301
+Harmanec,Banská Bystrica,97603
+Hatalov,Michalovce,07216
+Hatné,Považská Bystrica,01802
+Havaj,Stropkov,09023
+Havka,Kežmarok,06101
+Havranec,Svidník,09002
+Hažín,Michalovce,07234
+Hažín nad Cirochou,Humenné,06783
+Hažlín,Bardejov,08614
+Helcmanovce,Gelnica,05563
+Heľpa,Brezno,97668
+Henckovce,Rožňava,04923
+Henclová,Gelnica,05333
+Hencovce,Vranov nad Topľou,09302
+Hendrichovce,Prešov,08235
+Herľany,Košice - okolie,04445
+Hermanovce,Prešov,08235
+Hermanovce nad Topľou,Vranov nad Topľou,09434
+Hertník,Bardejov,08642
+Hervartov,Bardejov,08622
+Hiadeľ,Banská Bystrica,97661
+Hincovce,Spišská Nová Ves,05363
+Hladovka,Tvrdošín,02713
+Hlboké,Senica,90631
+Hlboké nad Váhom,Bytča,01401
+Hliník nad Hronom,Žiar nad Hronom,96601
+Hlivištia,Sobrance,07301
+Hniezdne,Stará Ľubovňa,06501
+Hnilčík,Spišská Nová Ves,05332
+Hnilec,Spišská Nová Ves,05375
+Hnojné,Michalovce,07233
+Hodejov,Rimavská Sobota,98031
+Hodejovec,Rimavská Sobota,98002
+Hodkovce,Košice - okolie,04421
+Hokovce,Levice,93584
+Holčíkovce,Vranov nad Topľou,09405
+Holiare,Komárno,94616
+Holice,Dunajská Streda,93034
+Holíč,Skalica,90851
+Holiša,Lučenec,98557
+Holumnica,Kežmarok,05994
+Honce,Rožňava,04932
+Hontianska Vrbica,Levice,93555
+Hontianske Moravce,Krupina,96271
+Hontianske Nemce,Krupina,96265
+Hontianske Tesáre,Krupina,96268
+Hontianske Trsťany,Levice,93586
+Horňa,Sobrance,07301
+Horná Breznica,Púchov,02061
+Horná Kráľová,Šaľa,95132
+Horná Krupá,Trnava,91965
+Horná Lehota,Dolný Kubín,02741
+Horná Lehota,Brezno,97681
+Horná Mariková,Považská Bystrica,01803
+Horná Mičiná,Banská Bystrica,97401
+Horná Poruba,Ilava,01835
+Horná Potôň,Dunajská Streda,93036
+Horná Potôň - Lúky,Dunajská Streda,93052
+Horná Seč,Levice,93531
+Horná Strehová,Veľký Krtíš,99102
+Horná Súča,Trenčín,91333
+Horná Štubňa,Turčianske Teplice,03846
+Horná Ves,Prievidza,97248
+Horná Ves,Žiar nad Hronom,96701
+Horná Ždaňa,Žiar nad Hronom,96604
+Horňany,Trenčín,91324
+Horné Dubové,Trnava,91965
+Horné Chlebany,Topoľčany,95631
+Horné Lefantovce,Nitra,95145
+Horné Mladonice,Krupina,96243
+Horné Mýto,Dunajská Streda,93013
+Horné Naštice,Bánovce nad Bebravou,95641
+Horné Orešany,Trnava,91903
+Horné Otrokovce,Hlohovec,92062
+Horné Plachtince,Veľký Krtíš,99124
+Horné Pršany,Banská Bystrica,97405
+Horné Semerovce,Levice,93584
+Horné Srnie,Trenčín,91442
+Horné Strháre,Veľký Krtíš,99103
+Horné Štitáre,Topoľčany,95603
+Horné Trhovište,Hlohovec,92066
+Horné Turovce,Levice,93581
+Horné Vestenice,Prievidza,97222
+Horné Zahorany,Rimavská Sobota,98026
+Horné Zelenice,Hlohovec,92052
+Horný Badín,Krupina,96251
+Horný Bar,Dunajská Streda,93033
+Horný Hričov,Žilina,01342
+Horný Kalník,Martin,03802
+Horný Lieskov,Považská Bystrica,01821
+Horný Pial,Levice,93537
+Horný Tisovník,Detva,96275
+Horný Vadičov,Kysucké Nové Mesto,02345
+Horný Vinodol,Nitra,95106
+Horovce,Púchov,02062
+Horovce,Michalovce,07202
+Hoste,Galanta,92545
+Hostice,Rimavská Sobota,98004
+Hostie,Zlaté Moravce,95194
+Hostišovce,Rimavská Sobota,98023
+Hosťová,Nitra,95102
+Hosťovce,Zlaté Moravce,95191
+Hosťovce,Košice - okolie,04402
+Hostovice,Snina,06735
+Hozelec,Poprad,05911
+Hôrka,Poprad,05912
+Hôrka nad Váhom,Nové Mesto n.Váhom,91632
+Hôrky,Žilina,01004
+Hrabičov,Žarnovica,96678
+Hrabkov,Prešov,08233
+Hrabová Roztoka,Snina,06773
+Hrabovčík,Svidník,08901
+Hrabovec,Bardejov,08611
+Hrabovec nad Laborcom,Humenné,06701
+Hrabovka,Trenčín,91332
+Hrabské,Bardejov,08606
+Hrabušice,Spišská Nová Ves,05315
+Hradisko,Kežmarok,05971
+Hradište,Partizánske,95854
+Hradište pod Vrátnom,Senica,90612
+Hrádok,Nové Mesto n.Váhom,91633
+Hrachovište,Nové Mesto n.Váhom,91616
+Hrachovo,Rimavská Sobota,98052
+Hraň,Trebišov,07603
+Hraničné,Stará Ľubovňa,06522
+Hranovnica,Poprad,05916
+Hrašné,Myjava,91614
+Hrašovík,Košice - okolie,04442
+Hrčeľ,Trebišov,07615
+Hrhov,Rožňava,04944
+Hriadky,Trebišov,07622
+Hričovské Podhradie,Žilina,01341
+Hriňová,Detva,96205
+Hrišovce,Gelnica,05351
+Hrkáč,Rimavská Sobota,98262
+Hrkovce,Levice,93601
+Hrlica,Revúca,98266
+Hrnčiarovce nad Parnou,Trnava,91935
+Hrnčiarové,Nové Mesto n.Váhom,91612
+Hrnčiarske Zalužany,Poltár,98012
+Hrochoť,Banská Bystrica,97637
+Hromoš,Stará Ľubovňa,06545
+Hronec,Brezno,97645
+Hronovce,Levice,93561
+Hronsek,Banská Bystrica,97631
+Hronská Breznica,Zvolen,96611
+Hronská Dúbrava,Žiar nad Hronom,96611
+Hronské Kosihy,Levice,93527
+Hronský Beňadik,Žarnovica,96653
+Hrubá Borša,Senec,90050
+Hrubá Strana,Nové Mesto n.Váhom,91611
+Hruboňovo,Nitra,95125
+Hrubov,Humenné,06723
+Hrubý Šúr,Senec,90301
+Hrušov,Veľký Krtíš,99142
+Hrušov,Rožňava,04943
+Hrušovany,Topoľčany,95613
+Hrušové,Nové Mesto n.Váhom,91611
+Hruštín,Námestovo,02952
+Hubice,Dunajská Streda,93039
+Hubina,Piešťany,92221
+Hubošovce,Sabinov,08266
+Hubová,Ružomberok,03491
+Hubovo,Rimavská Sobota,98050
+Hucín,Revúca,04913
+Hudcovce,Humenné,06745
+Hul,Nové Zámky,94144
+Humenné,Humenné,06601
+Huncovce,Kežmarok,05992
+Hunkovce,Svidník,09003
+Hurbanova Dolina,Myjava,90613
+Hurbanova Ves,Senec,90301
+Husák,Sobrance,07251
+Husiná,Rimavská Sobota,98542
+Hutka,Bardejov,08636
+Huty,Liptovský Mikuláš,02732
+Hviezdoslavov,Dunajská Streda,93041
+Hvozdnica,Bytča,01356
+Hybe,Liptovský Mikuláš,03231
+Hýľov,Košice - okolie,04412
+Chanava,Rimavská Sobota,98044
+Chľaba,Nové Zámky,94365
+Chlebnice,Dolný Kubín,02755
+Chlmec,Humenné,06741
+Chmeľnica,Stará Ľubovňa,06401
+Chmeľov,Prešov,08215
+Chmeľová,Bardejov,08633
+Chmeľovec,Prešov,08212
+Chmiňany,Prešov,08233
+Chminianska Nová Ves,Prešov,08233
+Chminianske Jakubovany,Prešov,08233
+Choča,Zlaté Moravce,95176
+Chocholná-Velčice,Trenčín,91304
+Choňkovce,Sobrance,07263
+Chorvátsky Grob,Senec,90025
+Chorváty,Košice - okolie,04402
+Chotča,Stropkov,09021
+Chotín,Komárno,94631
+Chrabrany,Topoľčany,95501
+Chrámec,Rimavská Sobota,98042
+Chrasť nad Hornádom,Spišská Nová Ves,05363
+Chrastince,Veľký Krtíš,99108
+Chrastné,Košice - okolie,04444
+Chrašťany,Zlaté Moravce,95175
+Chrenovec-Brusno,Prievidza,97232
+Chropov,Skalica,90864
+Chrťany,Veľký Krtíš,99121
+Chtelnica,Piešťany,92205
+Chudá Lehota,Bánovce nad Bebravou,95638
+Chvalová,Revúca,98262
+Chvojnica,Prievidza,97213
+Chvojnica,Myjava,90606
+Chym,Košice - okolie,04474
+Chynorany,Partizánske,95633
+Chyžné,Revúca,04918
+Igram,Senec,90084
+Ihľany,Kežmarok,05994
+Ihráč,Žiar nad Hronom,96701
+Ilava,Ilava,01901
+Iliašovce,Spišská Nová Ves,05311
+Ilija,Banská Štiavnica,96901
+Imeľ,Komárno,94652
+Iňa,Levice,93535
+Iňačovce,Michalovce,07211
+Inovce,Sobrance,07264
+Ipeľské Predmostie,Veľký Krtíš,99110
+Ipeľské Úľany,Levice,93582
+Ipeľský Sokolec,Levice,93575
+Istebné,Dolný Kubín,02753
+Ivachnová,Ružomberok,03483
+Ivančiná,Turčianske Teplice,03845
+Ivančiná - Dvorec,Turčianske Teplice,03845
+Ivanice,Rimavská Sobota,98042
+Ivanka pri Dunaji,Senec,90028
+Ivanka pri Nitre,Nitra,95112
+Ivanovce,Trenčín,91305
+Iža,Komárno,94639
+Ižipovce,Liptovský Mikuláš,03223
+Ižkovce,Michalovce,07672
+Jabloň,Humenné,06713
+Jablonec,Pezinok,90086
+Jablonica,Senica,90632
+Jablonka,Myjava,90621
+Jablonov,Levoča,05303
+Jablonov nad Turňou,Rožňava,04943
+Jabloňovce,Levice,93506
+Jablonové,Malacky,90054
+Jablonové,Bytča,01352
+Jacovce,Topoľčany,95621
+Jahodná,Dunajská Streda,93021
+Jaklovce,Gelnica,05561
+Jakovany,Sabinov,08301
+Jakubany,Stará Ľubovňa,06512
+Jakubov,Malacky,90063
+Jakubova Voľa,Sabinov,08256
+Jakubovany,Liptovský Mikuláš,03204
+Jakubovany,Sabinov,08301
+Jakušovce,Stropkov,09031
+Jalová,Snina,06761
+Jalovec,Liptovský Mikuláš,03221
+Jalovec,Prievidza,97231
+Jalšové,Hlohovec,92231
+Jalšovík,Krupina,96241
+Jamník,Liptovský Mikuláš,03301
+Jamník,Spišská Nová Ves,05322
+Janice,Rimavská Sobota,98042
+Janík,Košice - okolie,04405
+Janíky,Dunajská Streda,93039
+Jankovce,Humenné,06724
+Janov,Prešov,08242
+Janova Lehota,Žiar nad Hronom,96624
+Janovce,Bardejov,08641
+Jánovce,Poprad,05913
+Jánovce,Galanta,92522
+Janovík,Prešov,08203
+Jarabá,Brezno,97701
+Jarabina,Stará Ľubovňa,06531
+Jarok,Nitra,95148
+Jarovnice,Sabinov,08263
+Jasenica,Považská Bystrica,01817
+Jasenie,Brezno,97675
+Jasenov,Humenné,06601
+Jasenov,Sobrance,07301
+Jasenová,Dolný Kubín,02601
+Jasenovce,Vranov nad Topľou,09405
+Jasenové,Žilina,01319
+Jasenovo,Turčianske Teplice,03822
+Jaslovské Bohunice,Trnava,91930
+Jasov,Košice - okolie,04423
+Jasová,Nové Zámky,94134
+Jastrabá,Žiar nad Hronom,96701
+Jastrabie nad Topľou,Vranov nad Topľou,09435
+Jastrabie pri Michalovciach,Michalovce,07211
+Jatov,Nové Zámky,94110
+Javorina,Kežmarok,05956
+Jazernica,Turčianske Teplice,03844
+Jazviny,Nové Mesto n.Váhom,91601
+Jedlinka,Bardejov,08636
+Jedľové Kostoľany,Zlaté Moravce,95196
+Jelenec,Nitra,95173
+Jelka,Galanta,92523
+Jelšovce,Nitra,95143
+Jelšovec,Lučenec,98532
+Jenkovce,Sobrance,07252
+Jesenské,Levice,93536
+Jesenské,Rimavská Sobota,98002
+Jestice,Rimavská Sobota,98004
+Ješkova Ves,Partizánske,95845
+Jezersko,Kežmarok,05904
+Jovice,Rožňava,04945
+Jovsa,Michalovce,07232
+Jur nad Hronom,Levice,93557
+Jurkova Voľa,Svidník,08901
+Jurová,Dunajská Streda,93004
+Jurské,Kežmarok,05994
+Juskova Voľa,Vranov nad Topľou,09412
+Kačanov,Michalovce,07205
+Kajal,Galanta,92592
+Kaľamenová,Turčianske Teplice,03822
+Kalameny,Ružomberok,03482
+Kaľava,Spišská Nová Ves,05342
+Kalinkovo,Senec,90043
+Kalinov,Medzilaborce,06801
+Kalinovo,Poltár,98501
+Kalná nad Hronom,Levice,93532
+Kalná Roztoka,Snina,06772
+Kálnica,Nové Mesto n.Váhom,91637
+Kalnište,Svidník,08701
+Kalonda,Lučenec,98531
+Kaloša,Rimavská Sobota,98252
+Kalša,Košice - okolie,04418
+Kaluža,Michalovce,07236
+Kamanová,Topoľčany,95612
+Kameňany,Revúca,04962
+Kamenec pod Vtáčnikom,Prievidza,97244
+Kamenica,Sabinov,08271
+Kamenica nad Cirochou,Humenné,06783
+Kamenica nad Hronom,Nové Zámky,94365
+Kameničany,Ilava,01854
+Kameničná,Komárno,94601
+Kameničná - Balvany,Komárno,94601
+Kamenín,Nové Zámky,94357
+Kamenná Poruba,Žilina,01314
+Kamenná Poruba,Vranov nad Topľou,09303
+Kamenné Kosihy,Veľký Krtíš,99127
+Kamenný Most,Nové Zámky,94358
+Kamenný Vrch,Veľký Krtíš,99201
+Kamienka,Humenné,06783
+Kamienka,Stará Ľubovňa,06532
+Kanianka,Prievidza,97217
+Kapince,Nitra,95124
+Kapišová,Svidník,09001
+Kaplna,Senec,90084
+Kapušany,Prešov,08212
+Kapušianske Kľačany,Michalovce,07901
+Karlov Dvor,Trebišov,07633
+Karlová,Martin,03815
+Karná,Humenné,06745
+Kašov,Trebišov,07602
+Kátlovce,Trnava,91955
+Kátov,Skalica,90849
+Kazimír,Trebišov,07613
+Keblov - Zárieč,Žilina,01332
+Kecerovce,Košice - okolie,04447
+Kecerovské Kostoľany,Košice - okolie,04447
+Kecerovské Pekľany,Košice - okolie,04447
+Kecerovský Lipovec,Košice - okolie,04447
+Kečkovce,Svidník,09011
+Kečovo,Rožňava,04955
+Kechnec,Košice - okolie,04458
+Kendice,Prešov,08201
+Kesovce,Rimavská Sobota,98045
+Keť,Levice,93564
+Kežmarok,Kežmarok,06001
+Kiarov,Veľký Krtíš,99106
+Kľačany,Hlohovec,92064
+Kľače,Žilina,01319
+Kľačno,Prievidza,97215
+Kľačno,Ružomberok,03401
+Kladzany,Vranov nad Topľou,09421
+Kľak,Žarnovica,96677
+Klasov,Nitra,95153
+Kláštor pod Znievom,Martin,03843
+Kláštor pod Znievom - Lazany,Martin,03843
+Klátova Nová Ves,Partizánske,95844
+Klčov,Levoča,05302
+Kleňany,Veľký Krtíš,99110
+Klenov,Prešov,08244
+Klenová,Snina,06772
+Klenovec,Rimavská Sobota,98055
+Klieština,Považská Bystrica,01802
+Klin,Námestovo,02941
+Klin nad Bodrogom,Trebišov,07631
+Klížska Nemá,Komárno,94619
+Klokoč,Detva,96225
+Klokočov,Čadca,02322
+Klokočov,Michalovce,07231
+Klokočov,Čadca,02322
+Klokočov - Hrubý Buk,Čadca,02352
+Klubina,Čadca,02304
+Kľúčovec,Dunajská Streda,93007
+Kluknava,Gelnica,05351
+Kľušov,Bardejov,08622
+Kmeťovo,Nové Zámky,94162
+Kobeliarovo,Rožňava,04923
+Kobylnice,Svidník,08701
+Kobyly,Bardejov,08622
+Koceľovce,Rožňava,04935
+Kociha,Rimavská Sobota,98052
+Kocurany,Prievidza,97202
+Kočín-Lančár,Piešťany,92204
+Kočovce,Nové Mesto n.Váhom,91631
+Kochanovce,Bardejov,08646
+Kochanovce,Humenné,06601
+Kojatice,Prešov,08232
+Kojšov,Gelnica,05552
+Kokošovce,Prešov,08252
+Kokšov-Bakša,Košice - okolie,04413
+Kolačkov,Stará Ľubovňa,06511
+Kolačno,Partizánske,95841
+Koláre,Veľký Krtíš,99109
+Kolárovice,Bytča,01354
+Kolárovo,Komárno,94603
+Kolbasov,Snina,06766
+Kolbovce,Stropkov,09031
+Kolibabovce,Sobrance,07261
+Kolinovce,Spišská Nová Ves,05342
+Kolonica,Snina,06761
+Kolta,Nové Zámky,94133
+Komárany,Vranov nad Topľou,09301
+Komárov,Bardejov,08611
+Komárovce,Košice - okolie,04455
+Komjatice,Nové Zámky,94106
+Komjatná,Ružomberok,03496
+Komoča,Nové Zámky,94121
+Koniarovce,Topoľčany,95613
+Konrádovce,Rimavská Sobota,98032
+Konská,Liptovský Mikuláš,03204
+Konská,Žilina,01313
+Koňuš,Sobrance,07263
+Kopčany,Skalica,90848
+Kopernica,Žiar nad Hronom,96701
+Koplotovce,Hlohovec,92001
+Koprivnica,Bardejov,08643
+Koprivnica - Dubie,Bardejov,08645
+Kordíky,Banská Bystrica,97634
+Korejovce,Svidník,09005
+Korňa,Čadca,02321
+Koromľa,Sobrance,07262
+Korunková,Stropkov,09031
+Korytárky,Detva,96204
+Korytné,Levoča,05305
+Korytnica - kúpele,Ružomberok,03473
+Kosihovce,Veľký Krtíš,99125
+Kosihy nad Ipľom,Veľký Krtíš,99111
+Kosorín,Žiar nad Hronom,96624
+Kostoľany nad Hornádom,Košice - okolie,04431
+Kostoľany pod Tribečom,Zlaté Moravce,95177
+Kostolec,Považská Bystrica,01705
+Kostolište,Malacky,90062
+Kostolná pri Dunaji,Senec,90301
+Kostolná Ves,Prievidza,97226
+Kostolná-Záriečie,Trenčín,91304
+Kostolné,Myjava,91613
+Kostolné Kračany,Dunajská Streda,93003
+Koš,Prievidza,97241
+Košariská,Myjava,90615
+Košarovce,Humenné,09406
+Košeca,Ilava,01864
+Košecké Podhradie,Ilava,01831
+Košická Belá,Košice - okolie,04465
+Košická Polianka,Košice - okolie,04441
+Košické Oľšany,Košice - okolie,04442
+Košický Klečenov,Košice - okolie,04445
+Koškovce,Humenné,06712
+Košolná,Trnava,91901
+Košťany,Košice - okolie,04413
+Košťany nad Turcom,Martin,03841
+Kotešová,Bytča,01361
+Kotmanová,Lučenec,98553
+Kotrčiná Lúčka,Žilina,01302
+Kováčová,Rožňava,04942
+Kováčová,Zvolen,96237
+Kováčovce,Veľký Krtíš,99106
+Koválov,Senica,90603
+Koválovec,Skalica,90863
+Kovarce,Topoľčany,95615
+Kozárovce,Levice,93522
+Kozelník,Banská Štiavnica,96615
+Kozí Vrbovok,Krupina,96241
+Kožany,Bardejov,08612
+Kožuchov,Trebišov,07601
+Kožuchovce,Stropkov,09022
+Kračúnovce,Svidník,08701
+Krahule,Žiar nad Hronom,96701
+Krajná Bystrá,Svidník,09005
+Krajná Poľana,Svidník,09005
+Krajná Porúbka,Svidník,09005
+Krajné Čierno,Svidník,09003
+Krakovany,Piešťany,92202
+Kráľ,Rimavská Sobota,98045
+Králiky,Banská Bystrica,97634
+Kráľov Brod,Galanta,92541
+Kráľova Lehota,Liptovský Mikuláš,03233
+Kráľová nad Váhom,Šaľa,92591
+Kraľovany,Dolný Kubín,02751
+Kráľovce,Košice - okolie,04444
+Kráľovce-Krnišov,Krupina,96265
+Kráľovičove Kračany,Dunajská Streda,93003
+Kráľovský Chlmec,Trebišov,07701
+Kraskovo,Rimavská Sobota,98026
+Krásna Lúka,Sabinov,08273
+Krásna Ves,Bánovce nad Bebravou,95653
+Krasňany,Žilina,01303
+Krásno,Partizánske,95843
+Krásno nad Kysucou,Čadca,02302
+Krásnohorská Dlhá Lúka,Rožňava,04945
+Krásnohorské Podhradie,Rožňava,04941
+Krásnovce,Michalovce,07201
+Krásny Brod,Medzilaborce,06801
+Kravany,Trebišov,07661
+Kravany,Poprad,05918
+Kravany nad Dunajom,Komárno,94636
+Krčava,Sobrance,07251
+Kremná,Stará Ľubovňa,06522
+Kremnica,Žiar nad Hronom,96701
+Kremnické Bane,Žiar nad Hronom,96701
+Kristy,Sobrance,07255
+Krišľovce,Stropkov,09031
+Krišovská Liesková,Michalovce,07901
+Krišovská Liesková - Krížany,Michalovce,07901
+Krišovská Liesková - Liesková,Michalovce,07901
+Krivá,Dolný Kubín,02755
+Kriváň,Detva,96204
+Krivany,Sabinov,08271
+Krivé,Bardejov,08604
+Krivec I,Detva,96205
+Krivec II,Detva,96205
+Krivoklát,Ilava,01852
+Krivosúd-Bodovka,Trenčín,91311
+Kríž nad Váhom,Nové Mesto n.Váhom,91626
+Kríže,Bardejov,08604
+Krížová Ves,Kežmarok,05901
+Krížovany,Prešov,08233
+Križovany nad Dudváhom,Trnava,91924
+Krná,Poltár,98525
+Krnča,Topoľčany,95619
+Krokava,Rimavská Sobota,98267
+Krompachy,Spišská Nová Ves,05342
+Krpeľany,Martin,03854
+Krškany,Levice,93401
+Krškany - Malé Krškany,Levice,93401
+Krškany - Veľké Krškany,Levice,93401
+Krtovce,Topoľčany,95603
+Kručov,Stropkov,09032
+Krupina,Krupina,96301
+Krušetnica,Námestovo,02954
+Krušinec,Stropkov,09101
+Krušovce,Topoľčany,95631
+Kružlov,Bardejov,08604
+Kružlová,Svidník,09002
+Kružná,Rožňava,04951
+Kružno,Rimavská Sobota,97901
+Kšinná,Bánovce nad Bebravou,95641
+Kubáňovo,Levice,93575
+Kučín,Bardejov,08612
+Kučín,Vranov nad Topľou,09421
+Kuchyňa,Malacky,90052
+Kuklov,Senica,90878
+Kuková,Svidník,08644
+Kukučínov,Levice,93701
+Kunerad,Žilina,01313
+Kunešov,Žiar nad Hronom,96701
+Kunova Teplica,Rožňava,04932
+Kuraľany,Levice,93564
+Kurima,Bardejov,08612
+Kurimany,Levoča,05401
+Kurimka,Svidník,09016
+Kurov,Bardejov,08604
+Kusín,Michalovce,07232
+Kútniky,Dunajská Streda,92901
+Kútniky - Kolónia,Dunajská Streda,93035
+Kúty,Senica,90801
+Kuzmice,Topoľčany,95621
+Kuzmice,Trebišov,07612
+Kvačany,Prešov,08241
+Kvačany,Liptovský Mikuláš,03223
+Kvakovce,Vranov nad Topľou,09402
+Kvašov,Púchov,02062
+Kvetoslavov,Dunajská Streda,93041
+Kyjatice,Rimavská Sobota,98054
+Kyjov,Stará Ľubovňa,06548
+Kynceľová,Banská Bystrica,97401
+Kysak,Košice - okolie,04481
+Kyselica,Dunajská Streda,93030
+Kysihýbel,Banská Štiavnica,96901
+Kysta,Trebišov,07602
+Kysucký Lieskovec,Kysucké Nové Mesto,02334
+Láb,Malacky,90067
+Lackov,Krupina,96244
+Lacková,Stará Ľubovňa,06501
+Lackovce,Humenné,06601
+Lada,Prešov,08212
+Ladce,Ilava,01863
+Ladice,Zlaté Moravce,95177
+Ladmovce,Trebišov,07634
+Ladomerská Vieska,Žiar nad Hronom,96501
+Ladomirová,Svidník,09003
+Ladzany,Krupina,96265
+Lakšárska Nová Ves,Senica,90876
+Lascov,Bardejov,08645
+Laskár,Martin,03843
+Lastomír,Michalovce,07237
+Lastovce,Trebišov,07614
+Laškovce,Michalovce,07201
+Látky,Detva,98545
+Lazany,Prievidza,97211
+Lazisko,Liptovský Mikuláš,03211
+Lazy pod Makytou,Púchov,02055
+Lažany,Prešov,08232
+Lednica,Púchov,02063
+Lednické Rovne,Púchov,02061
+Lefantovce,Nitra,95145
+Legnava,Stará Ľubovňa,06546
+Lehota,Nitra,95136
+Lehota nad Rimavicou,Rimavská Sobota,98053
+Lehota pod Vtáčnikom,Prievidza,97242
+Lehôtka,Lučenec,98511
+Lehôtka pod Brehmi,Žiar nad Hronom,96601
+Lechnica,Kežmarok,05906
+Lekárovce,Sobrance,07254
+Leľa,Nové Zámky,94365
+Leles,Trebišov,07684
+Lemešany,Prešov,08203
+Lenartov,Bardejov,08606
+Lenartovce,Rimavská Sobota,98044
+Lendak,Kežmarok,05907
+Lenka,Rimavská Sobota,98050
+Lentvora,Lučenec,98513
+Leopoldov,Hlohovec,92041
+Lesenice,Veľký Krtíš,99108
+Lesíček,Prešov,08207
+Lesné,Michalovce,07101
+Lesnica,Stará Ľubovňa,06533
+Leštiny,Dolný Kubín,02601
+Letanovce,Spišská Nová Ves,05313
+Letničie,Skalica,90844
+Leváre,Revúca,98262
+Levkuška,Revúca,98262
+Levoča,Levoča,05401
+Ležiachov,Martin,03842
+Libichava,Bánovce nad Bebravou,95638
+Licince,Revúca,04914
+Ličartovce,Prešov,08203
+Liesek,Tvrdošín,02712
+Dolný Lieskov - Tŕstie,Považská Bystrica,01822
+Lieskovany,Spišská Nová Ves,05321
+Lieskovec,Humenné,06745
+Liešno,Turčianske Teplice,03822
+Liešťany,Prievidza,97227
+Lietava,Žilina,01318
+Lietavská Lúčka,Žilina,01311
+Lietavská Svinná-Babkov,Žilina,01311
+Limbach,Pezinok,90091
+Lipany,Sabinov,08271
+Lipník,Prievidza,97232
+Lipníky,Prešov,08212
+Lipníky - Podhrabina,Prešov,08215
+Lipová,Bardejov,08612
+Lipová,Nové Zámky,94102
+Lipovany,Lučenec,98531
+Lipovce,Prešov,08236
+Lipové,Komárno,94614
+Lipovec,Rimavská Sobota,98023
+Lipovec,Martin,03861
+Lipovník,Topoľčany,95601
+Lipovník,Rožňava,04942
+Liptovská Anna,Liptovský Mikuláš,03223
+Liptovská Kokava,Liptovský Mikuláš,03244
+Liptovská Lúžna,Ružomberok,03472
+Liptovská Osada,Ružomberok,03473
+Liptovská Porúbka,Liptovský Mikuláš,03301
+Liptovská Sielnica,Liptovský Mikuláš,03223
+Liptovská Sielnica - Brnice,Liptovský Mikuláš,03223
+Liptovská Štiavnica,Ružomberok,03401
+Liptovská Teplá,Ružomberok,03483
+Liptovská Teplá - Madočany,Ružomberok,03483
+Liptovská Teplička,Poprad,05940
+Liptovské Beharovce,Liptovský Mikuláš,03221
+Liptovské Kľačany,Liptovský Mikuláš,03214
+Liptovské Matiašovce,Liptovský Mikuláš,03223
+Liptovské Revúce,Ružomberok,03474
+Liptovské Sliače,Ružomberok,03484
+Liptovský Hrádok,Liptovský Mikuláš,03301
+Liptovský Ján,Liptovský Mikuláš,03203
+Liptovský Michal,Ružomberok,03483
+Liptovský Ondrej,Liptovský Mikuláš,03204
+Liptovský Peter,Liptovský Mikuláš,03301
+Liptovský Trnovec,Liptovský Mikuláš,03101
+Lisková,Ružomberok,03481
+Lišov,Krupina,96271
+Litava,Krupina,96244
+Litmanová,Stará Ľubovňa,06531
+Livina,Partizánske,95632
+Livinské Opatovce,Partizánske,95632
+Livov,Bardejov,08605
+Livovská Huta,Bardejov,08605
+Lodno,Kysucké Nové Mesto,02334
+Lok,Levice,93538
+Lokca,Námestovo,02951
+Lom nad Rimavicou,Brezno,97653
+Lomná,Námestovo,02954
+Lomné,Stropkov,09033
+Lomnička,Stará Ľubovňa,06503
+Lontov,Levice,93575
+Lopašov,Skalica,90863
+Lopúchov,Bardejov,08641
+Lopušné Pažite,Kysucké Nové Mesto,02336
+Lošonec,Trnava,91904
+Lovce,Zlaté Moravce,95192
+Lovča,Žiar nad Hronom,96621
+Lovčica-Trubín,Žiar nad Hronom,96623
+Lovinobaňa,Lučenec,98554
+Lozorno,Malacky,90055
+Ložín,Michalovce,07205
+Ľubá,Nové Zámky,94353
+Ľubeľa,Liptovský Mikuláš,03214
+Lubeník,Revúca,04918
+Ľubica,Kežmarok,05971
+Ľubietová,Banská Bystrica,97655
+Lubina,Nové Mesto n.Váhom,91612
+Ľubiša,Humenné,06711
+Ľubochňa,Ružomberok,03491
+Ľuboreč,Lučenec,98511
+Ľuboriečka,Veľký Krtíš,99102
+Ľubotín,Stará Ľubovňa,06541
+Ľubovec,Prešov,08242
+Lúč na Ostrove,Dunajská Streda,93003
+Lučatín,Banská Bystrica,97661
+Lúčina,Prešov,08207
+Lúčka,Rožňava,04942
+Lúčka,Svidník,08701
+Lúčka,Levoča,05303
+Lúčka,Sabinov,08271
+Lúčky,Žiar nad Hronom,96701
+Lúčky,Ružomberok,03482
+Lúčky,Michalovce,07234
+Lúčky - kúpele,Ružomberok,03482
+Lúčnica nad Žitavou,Nitra,95188
+Ludanice,Topoľčany,95611
+Ľudovítová,Nitra,95144
+Ludrová,Ružomberok,03471
+Ľudvikov dvor,Košice - okolie,04015
+Luhyňa,Trebišov,07614
+Lúka,Nové Mesto n.Váhom,91633
+Lukačovce,Humenné,06724
+Lukáčovce,Nitra,95123
+Lukavica,Bardejov,08621
+Lukavica,Zvolen,96231
+Lukov,Bardejov,08605
+Lukovištia,Rimavská Sobota,98026
+Lúky,Púchov,02053
+Lúky,Komárno,94614
+Lula,Levice,93535
+Lupoč,Lučenec,98511
+Lutila,Žiar nad Hronom,96622
+Ľutina,Sabinov,08257
+Lutiše,Žilina,01305
+Ľutov,Bánovce nad Bebravou,95703
+Lužany,Topoľčany,95607
+Lužany pri Topli,Svidník,08701
+Lužianky,Nitra,95141
+Lysá pod Makytou,Púchov,02054
+Lysica,Žilina,01305
+Macov,Dunajská Streda,93032
+Mad,Dunajská Streda,93014
+Madérét,Komárno,93028
+Madunice,Hlohovec,92242
+Magnezitovce,Revúca,04916
+Machulince,Zlaté Moravce,95193
+Majcichov,Trnava,91922
+Majere,Kežmarok,06101
+Majerovce,Vranov nad Topľou,09409
+Makov,Čadca,02356
+Makovce,Stropkov,09023
+Malá Čalomija,Veľký Krtíš,99108
+Malá Čausa,Prievidza,97101
+Malá Čierna,Žilina,01501
+Malá Domaša,Vranov nad Topľou,09402
+Malá Franková,Kežmarok,05978
+Malá Hradná,Bánovce nad Bebravou,95654
+Malá Ida,Košice - okolie,04420
+Malá Lehota,Žarnovica,96642
+Malá Lodina,Košice - okolie,04481
+Malá Mača,Galanta,92521
+Malá nad Hronom,Nové Zámky,94365
+Malá Poľana,Stropkov,09024
+Malá Tŕňa,Trebišov,07682
+Malá Vieska,Košice - okolie,04431
+Malacky,Malacky,90101
+Malachov,Banská Bystrica,97405
+Malatiná,Dolný Kubín,02601
+Malatíny,Liptovský Mikuláš,03215
+Malcov,Bardejov,08606
+Malčice,Michalovce,07206
+Malé Borové,Liptovský Mikuláš,02732
+Malé Dvorníky,Dunajská Streda,92901
+Malé Hoste,Bánovce nad Bebravou,95637
+Malé Chyndice,Nitra,95154
+Malé Kosihy,Nové Zámky,94361
+Malé Kozmálovce,Levice,93521
+Malé Kršteňany,Partizánske,95803
+Malé Lednice,Považská Bystrica,01816
+Malé Leváre,Malacky,90874
+Malé Ludince,Levice,93701
+Malé Ozorovce,Trebišov,07801
+Malé Raškovce,Michalovce,07217
+Malé Ripňany,Topoľčany,95607
+Malé Straciny,Veľký Krtíš,99001
+Malé Trakany,Trebišov,07642
+Malé Uherce,Partizánske,95803
+Malé Vozokany,Zlaté Moravce,95182
+Malé Zálužie,Nitra,95124
+Malé Zlievce,Veľký Krtíš,99122
+Málinec,Poltár,98526
+Malinová,Prievidza,97213
+Malinovo,Senec,90045
+Malužiná,Liptovský Mikuláš,03234
+Malý Cetín,Nitra,95107
+Malý Čepčín,Turčianske Teplice,03845
+Malý Horeš,Trebišov,07652
+Malý Kamenec,Trebišov,07636
+Malý Krtíš,Veľký Krtíš,99001
+Malý Lapáš,Nitra,95104
+Malý Lipník,Stará Ľubovňa,06546
+Malý Slavkov,Kežmarok,06001
+Malý Slivník,Prešov,08267
+Malý Šariš,Prešov,08001
+Malženice,Trnava,91929
+Maňa,Nové Zámky,94145
+Mankovce,Zlaté Moravce,95191
+Marcelová,Komárno,94632
+Margecany,Gelnica,05501
+Marhaň,Bardejov,08645
+Marianka,Malacky,90033
+Markovce,Michalovce,07206
+Markuška,Rožňava,04934
+Markušovce,Spišská Nová Ves,05321
+Maršová-Rašov,Bytča,01351
+Martin nad Žitavou,Zlaté Moravce,95301
+Martinček,Ružomberok,03495
+Martinová,Rimavská Sobota,98041
+Martovce,Komárno,94701
+Mašková,Lučenec,98511
+Maškovce,Humenné,06732
+Matejovce nad Hornádom,Spišská Nová Ves,05321
+Matiaška,Vranov nad Topľou,09431
+Matiašovce,Kežmarok,05904
+Matovce,Svidník,09042
+Maťovské Vojkovce,Michalovce,07901
+Matúškovo,Galanta,92501
+Matysová,Stará Ľubovňa,06546
+Medovarce,Krupina,96265
+Medvedie,Svidník,09005
+Medveďov,Dunajská Streda,93007
+Medveďovo,Brezno,97652
+Medzany,Prešov,08221
+Medzev,Košice - okolie,04425
+Medzianky,Vranov nad Topľou,09431
+Medzibrod,Banská Bystrica,97696
+Medzibrodie nad Oravou,Dolný Kubín,02601
+Medzilaborce,Medzilaborce,06801
+Melčice-Lieskové,Trenčín,91305
+Melek,Nitra,95201
+Meliata,Rožňava,04912
+Mengusovce,Poprad,05936
+Merašice,Hlohovec,92061
+Merník,Vranov nad Topľou,09423
+Mestečko,Púchov,02052
+Mestisko,Svidník,09041
+Mičakovce,Svidník,08701
+Mierovo,Dunajská Streda,93041
+Miezgovce,Bánovce nad Bebravou,95701
+Miháľov,Bardejov,08501
+Michajlov,Snina,06773
+Michal na Ostrove,Dunajská Streda,93035
+Michal nad Žitavou,Nové Zámky,94162
+Michaľany,Trebišov,07614
+Michalková,Zvolen,96261
+Michalok,Vranov nad Topľou,09423
+Michalová,Brezno,97657
+Michalovce,Michalovce,07101
+Miklušovce,Prešov,08244
+Miková,Stropkov,09024
+Mikulášová,Bardejov,08636
+Mikušovce,Lučenec,98401
+Mikušovce,Ilava,01857
+Milhosť,Košice - okolie,04458
+Miloslavov,Senec,90042
+Milpoš,Sabinov,08271
+Miňovce,Stropkov,09032
+Mirkovce,Prešov,08206
+Miroľa,Svidník,09005
+Miškech Dedinka,Nové Mesto n.Váhom,91612
+Mládzovo,Poltár,98502
+Mlynárovce,Svidník,09016
+Mlynčeky,Kežmarok,05976
+Mlynica,Poprad,05991
+Mlynky,Spišská Nová Ves,05376
+Mníchova Lehota,Trenčín,91321
+Mníšek nad Hnilcom,Gelnica,05564
+Mníšek nad Popradom,Stará Ľubovňa,06522
+Moča,Komárno,94637
+Močenok,Šaľa,95131
+Močiar,Banská Štiavnica,96982
+Modra,Pezinok,90001
+Modra nad Cirochou,Humenné,06782
+Modrany,Komárno,94633
+Modrová,Nové Mesto n.Váhom,91635
+Modrovka,Nové Mesto n.Váhom,91635
+Modrý Kameň,Veľký Krtíš,99201
+Mochovce elektráreň,Levice,93539
+Mojmírovce,Nitra,95115
+Mojš,Žilina,01001
+Mojtín,Púchov,02072
+Mojzesovo,Nové Zámky,94104
+Mokrá Lúka,Revúca,05001
+Mokrance,Košice - okolie,04501
+Mokroluh,Bardejov,08601
+Mokrý Háj,Skalica,90865
+Moldava nad Bodvou,Košice - okolie,04501
+Moravany,Michalovce,07203
+Moravany nad Váhom,Piešťany,92221
+Moravské Lieskové,Nové Mesto n.Váhom,91642
+Moravský Svätý Ján,Senica,90871
+Most pri Bratislave,Senec,90046
+Mostová,Galanta,92507
+Moškovec,Turčianske Teplice,03844
+Mošovce,Turčianske Teplice,03821
+Mošovce,Nové Mesto n.Váhom,91626
+Moštenica,Banská Bystrica,97613
+Mošurov,Prešov,08267
+Motešice,Trenčín,91326
+Motyčky,Banská Bystrica,97602
+Môlča,Banská Bystrica,97401
+Mrázovce,Stropkov,09034
+Mučín,Lučenec,98531
+Mudroňovo,Komárno,94632
+Mudrovce,Košice - okolie,04447
+Muľa,Veľký Krtíš,99122
+Muráň,Revúca,04901
+Muránska Dlhá Lúka,Revúca,05001
+Muránska Huta,Revúca,04901
+Muránska Lehota,Revúca,04901
+Muránska Zdychava,Revúca,05001
+Mútne,Námestovo,02963
+Mužla,Nové Zámky,94352
+Myslina,Humenné,06601
+Mýtna,Lučenec,98553
+Mýtne Ludany,Levice,93556
+Mýto pod Ďumbierom,Brezno,97644
+Nadlice,Partizánske,95632
+Ňagov,Medzilaborce,06801
+Naháč,Trnava,91965
+Nálepkovo,Gelnica,05333
+Námestovo,Námestovo,02901
+Nána,Nové Zámky,94360
+Nandraž,Revúca,04961
+Ňárad,Dunajská Streda,93006
+Necpaly,Martin,03812
+Nedanovce,Partizánske,95843
+Nedašovce,Bánovce nad Bebravou,95635
+Neded,Šaľa,92585
+Nededza,Žilina,01302
+Nedožery-Brezany,Prievidza,97212
+Nechválova Polianka,Humenné,06733
+Nemce,Banská Bystrica,97401
+Nemcovce,Prešov,08212
+Nemcovce,Bardejov,08612
+Nemčice,Topoľčany,95501
+Nemčiňany,Zlaté Moravce,95181
+Nemecká,Brezno,97697
+Nemečky,Topoľčany,95622
+Nemešany,Levoča,05302
+Nemšová,Trenčín,91441
+Nenince,Veľký Krtíš,99126
+Neporadza,Trenčín,91326
+Neporadza,Rimavská Sobota,98045
+Nesluša,Kysucké Nové Mesto,02341
+Nesvady,Komárno,94651
+Neverice,Zlaté Moravce,95172
+Nevidzany,Prievidza,97227
+Nevidzany,Zlaté Moravce,95162
+Nevoľné,Žiar nad Hronom,96701
+Nezbudská Lúčka,Žilina,01324
+Nimnica,Púchov,02071
+Nitra nad Ipľom,Lučenec,98557
+Nitrianska Blatnica,Topoľčany,95605
+Nitrianska Streda,Topoľčany,95616
+Nitrianske Pravno,Prievidza,97213
+Nitrianske Rudno,Prievidza,97226
+Nitrianske Sučany,Prievidza,97221
+Nitrica,Prievidza,97222
+Nižná,Tvrdošín,02743
+Nižná,Piešťany,92206
+Nižná Boca,Liptovský Mikuláš,03234
+Nižná Hutka,Košice - okolie,04018
+Nižná Jablonka,Humenné,06734
+Nižná Jedľová,Svidník,08901
+Nižná Kamenica,Košice - okolie,04445
+Nižná Myšľa,Košice - okolie,04415
+Nižná Olšava,Stropkov,09032
+Nižná Pisaná,Svidník,09001
+Nižná Polianka,Bardejov,08636
+Nižná Rybnica,Sobrance,07301
+Nižná Sitnica,Humenné,09407
+Nižná Slaná,Rožňava,04923
+Nižná Voľa,Bardejov,08621
+Nižné Kamence,Žilina,01306
+Nižné Ladičkovce,Humenné,06711
+Nižné Nemecké,Sobrance,07252
+Nižné Repaše,Levoča,05371
+Nižné Ružbachy,Stará Ľubovňa,06502
+Nižné Valice,Rimavská Sobota,98252
+Nižný Čaj,Košice - okolie,04416
+Nižný Hrabovec,Vranov nad Topľou,09421
+Nižný Hrušov,Vranov nad Topľou,09422
+Nižný Klátov,Košice - okolie,04412
+Nižný Komárnik,Svidník,09005
+Nižný Kručov,Vranov nad Topľou,09301
+Nižný Lánec,Košice - okolie,04473
+Nižný Medzev,Košice - okolie,04425
+Nižný Mirošov,Svidník,09011
+Nižný Orlík,Svidník,09011
+Nižný Skálnik,Rimavská Sobota,98052
+Nižný Slavkov,Sabinov,08275
+Nižný Tvarožec,Bardejov,08602
+Nižný Žipov,Trebišov,07617
+Nolčovo,Martin,03854
+Norovce,Topoľčany,95638
+Nová Baňa,Žarnovica,96801
+Nová Bašta,Rimavská Sobota,98034
+Nová Bošáca,Nové Mesto n.Váhom,91308
+Nová Bystrica,Čadca,02305
+Nová Dedinka,Senec,90029
+Nová Dubnica,Ilava,01851
+Nová Kelča,Vranov nad Topľou,09404
+Nová Lehota,Nové Mesto n.Váhom,91635
+Nová Lesná,Poprad,05986
+Nová Ľubovňa,Stará Ľubovňa,06511
+Nová Polhora,Košice - okolie,04444
+Nová Polianka,Svidník,08901
+Nová Sedlica,Snina,06768
+Nová Ves,Veľký Krtíš,99105
+Nová Ves nad Váhom,Nové Mesto n.Váhom,91631
+Nová Ves nad Žitavou,Nitra,95151
+Nová Vieska,Nové Zámky,94342
+Nováčany,Košice - okolie,04421
+Nováky,Prievidza,97271
+Nové Hony,Lučenec,98542
+Nové Mesto nad Váhom,Nové Mesto n.Váhom,91501
+Nové Sady,Nitra,95124
+Nové Zámky,Nové Zámky,94002
+Novosad,Trebišov,07602
+Nový Ruskov,Trebišov,07501
+Nový Salaš,Košice - okolie,04417
+Nový Svet,Senec,90301
+Nový Tekov,Levice,93533
+Nový Život,Dunajská Streda,93038
+Nýrovce,Levice,93567
+Obeckov,Veľký Krtíš,99105
+Obid,Nové Zámky,94304
+Obišovce,Košice - okolie,04481
+Oborín,Michalovce,07675
+Obručné,Stará Ľubovňa,06542
+Obyce,Zlaté Moravce,95195
+Očkov,Nové Mesto n.Váhom,91622
+Odorín,Spišská Nová Ves,05322
+Ohradzany,Humenné,06722
+Ochodnica,Kysucké Nové Mesto,02335
+Ochtiná,Rožňava,04935
+Okoč,Dunajská Streda,93028
+Okoč - Jánošíkovo na Ostrove,Dunajská Streda,93010
+Okoličná na Ostrove,Komárno,94613
+Okrúhle,Svidník,09042
+Okružná,Prešov,08212
+Olcnava,Spišská Nová Ves,05361
+Oľdza,Dunajská Streda,93039
+Olejníkov,Sabinov,08257
+Olešná,Čadca,02352
+Oľka,Medzilaborce,06704
+Olováry,Veľký Krtíš,99122
+Oľšavce,Bardejov,08646
+Oľšavica,Levoča,05373
+Oľšavka,Stropkov,09022
+Oľšavka,Spišská Nová Ves,05361
+Oľšinkov,Medzilaborce,06716
+Oľšov,Sabinov,08276
+Olšovany,Košice - okolie,04419
+Omastiná,Bánovce nad Bebravou,95641
+Omšenie,Trenčín,91443
+Onča,Trebišov,07652
+Ondavka,Bardejov,08636
+Ondavské Matiašovce,Vranov nad Topľou,09401
+Ondrašová,Turčianske Teplice,03822
+Ondrašovce,Prešov,08233
+Ondrejovce,Levice,93551
+Opátka,Košice - okolie,04465
+Opatovce,Trenčín,91311
+Opatovce - Výčapy,Nitra,95144
+Opatovce nad Nitrou,Prievidza,97202
+Opatovská Nová Ves,Veľký Krtíš,99107
+Opava,Veľký Krtíš,99125
+Opiná,Košice - okolie,04447
+Opoj,Trnava,91932
+Oponice,Topoľčany,95614
+Oravce,Banská Bystrica,97633
+Orávka,Rimavská Sobota,98042
+Oravská Jasenica,Námestovo,02964
+Oravská Lesná,Námestovo,02957
+Oravská Polhora,Námestovo,02947
+Oravská Poruba,Dolný Kubín,02754
+Oravské Veselé,Námestovo,02962
+Oravský Biely Potok,Tvrdošín,02742
+Oravský Podzámok,Dolný Kubín,02741
+Ordzovany,Levoča,05306
+Orechová,Sobrance,07251
+Orechová Potôň,Dunajská Streda,93002
+Orechová Potôň - Lúky,Dunajská Streda,93052
+Oreské,Skalica,90863
+Oreské,Michalovce,07223
+Orešany,Topoľčany,95606
+Orlov,Stará Ľubovňa,06543
+Orovnica,Žarnovica,96652
+Ortáše,Košice - okolie,04444
+Ortuťová,Bardejov,08612
+Osádka,Dolný Kubín,02601
+Osadné,Snina,06734
+Osikov,Bardejov,08642
+Oslany,Prievidza,97247
+Osrblie,Brezno,97645
+Ostrá Lúka,Zvolen,96261
+Ostratice,Partizánske,95634
+Ostrov,Piešťany,92201
+Ostrov,Sobrance,07255
+Ostrovany,Sabinov,08222
+Ostrý Grúň,Žarnovica,96677
+Osturňa,Kežmarok,05979
+Osuské,Senica,90612
+Oščadnica,Čadca,02301
+Otrhánky,Bánovce nad Bebravou,95655
+Otročok,Revúca,98262
+Ovčiarsko,Žilina,01004
+Ovčie,Prešov,08238
+Ozdín,Poltár,98524
+Pača,Rožňava,04941
+Padáň,Dunajská Streda,92901
+Padarovce,Rimavská Sobota,98023
+Pakostov,Humenné,09407
+Palárikovo,Nové Zámky,94111
+Palín,Michalovce,07213
+Palota,Medzilaborce,06801
+Paňa,Nitra,95105
+Panické Dravce,Lučenec,98532
+Paňovce,Košice - okolie,04471
+Papín,Humenné,06733
+Paprad,Nové Mesto n.Váhom,91601
+Papradno,Považská Bystrica,01813
+Parchovany,Trebišov,07662
+Parihuzovce,Snina,06735
+Párnica,Dolný Kubín,02601
+Partizánska Ľupča,Liptovský Mikuláš,03215
+Pasiečka,Púchov,02053
+Pastovce,Levice,93574
+Pastuchov,Hlohovec,92063
+Pašková,Rožňava,04932
+Paština Závada,Žilina,01341
+Pata,Galanta,92553
+Pataš,Dunajská Streda,92901
+Patince,Komárno,94639
+Pavčina Lehota,Liptovský Mikuláš,03101
+Pavľany,Levoča,05371
+Pavlice,Trnava,91942
+Pavlová,Nové Zámky,94359
+Pavlova Ves,Liptovský Mikuláš,03221
+Pavlovce,Vranov nad Topľou,09431
+Pavlovce,Rimavská Sobota,98001
+Pavlovce nad Uhom,Michalovce,07214
+Pažiť,Partizánske,95803
+Pčoliné,Snina,06735
+Pečeňady,Piešťany,92207
+Pečeňany,Bánovce nad Bebravou,95636
+Pečenice,Levice,93503
+Pečovská Nová Ves,Sabinov,08256
+Peder,Košice - okolie,04405
+Perín,Košice - okolie,04474
+Perín-Chym,Košice - okolie,04474
+Pernek,Malacky,90053
+Petkovce,Vranov nad Topľou,09433
+Petrikovce,Michalovce,07206
+Petrová,Bardejov,08602
+Petrova Lehota,Trenčín,91326
+Petrova Ves,Skalica,90844
+Petrovany,Prešov,08253
+Petrovany - Vysielač,Prešov,08001
+Petrovce,Rimavská Sobota,98035
+Petrovce,Vranov nad Topľou,09431
+Petrovce,Sobrance,07262
+Petrovce nad Laborcom,Michalovce,07101
+Petrovice,Bytča,01353
+Petrovo,Rožňava,04935
+Piešťany,Piešťany,92101
+Pichne,Snina,06901
+Píla,Pezinok,90089
+Píla,Lučenec,98553
+Píla,Žarnovica,96681
+Pinciná,Lučenec,98401
+Pinkovce,Sobrance,07254
+Piskorovce,Vranov nad Topľou,09405
+Pitelová,Žiar nad Hronom,96611
+Plášťovce,Levice,93582
+Plavé Vozokany,Levice,93569
+Plavé Vozokany - Medvecké,Levice,93541
+Plavecké Podhradie,Malacky,90636
+Plavecký Mikuláš,Malacky,90635
+Plavecký Peter,Senica,90635
+Plavecký Štvrtok,Malacky,90068
+Plaveč,Stará Ľubovňa,06544
+Plavnica,Stará Ľubovňa,06545
+Plechotice,Trebišov,07501
+Pleš,Lučenec,98531
+Plešivec,Rožňava,04911
+Plevník-Drienové,Považská Bystrica,01826
+Pliešovce,Zvolen,96263
+Ploské,Košice - okolie,04444
+Ploské,Revúca,98265
+Pobedim,Nové Mesto n.Váhom,91623
+Počarová,Považská Bystrica,01815
+Počúvadlo,Banská Štiavnica,96901
+Podbiel,Tvrdošín,02742
+Podbranč,Senica,90605
+Podhájska,Nové Zámky,94148
+Podhorany,Kežmarok,05993
+Podhorany,Prešov,08212
+Podhorany,Nitra,95146
+Podhorie,Žilina,01318
+Podhorie,Banská Štiavnica,96982
+Podhoroď,Sobrance,07264
+Podhradie,Prievidza,97242
+Podhradie,Martin,03852
+Podhradie,Topoľčany,95501
+Podhradík,Prešov,08006
+Podkonice,Banská Bystrica,97613
+Podkriváň,Detva,98551
+Podkylava,Myjava,91616
+Podlužany,Levice,93527
+Podlužany,Bánovce nad Bebravou,95652
+Podolie,Nové Mesto n.Váhom,91622
+Podolínec,Stará Ľubovňa,06503
+Podrečany,Lučenec,98554
+Podskalie,Považská Bystrica,01822
+Podspády,Poprad,05956
+Podtureň,Liptovský Mikuláš,03301
+Podvysoká,Čadca,02357
+Podzámčok,Zvolen,96261
+Pohorelá,Brezno,97669
+Pohranice,Nitra,95102
+Pohronská Polhora,Brezno,97656
+Pohronský Bukovec,Banská Bystrica,97662
+Pohronský Ruskov,Levice,93562
+Pochabany,Bánovce nad Bebravou,95638
+Pokryváč,Dolný Kubín,02601
+Poľanovce,Levoča,05305
+Poľany,Trebišov,07684
+Poliakovce,Bardejov,08611
+Polianka,Myjava,90701
+Polichno,Lučenec,98513
+Polina,Revúca,98262
+Poľný Kesov,Nitra,95115
+Poloma,Sabinov,08273
+Polomka,Brezno,97666
+Poltár,Poltár,98701
+Poluvsie,Prievidza,97216
+Pongrácovce,Levoča,05305
+Poniky,Banská Bystrica,97633
+Poproč,Košice - okolie,04424
+Poproč,Rimavská Sobota,98267
+Popudinské Močidľany,Skalica,90861
+Poráč,Spišská Nová Ves,05323
+Poriadie,Myjava,90622
+Porostov,Sobrance,07255
+Poruba,Prievidza,97211
+Poruba pod Vihorlatom,Michalovce,07232
+Porúbka,Humenné,06741
+Porúbka,Bardejov,08612
+Porúbka,Žilina,01311
+Porúbka,Sobrance,07261
+Poša,Vranov nad Topľou,09421
+Potočok,Veľký Krtíš,99122
+Potok,Ružomberok,03483
+Potok,Rimavská Sobota,98267
+Potoky,Stropkov,09101
+Potôčky,Stropkov,09101
+Potônske Lúky,Dunajská Streda,93052
+Potvorice,Nové Mesto n.Váhom,91625
+Považany,Nové Mesto n.Váhom,91626
+Povina,Kysucké Nové Mesto,02333
+Povoda,Dunajská Streda,92901
+Povrazník,Banská Bystrica,97655
+Pozba,Nové Zámky,94151
+Pozdišovce,Michalovce,07201
+Pôtor,Veľký Krtíš,99103
+Praha,Lučenec,98511
+Prakovce,Gelnica,05562
+Prašice,Topoľčany,95622
+Prašník,Piešťany,92211
+Pravenec,Prievidza,97216
+Pravica,Veľký Krtíš,99121
+Pravotice,Bánovce nad Bebravou,95635
+Práznovce,Topoľčany,95501
+Prečín,Považská Bystrica,01815
+Predmier,Bytča,01351
+Predná Hora,Revúca,04901
+Prenčov,Banská Štiavnica,96973
+Preseľany,Topoľčany,95612
+Prestavlky,Žiar nad Hronom,96601
+Prešov - Cemjata,Prešov,08001
+Príbelce,Veľký Krtíš,99125
+Pribeník,Trebišov,07651
+Pribiš,Dolný Kubín,02741
+Príbovce,Martin,03842
+Pribylina,Liptovský Mikuláš,03242
+Priechod,Banská Bystrica,97611
+Priekopa,Sobrance,07261
+Priepasné,Myjava,90615
+Prietrž,Senica,90611
+Prietržka,Skalica,90849
+Prievaly,Senica,90634
+Prievidza,Prievidza,97101
+Prihradzany,Revúca,04914
+Príkra,Svidník,09005
+Príslop,Snina,06766
+Prituľany,Humenné,09408
+Proč,Prešov,08214
+Prochot,Žiar nad Hronom,96604
+Prosačov,Vranov nad Topľou,09431
+Prosiek,Liptovský Mikuláš,03223
+Prša,Lučenec,98541
+Pruské,Ilava,01852
+Prusy,Bánovce nad Bebravou,95703
+Pružina,Považská Bystrica,01822
+Pstriná,Svidník,09005
+Ptičie,Humenné,06741
+Ptrukša,Michalovce,07677
+Pucov,Dolný Kubín,02601
+Púchov,Púchov,02001
+Pukanec,Levice,93505
+Pusté Čemerné,Michalovce,07222
+Pusté Pole,Stará Ľubovňa,06541
+Pusté Sady,Galanta,92554
+Pusté Úľany,Galanta,92528
+Pušovce,Prešov,08214
+Rabča,Námestovo,02944
+Rabčice,Námestovo,02945
+Rad,Trebišov,07637
+Radatice,Prešov,08242
+Radava,Nové Zámky,94147
+Radimov,Skalica,90847
+Radnovce,Rimavská Sobota,98042
+Radobica,Prievidza,97248
+Radoľa,Kysucké Nové Mesto,02336
+Radoma,Svidník,09042
+Radošina,Topoľčany,95605
+Radošovce,Trnava,91930
+Radošovce,Skalica,90863
+Radôstka,Čadca,02304
+Radvaň nad Dunajom,Komárno,94638
+Radvaň nad Laborcom,Medzilaborce,06701
+Radvanovce,Vranov nad Topľou,09431
+Radzovce,Lučenec,98558
+Rafajovce,Vranov nad Topľou,09405
+Rajčany,Topoľčany,95632
+Rajec,Žilina,01501
+Rajecká Lesná,Žilina,01315
+Rajecké Teplice,Žilina,01313
+Rakoľuby,Nové Mesto n.Váhom,91631
+Rákoš,Košice - okolie,04416
+Rákoš,Revúca,04961
+Raková,Čadca,02351
+Rakovčík,Svidník,08901
+Rakovec nad Ondavou,Michalovce,07203
+Rakovice,Piešťany,92208
+Rakovnica,Rožňava,04931
+Rakovo,Martin,03842
+Rakša,Turčianske Teplice,03901
+Rakúsy,Kežmarok,05976
+Rakytník,Rimavská Sobota,98021
+Rankovce,Košice - okolie,04445
+Rapovce,Lučenec,98531
+Raslavice,Bardejov,08641
+Rasochov,Trnava,91905
+Rastice,Dunajská Streda,93039
+Rastislavice,Nové Zámky,94110
+Rašice,Revúca,98262
+Ratka,Lučenec,98601
+Ratková,Revúca,98265
+Ratkovce,Hlohovec,92042
+Ratkovo,Martin,03854
+Ratkovská Lehota,Rimavská Sobota,98265
+Ratkovská Suchá,Rimavská Sobota,98267
+Ratkovské Bystré,Revúca,98266
+Ratnovce,Piešťany,92231
+Ratvaj,Sabinov,08266
+Ráztočno,Prievidza,97231
+Ráztoka,Brezno,97697
+Ražňany,Sabinov,08261
+Regetovka,Bardejov,08633
+Rejdová,Rožňava,04926
+Reľov,Kežmarok,05904
+Ráztočno - Remata,Prievidza,97251
+Remeniny,Vranov nad Topľou,09431
+Remetské Hámre,Sobrance,07241
+Renčišov,Sabinov,08263
+Repejov,Medzilaborce,06704
+Repište,Žiar nad Hronom,96603
+Rešica,Košice - okolie,04473
+Rešov,Bardejov,08621
+Revúca,Revúca,05001
+Revúcka Lehota,Revúca,04918
+Riečka,Rimavská Sobota,98045
+Richnava,Gelnica,05351
+Richvald,Bardejov,08501
+Rimavská Baňa,Rimavská Sobota,98053
+Rimavská Seč,Rimavská Sobota,98042
+Rimavská Sobota,Rimavská Sobota,97901
+Rimavské Brezovo,Rimavská Sobota,98054
+Rimavské Zalužany,Rimavská Sobota,98053
+Rišňovce,Nitra,95121
+Rohov,Senica,90604
+Rohovce,Dunajská Streda,93030
+Rohožník,Humenné,09407
+Rohožník,Malacky,90638
+Rochovce,Rožňava,04936
+Rokycany,Prešov,08241
+Rokytov,Bardejov,08601
+Rokytov pri Humennom,Humenné,06713
+Rokytovce,Medzilaborce,06801
+Rosina,Žilina,01322
+Roškovce,Medzilaborce,06702
+Roštár,Rožňava,04935
+Rovensko,Senica,90501
+Rovinka,Senec,90041
+Rovňany,Poltár,98524
+Rovné,Svidník,09016
+Rovné,Rimavská Sobota,98267
+Rovné,Humenné,06732
+Rozhanovce,Košice - okolie,04442
+Rozložná,Rožňava,04932
+Roztoky,Svidník,09011
+Rožkovany,Sabinov,08271
+Rožňava,Rožňava,04801
+Rožňavské Bystré,Rožňava,04931
+Rúbaň,Nové Zámky,94136
+Rudina,Kysucké Nové Mesto,02331
+Rudinka,Kysucké Nové Mesto,02331
+Rudinská,Kysucké Nové Mesto,02331
+Rudlov,Vranov nad Topľou,09435
+Rudná,Rožňava,04801
+Rudňany,Spišská Nová Ves,05323
+Rudnianska Lehota,Prievidza,97226
+Rudník,Košice - okolie,04423
+Rudník,Myjava,90623
+Rudno,Turčianske Teplice,03822
+Rudno nad Hronom,Žarnovica,96651
+Rumanová,Nitra,95137
+Rumince,Rimavská Sobota,98050
+Runina,Snina,06765
+Ruská,Michalovce,07677
+Ruská Bystrá,Sobrance,07264
+Ruská Kajňa,Humenné,09407
+Ruská Nová Ves,Prešov,08005
+Ruská Poruba,Humenné,09408
+Ruská Voľa,Vranov nad Topľou,09431
+Ruská Voľa nad Popradom,Stará Ľubovňa,06542
+Ruská Volová,Snina,06772
+Ruskov,Košice - okolie,04419
+Ruskovce,Sobrance,07301
+Ruskovce,Bánovce nad Bebravou,95654
+Ruský Hrabovec,Sobrance,07264
+Ruský Potok,Snina,06766
+Ružiná,Lučenec,98552
+Ružindol,Trnava,91961
+Ružová Osada,Poltár,98542
+Rybany,Bánovce nad Bebravou,95636
+Rybky,Senica,90604
+Rybník,Revúca,98265
+Rybník,Levice,93523
+Rybníky,Nové Mesto n.Váhom,91611
+Rychňava,Banská Štiavnica,96901
+Rykynčice,Krupina,96255
+Sabinov,Sabinov,08301
+Sačurov,Vranov nad Topľou,09413
+Sádočné,Považská Bystrica,01816
+Sady nad Torysou,Košice - okolie,04441
+Salka,Nové Zámky,94361
+Santovka,Levice,93587
+Sap,Dunajská Streda,93006
+Sása,Revúca,98265
+Sása,Zvolen,96262
+Sasinkovo,Hlohovec,92065
+Sazdice,Levice,93585
+Sebedín-Bečov,Banská Bystrica,97401
+Sebedražie,Prievidza,97205
+Sebechleby,Krupina,96266
+Seč,Prievidza,97226
+Sečianky,Veľký Krtíš,99110
+Sečovce,Trebišov,07801
+Sečovská Polianka,Vranov nad Topľou,09414
+Sedliacka Dubová,Dolný Kubín,02755
+Sedlice,Prešov,08243
+Sedliská,Vranov nad Topľou,09409
+Sedmerovec,Ilava,01854
+Sejkov,Sobrance,07251
+Sekule,Senica,90880
+Seľany,Veľký Krtíš,99127
+Selce,Krupina,96251
+Selce,Poltár,98013
+Selce,Banská Bystrica,97611
+Selec,Trenčín,91336
+Seleška,Košice - okolie,04471
+Selice,Šaľa,92572
+Semerovo,Nové Zámky,94132
+Seňa,Košice - okolie,04458
+Senec,Senec,90301
+Seniakovce,Prešov,08203
+Senica,Senica,90501
+Senné,Michalovce,07213
+Senné,Veľký Krtíš,99101
+Senohrad,Krupina,96243
+Sereď,Galanta,92601
+Sielnica,Zvolen,96231
+Sihelné,Námestovo,02946
+Sihla,Brezno,97653
+Sikenica,Levice,93701
+Sikenička,Nové Zámky,94359
+Siladice,Hlohovec,92052
+Silica,Rožňava,04952
+Silická Brezová,Rožňava,04911
+Silická Jablonica,Rožňava,04943
+Sirk,Revúca,04964
+Sirník,Trebišov,07603
+Skačany,Partizánske,95853
+Skalica,Skalica,90901
+Skalité,Čadca,02314
+Skalka nad Váhom,Trenčín,91331
+Skároš,Košice - okolie,04411
+Skerešovo,Revúca,98262
+Sklabiná,Veľký Krtíš,99105
+Sklabiňa,Martin,03803
+Sklabinský Podzámok,Martin,03803
+Sklené,Turčianske Teplice,03847
+Sklené Teplice,Žiar nad Hronom,96603
+Skrabské,Vranov nad Topľou,09433
+Skýcov,Zlaté Moravce,95185
+Sládkovičovo,Galanta,92521
+Slančík,Košice - okolie,04417
+Slanec,Košice - okolie,04417
+Slanská Huta,Košice - okolie,04417
+Slanské Nové Mesto,Košice - okolie,04418
+Slaská,Žiar nad Hronom,96622
+Slatina,Levice,93584
+Slatina nad Bebravou,Bánovce nad Bebravou,95653
+Slatinka nad Bebravou,Bánovce nad Bebravou,95653
+Slatinské Lazy,Detva,96225
+Slatvina,Spišská Nová Ves,05361
+Slavec,Rožňava,04911
+Slavkovce,Michalovce,07217
+Slavnica,Ilava,01854
+Slavoška,Rožňava,04934
+Slavošovce,Rožňava,04936
+Sľažany,Zlaté Moravce,95171
+Slepčany,Zlaté Moravce,95152
+Sliepkovce,Michalovce,07237
+Slivník,Trebišov,07612
+Slizké,Rimavská Sobota,98023
+Slopná,Považská Bystrica,01821
+Slovany,Martin,03843
+Slovenská Kajňa,Vranov nad Topľou,09402
+Slovenská Ľupča,Banská Bystrica,97613
+Slovenská Nová Ves,Trnava,91942
+Slovenská Ves,Kežmarok,05902
+Slovenská Volová,Humenné,06722
+Slovenské Ďarmoty,Veľký Krtíš,99107
+Slovenské Kľačany,Veľký Krtíš,99102
+Slovenské Krivé,Humenné,06713
+Slovenské Nové Mesto,Trebišov,07633
+Slovenské Pravno,Turčianske Teplice,03822
+Slovenský Grob,Pezinok,90026
+Slovinky,Spišská Nová Ves,05340
+Smilno,Bardejov,08633
+Smižany,Spišská Nová Ves,05311
+Smolenice,Trnava,91904
+Smolinské,Senica,90842
+Smolnícka Huta,Gelnica,05565
+Smolník,Gelnica,05566
+Smrdáky,Senica,90603
+Smrečany,Liptovský Mikuláš,03205
+Snakov,Bardejov,08606
+Snežnica,Kysucké Nové Mesto,02332
+Snina,Snina,06901
+Soblahov,Trenčín,91338
+Soboš,Svidník,09042
+Sobotište,Senica,90605
+Sobrance,Sobrance,07301
+Socovce,Martin,03843
+Sokoľ,Košice - okolie,04431
+Sokoľany,Košice - okolie,04457
+Sokolce,Komárno,94617
+Sokolce - lúky,Komárno,94614
+Sokolovce,Piešťany,92231
+Soľ,Vranov nad Topľou,09435
+Solčany,Topoľčany,95617
+Solčianky,Topoľčany,95638
+Soľnička,Trebišov,07653
+Soľník,Stropkov,09031
+Sološnica,Malacky,90637
+Somotor,Trebišov,07635
+Sopkovce,Humenné,06722
+Spišská Belá,Kežmarok,05901
+Spišská Stará Ves,Kežmarok,06101
+Spišská Teplica,Poprad,05934
+Spišské Bystré,Poprad,05918
+Spišské Hanušovce,Kežmarok,05904
+Spišské Podhradie,Levoča,05304
+Spišské Tomášovce,Spišská Nová Ves,05201
+Spišské Vlachy,Spišská Nová Ves,05361
+Spišský Hrhov,Levoča,05302
+Spišský Hrušov,Spišská Nová Ves,05363
+Spišský Štiavnik,Poprad,05914
+Spišský Štvrtok,Levoča,05314
+Stakčín,Snina,06761
+Stanča,Trebišov,07616
+Stankovany,Ružomberok,03492
+Stankovce,Trebišov,07661
+Stará Bašta,Rimavská Sobota,98034
+Stará Bystrica,Čadca,02304
+Stará Halič,Lučenec,98511
+Stará Huta,Detva,96225
+Stará Kremnička,Žiar nad Hronom,96501
+Stará Lehota,Nové Mesto n.Váhom,91635
+Stará Lesná,Kežmarok,05952
+Stará Ľubovňa,Stará Ľubovňa,06401
+Stará Myjava,Myjava,90701
+Stará Turá,Nové Mesto n.Váhom,91601
+Stará Voda,Gelnica,05334
+Staré,Michalovce,07223
+Starina,Stará Ľubovňa,06546
+Starý Hrádok,Levice,93556
+Starý Tekov,Levice,93526
+Staškovce,Stropkov,09023
+Stebnícka Huta,Bardejov,08633
+Stebník,Bardejov,08633
+Stráňany,Stará Ľubovňa,06533
+Stráňavy,Žilina,01325
+Stráne pod Tatrami,Kežmarok,05976
+Stránska,Rimavská Sobota,98251
+Stránske,Žilina,01313
+Stratená,Rožňava,04971
+Stráža,Žilina,01304
+Strážne,Trebišov,07652
+Strážske,Michalovce,07222
+Streda nad Bodrogom,Trebišov,07631
+Stredné Plachtince,Veľký Krtíš,99124
+Strekov,Nové Zámky,94137
+Strelnice,Rimavská Sobota,98262
+Strelníky,Banská Bystrica,97655
+Stretava,Michalovce,07213
+Stretavka,Michalovce,07213
+Streženice,Púchov,02001
+Strihovce,Snina,06773
+Stročín,Svidník,08901
+Stropkov,Stropkov,09101
+Studená,Rimavská Sobota,98034
+Studenec,Levoča,05304
+Studienka,Malacky,90875
+Stuľany,Bardejov,08643
+Stupava,Malacky,90031
+Stupné,Považská Bystrica,01812
+Sučany,Martin,03852
+Sudince,Krupina,96271
+Súdovce,Krupina,96271
+Suchá Dolina,Prešov,08243
+Suchá Hora,Tvrdošín,02713
+Suchá nad Parnou,Trnava,91901
+Sucháň,Veľký Krtíš,99135
+Suché,Michalovce,07101
+Suché Brezovo,Veľký Krtíš,99103
+Suchohrad,Malacky,90064
+Sukov,Medzilaborce,06702
+Sulín,Stará Ľubovňa,06546
+Súlovce,Topoľčany,95614
+Súľov-Hradná,Bytča,01352
+Súš,Nové Mesto n.Váhom,91601
+Sušany,Poltár,98012
+Sútor,Rimavská Sobota,98001
+Svätá Mária,Trebišov,07635
+Svätoplukovo,Nitra,95116
+Svätuš,Sobrance,07255
+Svätuša,Nové Zámky,94148
+Svätuše,Trebišov,07683
+Svätý Anton,Banská Štiavnica,96972
+Svätý Jur,Pezinok,90021
+Svätý Kríž,Liptovský Mikuláš,03211
+Svätý Peter,Komárno,94657
+Svederník,Žilina,01332
+Sverepec,Považská Bystrica,01701
+Sveržov,Bardejov,08602
+Svetlice,Medzilaborce,06716
+Svidnička,Svidník,09002
+Svidník,Svidník,08901
+Svinia,Prešov,08232
+Svinica,Košice - okolie,04445
+Svinice,Trebišov,07637
+Svinná,Trenčín,91324
+Svit,Poprad,05921
+Svodín,Nové Zámky,94354
+Svrbice,Topoľčany,95606
+Svrčinovec,Čadca,02312
+Šahy,Levice,93601
+Šajdíkove Humence,Senica,90607
+Šalgočka,Galanta,92554
+Šalgovce,Topoľčany,95606
+Šalov,Levice,93571
+Šambron,Stará Ľubovňa,06545
+Šamorín,Dunajská Streda,93101
+Šamudovce,Michalovce,07201
+Šance,Nové Mesto n.Váhom,91642
+Šandal,Stropkov,09101
+Šarbov,Svidník,09005
+Šarišská Poruba,Prešov,08212
+Šarišská Trstená,Prešov,08214
+Šarišské Bohdanovce,Prešov,08205
+Šarišské Čierne,Bardejov,08637
+Šarišské Dravce,Sabinov,08273
+Šarišské Jastrabie,Stará Ľubovňa,06548
+Šarišské Michaľany,Sabinov,08222
+Šarišské Sokolovce,Sabinov,08266
+Šarišský Štiavnik,Svidník,09042
+Šarkan,Nové Zámky,94342
+Šarovce,Levice,93552
+Šašová,Bardejov,08612
+Šaštín-Stráže,Senica,90841
+Šávoľ,Lučenec,98541
+Šelpice,Trnava,91909
+Šemetkovce,Svidník,09003
+Šemša,Košice - okolie,04421
+Šenkvice,Pezinok,90081
+Šiatorská Bukovinka,Lučenec,98558
+Šiba,Bardejov,08622
+Šíd,Lučenec,98601
+Šimonovce,Rimavská Sobota,98003
+Šindliar,Prešov,08236
+Šintava,Galanta,92551
+Šípkov,Bánovce nad Bebravou,95653
+Šípkové,Piešťany,92203
+Širákov,Veľký Krtíš,99127
+Širkovce,Rimavská Sobota,98002
+Široké,Prešov,08237
+Šišov,Bánovce nad Bebravou,95638
+Šivetice,Revúca,04914
+Šmigovec,Snina,06773
+Šoltýska,Poltár,98507
+Šoporňa,Galanta,92552
+Špačince,Trnava,91951
+Špania Dolina,Banská Bystrica,97401
+Španie Pole,Rimavská Sobota,98023
+Šrobárová,Komárno,94632
+Štefanov,Senica,90645
+Štefanov nad Oravou,Tvrdošín,02744
+Štefanová,Pezinok,90086
+Štefanovce,Prešov,08235
+Štefanovce,Vranov nad Topľou,09401
+Štefanovičová,Nitra,95115
+Štefanská Huta,Gelnica,05351
+Štefurov,Svidník,09042
+Šterusy,Piešťany,92203
+Štiavnička,Banská Bystrica,97681
+Štiavnička,Ružomberok,03401
+Štiavnik,Bytča,01355
+Štitáre,Nitra,95101
+Štítnik,Rožňava,04932
+Štós,Košice - okolie,04426
+Štôla,Poprad,05937
+Štrkovec,Rimavská Sobota,98045
+Štúrovo,Nové Zámky,94301
+Štvrtok,Trenčín,91305
+Štvrtok na Ostrove,Dunajská Streda,93040
+Šuja,Žilina,01501
+Šuľa,Veľký Krtíš,99101
+Šumiac,Brezno,97671
+Šuňava,Poprad,05939
+Šurany,Nové Zámky,94201
+Šurianky,Nitra,95126
+Šurice,Lučenec,98033
+Šúrovce,Trnava,91925
+Šútovce,Prievidza,97201
+Šútovo,Martin,03854
+Švedlár,Gelnica,05334
+Švošov,Ružomberok,03491
+Tachty,Rimavská Sobota,98034
+Tajná,Nitra,95201
+Tajov,Banská Bystrica,97634
+Ťapešovo,Námestovo,02951
+Tarnov,Bardejov,08601
+Tašuľa,Sobrance,07252
+Tatranská Javorina,Poprad,05956
+Tehla,Levice,93535
+Tekolďany,Hlohovec,92062
+Tekovská Breznica,Žarnovica,96652
+Tekovské Lužany,Levice,93541
+Tekovské Nemce,Zlaté Moravce,96654
+Tekovský Hrádok,Levice,93551
+Telgárt,Brezno,97673
+Telince,Nitra,95161
+Temeš,Prievidza,97229
+Tepličany,Košice - okolie,04431
+Teplička,Spišská Nová Ves,05201
+Teplička nad Váhom,Žilina,01301
+Tepličky,Hlohovec,92066
+Teplý Vrch,Rimavská Sobota,98023
+Terany,Krupina,96268
+Terchová,Žilina,01306
+Teriakovce,Prešov,08005
+Terňa,Prešov,08267
+Tesáre,Topoľčany,95621
+Tesárske Mlyňany,Zlaté Moravce,95176
+Tešedíkovo,Šaľa,92582
+Tibava,Sobrance,07301
+Tichý Potok,Sabinov,08274
+Timoradza,Bánovce nad Bebravou,95652
+Tisinec,Stropkov,09101
+Tisovec,Rimavská Sobota,98061
+Tlmače,Levice,93521
+Točnica,Lučenec,98522
+Tokajík,Stropkov,09034
+Tomášikovo,Galanta,92504
+Tomášov,Senec,90044
+Tomášovce,Rimavská Sobota,98021
+Tomášovce,Lučenec,98556
+Topoľa,Snina,06765
+Topoľčianky,Zlaté Moravce,95193
+Topolecká,Nové Mesto n.Váhom,91601
+Topoľnica,Galanta,92592
+Topoľníky,Dunajská Streda,93011
+Topoľovka,Humenné,06745
+Toporec,Kežmarok,05995
+Tornaľa,Revúca,98201
+Torysa,Sabinov,08276
+Torysky,Levoča,05371
+Tovarné,Vranov nad Topľou,09401
+Tovarnianska Polianka,Vranov nad Topľou,09401
+Tovarníky,Topoľčany,95501
+Tôň,Komárno,94615
+Trakovice,Hlohovec,91933
+Trávnica,Nové Zámky,94146
+Trávnik,Komárno,94619
+Trebatice,Piešťany,92210
+Trebejov,Košice - okolie,04481
+Trebeľovce,Lučenec,98531
+Trebichava,Bánovce nad Bebravou,95653
+Trebišov,Trebišov,07501
+Trebostovo,Martin,03841
+Trebušovce,Veľký Krtíš,99127
+Trenč,Lučenec,98532
+Trenčianska Teplá,Trenčín,91401
+Trenčianska Turná,Trenčín,91321
+Trenčianske Bohuslavice,Nové Mesto n.Váhom,91307
+Trenčianske Jastrabie,Trenčín,91322
+Trenčianske Mitice,Trenčín,91322
+Trenčianske Stankovce,Trenčín,91311
+Trenčianske Teplice,Trenčín,91451
+Trhová Hradská,Dunajská Streda,93013
+Trhovište,Michalovce,07204
+Trnavá Hora,Žiar nad Hronom,96611
+Trnava pri Laborci,Michalovce,07231
+Trnávka,Dunajská Streda,93032
+Trnávka,Trebišov,07801
+Tŕnie,Zvolen,96234
+Trnkov,Prešov,08212
+Trnovec,Skalica,90851
+Trnovec nad Váhom,Šaľa,92571
+Trnovo,Martin,03841
+Tročany,Bardejov,08641
+Trpín,Krupina,96244
+Trsťany,Košice - okolie,04445
+Trstená,Tvrdošín,02801
+Trstená na Ostrove,Dunajská Streda,93004
+Trstené,Liptovský Mikuláš,03221
+Trstené pri Hornáde,Košice - okolie,04411
+Trstice,Galanta,92542
+Trstín,Trnava,91905
+Tuhár,Lučenec,98512
+Tuhrina,Prešov,08207
+Tuchyňa,Ilava,01855
+Tulčík,Prešov,08213
+Tupá,Levice,93584
+Turá,Levice,93551
+Turany,Martin,03853
+Turany nad Ondavou,Stropkov,09033
+Turcovce,Humenné,06723
+Turček,Turčianske Teplice,03848
+Turčianky,Partizánske,95844
+Turčianska Štiavnička,Martin,03851
+Turčianske Jaseno,Martin,03802
+Turčianske Kľačany,Martin,03861
+Turčianske Teplice,Turčianske Teplice,03901
+Turčiansky Ďur,Martin,03843
+Turčiansky Peter,Martin,03841
+Turčok,Revúca,04918
+Turecká,Banská Bystrica,97602
+Tureň,Senec,90301
+Turie,Žilina,01312
+Turík,Ružomberok,03483
+Turňa nad Bodvou,Košice - okolie,04402
+Turnianska Nová Ves,Košice - okolie,04402
+Turová,Zvolen,96234
+Turzovka,Čadca,02354
+Tušice,Michalovce,07202
+Tušická Nová Ves,Michalovce,07202
+Tužina,Prievidza,97214
+Tvarožná,Kežmarok,05971
+Tvrdomestice,Topoľčany,95622
+Tvrdošín,Tvrdošín,02744
+Tvrdošovce,Nové Zámky,94110
+Ubľa,Snina,06773
+Úbrež,Sobrance,07242
+Udavské,Humenné,06731
+Udiča,Považská Bystrica,01801
+Údol,Stará Ľubovňa,06545
+Uhliská,Levice,93505
+Úhorná,Gelnica,05566
+Uhorská Ves,Liptovský Mikuláš,03203
+Uhorské,Poltár,98525
+Uhrovec,Bánovce nad Bebravou,95641
+Uhrovec - Látkovce,Bánovce nad Bebravou,95701
+Úľany nad Žitavou,Nové Zámky,94103
+Ulič,Snina,06767
+Uličské Krivé,Snina,06767
+Uloža,Levoča,05371
+Uňatín,Krupina,96241
+Unín,Skalica,90846
+Urmince,Topoľčany,95602
+Utekáč,Poltár,98506
+Uzovce,Sabinov,08266
+Uzovská Panica,Rimavská Sobota,98022
+Uzovské Pekľany,Sabinov,08263
+Uzovský Šalgov,Sabinov,08261
+Vaďovce,Nové Mesto n.Váhom,91613
+Vagrinec,Svidník,09003
+Váhovce,Galanta,92562
+Vajkovce,Košice - okolie,04443
+Valaliky,Košice - okolie,04413
+Valaská Belá,Prievidza,97228
+Valaská Dubová,Ružomberok,03496
+Valaškovce (vojenský obvod),Humenné,06783
+Valča,Martin,03835
+Valentovce,Medzilaborce,06701
+Valice,Rimavská Sobota,98252
+Valkovce,Svidník,09042
+Vaľkovňa,Brezno,97669
+Vaniškovce,Bardejov,08641
+Vápeník,Svidník,09002
+Varadka,Bardejov,08636
+Varechovce,Stropkov,09023
+Varhaňovce,Prešov,08205
+Varín,Žilina,01303
+Vasiľov,Námestovo,02951
+Vavrečka,Námestovo,02901
+Vavrinec,Vranov nad Topľou,09431
+Vavrišovo,Liptovský Mikuláš,03242
+Važec,Liptovský Mikuláš,03261
+Včeláre,Košice - okolie,04402
+Včelince,Rimavská Sobota,98050
+Večelkov,Rimavská Sobota,98034
+Vechec,Vranov nad Topľou,09412
+Veľaty,Trebišov,07615
+Velčice,Zlaté Moravce,95171
+Veličná,Dolný Kubín,02754
+Veličná - Revišné,Dolný Kubín,02754
+Veľká Čalomija,Veľký Krtíš,99109
+Veľká Čausa,Prievidza,97101
+Veľká Čierna,Žilina,01501
+Veľká Dolina,Nitra,95115
+Veľká Franková,Kežmarok,05978
+Veľká Hradná,Trenčín,91324
+Veľká Ida,Košice - okolie,04455
+Veľká Lehota,Žarnovica,96641
+Veľká Lesná,Stará Ľubovňa,06534
+Veľká Lodina,Košice - okolie,04481
+Veľká Lomnica,Kežmarok,05952
+Veľká Lúka,Zvolen,96231
+Veľká Mača,Galanta,92532
+Veľká nad Ipľom,Lučenec,98532
+Veľká Paka,Dunajská Streda,93051
+Veľká Tŕňa,Trebišov,07682
+Veľká Ves,Poltár,98501
+Veľká Ves nad Ipľom,Veľký Krtíš,99110
+Veľké Bierovce,Trenčín,91311
+Veľké Blahovo,Dunajská Streda,93001
+Veľké Borové,Liptovský Mikuláš,02732
+Veľké Dravce,Lučenec,98542
+Veľké Držkovce,Bánovce nad Bebravou,95654
+Veľké Dvorany,Topoľčany,95601
+Veľké Dvorníky,Dunajská Streda,92901
+Veľké Hoste,Bánovce nad Bebravou,95638
+Veľké Chlievany,Bánovce nad Bebravou,95655
+Veľké Chyndice,Nitra,95154
+Veľké Kapušany,Michalovce,07901
+Veľké Kosihy,Komárno,94621
+Veľké Kostoľany,Piešťany,92207
+Veľké Kozmálovce,Levice,93521
+Veľké Kršteňany,Partizánske,95803
+Veľké Leváre,Malacky,90873
+Veľké Lovce,Nové Zámky,94142
+Veľké Ludince,Levice,93565
+Veľké Orvište,Piešťany,92201
+Veľké Ozorovce,Trebišov,07801
+Veľké Pole,Žarnovica,96674
+Veľké Raškovce,Michalovce,07675
+Veľké Revištia,Sobrance,07243
+Veľké Ripňany,Topoľčany,95607
+Veľké Rovné,Bytča,01362
+Veľké Slemence,Michalovce,07677
+Veľké Straciny,Veľký Krtíš,99001
+Veľké Trakany,Trebišov,07642
+Veľké Turovce,Levice,93581
+Veľké Uherce,Partizánske,95841
+Veľké Úľany,Galanta,92522
+Veľké Vozokany,Zlaté Moravce,95182
+Veľké Zálužie,Nitra,95135
+Veľké Zlievce,Veľký Krtíš,99123
+Veľkrop,Stropkov,09101
+Veľký Biel,Senec,90024
+Veľký Blh,Rimavská Sobota,98022
+Veľký Cetín,Nitra,95105
+Veľký Čepčín,Turčianske Teplice,03845
+Veľký Ďur,Levice,93534
+Veľký Folkmar,Gelnica,05551
+Veľký Horeš,Trebišov,07652
+Veľký Kamenec,Trebišov,07636
+Veľký Klíž,Partizánske,95845
+Veľký Krtíš,Veľký Krtíš,99001
+Veľký Kýr,Nové Zámky,94107
+Veľký Lapáš,Nitra,95104
+Veľký Lipník,Stará Ľubovňa,06533
+Veľký Lom,Veľký Krtíš,99103
+Veľký Meder,Dunajská Streda,93201
+Veľký Slavkov,Poprad,05991
+Veľký Slivník,Prešov,08267
+Veľký Šariš,Prešov,08221
+Veľopolie,Humenné,06731
+Velušovce,Topoľčany,95501
+Vernár,Poprad,05917
+Veselé,Piešťany,92208
+Veterná Poruba,Liptovský Mikuláš,03104
+Vidiná,Lučenec,98559
+Vieska,Veľký Krtíš,99102
+Vieska,Dunajská Streda,93002
+Vieska,Nové Mesto n.Váhom,91626
+Vieska - Bezdedov,Púchov,02001
+Vieska nad Blhom,Rimavská Sobota,98021
+Vieska nad Žitavou,Zlaté Moravce,95152
+Vígľašská Huta-Kalinka,Detva,96225
+Vikartovce,Poprad,05919
+Vinica,Veľký Krtíš,99128
+Viničky,Trebišov,07631
+Viničné,Pezinok,90023
+Vinné,Michalovce,07231
+Vinodol,Nitra,95106
+Vinohrady nad Váhom,Galanta,92555
+Vinosady,Pezinok,90201
+Virt,Komárno,94638
+Vislanka,Stará Ľubovňa,06541
+Vislava,Stropkov,09021
+Visolaje,Púchov,01861
+Višňov,Trebišov,07661
+Višňové,Revúca,98262
+Višňové,Nové Mesto n.Váhom,91616
+Višňové,Žilina,01323
+Vištuk,Pezinok,90085
+Vitanová,Tvrdošín,02712
+Víťaz,Prešov,08238
+Víťazovce,Humenné,06724
+Vítkovce,Spišská Nová Ves,05363
+Vlača,Vranov nad Topľou,09431
+Vladiča,Stropkov,09023
+Vlachovo,Rožňava,04924
+Vlachy,Liptovský Mikuláš,03213
+Vlčany,Šaľa,92584
+Vlčkovce,Trnava,91923
+Vlkanová,Banská Bystrica,97631
+Vlkas,Nové Zámky,94144
+Vlková,Kežmarok,05972
+Vlkovce,Kežmarok,05971
+Vlky,Senec,90044
+Vlkyňa,Rimavská Sobota,98044
+Voderady,Trnava,91942
+Vojany,Michalovce,07672
+Vojčice,Trebišov,07622
+Vojka,Trebišov,07683
+Vojka nad Dunajom,Dunajská Streda,93031
+Vojkovce,Spišská Nová Ves,05361
+Vojňany,Kežmarok,05902
+Vojnatina,Sobrance,07261
+Vojtovce,Stropkov,09101
+Voľa,Michalovce,07221
+Volica,Medzilaborce,06701
+Volkovce,Zlaté Moravce,95187
+Voznica,Žarnovica,96681
+Vozokany,Topoľčany,95605
+Vozokany,Galanta,92505
+Vráble,Nitra,95201
+Vrádište,Skalica,90849
+Vrakúň,Dunajská Streda,93025
+Vrbnica,Michalovce,07216
+Vrbov,Kežmarok,05972
+Vrbová nad Váhom,Komárno,94501
+Vrbové,Piešťany,92203
+Vŕbovec,Michalovce,07101
+Vrbovka,Veľký Krtíš,99106
+Vrchslatina,Brezno,97653
+Vrchteplá,Považská Bystrica,01705
+Vrícko,Martin,03831
+Vršatské Podhradie,Ilava,01852
+Vrútky,Martin,03861
+Všechsvätých,Košice - okolie,04413
+Vtáčkovce,Košice - okolie,04447
+Výborná,Kežmarok,05902
+Výčapy-Opatovce,Nitra,95144
+Vydrany,Dunajská Streda,93016
+Vydrná,Púchov,02053
+Vydrník,Poprad,05914
+Vyhne,Žiar nad Hronom,96602
+Výrava,Medzilaborce,06716
+Vysočany,Bánovce nad Bebravou,95635
+Vysoká,Banská Štiavnica,96901
+Vysoká,Sabinov,08274
+Vysoká nad Kysucou,Čadca,02355
+Vysoká nad Uhom,Michalovce,07214
+Vysoká nad Uhom - Vysocký Dvor,Michalovce,07214
+Vysoká pri Morave,Malacky,90066
+Vyškovce,Stropkov,09021
+Vyškovce nad Ipľom,Levice,93577
+Vyšná Boca,Liptovský Mikuláš,03234
+Vyšná Hutka,Košice - okolie,04018
+Vyšná Jablonka,Humenné,06734
+Vyšná Jedľová,Svidník,08901
+Vyšná Kamenica,Košice - okolie,04445
+Vyšná Myšľa,Košice - okolie,04415
+Vyšná Olšava,Stropkov,09032
+Vyšná Pisaná,Svidník,09001
+Vyšná Polianka,Bardejov,08636
+Vyšná Rybnica,Sobrance,07241
+Vyšná Sitnica,Humenné,09407
+Vyšná Slaná,Rožňava,04926
+Vyšná Šebastová,Prešov,08006
+Vyšná Voľa,Bardejov,08621
+Vyšné Ladičkovce,Humenné,06711
+Vyšné nad Hronom,Levice,93531
+Vyšné Nemecké,Sobrance,07251
+Vyšné Remety,Sobrance,07241
+Vyšné Repaše,Levoča,05371
+Vyšné Ružbachy,Stará Ľubovňa,06502
+Vyšné Valice,Rimavská Sobota,98252
+Vyšný Čaj,Košice - okolie,04416
+Vyšný Hrabovec,Stropkov,09034
+Vyšný Hrušov,Humenné,06732
+Vyšný Kazimír,Vranov nad Topľou,09409
+Vyšný Klátov,Košice - okolie,04412
+Vyšný Komárnik,Svidník,09005
+Vyšný Kručov,Bardejov,08645
+Vyšný Kubín,Dolný Kubín,02601
+Vyšný Lánec,Košice - okolie,04474
+Vyšný Medzev,Košice - okolie,04425
+Vyšný Mirošov,Svidník,09011
+Vyšný Orlík,Svidník,09011
+Vyšný Skálnik,Rimavská Sobota,98052
+Vyšný Slavkov,Levoča,05373
+Vyšný Tvarožec,Bardejov,08602
+Vyšný Žipov,Vranov nad Topľou,09433
+Zábiedovo,Tvrdošín,02801
+Záborie,Martin,03803
+Záborské,Prešov,08253
+Zabudišová,Nové Mesto n.Váhom,91307
+Zádiel,Košice - okolie,04402
+Zádor,Rimavská Sobota,98042
+Záhor,Sobrance,07253
+Záhorce,Veľký Krtíš,99106
+Záhorčie,Žarnovica,96681
+Záhorie,Malacky,90101
+Záhorská Ves,Malacky,90065
+Záhradné,Prešov,08216
+Zacharovce,Rimavská Sobota,97901
+Zákamenné,Námestovo,02956
+Zákopčie,Čadca,02311
+Zalaba,Levice,93701
+Zálesie,Senec,90028
+Zálesie,Kežmarok,05904
+Zalužice,Michalovce,07234
+Zamarovce,Trenčín,91105
+Zámutov,Vranov nad Topľou,09415
+Záriečie,Púchov,02052
+Záskalie,Považská Bystrica,01705
+Zatín,Trebišov,07653
+Závada,Humenné,09408
+Závada,Topoľčany,95501
+Závada,Veľký Krtíš,99121
+Závada - Záhrada,Topoľčany,95501
+Závadka,Michalovce,07233
+Závadka,Humenné,06601
+Závadka,Gelnica,05333
+Závadka nad Hronom,Brezno,97667
+Závažná Poruba,Liptovský Mikuláš,03202
+Závod,Malacky,90872
+Zázrivá,Dolný Kubín,02705
+Zbehňov,Trebišov,07801
+Zbehy,Nitra,95142
+Zboj,Snina,06768
+Zbojné,Medzilaborce,06713
+Zborov,Bardejov,08633
+Zborov nad Bystricou,Čadca,02303
+Zbrojníky,Levice,93555
+Zbrojníky - Pežerňa,Levice,93555
+Zbudská Belá,Medzilaborce,06701
+Zbudské Dlhé,Humenné,06712
+Zbudza,Michalovce,07223
+Zbyňov,Žilina,01319
+Zdoba,Košice - okolie,04441
+Zeleneč,Trnava,91921
+Zemianska Dedina,Tvrdošín,02743
+Zemianska Olča,Komárno,94614
+Zemianske Kostoľany,Prievidza,97243
+Zemianske Podhradie,Nové Mesto n.Váhom,91307
+Zemianske Sady,Galanta,92554
+Zemiansky Vrbovok,Krupina,96241
+Zemplín,Trebišov,07634
+Zemplínska Nová Ves,Trebišov,07616
+Zemplínska Šírava,Michalovce,07236
+Zemplínska Široká,Michalovce,07213
+Zemplínske Hámre,Snina,06777
+Zemplínske Hradište,Trebišov,07601
+Zemplínske Jastrabie,Trebišov,07605
+Zemplínske Kopčany,Michalovce,07217
+Zemplínsky Branč,Trebišov,07602
+Zlatá Baňa,Prešov,08252
+Zlatá Idka,Košice - okolie,04461
+Zlaté,Bardejov,08601
+Zlaté Klasy,Dunajská Streda,93039
+Zlatná na Ostrove,Komárno,94612
+Zlatník,Vranov nad Topľou,09433
+Zlatníky,Bánovce nad Bebravou,95637
+Zlatno,Poltár,98503
+Zlatno,Zlaté Moravce,95191
+Zliechov,Ilava,01832
+Zohor,Malacky,90051
+Zombor,Veľký Krtíš,99122
+Zubák,Púchov,02064
+Zuberec,Tvrdošín,02732
+Zubné,Humenné,06733
+Zubrohlava,Námestovo,02943
+Zvolenská Slatina,Zvolen,96201
+Zvončín,Trnava,91901
+Žabokreky,Martin,03840
+Žabokreky nad Nitrou,Partizánske,95852
+Žakarovce,Gelnica,05571
+Žakovce,Kežmarok,05973
+Žalobín,Vranov nad Topľou,09403
+Žarnov,Košice - okolie,04402
+Žarnovica,Žarnovica,96681
+Žbince,Michalovce,07216
+Ždaňa,Košice - okolie,04411
+Ždiar,Poprad,05955
+Žehňa,Prešov,08206
+Žehra,Spišská Nová Ves,05361
+Železná Breznica,Zvolen,96234
+Železník,Svidník,08701
+Železnô,Liptovský Mikuláš,03215
+Želiezovce,Levice,93701
+Želmanovce,Svidník,08644
+Žemberovce,Levice,93502
+Žemliare,Levice,93557
+Žiar,Liptovský Mikuláš,03205
+Žiar,Revúca,98201
+Žiar nad Hronom,Žiar nad Hronom,96501
+Žibritov,Krupina,96301
+Žihárec,Šaľa,92583
+Žikava,Zlaté Moravce,95192
+Žíp,Rimavská Sobota,98021
+Žipov,Prešov,08241
+Žirany,Nitra,95174
+Žírovce,Košice - okolie,04445
+Žitavce,Nitra,95201
+Žitná-Radiša,Bánovce nad Bebravou,95641
+Žlkovce,Hlohovec,92042
+Župčany,Prešov,08001
+Župkov,Žarnovica,96671

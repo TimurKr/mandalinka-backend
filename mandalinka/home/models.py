@@ -47,3 +47,9 @@ class PostalCodes(models.Model):
 
 class Streets(models.Model):
     street = models.CharField(max_length=150)
+
+class CityDistrictPostal(models.Model):
+    city = models.CharField(max_length=150)
+    district = models.CharField(max_length=150)
+    postal = models.CharField(max_length=150)
+    country = models.CharField(blank=False, max_length=3)

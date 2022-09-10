@@ -2,21 +2,6 @@
 
 {% block body %}
 
-<!--
-<section class="vh-100 bg-secondary">
-    <div class="w-50 h-50 w-md-75 container-md position-absolute top-50 start-50 translate-middle p-5">
-        
-        <form class="frm p-3" action="{% url 'home:login' %}" method="post">
-            {% csrf_token %}
-            {{ form }}
-            <button class="btn btn-success" type="submit"> Prihlas ma! </button>
-            <p>Nie masz konta?</p>
-            <button class="btn btn-success" onclick="location.href='{% url 'home:new_user' %}'" type="button">Vytvor konto</button>
-        </form>
-
-        
-</section>
--->
 
     <div class="container-fluid login-window position-absolute top-50 start-50 translate-middle rounded-5 shadow-lg">
         <h2 class="text-center mt-3 fw-semibold">Prihláste sa</h2>

@@ -7,11 +7,11 @@
             {{request.user.first_name}}
         {% elif request.user.username %}
             {{request.user.username}}
-            {{ request.user.profile.street }}
         {% else %}
             niekto
         {% endif %} 
-        je zase hladný
+
+        od {{ request.user.profile.street }} je zase hladný
     </h1>   
 
 {% endblock %}

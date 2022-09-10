@@ -1,1 +1,1 @@
-curl http://www.sodbtn.sk/obce/abeceda.php | grep -o "<a href='obec.php.*</a>" | grep -o "<b>.*</b>" | sed -e "s/<\/b>//g" -e "s/<b>//g" > obce.txt
+cat OBCE.csv | awk -F "," '{print $1}' | uniq | tail +2  > obce.txt

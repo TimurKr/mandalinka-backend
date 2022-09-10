@@ -1,2 +1,2 @@
-curl https://sk.wikipedia.org/wiki/Zoznam_okresov_na_Slovensku | grep -i '<li><a href="/wiki/.*(okres).*=".*">' | grep -o ')">.*</a' | grep -o ">.*<" | sed 's/^.\(.*\).$/\1/' > okresy.txt 
+cat OBCE.csv | awk -F "," '{print $3}' | uniq | tail +2  > okresy.txt
 

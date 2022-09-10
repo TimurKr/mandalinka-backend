@@ -6,11 +6,12 @@
     <div class="w-50 h-50 w-md-75 container-md position-absolute top-50 start-50 translate-middle p-5">
         <form class="frm p-3" action="{% url 'home:new_user' %}" method="post">
             {% csrf_token %}
+            
             <div class="alert alert-danger" >{{ form.non_field_errors }}</div>
+            
             {% for elem in form %}
                 
                 <div class="form-group pt-3">
-                    <div class="alert alert-danger" >{{ elem.errors }}</div>
                     <p> {{ elem.help_text }} </p>
                     <label for="{{ elem.id_for_label }}">
                         {{ elem }}
@@ -39,6 +40,7 @@
                                 {% endfor %}
                             </datalist>
                         {% endif %}
+                        <div class="alert alert-danger" >{{ elem.errors }}</div>
                     </label>
                 </div>
                 
