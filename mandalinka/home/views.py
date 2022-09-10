@@ -20,10 +20,12 @@ from .tokens import account_activation_token
 class HomePageView(TemplateView):
     template_name = "home/home.html"
 
-
 # Create your views here.
+
+# Je toto vôbec niekedy použité??
 def index(request):
     return render(request, "home/home.html")
+
 
 def login_view(request):
     

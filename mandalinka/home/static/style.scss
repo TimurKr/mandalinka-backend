@@ -1,5 +1,5 @@
 $primary: #f79d00;
-$secondary: #64f38c;
+$secondary: #217602;
 $h1-font-size:  5rem;
 
 @font-face {
@@ -11,9 +11,9 @@ $font-family-sans-serif:      "Baskerville", system-ui, -apple-system, "Segoe UI
 
 
 body.login{
-    background: #f79d00;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to left, #64f38c, #f79d00);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(45deg, #64f38c, #f79d00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: $primary;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, $secondary, $primary);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(45deg, $secondary, $primary); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 div.login-window {
@@ -21,19 +21,10 @@ div.login-window {
     width: 90%;
     margin-left: auto;
     margin-right: auto;
-    background: #f79d00;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to left, #64f38c, #f79d00);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(225deg, #64f38c, #f79d00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: $primary;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, $secondary, $primary);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(315deg, $secondary, $primary); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
-
-
-
-h1 {
-    font-family: 'Times New Roman', Times, serif;
-    color: $primary;
-}
-
-
 
 .alert:empty{
     display: none;
@@ -50,4 +41,3 @@ div.scrollmenu div {
  }
 
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
-
