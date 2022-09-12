@@ -43,7 +43,6 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'recepty',
     'home',
-    'address',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

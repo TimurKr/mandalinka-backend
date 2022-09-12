@@ -6,22 +6,27 @@ from django.core.exceptions import ValidationError
 from home.models import UserProfile
 from django.utils.safestring import mark_safe
 
+form_widget = {'class': 'form-control opacity-75 rounded-4 shadow border-dark',
+               'placeholder': 'useless_placeholder'}
+
 class LoginForm(forms.Form):
-    username = forms.CharField(label="username", widget=forms.TextInput({'class':'form-control rounded-5 opacity-25 shadow'}))
-    password = forms.CharField(label="password", widget=forms.PasswordInput({'class':'form-control rounded-5 opacity-25 shodow'}))
+    username = forms.CharField(label="Prihlasovacie meno", widget=forms.TextInput(form_widget))
+    password = forms.CharField(label="Heslo", widget=forms.PasswordInput(form_widget))
  
  
 class SignupForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['username'].help_text = 'Username (150 characters or fewer, letters, digits and @/./+/-/_ only) '
+        self.fields['username'].label = "Prihlasovacie meno"
+        self.fields['username'].help_text = 'Username (150 characters or fewer, letters, digits and @/./+/-/_ only)'
+        self.fields['username'].widget = forms.TextInput(form_widget)
 
     COUNTRIES = (
         ("CZ","SK"),
         ("SK","CZ"),
     )
-    email = forms.EmailField(label="Email", max_length=254, help_text='Emailová adresa')
-    phone = forms.CharField(min_length=5, label="Ulica",help_text='Tel.číslo:',required=True, widget=forms.TextInput(attrs={'value':'+421'}))
+    email = forms.EmailField(label="Email", max_length=254, help_text='Emailová adresa', widget=forms.EmailInput(form_widget))
+    phone = forms.CharField(min_length=5, label="Telefónne číslo",help_text='Tel.číslo:',required=True, widget=forms.TextInput(form_widget | {'value':'+421'}))
 
     street = forms.CharField(label="street",help_text='Ulica:',required=False, widget=forms.TextInput(attrs={'list':'streets'}))
     house_no = forms.CharField(label="house_no",help_text='Číslo domu:', required=True)

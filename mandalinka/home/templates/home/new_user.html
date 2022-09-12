@@ -1,53 +1,104 @@
 {% extends "home/login_layout.html" %}
 
+{% block title %}
+    Zaregistrujte sa!
+{% endblock %}
+
 {% block body %}
 
-<section class="vh-100 bg-secondary">
-    <div class="w-50 h-50 w-md-75 container-md position-absolute top-50 start-50 translate-middle p-5">
-        <form class="frm p-3" action="{% url 'home:new_user' %}" method="post">
-            {% csrf_token %}
-            
-            <div class="alert alert-danger" >{{ form.non_field_errors }}</div>
-            
-            {% for elem in form %}
-                
-                <div class="form-group pt-3">
-                    <p> {{ elem.help_text }} </p>
-                    <label for="{{ elem.id_for_label }}">
-                        {{ elem }}
-                        {% if elem.label == "district" %}
-                            <datalist id="districts">
-                                {% for district in districts %}
-                                    <option value="{{ district.district }}"></option>
-                                {% endfor %}
-                            </datalist>
-                        {% elif elem.label == "city" %}
-                            <datalist id="cities">
-                                {% for city in cities %}
-                                    <option value="{{ city.city }}"></option>
-                                {% endfor %}
-                            </datalist>
-                        {% elif elem.label == "postal" %}
-                            <datalist id="postal_codes">
-                                {% for postal in postal_codes %}
-                                    <option value="{{ postal.code }}"></option>
-                                {% endfor %}
-                            </datalist>
-                        {% elif elem.label == "street" %}
-                            <datalist id="streets">
-                                {% for street in streets %}
-                                    <option value="{{ street.street }}"></option>
-                                {% endfor %}
-                            </datalist>
-                        {% endif %}
-                        <div class="alert alert-danger" >{{ elem.errors }}</div>
+    <form class="frm p-3" action="{% url 'home:new_user' %}" method="post">
+        {% csrf_token %}
+        
+        <div class="alert alert-danger" >{{ form.non_field_errors }}</div>
+        
+        <!-- Nav tabs -->
+        <ul class="nav nav-pills" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="general-tab" data-bs-toggle="pill" data-bs-target="#general" type="button" role="tab" aria-controls="general" aria-selected="true">Všeobecné údaje</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="profile-tab" data-bs-toggle="pill" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="messages-tab" data-bs-toggle="pill" data-bs-target="#messages" type="button" role="tab" aria-controls="messages" aria-selected="false">Messages</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="settings-tab" data-bs-toggle="pill" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Settings</button>
+            </li>
+        </ul>
+        
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane active" id="general" role="tabpanel" aria-labelledby="general-tab" tabindex="0">
+                <div class="form-floating my-2">
+                    {{ form.username }}
+                    <label for="{{ form.username.id_for_label }}">
+                        {{ form.username.label }}
                     </label>
                 </div>
-                
-            {% endfor %}
-            <button class="btn btn-success" type="submit">Vytvor konto</button>
-        </form>
-    </div>
-</section>
+                <div class="form-floating my-2">
+                    {{ form.email }}
+                    <label for="{{ form.email.id_for_label }}">
+                        {{ form.email.label }}
+                    </label>
+                </div>
+                <div class="form-floating my-2">
+                    {{ form.phone }}
+                    <label for="{{ form.phone.id_for_label }}">
+                        {{ form.phone.label }}
+                    </label>
+                </div>
+            </div>
+            <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                PROFILE
+            </div>
+            <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab" tabindex="0">
+                MESSAGES
+            </div>
+            <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab" tabindex="0">
+                SETTINGS
+            </div>
+        </div>
+
+
+        {% for elem in form %}
+            
+            <div class="form-group pt-3">
+                <p> {{ elem.help_text }} </p>
+                <label for="{{ elem.id_for_label }}">
+                    {{ elem }}
+                    {% if elem.label == "district" %}
+                        <datalist id="districts">
+                            {% for district in districts %}
+                                <option value="{{ district.district }}"></option>
+                            {% endfor %}
+                        </datalist>
+                    {% elif elem.label == "city" %}
+                        <datalist id="cities">
+                            {% for city in cities %}
+                                <option value="{{ city.city }}"></option>
+                            {% endfor %}
+                        </datalist>
+                    {% elif elem.label == "postal" %}
+                        <datalist id="postal_codes">
+                            {% for postal in postal_codes %}
+                                <option value="{{ postal.code }}"></option>
+                            {% endfor %}
+                        </datalist>
+                    {% elif elem.label == "street" %}
+                        <datalist id="streets">
+                            {% for street in streets %}
+                                <option value="{{ street.street }}"></option>
+                            {% endfor %}
+                        </datalist>
+                    {% endif %}
+                    <div class="alert alert-danger" >{{ elem.errors }}</div>
+                </label>
+            </div>
+            
+        {% endfor %}
+        <button class="btn btn-success" type="submit">Vytvor konto</button>
+    </form>
+
 
 {% endblock %}
