@@ -70,6 +70,8 @@ def new_user_view(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.is_active = False
+            user.first_name = form.cleaned_data.get('firstname')
+            user.last_name = form.cleaned_data.get('lastname')
             user.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')

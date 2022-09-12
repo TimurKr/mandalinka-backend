@@ -25,8 +25,11 @@ class SignupForm(UserCreationForm):
         ("CZ","SK"),
         ("SK","CZ"),
     )
+    firstname = forms.CharField(label="Meno", widget=forms.TextInput(dict(form_widget, **{"placeholder":"Meno"})))
+    lastname = forms.CharField(label="Priezvisko", widget=forms.TextInput(dict(form_widget, **{"placeholder":"Priezvisko"})))
     email = forms.EmailField(label="Email", max_length=254, help_text='Emailová adresa', widget=forms.EmailInput(form_widget))
-    phone = forms.CharField(min_length=5, label="Telefónne číslo",help_text='Tel.číslo:',required=True, widget=forms.TextInput(form_widget | {'value':'+421'}))
+
+    phone = forms.CharField(min_length=5, label="Telefónne číslo",help_text='Tel.číslo:',required=True, widget=forms.TextInput(form_widget.update({'value':'+421'})))
 
     street = forms.CharField(label="street",help_text='Ulica:',required=False, widget=forms.TextInput(attrs={'list':'streets'}))
     house_no = forms.CharField(label="house_no",help_text='Číslo domu:', required=True)
@@ -37,7 +40,9 @@ class SignupForm(UserCreationForm):
     
     class Meta:
         model = User
-        fields = ["username", 
+        fields = ["username",
+                "firstname",
+                "lastname", 
                 "email",
                 "phone",
                 "street",
