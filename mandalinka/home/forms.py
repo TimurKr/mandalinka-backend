@@ -1,13 +1,12 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-<<<<<<< HEAD
+
 from home.models import CityDistrictPostal
-=======
->>>>>>> 19dadaf24c87b967c1b46807303c647caf6d6d14
+
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
-from home.models import CityDistrictPostal, Districts, Cities, PostalCodes, UserProfile, FoodAttribute
+from home.models import CityDistrictPostal, UserProfile, FoodAttribute
 from recepty.models import Alergen
 
 charfield_widget = {'class': 'form-control opacity-75 rounded-2 shadow border-dark',
