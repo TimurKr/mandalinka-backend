@@ -3,12 +3,13 @@ from django.contrib.auth.models import User
 from home.models import CityDistrictPostal, Districts, Cities, PostalCodes
 from django import forms
 from django.core.exceptions import ValidationError
-from home.models import UserProfile, Food_attr
+from home.models import UserProfile, FoodAttribute
 from django.utils.safestring import mark_safe
 
 charfield_widget = {'class': 'form-control opacity-75 rounded-2 shadow border-dark',
                     'placeholder': 'useless_placeholder'}
 checkbox_widget = {'class':'form-check-input'}
+attributes_select_widget = {'class':'btn btn-primary', 'data-bs-toggle':'button'}
 
 def merge(dict1, dict2):
     return {**dict1, **dict2} 
@@ -39,7 +40,9 @@ class SignupForm(UserCreationForm):
     terms_conditions = forms.BooleanField(help_text="Súhlasíte s <a hrf='#Obchodné podmienky'>obchodnými podmienkami</a>?",
                                           required=True)
     
-    food_attr = forms.ModelMultipleChoiceField(label="Attributes", help_text="Zvolte obľúbené atribúty", queryset=Food_attr.objects.all(), widget=forms.CheckboxSelectMultiple)
+    food_attributes = forms.ModelMultipleChoiceField(label="Attributes", help_text="Zvolte obľúbené atribúty", 
+                                                queryset=FoodAttribute.objects.all(), 
+                                                widget=forms.CheckboxSelectMultiple())
 
     phone = forms.CharField(min_length=5, label="Telefónne číslo", help_text='* Môže byť použité počas doručovania', required=True, widget=forms.TextInput(merge(charfield_widget,{'value':'+421'})))
 
@@ -58,7 +61,7 @@ class SignupForm(UserCreationForm):
                 "email",
                 "newsletter",
                 "terms_conditions",
-                "food_attr",
+                "food_attributes",
                 "phone",
                 "street",
                 "house_no",

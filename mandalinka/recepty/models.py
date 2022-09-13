@@ -2,7 +2,7 @@ from enum import unique
 from pyexpat import model
 from django.db import models
 from django.core.validators import RegexValidator
-from home.models import Food_attr
+from home.models import FoodAttribute
 
 # Create your models here.
 # class Address(models.Model):
@@ -92,7 +92,7 @@ class Recipe(models.Model):
     thumbnail = models.ImageField(upload_to=f"recepty/static/photos/", help_text="Pridajte thumbnail", default=None)
     active = models.BooleanField(default=True, verbose_name="Aktívny")
 
-    attributes = models.ManyToManyField(Food_attr)
+    attributes = models.ManyToManyField(FoodAttribute)
 
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="Čas vzniku")
     date_modified = models.DateTimeField(auto_now=True, verbose_name="Naposledy upravené")

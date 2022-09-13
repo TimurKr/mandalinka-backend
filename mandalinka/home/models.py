@@ -6,8 +6,11 @@ from django.dispatch import receiver
 
 
 # Create your models here.
-class Food_attr(models.Model):
+class FoodAttribute(models.Model):
     attr = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.attr
 
 class UserProfile(models.Model):
 
@@ -15,7 +18,7 @@ class UserProfile(models.Model):
     email = models.EmailField(max_length=254,blank=False)
     phone = models.CharField(max_length=20,blank=False)
 
-    food_preferences = models.ManyToManyField(Food_attr)
+    food_preferences = models.ManyToManyField(FoodAttribute)
 
     street = models.CharField(max_length=150,blank=True)
     house_no = models.CharField(max_length=8, blank=False)
