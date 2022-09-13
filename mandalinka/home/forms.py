@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from home.models import CityDistrictPostal, Districts, Cities, PostalCodes
 from django import forms
 from django.core.exceptions import ValidationError
-from home.models import UserProfile
+from home.models import UserProfile, Food_attr
 from django.utils.safestring import mark_safe
 
 charfield_widget = {'class': 'form-control opacity-75 rounded-2 shadow border-dark',
@@ -38,7 +38,8 @@ class SignupForm(UserCreationForm):
                                     widget=forms.CheckboxInput(checkbox_widget))
     terms_conditions = forms.BooleanField(help_text="Súhlasíte s <a hrf='#Obchodné podmienky'>obchodnými podmienkami</a>?",
                                           required=True)
- 
+    
+    food_attr = forms.ModelMultipleChoiceField(label="Attributes", help_text="Zvolte obľúbené atribúty", queryset=Food_attr.objects.all(), widget=forms.CheckboxSelectMultiple)
 
     phone = forms.CharField(min_length=5, label="Telefónne číslo", help_text='* Môže byť použité počas doručovania', required=True, widget=forms.TextInput(merge(charfield_widget,{'value':'+421'})))
 
@@ -57,6 +58,7 @@ class SignupForm(UserCreationForm):
                 "email",
                 "newsletter",
                 "terms_conditions",
+                "food_attr",
                 "phone",
                 "street",
                 "house_no",

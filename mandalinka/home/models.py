@@ -7,7 +7,7 @@ from django.dispatch import receiver
 
 # Create your models here.
 class Food_attr(models.Model):
-    attr = models.CharField()
+    attr = models.CharField(max_length=255)
 
 class UserProfile(models.Model):
 
