@@ -5,7 +5,16 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 
+
 # Create your models here.
+class Alergen(models.Model):
+    title = models.CharField(max_length=63, verbose_name="Alergén")
+    code = models.IntegerField(primary_key=True, verbose_name="Kód alergénu")
+
+    def __str__(self):
+        return f"{self.code}: {self.title}"
+
+
 class FoodAttribute(models.Model):
     attr = models.CharField(max_length=255)
 
@@ -18,7 +27,10 @@ class UserProfile(models.Model):
     email = models.EmailField(max_length=254,blank=False)
     phone = models.CharField(max_length=20,blank=False)
 
-    food_preferences = models.ManyToManyField(FoodAttribute)
+    food_preferences = models.ManyToManyField(FoodAttribute, related_name="users")
+    alergies = models.ManyToManyField(Alergen, related_name="users")
+    portions_options = [(2, "2"), (4, "4"), (6, "6")]
+    num_portions = models.IntegerField(default=2, choices=portions_options, blank=False)
 
     street = models.CharField(max_length=150,blank=True)
     house_no = models.CharField(max_length=8, blank=False)
