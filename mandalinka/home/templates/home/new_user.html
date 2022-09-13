@@ -12,18 +12,31 @@
         <div class="alert alert-danger" >{{ form.non_field_errors }}</div>
         
         <!-- Nav tabs -->
-        <ul class="nav nav-pills" id="myTab" role="tablist">
+        <ul class="nav nav-pills nav-fill" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="general-tab" data-bs-toggle="pill" data-bs-target="#general" type="button" role="tab" aria-controls="general" aria-selected="true">Všeobecné údaje</button>
+                <button class="nav-link active" id="general-tab" data-bs-toggle="pill" data-bs-target="#general" type="button" role="tab" aria-controls="general" aria-selected="true">
+                    Všeobecné údaje
+                </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="profile-tab" data-bs-toggle="pill" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
+                <button class="nav-link" id="preferences-tab" data-bs-toggle="pill" data-bs-target="#preferences" type="button" role="tab" aria-controls="profile" aria-selected="false">
+                    Preferencie
+                </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="messages-tab" data-bs-toggle="pill" data-bs-target="#messages" type="button" role="tab" aria-controls="messages" aria-selected="false">Messages</button>
+                <button class="nav-link" id="shipping-tab" data-bs-toggle="pill" data-bs-target="#shipping" type="button" role="tab" aria-controls="shipping" aria-selected="false">
+                    Doručenie
+                </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="settings-tab" data-bs-toggle="pill" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Settings</button>
+                <button class="nav-link" id="shipping_time-tab" data-bs-toggle="pill" data-bs-target="#shipping_time" type="button" role="tab" aria-controls="shipping_time" aria-selected="false">
+                    Spôsob platby
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="billing-tab" data-bs-toggle="pill" data-bs-target="#billing" type="button" role="tab" aria-controls="billing" aria-selected="false">
+                    Spôsob platby
+                </button>
             </li>
         </ul>
         
@@ -74,17 +87,29 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-                PROFILE
+            <div class="tab-pane" id="preferences" role="tabpanel" aria-labelledby="preferences-tab" tabindex="0">
+                <div class="d-flex flex-wrap justify-content-center">
+                    <input type="checkbox" class="btn-check" id="id" autocomplete="off">
+                    {% for attr in form.food_attributes %}
+                        <input type="checkbox" class="btn-check" id="{{ attr.id_for_label }}" autocomplete="off">
+                        <label class="btn btn-outline-primary m-1 px-3 py-1 rounded-4" for="{{ attr.id_for_label }}">
+                            {{ attr.choice_label }}
+                        </label>
+                    {% endfor %}
+                </div>
             </div>
-            <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab" tabindex="0">
-                MESSAGES
+            <div class="tab-pane" id="shipping" role="tabpanel" aria-labelledby="shipping-tab" tabindex="0">
+                Tu sa zadá adresa na doručovanie jedla
             </div>
-            <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab" tabindex="0">
-                SETTINGS
+            <div class="tab-pane" id="shipping_time" role="tabpanel" aria-labelledby="shipping_time-tab" tabindex="0">
+                Zvolte si pravidelný čas doručovania
+            </div>
+            <div class="tab-pane" id="billing" role="tabpanel" aria-labelledby="billing-tab" tabindex="0">
+                Zvolte si spôsob platby
             </div>
         </div>
 
+        <!--
 
         {% for elem in form %}
             
@@ -122,8 +147,9 @@
             </div>
             
         {% endfor %}
+    
         <button class="btn btn-success" type="submit">Vytvor konto</button>
     </form>
-
+-->
 
 {% endblock %}
