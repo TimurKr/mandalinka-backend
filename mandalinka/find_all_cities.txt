@@ -1,1 +1,0 @@
-cat OBCE.csv | awk -F "," '{print $1}' | uniq | tail +2  > obce.txt

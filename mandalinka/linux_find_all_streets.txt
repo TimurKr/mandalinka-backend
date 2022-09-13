@@ -1,1 +1,0 @@
-cat ULICE.csv | awk -F "," '{print $1}'| tail +2 | sed "s/\. /\./g" | sort | uniq > ulice.txt
