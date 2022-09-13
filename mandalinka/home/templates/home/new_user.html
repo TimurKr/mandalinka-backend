@@ -88,7 +88,15 @@
                 </div>
             </div>
             <div class="tab-pane" id="preferences" role="tabpanel" aria-labelledby="preferences-tab" tabindex="0">
-                {{ form.food_attributes }}
+                <div class="d-flex flex-wrap justify-content-center">
+                    <input type="checkbox" class="btn-check" id="id" autocomplete="off">
+                    {% for attr in form.food_attributes %}
+                        <input type="checkbox" class="btn-check" id="{{ attr.id_for_label }}" autocomplete="off">
+                        <label class="btn btn-outline-primary m-1 px-3 py-1 rounded-4" for="{{ attr.id_for_label }}">
+                            {{ attr.choice_label }}
+                        </label>
+                    {% endfor %}
+                </div>
             </div>
             <div class="tab-pane" id="shipping" role="tabpanel" aria-labelledby="shipping-tab" tabindex="0">
                 Tu sa zadá adresa na doručovanie jedla
@@ -101,6 +109,7 @@
             </div>
         </div>
 
+        <!--
 
         {% for elem in form %}
             
@@ -141,6 +150,6 @@
     
         <button class="btn btn-success" type="submit">Vytvor konto</button>
     </form>
-
+-->
 
 {% endblock %}
