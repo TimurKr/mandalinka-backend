@@ -6,12 +6,16 @@ from django.dispatch import receiver
 
 
 # Create your models here.
+class Food_attr(models.Model):
+    attr = models.CharField()
 
 class UserProfile(models.Model):
 
     user_name = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
     email = models.EmailField(max_length=254,blank=False)
     phone = models.CharField(max_length=20,blank=False)
+
+    food_preferences = models.ManyToManyField(Food_attr)
 
     street = models.CharField(max_length=150,blank=True)
     house_no = models.CharField(max_length=8, blank=False)
