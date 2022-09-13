@@ -19,6 +19,9 @@ class UserProfile(models.Model):
     city = models.CharField(max_length=100,blank=False)
     postal = models.CharField(max_length=5,blank=False)
     country = models.CharField(max_length=2, blank=False)
+
+    newsletter = models.BooleanField(default=False)
+    terms_conditions = models.BooleanField(default=False)
     
     def __unicode__(self):  # __str__
         return unicode(self.user_name)
