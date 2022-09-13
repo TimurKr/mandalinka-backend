@@ -33,10 +33,11 @@ class SignupForm(UserCreationForm):
     lastname = forms.CharField(label="Priezvisko", widget=forms.TextInput(charfield_widget))
     email = forms.EmailField(label="Email", max_length=254, widget=forms.EmailInput(charfield_widget))
 
-    newsletter = forms.BooleanField(label="Súhlasíte so zasielaním propagačných emailov?",
+    newsletter = forms.BooleanField(label="newsletter",
                                     help_text="Súhlasíte so zasielaním propagačných emailov?", 
                                     widget=forms.CheckboxInput(checkbox_widget))
-    terms_conditions = forms.BooleanField(help_text="Súhlasíte s <a hrf='#Obchodné podmienky'>obchodnými podmienkami</a>?",
+    terms_conditions = forms.BooleanField(label="terms_conditions",
+                                          help_text="Súhlasíte s <a hrf='#Obchodné podmienky'>obchodnými podmienkami</a>?",
                                           required=True)
  
 
