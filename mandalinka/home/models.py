@@ -46,20 +46,12 @@ def save_user_profile(sender, instance, **kwargs):
 
 User._meta.get_field('email')._unique = True
 
-class Districts(models.Model):
-    district = models.CharField(max_length=40)
-
-class Cities(models.Model):
-    city = models.CharField(max_length=100)
-
-class PostalCodes(models.Model):
-    code = models.CharField(max_length=5)
-
 class Streets(models.Model):
     street = models.CharField(max_length=150)
 
 class CityDistrictPostal(models.Model):
     city = models.CharField(max_length=150)
+    street = models.CharField(max_length=100)
     district = models.CharField(max_length=150)
     postal = models.CharField(max_length=150)
     country = models.CharField(blank=False, max_length=3)
