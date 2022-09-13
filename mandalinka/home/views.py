@@ -86,6 +86,7 @@ def new_user_view(request):
             userProf.postal = form.cleaned_data.get("postal")
             userProf.country = form.cleaned_data.get("country")
             userProf.food_preferences.set(form.cleaned_data.get("food_attr"))
+            userProf.alergies.set(form.cleaned_data.get("alergies"))
             userProf.save()
             #send confirmation email
             mail_subject = 'Activate your user account.'

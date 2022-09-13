@@ -1,15 +1,15 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from home.models import CityDistrictPostal, Districts, Cities, PostalCodes
 from django import forms
 from django.core.exceptions import ValidationError
-from home.models import UserProfile, FoodAttribute
 from django.utils.safestring import mark_safe
+from home.models import CityDistrictPostal, Districts, Cities, PostalCodes, UserProfile, FoodAttribute
+from recepty.models import Alergen
 
 charfield_widget = {'class': 'form-control opacity-75 rounded-2 shadow border-dark',
-                    'placeholder': 'useless_placeholder'}
+                    'placeholder': 'Password'}
 checkbox_widget = {'class':'form-check-input'}
-attributes_select_widget = {'class':'btn btn-primary', 'data-bs-toggle':'button'}
+select_widget = {'class':'form-select form-select opacity-75 rounded-2 shadow border-dark'}
 
 def merge(dict1, dict2):
     return {**dict1, **dict2} 
@@ -25,6 +25,9 @@ class SignupForm(UserCreationForm):
         self.fields['username'].label = "Prihlasovacie meno"
         self.fields['username'].help_text = 'Username (150 characters or fewer, letters, digits and @/./+/-/_ only)'
         self.fields['username'].widget = forms.TextInput(charfield_widget)
+        self.fields['password1'].widget = forms.PasswordInput(attrs=charfield_widget)
+        self.fields['password2'].widget = forms.PasswordInput(attrs=charfield_widget)
+
 
     COUNTRIES = (
         ("CZ","SK"),
@@ -33,25 +36,31 @@ class SignupForm(UserCreationForm):
     firstname = forms.CharField(label="Meno", widget=forms.TextInput(charfield_widget))
     lastname = forms.CharField(label="Priezvisko", widget=forms.TextInput(charfield_widget))
     email = forms.EmailField(label="Email", max_length=254, widget=forms.EmailInput(charfield_widget))
+    phone = forms.CharField(min_length=5, label="Telefónne číslo", help_text='Môže byť použité počas doručovania', required=True, widget=forms.TextInput(merge(charfield_widget,{'value':'+421'})))
 
     newsletter = forms.BooleanField(label="Súhlasíte so zasielaním propagačných emailov?",
                                     help_text="Súhlasíte so zasielaním propagačných emailov?", 
                                     widget=forms.CheckboxInput(checkbox_widget))
-    terms_conditions = forms.BooleanField(help_text="Súhlasíte s <a hrf='#Obchodné podmienky'>obchodnými podmienkami</a>?",
-                                          required=True)
+    terms_conditions = forms.BooleanField(label="Súhlasíte so obchodnými podmienkami?",
+                                            widget=forms.CheckboxInput(checkbox_widget),
+                                            required=True)
     
+    num_portions = forms.ChoiceField(label="Portions", help_text="Koľko porcí z každého jedla chcete dostávať?",
+                                        choices=UserProfile.portions_options,
+                                        widget=forms.RadioSelect())
     food_attributes = forms.ModelMultipleChoiceField(label="Attributes", help_text="Zvolte obľúbené atribúty", 
                                                 queryset=FoodAttribute.objects.all(), 
                                                 widget=forms.CheckboxSelectMultiple())
+    alergies = forms.ModelMultipleChoiceField(label="Alergens", help_text="Zvolte vaše alergie", 
+                                                queryset=Alergen.objects.all(), 
+                                                widget=forms.CheckboxSelectMultiple())
 
-    phone = forms.CharField(min_length=5, label="Telefónne číslo", help_text='* Môže byť použité počas doručovania', required=True, widget=forms.TextInput(merge(charfield_widget,{'value':'+421'})))
-
-    street = forms.CharField(label="street",help_text='Ulica:',required=False, widget=forms.TextInput(attrs={'list':'streets'}))
-    house_no = forms.CharField(label="house_no",help_text='Číslo domu:', required=True)
-    district = forms.CharField(label="district",help_text='Okres:',required=True, widget=forms.TextInput(attrs={'list':'districts'}))
-    city = forms.CharField(label="city",help_text='Mesto:',required=True, widget=forms.TextInput(attrs={'list':'cities'}))
-    postal = forms.CharField(min_length=5, max_length=5,label="postal", help_text='PSČ:',required=True, widget=forms.TextInput(attrs={'list':'postal_codes'}))
-    country = forms.ChoiceField(label="country",choices=COUNTRIES, required=True, help_text='Krajina:')
+    street = forms.CharField(label="Ulica",required=False, widget=forms.TextInput(merge(charfield_widget,{'list':'streets'})))
+    house_no = forms.CharField(label="Číslo domu", required=True, widget=forms.TextInput(charfield_widget))
+    district = forms.CharField(label="Mestská časť",required=True, widget=forms.TextInput(merge(charfield_widget, {'list':'districts'})))
+    city = forms.CharField(label="Mesto",required=True, widget=forms.TextInput(merge(charfield_widget,{'list':'cities'})))
+    postal = forms.CharField(min_length=5, max_length=5,label="PSČ",required=True, widget=forms.TextInput(merge(charfield_widget,{'list':'postal_codes'})))
+    country = forms.ChoiceField(label="Krajina",choices=COUNTRIES, required=True, widget=forms.Select(select_widget))
     
     class Meta:
         model = User
@@ -59,10 +68,12 @@ class SignupForm(UserCreationForm):
                 "firstname",
                 "lastname", 
                 "email",
+                "phone",
                 "newsletter",
                 "terms_conditions",
+                "num_portions",
                 "food_attributes",
-                "phone",
+                "alergies",
                 "street",
                 "house_no",
                 "city",

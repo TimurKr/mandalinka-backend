@@ -3,34 +3,6 @@
   font-family: "Baskerville";
   src: url("./baskerville-cufonfonts-webfont/Baske1.woff");
 }
-body.login {
-  background: #f79d00; /* fallback for old browsers */ /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(45deg, #217602, #f79d00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-}
-
-div.login-window {
-  max-width: 40rem;
-  width: 85%;
-  margin-left: auto;
-  margin-right: auto;
-  background: #f79d00; /* fallback for old browsers */ /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(225deg, #217602, #f79d00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-}
-
-.alert:empty {
-  display: none;
-}
-
-div.scrollmenu {
-  background-color: #217602;
-  overflow: auto;
-  white-space: nowrap;
-}
-
-div.scrollmenu div {
-  display: inline-block;
-}
-
 /*!
  * Bootstrap  v5.2.0 (https://getbootstrap.com/)
  * Copyright 2011-2022 The Bootstrap Authors
@@ -10953,4 +10925,31 @@ textarea.form-control-lg {
   .d-print-none {
     display: none !important;
   }
+}
+body.login {
+  background: #f79d00; /* fallback for old browsers */ /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(0deg, #217602, #f79d00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+div.login-window {
+  max-width: 40rem;
+  width: 85%;
+  margin-left: auto;
+  margin-right: auto;
+  background: #f79d00; /* fallback for old browsers */ /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(225deg, #217602, #f79d00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.alert:empty {
+  display: none;
+}
+
+div.scrollmenu {
+  background-color: #217602;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+div.scrollmenu div {
+  display: inline-block;
 }/*# sourceMappingURL=style.css.map */

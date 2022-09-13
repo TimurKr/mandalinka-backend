@@ -2,7 +2,7 @@ from enum import unique
 from pyexpat import model
 from django.db import models
 from django.core.validators import RegexValidator
-from home.models import FoodAttribute
+from home.models import FoodAttribute, Alergen
 
 # Create your models here.
 # class Address(models.Model):
@@ -30,14 +30,6 @@ from home.models import FoodAttribute
 # class Supplier(models.Model):
 #     title = models.CharField(max_length=63, unique=True, primary_key=True, verbose_name="Názov", help_text="Názov dodávatela")
 #     contact = models.ForeignKey(Address, on_delete=models.PROTECT, blank=True, help_text="Zvoľte kontakt na dodávatela")
-
-
-class Alergen(models.Model):
-    title = models.CharField(max_length=63, verbose_name="Alergén")
-    code = models.IntegerField(primary_key=True, verbose_name="Kód alergénu")
-
-    def __str__(self):
-        return f"{self.code}: {self.title}"
 
 
 class IngredientInstance(models.Model):
