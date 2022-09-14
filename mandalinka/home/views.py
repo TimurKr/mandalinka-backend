@@ -113,6 +113,8 @@ def new_user_view(request):
             })
     else:
         form = SignupForm()
+
+    print(form.errors)
     districts = CityDistrictPostal.objects.values_list("district")
     cities = CityDistrictPostal.objects.values_list("city")
     postal_codes = CityDistrictPostal.objects.values_list("postal")

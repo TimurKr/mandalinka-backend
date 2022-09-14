@@ -61,7 +61,7 @@ class SignupForm(UserCreationForm):
     house_no = forms.CharField(label="Číslo domu", required=True, widget=forms.TextInput(charfield_widget))
     district = forms.CharField(label="Mestská časť",required=True, widget=forms.TextInput(merge(charfield_widget, {'list':'districts'})))
     city = forms.CharField(label="Mesto",required=True, widget=forms.TextInput(merge(charfield_widget,{'list':'cities'})))
-    postal = forms.CharField(min_length=5, max_length=5,label="PSČ",required=True, widget=forms.TextInput(merge(charfield_widget,{'list':'postal_codes'})))
+    postal = forms.CharField(min_length=5, max_length=6,label="PSČ",required=True, widget=forms.TextInput(merge(charfield_widget,{'list':'postal_codes'})))
     country = forms.ChoiceField(label="Krajina",choices=COUNTRIES, required=True, widget=forms.Select(select_widget))
     
     class Meta:

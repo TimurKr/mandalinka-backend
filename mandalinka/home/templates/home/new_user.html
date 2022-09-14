@@ -1,45 +1,60 @@
 {% extends "home/login_layout.html" %}
 
 {% block title %}
-    Zaregistrujte sa!
+Zaregistrujte sa!
 {% endblock %}
 
 {% block body %}
 
-<div class="alert alert-danger" >{{ form.non_field_errors }}</div>
-
-<!-- Nav tabs -->
-
-<ul class="nav nav-pills nav-fill my-1 sticky-top" id="myTab" role="tablist">
-    <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="general-tab" data-bs-toggle="pill" data-bs-target="#general" type="button" role="tab" aria-controls="general" aria-selected="true">
-            Všeobecné údaje
-        </button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="preferences-tab" data-bs-toggle="pill" data-bs-target="#preferences" type="button" role="tab" aria-controls="profile" aria-selected="false">
-            Preferencie
-        </button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="shipping-tab" data-bs-toggle="pill" data-bs-target="#shipping" type="button" role="tab" aria-controls="shipping" aria-selected="false">
-            Doručenie
-        </button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="shipping_time-tab" data-bs-toggle="pill" data-bs-target="#shipping_time" type="button" role="tab" aria-controls="shipping_time" aria-selected="false">
-            Čas doručenia
-        </button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="billing-tab" data-bs-toggle="pill" data-bs-target="#billing" type="button" role="tab" aria-controls="billing" aria-selected="false">
-            Spôsob platby
-        </button>
-    </li>
-</ul>
-
-<form class="frm p-1" action="{% url 'home:new_user' %}" method="post">
+<form class="frm p-1 needs-validation" novalidate action="{% url 'home:new_user' %}" method="post">
     {% csrf_token %}
+
+
+    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+
+
+    <!-- Nav tabs -->
+
+    <ul class="nav nav-pills nav-fill my-1 sticky-top" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active {% if form.firstname.errors or form.lastname.errors or form.email.errors or form.phone.error or form.password1.errors or form.password2.errors or form.terms_conditions.errors %} 
+                                            border border-red 
+                                        {% endif %}" id="general-tab" data-bs-toggle="pill" data-bs-target="#general"
+                type="button" role="tab" aria-controls="general" aria-selected="true">
+                Všeobecné údaje
+            </button>
+
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link {% if form.num_portions.errors or form.food_attributes.errors or form.alergies.errors %} 
+                                    border border-danger 
+                                {% endif %}" id="preferences-tab" data-bs-toggle="pill" data-bs-target="#preferences"
+                type="button" role="tab" aria-controls="profile" aria-selected="false">
+                Preferencie
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link {% if form.streer.errors or form.house_no.errors or form.district.errors or form.city.errors or form.postal.errors or form.country.errors %} 
+                                    border border-danger 
+                                {% endif %}" id="shipping-tab" data-bs-toggle="pill" data-bs-target="#shipping"
+                type="button" role="tab" aria-controls="shipping" aria-selected="false">
+                Doručenie
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="shipping_time-tab" data-bs-toggle="pill"
+                data-bs-target="#shipping_time" type="button" role="tab" aria-controls="shipping_time"
+                aria-selected="false">
+                Čas doručenia
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="billing-tab" data-bs-toggle="pill" data-bs-target="#billing"
+                type="button" role="tab" aria-controls="billing" aria-selected="false">
+                Spôsob platby
+            </button>
+        </li>
+    </ul>
 
     <!-- Tab panes -->
 
@@ -57,8 +72,9 @@
                         {{ form.firstname.label }}
                     </label>
                     <p class="my-0">{{ form.firstname.help_text }}</p>
+
                 </div>
-                
+
                 <!-- Priezvisko -->
 
                 <div class="col-sm-6 form-floating">
@@ -68,7 +84,9 @@
                     </label>
                     <p class="my-0">{{ form.lastname.help_text }}</p>
                 </div>
-                
+
+
+
                 <!-- Username -->
 
                 <div class="col-12 form-floating">
@@ -78,7 +96,8 @@
                     </label>
                     <p class="my-0">{{ form.username.help_text }}</p>
                 </div>
-                
+
+
                 <!-- Email -->
 
                 <div class="col-12 form-floating">
@@ -88,7 +107,7 @@
                     </label>
                     <p class="my-0">{{ form.email.help_text }}</p>
                 </div>
-                
+
                 <!-- Telefón -->
 
                 <div class="col-12 form-floating">
@@ -100,7 +119,7 @@
                         {{ form.phone.help_text }}
                     </p>
                 </div>
-                
+
                 <!-- Heslá -->
 
                 <div class="col-12 form-floating">
@@ -111,8 +130,9 @@
                     <p class="my-0">
                         {{ form.password1.help_text }}
                     </p>
+                    <div class="alert alert-danger">{{ form.password1.errors }}</div>
                 </div>
-                
+
                 <div class="col-12 form-floating">
                     {{ form.password2 }}
                     <label for="{{ form.password2.id_for_label }}">
@@ -121,6 +141,8 @@
                     <p class="my-0">
                         {{ form.password2.help_text }}
                     </p>
+                    <div class="alert alert-danger">{{ form.password2.errors }}</div>
+
                 </div>
 
                 <!-- Newsletter -->
@@ -131,7 +153,7 @@
                         {{ form.newsletter.label }}
                     </label>
                 </div>
-                
+
                 <!-- Terms & Conditions -->
 
                 <div class="col-12 form-check form-switch mx-2">
@@ -143,7 +165,7 @@
 
             </div>
         </div>
-        
+
         <!-- Panel Preferences -->
 
         <div class="tab-pane" id="preferences" role="tabpanel" aria-labelledby="preferences-tab" tabindex="0">
@@ -151,48 +173,57 @@
             <!-- Portion size -->
             <div class="row mt-3">
                 <h3 class="col-8 p-2 align-middle">
-                        Koľko vás bude pravidelne jedávať?
+                    Koľko vás bude pravidelne jedávať?
                 </h3>
                 <div class="btn-group col-4 my-2" role="group" aria-label="radio toggle">
                     {% for attr in form.num_portions %}
-                        <input type="radio" class="btn-check" name='portions' id="{{ attr.id_for_label }}" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="{{ attr.id_for_label }}">
-                            {{ attr.choice_label }}
-                        </label>
+                    <input type="radio" class="btn-check" name='portions' id="{{ attr.id_for_label }}"
+                        autocomplete="off">
+                    <label class="btn btn-outline-primary" for="{{ attr.id_for_label }}">
+                        {{ attr.choice_label }}
+                    </label>
                     {% endfor %}
+                    <div class="alert alert-danger">{{ form.num_portions.errors }}</div>
+
                 </div>
             </div>
-            
+
             <p class="fw-lighter mb-2">
-                <svg class="bi bi-info-circle pb-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                <svg class="bi bi-info-circle pb-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                    fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                    <path
+                        d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
                 </svg>
                 Automaticky vám bude objednané zvolené množstvo porcií, vždy si ich však viete manuálne zmeniť
             </p>
-                
-            
+
+
             <!-- Attributes -->
 
             <h3 class="mt-3">
                 Zvoľte všetky položky, ktoré máte radi!
             </h3>
             <p class="fw-lighter mb-2">
-                <svg class="bi bi-info-circle pb-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                <svg class="bi bi-info-circle pb-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                    fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                    <path
+                        d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
                 </svg>
                 Na základe tohto výberu vám automaticky zvolíme jedlá, ktoré vám budú chutiť.
                 Vždy si však viete objednávku manuálne upraviť
             </p>
             <div class="d-flex flex-wrap justify-content-center">
                 {% for attr in form.food_attributes %}
-                    <input type="checkbox" class="btn-check" id="{{ attr.id_for_label }}" autocomplete="off">
-                    <label class="btn btn-outline-primary m-1 px-3 py-1 rounded-2" for="{{ attr.id_for_label }}">
-                        {{ attr.choice_label }}
-                    </label>
+                <input type="checkbox" class="btn-check" id="{{ attr.id_for_label }}" autocomplete="off">
+                <label class="btn btn-outline-primary m-1 px-3 py-1 rounded-2" for="{{ attr.id_for_label }}">
+                    {{ attr.choice_label }}
+                </label>
                 {% endfor %}
             </div>
+            <div class="alert alert-danger">{{ form.food_attributes.errors }}</div>
+
 
             <!-- Alergies -->
 
@@ -200,19 +231,21 @@
                 Máte nejaké alergie, o ktorých by sme mali vedieť?
             </h3>
             <p class="fw-lighter mb-2">
-                <svg  class="bi bi-info-circle pb-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                <svg class="bi bi-info-circle pb-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                    fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                    <path
+                        d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
                 </svg>
                 Zvoľte všetky alergény, jedlá s nimi pre vás nikdy automaticky nezvolíme a upozorníme vás,
                 ak si ich budete chcieť objednať manuálne.
             </p>
             <div class="d-flex flex-wrap justify-content-center">
                 {% for attr in form.alergies %}
-                    <input type="checkbox" class="btn-check" id="{{ attr.id_for_label }}" autocomplete="off">
-                    <label class="btn btn-outline-primary m-1 px-3 py-1 rounded-2" for="{{ attr.id_for_label }}">
-                        {{ attr.choice_label }}
-                    </label>
+                <input type="checkbox" class="btn-check" id="{{ attr.id_for_label }}" autocomplete="off">
+                <label class="btn btn-outline-primary m-1 px-3 py-1 rounded-2" for="{{ attr.id_for_label }}">
+                    {{ attr.choice_label }}
+                </label>
                 {% endfor %}
             </div>
         </div>
@@ -220,7 +253,7 @@
         <!-- Adresa -->
 
         <div class="tab-pane" id="shipping" role="tabpanel" aria-labelledby="shipping-tab" tabindex="0">
-            
+
             <h3>Zadajte adresu doručenia</h3>
             <div class="row g-3 my-2">
 
@@ -229,15 +262,15 @@
                 <div class="col-sm-8 form-floating">
 
                     {{ form.street }}
-                    
+
                     <label for="{{ form.street.id_for_label }}">
                         {{ form.street.label }}
                     </label>
                     <p class="my-0">{{ form.street.help_text }}</p>
-                    
+
                     <datalist id="streets">
                         {% for street in streets %}
-                            <option value="{{ street.street }}"></option>
+                        <option value="{{ street.street }}"></option>
                         {% endfor %}
                     </datalist>
                 </div>
@@ -253,22 +286,22 @@
                     </label>
                     <p class="my-0">{{ form.house_no.help_text }}</p>
                 </div>
-                
+
                 <!-- District -->
 
                 <div class="col-sm-6 form-floating">
 
                     {{ form.district }}
-                    
+
                     <label for="{{ form.district.id_for_label }}">
                         {{ form.district.label }}
                     </label>
                     <p class="my-0">{{ form.district.help_text }}</p>
-                    
+
                     <datalist id="districts">
                         {% for district in districts %}
                         <option value="{{ district.district }}"></option>
-                    {% endfor %}
+                        {% endfor %}
                     </datalist>
                 </div>
 
@@ -277,15 +310,15 @@
                 <div class="col-sm-6 form-floating">
 
                     {{ form.postal }}
-                    
+
                     <label for="{{ form.postal.id_for_label }}">
                         {{ form.postal.label }}
                     </label>
                     <p class="my-0">{{ form.postal.help_text }}</p>
-                    
+
                     <datalist id="postal_codes">
                         {% for postal in postal_codes %}
-                            <option value="{{ postal.code }}"></option>
+                        <option value="{{ postal.code }}"></option>
                         {% endfor %}
                     </datalist>
                 </div>
@@ -295,25 +328,25 @@
                 <div class="col-sm-8 form-floating">
 
                     {{ form.city }}
-                    
+
                     <label for="{{ form.city.id_for_label }}">
                         {{ form.city.label }}
                     </label>
                     <p class="my-0">{{ form.city.help_text }}</p>
-                    
+
                     <datalist id="cities">
                         {% for city in cities %}
-                            <option value="{{ city.city }}"></option>
+                        <option value="{{ city.city }}"></option>
                         {% endfor %}
                     </datalist>
                 </div>
 
                 <!-- Krajina -->
 
-                <div class="col-sm-4 form-floating">    
+                <div class="col-sm-4 form-floating">
                     {{ form.country }}
                 </div>
-    
+
             </div>
         </div>
 
@@ -374,7 +407,6 @@
     {% endfor %}
 
     <button class="btn btn-success" type="submit">Vytvor konto</button>
-</form>
 -->
-
+</form>
 {% endblock %}
