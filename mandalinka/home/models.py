@@ -67,3 +67,4 @@ class CityDistrictPostal(models.Model):
     district = models.CharField(max_length=150)
     postal = models.CharField(max_length=150)
     country = models.CharField(blank=False, max_length=3)
+    street = models.CharField(blank=False, max_length=3)
