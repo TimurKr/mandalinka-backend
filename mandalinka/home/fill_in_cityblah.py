@@ -1,4 +1,4 @@
-from home.models import CityDistrictPostal
+from models import CityDistrictPostal
 
 #first run 'bash get_cities_csv.sh [filename(optional)]' to create a csv file and then change the open filename in the following script
 

@@ -18,7 +18,7 @@ Zaregistrujte sa!
     <ul class="nav nav-pills nav-fill my-1 sticky-top" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active {% if form.firstname.errors or form.lastname.errors or form.email.errors or form.phone.error or form.password1.errors or form.password2.errors or form.terms_conditions.errors %} 
-                                            border border-red 
+                                            border border-danger 
                                         {% endif %}" id="general-tab" data-bs-toggle="pill" data-bs-target="#general"
                 type="button" role="tab" aria-controls="general" aria-selected="true">
                 Všeobecné údaje
@@ -71,8 +71,6 @@ Zaregistrujte sa!
                     <label for="{{ form.firstname.id_for_label }}">
                         {{ form.firstname.label }}
                     </label>
-                    <p class="my-0">{{ form.firstname.help_text }}</p>
-
                 </div>
 
                 <!-- Priezvisko -->
@@ -82,12 +80,11 @@ Zaregistrujte sa!
                     <label for="{{ form.lastname.id_for_label }}">
                         {{ form.lastname.label }}
                     </label>
-                    <p class="my-0">{{ form.lastname.help_text }}</p>
                 </div>
 
 
 
-                <!-- Username -->
+                <!-- Username 
 
                 <div class="col-12 form-floating">
                     {{ form.username }}
@@ -96,7 +93,7 @@ Zaregistrujte sa!
                     </label>
                     <p class="my-0">{{ form.username.help_text }}</p>
                 </div>
-
+            -->
 
                 <!-- Email -->
 
@@ -121,7 +118,7 @@ Zaregistrujte sa!
                 </div>
 
                 <!-- Heslá -->
-
+                
                 <div class="col-12 form-floating">
                     {{ form.password1 }}
                     <label for="{{ form.password1.id_for_label }}">
@@ -135,7 +132,7 @@ Zaregistrujte sa!
 
                 <div class="col-12 form-floating">
                     {{ form.password2 }}
-                    <label for="{{ form.password2.id_for_label }}">
+                    <label class="{% if form.password2.errors %} is.invalid {% endif %}" for="{{ form.password2.id_for_label }}">
                         {{ form.password2.label }}
                     </label>
                     <p class="my-0">
@@ -204,7 +201,7 @@ Zaregistrujte sa!
             <h3 class="mt-3">
                 Zvoľte všetky položky, ktoré máte radi!
             </h3>
-            <p class="fw-lighter mb-2">
+            <p class="fw-lighter mb-2 ">
                 <svg class="bi bi-info-circle pb-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                     fill="currentColor" viewBox="0 0 16 16">
                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -222,7 +219,7 @@ Zaregistrujte sa!
                 </label>
                 {% endfor %}
             </div>
-            <div class="alert alert-danger">{{ form.food_attributes.errors }}</div>
+
 
 
             <!-- Alergies -->
@@ -409,4 +406,24 @@ Zaregistrujte sa!
     <button class="btn btn-success" type="submit">Vytvor konto</button>
 -->
 </form>
+
+<script>
+(() => {
+    'use strict'
+  
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.querySelectorAll('.needs-validation')
+  
+    // Loop over them and prevent submission
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+  
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })()</script>
 {% endblock %}

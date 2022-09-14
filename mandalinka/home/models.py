@@ -27,8 +27,8 @@ class UserProfile(models.Model):
     email = models.EmailField(max_length=254,blank=False)
     phone = models.CharField(max_length=20,blank=False)
 
-    food_preferences = models.ManyToManyField(FoodAttribute, related_name="users")
-    alergies = models.ManyToManyField(Alergen, related_name="users")
+    food_preferences = models.ManyToManyField(FoodAttribute, related_name="users", blank=True)
+    alergies = models.ManyToManyField(Alergen, related_name="users", blank=True)
     portions_options = [(2, "2"), (4, "4"), (6, "6")]
     num_portions = models.IntegerField(default=2, choices=portions_options, blank=False)
 

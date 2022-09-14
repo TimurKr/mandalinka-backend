@@ -68,16 +68,17 @@ def new_user_view(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
+            email = form.cleaned_data.get('email')
             user = form.save(commit=False)
             user.is_active = False
             user.first_name = form.cleaned_data.get('firstname')
             user.last_name = form.cleaned_data.get('lastname')
+            user.email = email
             user.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             print(user.id)
             userProf = UserProfile.objects.get(user_name_id=user.id)
-            email = form.cleaned_data.get('email')
             userProf.phone = form.cleaned_data.get("phone")
             userProf.street = form.cleaned_data.get("street")
             userProf.house_no =form.cleaned_data.get("house_no")
@@ -107,14 +108,28 @@ def new_user_view(request):
                     received activation link to confirm and complete the registration. <b>Note:</b> Check your spam folder.'
             else:
                 mess= f'Problem sending confirmation email to {mail}, check if you typed it correctly.'
+
             return render(request, "home/home.html", {
                 "message": mark_safe(mess),
                 "message_type": "success",
             })
+
+        for obj in form.fields:
+            field_names = list(form.errors.as_data())
+            print(obj)
+            if obj == "password1" or obj == "password2":
+                continue
+            elif obj in field_names:
+                print(obj, form.errors[obj].as_data())
+                form.fields[obj].widget.attrs["class"] = form.fields[obj].widget.attrs.get("class","") + " is-invalid"
+            else:
+                form.fields[obj].widget.attrs["class"] = form.fields[obj].widget.attrs.get("class","") + " is-valid"
+    
     else:
         form = SignupForm()
 
-    print(form.errors)
+    # print(form.errors)
+    
     districts = CityDistrictPostal.objects.values_list("district")
     cities = CityDistrictPostal.objects.values_list("city")
     postal_codes = CityDistrictPostal.objects.values_list("postal")
