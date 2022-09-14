@@ -58,7 +58,7 @@ class UserProfile(models.Model):
     house_no = models.CharField(max_length=8, blank=False)
     district = models.CharField(max_length=50,blank=False)
     city = models.CharField(max_length=100,blank=False)
-    postal = models.CharField(max_length=5,blank=False)
+    postal = models.CharField(max_length=6,blank=False)
     country = models.CharField(max_length=2, blank=False)
 
     newsletter = models.BooleanField(default=False)
@@ -89,4 +89,4 @@ class CityDistrictPostal(models.Model):
     district = models.CharField(max_length=150)
     postal = models.CharField(max_length=150)
     country = models.CharField(blank=False, max_length=3)
-    street = models.CharField(blank=False, max_length=3)
+

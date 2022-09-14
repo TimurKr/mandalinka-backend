@@ -7,7 +7,7 @@ $my-color5: #ECC8AF;
 $my-color6: #E3A487;
 $my-color7: #D9805F;
 $my-color8: #D05F39;
-$primary: $my-color7;
+$primary: $my-color8;
 $secondary: $my-color1;
 $h1-font-size:  5rem;
 
@@ -25,10 +25,10 @@ body.login{
     background: $primary;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to left, $secondary, $primary);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(0deg, $secondary, $primary); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background-image: radial-gradient(circle,#D05F39 0%, #E3A487 100%);
+    background-image: radial-gradient(circle,$white 30%, #FF9B42 100%);
 }
     
-    
+ 
     
 div.login-window {
     max-width: 40rem;
@@ -37,7 +37,9 @@ div.login-window {
     margin-right: auto;
     background: $primary;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to left, $secondary, $primary);  /* Chrome 10-25, Safari 5.1-6 */
-    background-image: linear-gradient(to top,#BFAB96 0%, #ECC8AF 100%);
+    background-image: linear-gradient(to top,$my-color4 0%, $my-color2 100%);
+    background: None;
+    background-image: None;
 }
 
 .alert:empty{
