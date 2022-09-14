@@ -11,8 +11,9 @@ else
 	echo "Writing into file $file";
 fi
 
-echo "OBEC, ULICA, PSC, DPOSTA, OKRES" > ${file}
+echo "OBEC; ULICA; PSC; DPOSTA; OKRES" > ${file}
 
 for region in "banskobystricky"  "bratislavsky"  "kosicky"  "nitriansky"  "presovsky"  "trnciansky"  "trnavsky"  "zilinsky"; do
-	curl www.psc.vsetko.info/$region.php  | tr -d "\r\n" | grep -o "<tbody>.*</tbody>" | sed "s#</tr>#</tr>|#g" | tr "|" "\n"  | sed 's/    //g' | sed 's/<tr><td>//g' | sed 's#</td><td>#,#g' | sed 's#</td>  </tr>##g' | sed "s/<t*body>//g" | sed "s#</tbody>##g" >> ${file};
+	curl www.psc.vsetko.info/$region.php  | tr -d "\r\n" | grep -o "<tbody>.*</tbody>" | sed "s#</tr>#</tr>|#g" | tr "|" "\n"  | sed 's/    //g' | sed 's/<tr><td>//g' | sed 's#</td><td>#;#g' | sed 's#</td>  </tr>##g' | sed "s/<t*body>//g" | sed "s#</tbody>##g"  >> ${file};
 done
+sed -i "/^$/d" $file

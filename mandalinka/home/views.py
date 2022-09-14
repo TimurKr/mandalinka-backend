@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 
 from home.forms import *
-from home.models import Cities, Districts, PostalCodes, Streets
+from home.models import Streets
 
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
@@ -113,9 +113,9 @@ def new_user_view(request):
             })
     else:
         form = SignupForm()
-    districts = Districts.objects.all()
-    cities = Cities.objects.all()
-    postal_codes = PostalCodes.objects.all()
+    districts = CityDistrictPostal.objects.values_list("district")
+    cities = CityDistrictPostal.objects.values_list("city")
+    postal_codes = CityDistrictPostal.objects.values_list("postal")
     streets = Streets.objects.all()
     return render(request, 'home/new_user.html',
                     {'form': form,
