@@ -43,6 +43,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'recepty',
     'home',
+    'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -135,3 +136,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 GOOGLE_API_KEY = 'AIzaSyAqhtCRKVAGeLaqgIBqkxM57jPFMv1NVh8'
 AUTHENTICATION_BACKENDS = ('home.models.EmailBackend',)
+
+CRISPY_TEMPLATE_PACK = 'uni_form'
