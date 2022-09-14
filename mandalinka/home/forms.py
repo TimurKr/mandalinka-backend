@@ -118,7 +118,7 @@ class SignupForm(UserCreationForm):
     def clean_postal(self):
         data = self.cleaned_data['postal']
         #some streets have no postal codes in Bratislava (Adlerova, Alexyho...) - user should leave '-'
-        if not CityDistrictPostal.objects.filter(code=data).exists() and data != '-':
+        if not CityDistrictPostal.objects.filter(postal=data).exists() and data != '-':
             raise ValidationError("Unknown postal code - make sure you choose from given list and use special characters")
         return data
 
