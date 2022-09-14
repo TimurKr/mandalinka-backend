@@ -114,14 +114,28 @@ def new_user_view(request):
                     received activation link to confirm and complete the registration. <b>Note:</b> Check your spam folder.'
             else:
                 mess= f'Problem sending confirmation email to {mail}, check if you typed it correctly.'
+
             return render(request, "home/home.html", {
                 "message": mark_safe(mess),
                 "message_type": "success",
             })
+
+        for obj in form.fields:
+            field_names = list(form.errors.as_data())
+            print(obj)
+            if obj == "password1" or obj == "password2":
+                continue
+            elif obj in field_names:
+                print(obj, form.errors[obj].as_data())
+                form.fields[obj].widget.attrs["class"] = form.fields[obj].widget.attrs.get("class","") + " is-invalid"
+            else:
+                form.fields[obj].widget.attrs["class"] = form.fields[obj].widget.attrs.get("class","") + " is-valid"
+    
     else:
         form = SignupForm()
 
-    print(form.errors)
+    # print(form.errors)
+    
     districts = CityDistrictPostal.objects.values_list("district")
     cities = CityDistrictPostal.objects.values_list("city")
     postal_codes = CityDistrictPostal.objects.values_list("postal")

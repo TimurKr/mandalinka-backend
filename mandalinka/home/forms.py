@@ -9,10 +9,10 @@ from django.utils.safestring import mark_safe
 from home.models import CityDistrictPostal, UserProfile, FoodAttribute
 from recepty.models import Alergen
 
-charfield_widget = {'class': 'form-control opacity-75 rounded-2 shadow border-dark',
+charfield_widget = {'class': 'form-control opacity-75 rounded-2 shadow border-dark ',
                     'placeholder': 'Password'}
 checkbox_widget = {'class':'form-check-input'}
-select_widget = {'class':'form-select form-select opacity-75 rounded-2 shadow border-dark'}
+select_widget = {'class':'form-select opacity-75 rounded-2 shadow border-dark'}
 
 def merge(dict1, dict2):
     return {**dict1, **dict2} 
@@ -42,7 +42,7 @@ class SignupForm(UserCreationForm):
     phone = forms.CharField(min_length=5, label="Telefónne číslo", help_text='Môže byť použité počas doručovania', required=True, widget=forms.TextInput(merge(charfield_widget,{'value':'+421'})))
 
     newsletter = forms.BooleanField(label="Súhlasíte so zasielaním propagačných emailov?", 
-                                    widget=forms.CheckboxInput(checkbox_widget))
+                                    widget=forms.CheckboxInput(checkbox_widget), required=False)
     terms_conditions = forms.BooleanField(label="Súhlasíte so obchodnými podmienkami?",
                                             widget=forms.CheckboxInput(checkbox_widget),
                                             required=True)
@@ -50,14 +50,15 @@ class SignupForm(UserCreationForm):
     num_portions = forms.ChoiceField(label="Portions", help_text="Koľko porcí z každého jedla chcete dostávať?",
                                         choices=UserProfile.portions_options,
                                         widget=forms.RadioSelect())
+
     food_attributes = forms.ModelMultipleChoiceField(label="Attributes", help_text="Zvolte obľúbené atribúty", 
                                                 queryset=FoodAttribute.objects.all(), 
-                                                widget=forms.CheckboxSelectMultiple())
+                                                widget=forms.CheckboxSelectMultiple(), required=False)
     alergies = forms.ModelMultipleChoiceField(label="Alergens", help_text="Zvolte vaše alergie", 
                                                 queryset=Alergen.objects.all(), 
-                                                widget=forms.CheckboxSelectMultiple())
+                                                widget=forms.CheckboxSelectMultiple(), required=False)
 
-    street = forms.CharField(label="Ulica",required=False, widget=forms.TextInput(merge(charfield_widget,{'list':'streets'})))
+    street = forms.CharField(label="Ulica",required=True, widget=forms.TextInput(merge(charfield_widget,{'list':'streets'})))
     house_no = forms.CharField(label="Číslo domu", required=True, widget=forms.TextInput(charfield_widget))
     district = forms.CharField(label="Mestská časť",required=True, widget=forms.TextInput(merge(charfield_widget, {'list':'districts'})))
     city = forms.CharField(label="Mesto",required=True, widget=forms.TextInput(merge(charfield_widget,{'list':'cities'})))
