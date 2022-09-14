@@ -80,6 +80,7 @@ def new_user_view(request):
             user.first_name = form.cleaned_data.get('firstname')
             user.last_name = form.cleaned_data.get('lastname')
             user.email = email
+            user.username = user.first_name + user.last_name + user.email.split("@")[0]
             user.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')

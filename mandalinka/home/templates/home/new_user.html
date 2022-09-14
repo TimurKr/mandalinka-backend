@@ -82,19 +82,6 @@ Zaregistrujte sa!
                     </label>
                 </div>
 
-
-
-                <!-- Username 
-
-                <div class="col-12 form-floating">
-                    {{ form.username }}
-                    <label for="{{ form.username.id_for_label }}">
-                        {{ form.username.label }}
-                    </label>
-                    <p class="my-0">{{ form.username.help_text }}</p>
-                </div>
-            -->
-
                 <!-- Email -->
 
                 <div class="col-12 form-floating">
@@ -180,9 +167,9 @@ Zaregistrujte sa!
                         {{ attr.choice_label }}
                     </label>
                     {% endfor %}
-                    <div class="alert alert-danger">{{ form.num_portions.errors }}</div>
-
                 </div>
+                <div class="alert alert-danger">{{ form.num_portions.errors }}</div>
+
             </div>
 
             <p class="fw-lighter mb-2">

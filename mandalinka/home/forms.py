@@ -25,9 +25,9 @@ class LoginForm(forms.Form):
 class SignupForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['username'].label = "Prihlasovacie meno"
-        self.fields['username'].help_text = 'Username (150 characters or fewer, letters, digits and @/./+/-/_ only)'
-        self.fields['username'].widget = forms.TextInput(charfield_widget)
+        # self.fields['username'].label = "Prihlasovacie meno"
+        # self.fields['username'].help_text = 'Username (150 characters or fewer, letters, digits and @/./+/-/_ only)'
+        # self.fields['username'].widget = forms.TextInput(charfield_widget)
         self.fields['password1'].widget = forms.PasswordInput(attrs=charfield_widget)
         self.fields['password2'].widget = forms.PasswordInput(attrs=charfield_widget)
 
@@ -49,7 +49,7 @@ class SignupForm(UserCreationForm):
     
     num_portions = forms.ChoiceField(label="Portions", help_text="Koľko porcí z každého jedla chcete dostávať?",
                                         choices=UserProfile.portions_options,
-                                        widget=forms.RadioSelect())
+                                        widget=forms.RadioSelect(), required=False)
 
     food_attributes = forms.ModelMultipleChoiceField(label="Attributes", help_text="Zvolte obľúbené atribúty", 
                                                 queryset=FoodAttribute.objects.all(), 
@@ -67,8 +67,7 @@ class SignupForm(UserCreationForm):
     
     class Meta:
         model = User
-        fields = ["username",
-                "firstname",
+        fields = ["firstname",
                 "lastname", 
                 "email",
                 "phone",
