@@ -270,6 +270,7 @@ Zaregistrujte sa!
                         <option value="{{ street.street }}"></option>
                         {% endfor %}
                     </datalist>
+                    <div class="alert alert-danger">{{ form.street.errors }}</div>
                 </div>
 
                 <!-- Číslo domu -->
@@ -282,6 +283,7 @@ Zaregistrujte sa!
                         {{ form.house_no.label }}
                     </label>
                     <p class="my-0">{{ form.house_no.help_text }}</p>
+                    <div class="alert alert-danger">{{ form.house_no.errors }}</div>
                 </div>
 
                 <!-- District -->
@@ -300,6 +302,7 @@ Zaregistrujte sa!
                         <option value="{{ district.district }}"></option>
                         {% endfor %}
                     </datalist>
+                    <div class="alert alert-danger">{{ form.district.errors }}</div>
                 </div>
 
                 <!-- PSČ -->
@@ -318,6 +321,7 @@ Zaregistrujte sa!
                         <option value="{{ postal.code }}"></option>
                         {% endfor %}
                     </datalist>
+                    <div class="alert alert-danger">{{ form.postal.errors }}</div>
                 </div>
 
                 <!-- Mesto -->
@@ -336,6 +340,7 @@ Zaregistrujte sa!
                         <option value="{{ city.city }}"></option>
                         {% endfor %}
                     </datalist>
+                    <div class="alert alert-danger">{{ form.city.errors }}</div>
                 </div>
 
                 <!-- Krajina -->
@@ -343,6 +348,7 @@ Zaregistrujte sa!
                 <div class="col-sm-4 form-floating">
                     {{ form.country }}
                 </div>
+                <div class="alert alert-danger">{{ form.country.errors }}</div>
 
             </div>
         </div>

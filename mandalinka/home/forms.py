@@ -62,7 +62,7 @@ class SignupForm(UserCreationForm):
     house_no = forms.CharField(label="Číslo domu", required=True, widget=forms.TextInput(charfield_widget))
     district = forms.CharField(label="Mestská časť",required=True, widget=forms.TextInput(merge(charfield_widget, {'list':'districts'})))
     city = forms.CharField(label="Mesto",required=True, widget=forms.TextInput(merge(charfield_widget,{'list':'cities'})))
-    postal = forms.CharField(min_length=5, max_length=6,label="PSČ",required=True, widget=forms.TextInput(merge(charfield_widget,{'list':'postal_codes'})))
+    postal = forms.CharField(min_length=1, max_length=6,label="PSČ",required=True, widget=forms.TextInput(merge(charfield_widget,{'list':'postal_codes'})))
     country = forms.ChoiceField(label="Krajina",choices=COUNTRIES, required=True, widget=forms.Select(select_widget))
     
     class Meta:
@@ -145,15 +145,17 @@ class SignupForm(UserCreationForm):
                 raise ValidationError(
                     mark_safe(f"We could not find city {city} in our database. Check the spelling, choose from suggested names or contact the admin")
                 )
-            message = f'We only have following districts and postal codes (or streets) associated with city <strong>{city}</strong> and postal code <strong>{postal}</strong>: <ul>'
-            for obj in for_city:
-                message += f'<li>District: <strong>{obj.district}</strong>, Postal code: <strong>{obj.postal}</strong>'
-                if obj.street != '':
-                    message += f"Street: <strong>{obj.street}</strong>"
-                message += '</li>'
-            message += "</ul>"
+            # message = f'We only have following districts and postal codes (or streets) associated with city <strong>{city}</strong> and postal code <strong>{postal}</strong>: <ul>'
+            # for obj in for_city:
+            #     message += f'<li>District: <strong>{obj.district}</strong>, Postal code: <strong>{obj.postal}</strong>'
+            #     if obj.street != '':
+            #         message += f"Street: <strong>{obj.street}</strong>"
+            #     message += '</li>'
+            # message += "</ul>"
+            self.add_error('city', mark_safe(f"Check if city {city} is in the district {district}"))
+            self.add_error('district', mark_safe(f"Check if city {district} is in the given list"))
             raise ValidationError(
-                mark_safe(message)
+                mark_safe("Your address could not be found in our database. Please move somewhere else")
             )
         # then check if there is a city in that district with given postal code
         valid_city = CityDistrictPostal.objects.filter(city=city, district=district, postal=postal)
@@ -165,6 +167,9 @@ class SignupForm(UserCreationForm):
                 raise ValidationError(mark_safe(f"No results for city <strong>{city}</strong>"))
             exp_distr = map(lambda x: x[0], exp.values_list("district").distinct())
             exp_post = [x[0] if x[0] != '' else '-' for x in exp.values_list("postal").distinct()]
+            self.add_error('city', mark_safe(f"Check if city {city} is in the district {district} and has postal code {postal}"))
+            self.add_error('district', mark_safe(f"Check if district {district} has the right postal code"))
+            self.add_error('postal', mark_safe(f"Check if postal {postal} is associated with district {district}: if there is no postal code in your address fill in '-'"))
             raise ValidationError(
                 mark_safe(f"""No results for provided address: {city}, {district}, {postal}.
                 For city {city} there are only following districts to select:
@@ -174,16 +179,21 @@ class SignupForm(UserCreationForm):
             )
         elif num_res == 1 and valid_city[0].street != '' and valid_city[0].street != street:
             #if there is only one row then it either needs additional info (street) or its enough
+            self.add_error('street', mark_safe(f"For given address a street is required"))
             raise ValidationError(
                 mark_safe(f"""We only have city <strong>{city}</strong>, district <strong>{district}</strong>, postal code <strong>{postal}</strong>
                 associated with street <strong>{valid_city.street}</strong>. Check your input and try again.""")
             )
         elif num_res > 1:
             #If the query returns more than one then it has to depend on the street - checking that
-            expected_streets = map(lambda x: x[0], valid_city.values_list("street").distinct())
+            expected_streets = [x[0] for x in valid_city.values_list("street").distinct()]
+
             if street not in expected_streets:
                 #if the provided street is not associated with any of the given city, district and postal than it has to be wrong
-                
+                self.add_error('street', mark_safe(f"Check given street"))
+                self.add_error('postal', mark_safe(f"Check given postal {postal}"))
+                self.add_error('city', mark_safe(f"Check given city {city}"))
+
                 raise ValidationError(
                         mark_safe(f"""We only have city <strong>{city}</strong>, district <strong>{district}</strong>, postal code <strong>{postal}</strong>
                 associated with following streets:<strong><ul><li>{'</li><li>'.join(expected_streets)}</li></ul></strong>""")
@@ -198,6 +208,9 @@ class SignupForm(UserCreationForm):
                 raise ValidationError(mark_safe(f"No results for city <strong>{city}</strong>"))
             exp_distr = map(lambda x: x[0], exp.values_list("district").distinct())
             exp_streets = [x[0] for x in exp.values_list("street").distinct()]
+            self.add_error('city', mark_safe(f"Check if city {city} is in the district {district}"))
+            self.add_error('district', mark_safe(f"Check if district {district} is in the options"))
+            self.add_error('postal', mark_safe(f"Check if postal {postal} is associated with district {district}: if there is no postal code in your address fill in '-'"))
             raise ValidationError(
                 mark_safe(f"""No results for provided address: {city}, {district}, {street} and no postal code.
                 For city {city} there are only following districts to select:
@@ -208,10 +221,13 @@ class SignupForm(UserCreationForm):
         if num_res == 1 and valid_city[0].postal == '':
             # for some streets there are no postal codes provided - checking if that is the case
             if postal != '-':
+                self.add_error('postal', mark_safe(f"If no postal is associated with your street fill in '-' or make sure postal code is from the list"))
                 raise ValidationError(
                     mark_safe(f"For the city <strong>{city}</strong>, district <strong>{district}</strong> and street <strong>{street}</strong> there is no postal code and should be left '-'.")
                 )
-            if house_no != '':
+            if house_no == '':
+                self.add_error('house_no', mark_safe(f"For this address house number is required"))
+
                 raise ValidationError(
                     mark_safe(f"For the city <strong>{city}</strong>, district <strong>{district}</strong> and street <strong>{street}</strong> there is no postal code so a house number is required")
                 )
@@ -220,6 +236,8 @@ class SignupForm(UserCreationForm):
             expected_postal = [x[0] if x[0] != '' else '-' for x in valid_city.values_list("postal").distinct()]
             if postal not in expected_postal:
                 #if there is no valid combination with postal
+                self.add_error('postal', mark_safe(f"Check if postal {postal} is associated with the district {district}:: if there is no postal code in your address fill in '-'"))
+
                 raise ValidationError(
                     mark_safe(f"""For the city <strong>{city}</strong>, district <strong>{district}</strong> and street <strong>{street}</strong>
                     there are only following postal codes provided: <strong><ul><li>{'</li><li>'.join(expected_postal)}</li></ul></strong>""")
