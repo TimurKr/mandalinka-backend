@@ -68,16 +68,17 @@ def new_user_view(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
+            email = form.cleaned_data.get('email')
             user = form.save(commit=False)
             user.is_active = False
             user.first_name = form.cleaned_data.get('firstname')
             user.last_name = form.cleaned_data.get('lastname')
+            user.email = email
             user.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             print(user.id)
             userProf = UserProfile.objects.get(user_name_id=user.id)
-            email = form.cleaned_data.get('email')
             userProf.phone = form.cleaned_data.get("phone")
             userProf.street = form.cleaned_data.get("street")
             userProf.house_no =form.cleaned_data.get("house_no")
