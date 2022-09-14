@@ -1,5 +1,14 @@
-$primary: #f79d00;
-$secondary: #217602;
+
+$my-color1: #35524A;
+$my-color2: #637064;
+$my-color3: #918D7D;
+$my-color4: #BFAB96;
+$my-color5: #ECC8AF;
+$my-color6: #E3A487;
+$my-color7: #D9805F;
+$my-color8: #D05F39;
+$primary: $my-color7;
+$secondary: $my-color1;
 $h1-font-size:  5rem;
 
 @font-face {
@@ -16,8 +25,11 @@ body.login{
     background: $primary;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to left, $secondary, $primary);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(0deg, $secondary, $primary); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background-image: radial-gradient(circle,#D05F39 0%, #E3A487 100%);
 }
-
+    
+    
+    
 div.login-window {
     max-width: 40rem;
     width: 85%;
@@ -25,7 +37,7 @@ div.login-window {
     margin-right: auto;
     background: $primary;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to left, $secondary, $primary);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(225deg, $secondary, $primary); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background-image: linear-gradient(to top,#BFAB96 0%, #ECC8AF 100%);
 }
 
 .alert:empty{
