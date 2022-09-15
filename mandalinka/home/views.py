@@ -97,8 +97,10 @@ def new_user_view(request):
             userProf.newsletter = form.cleaned_data.get("newsletter")
             userProf.terms_conditions = form.cleaned_data.get("terms_conditions")
 
-            userProf.food_preferences.set(form.cleaned_data.get("food_attr"))
-            userProf.alergies.set(form.cleaned_data.get("alergies"))
+            if form.cleaned_data.get("food_attr"):
+                userProf.food_preferences.set(form.cleaned_data.get("food_attr"))
+            if form.cleaned_data.get("food_attr"):
+                userProf.alergies.set(form.cleaned_data.get("alergies"))
             userProf.save()
             #send confirmation email
             mail_subject = 'Activate your user account.'

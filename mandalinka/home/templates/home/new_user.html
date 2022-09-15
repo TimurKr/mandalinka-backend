@@ -12,10 +12,9 @@ Zaregistrujte sa!
 
     <div class="alert alert-danger">{{ form.non_field_errors }}</div>
 
-
     <!-- Nav tabs -->
 
-    <ul class="nav nav-pills nav-fill my-1 sticky-top" id="myTab" role="tablist">
+    <ul class="nav nav-pills nav-fill my-1 sticky-top bg-light shadow rounded" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active {% if form.firstname.errors or form.lastname.errors or form.email.errors or form.phone.error or form.password1.errors or form.password2.errors or form.terms_conditions.errors %} 
                                             border border-danger 
@@ -71,6 +70,9 @@ Zaregistrujte sa!
                     <label for="{{ form.firstname.id_for_label }}">
                         {{ form.firstname.label }}
                     </label>
+                    <div class="invalid-feedback ps-2">
+                        {% firstof form.firstname.errors "Zadajte valídne meno"%}
+                    </div>
                 </div>
 
                 <!-- Priezvisko -->
@@ -80,6 +82,9 @@ Zaregistrujte sa!
                     <label for="{{ form.lastname.id_for_label }}">
                         {{ form.lastname.label }}
                     </label>
+                    <div class="invalid-feedback ps-2">
+                        {% firstof form.lastname.errors "Zadajte valídne priezvisko"%}
+                    </div>
                 </div>
 
                 <!-- Email -->
@@ -90,6 +95,9 @@ Zaregistrujte sa!
                         {{ form.email.label }}
                     </label>
                     <p class="my-0">{{ form.email.help_text }}</p>
+                    <div class="invalid-feedback ps-2">
+                        {% firstof form.email.errors "Zadajte valídny email"%}
+                    </div>
                 </div>
 
                 <!-- Telefón -->
@@ -99,7 +107,15 @@ Zaregistrujte sa!
                     <label for="{{ form.phone.id_for_label }}">
                         {{ form.phone.label }}
                     </label>
+                    <div class="invalid-feedback ps-2">
+                        {% firstof form.phone.errors "Zadajte vaše telefónne číslo "%}
+                    </div>
                     <p class="my-0">
+                        <svg class="bi bi-info-circle pb-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                        </svg>
                         {{ form.phone.help_text }}
                     </p>
                 </div>
@@ -111,10 +127,9 @@ Zaregistrujte sa!
                     <label for="{{ form.password1.id_for_label }}">
                         {{ form.password1.label }}
                     </label>
-                    <p class="my-0">
-                        {{ form.password1.help_text }}
-                    </p>
-                    <div class="alert alert-danger">{{ form.password1.errors }}</div>
+                    <div class="invalid-feedback ps-2">
+                        {% firstof form.password1.errors form.password1.help_text %}
+                    </div>
                 </div>
 
                 <div class="col-12 form-floating">
@@ -123,10 +138,16 @@ Zaregistrujte sa!
                         {{ form.password2.label }}
                     </label>
                     <p class="my-0">
+                        <svg class="bi bi-info-circle pb-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                        </svg>
                         {{ form.password2.help_text }}
                     </p>
-                    <div class="alert alert-danger">{{ form.password2.errors }}</div>
-
+                    <div class="invalid-feedback ps-2">
+                        {{ form.password2.errors }}
+                    </div>
                 </div>
 
                 <!-- Newsletter -->
@@ -168,8 +189,9 @@ Zaregistrujte sa!
                     </label>
                     {% endfor %}
                 </div>
-                <div class="alert alert-danger">{{ form.num_portions.errors }}</div>
-
+                <div class="invalid-feedback ps-2">
+                    {% firstof form.email.errors form.password1.help_text %}
+                </div>
             </div>
 
             <p class="fw-lighter mb-2">
@@ -350,73 +372,115 @@ Zaregistrujte sa!
 
         <div class="tab-pane" id="billing" role="tabpanel" aria-labelledby="billing-tab" tabindex="0">
             Zvolte si spôsob platby
+        </div>
 
-            <button class="btn btn-primary" type="submit">
+        <!-- Buttons -->
+        <div class="d-flex justify-content-between">
+            <div class="btn-group shadow" role="group">
+                <button type="button" class="btn btn-outline-secondary" id="btn-prev" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                    </svg>
+                </button>
+
+                <button type="button" class="btn btn-primary" id="btn-next">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                    </svg>
+                </button>
+            </div>
+            <button type="submit" class="btn" id="submit" disabled>
                 Zaregistrovať sa
             </button>
         </div>
     </div>
-
-    <!--
-
-    {% for elem in form %}
-        
-        <div class="form-group pt-3">
-            <p> {{ elem.help_text }} </p>
-            <label for="{{ elem.id_for_label }}">
-                {{ elem }}
-                {% if elem.label == "district" %}
-                    <datalist id="districts">
-                        {% for district in districts %}
-                            <option value="{{ district.district }}"></option>
-                        {% endfor %}
-                    </datalist>
-                {% elif elem.label == "city" %}
-                    <datalist id="cities">
-                        {% for city in cities %}
-                            <option value="{{ city.city }}"></option>
-                        {% endfor %}
-                    </datalist>
-                {% elif elem.label == "postal" %}
-                    <datalist id="postal_codes">
-                        {% for postal in postal_codes %}
-                            <option value="{{ postal.code }}"></option>
-                        {% endfor %}
-                    </datalist>
-                {% elif elem.label == "street" %}
-                    <datalist id="streets">
-                        {% for street in streets %}
-                            <option value="{{ street.street }}"></option>
-                        {% endfor %}
-                    </datalist>
-                {% endif %}
-                <div class="alert alert-danger" >{{ elem.errors }}</div>
-            </label>
-        </div>
-        
-    {% endfor %}
-
-    <button class="btn btn-success" type="submit">Vytvor konto</button>
--->
 </form>
 
 <script>
-(() => {
-    'use strict'
-  
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    const forms = document.querySelectorAll('.needs-validation')
-  
-    // Loop over them and prevent submission
-    Array.from(forms).forEach(form => {
-      form.addEventListener('submit', event => {
-        if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
-        }
-  
-        form.classList.add('was-validated')
-      }, false)
-    })
-  })()</script>
+
+            
+
+    document.addEventListener("DOMContentLoaded", function() {
+                // Code for tab < > buttons
+                    // Mapping to next tab
+        document.querySelector('#btn-next').onclick = function () {
+            document.querySelector('.nav .active').parentElement.nextElementSibling.querySelector('button').click()
+        };
+                    // Mapping to prev tabs
+        document.querySelector('#btn-prev').onclick = function () {
+            document.querySelector('.nav .active').parentElement.previousElementSibling.querySelector('button').click()
+        };
+
+        const tabs = document.querySelectorAll('.nav li');
+        const btnNext = document.querySelector('#btn-next');
+        const btnPrev = document.querySelector('#btn-prev');
+        const btnSubm = document.querySelector('#submit')
+
+                    // Disable and enable < > buttons for first and last
+        tabs.forEach(function (tab) {
+            let button = tab.querySelector('button');
+            if (tab === tabs[0]) {
+                button.onclick = function () {
+                    btnPrev.setAttribute('disabled', '');
+                    btnNext.removeAttribute('disabled');
+                    btnSubm.setAttribute('disabled', '');
+                }
+            } else if (tab === tabs[tabs.length - 1]) {
+                button.onclick = function () {
+                    btnNext.setAttribute('disabled', '');
+                    btnPrev.removeAttribute('disabled');
+                    btnSubm.removeAttribute('disabled');
+                }
+            } else {
+                button.onclick = function () {
+                    btnNext.removeAttribute('disabled');
+                    btnPrev.removeAttribute('disabled');
+                    btnSubm.setAttribute('disabled','');
+                }
+            }
+        });
+    });
+    
+
+    // $('.btn-previous').click(function () {
+    //     $('.nav > .active').prev('li').find('button').trigger('click');
+    // });
+
+            // Code for validation
+    (() => {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+
+    
+
+    
+
+    // const triggerTabList = document.querySelectorAll('#myTab button')
+    // triggerTabList.forEach(triggerEl => {
+    //     const tabTrigger = new bootstrap.Tab(triggerEl)
+
+    //     triggerEl.addEventListener('click', event => {
+    //         event.preventDefault()
+    //         tabTrigger.show()
+    //     })
+    // }
+    // )
+    // const triggerGeneralTabEl = document.querySelector('#myTab button[data-bs-target="#profile"]')
+    // bootstrap.Tab.getInstance(triggerEl).show() // Select tab by name  
+  </script>
 {% endblock %}

@@ -7,8 +7,8 @@ $my-color5: #ECC8AF;
 $my-color6: #E3A487;
 $my-color7: #D9805F;
 $my-color8: #D05F39;
-$primary: $my-color8;
-$secondary: $my-color1;
+// $primary: $my-color8;
+// $secondary: $my-color1;
 $h1-font-size:  5rem;
 
 @font-face {
@@ -21,12 +21,12 @@ $font-family-sans-serif:      "Baskerville", system-ui, -apple-system, "Segoe UI
 
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
-body.login{
-    background: $primary;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to left, $secondary, $primary);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(0deg, $secondary, $primary); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background-image: radial-gradient(circle,$white 30%, #FF9B42 100%);
-}
+// body.login{
+//     background: $primary;  /* fallback for old browsers */
+//     background: -webkit-linear-gradient(to left, $secondary, $primary);  /* Chrome 10-25, Safari 5.1-6 */
+//     background: linear-gradient(0deg, $secondary, $primary); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+//     background-image: radial-gradient(circle,$white 30%, #FF9B42 100%);
+// }
     
  
     
@@ -55,3 +55,27 @@ div.scrollmenu {
 div.scrollmenu div {
     display: inline-block;
  }
+
+          
+ #submit {
+    background-image: linear-gradient(to right, #1A2980 0%, #26D0CE  51%, #1A2980  100%);
+    text-align: center;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;          
+    border: none;
+  }
+
+  #submit:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #fff;
+    text-decoration: none;
+  }
+
+  #submit:enabled {
+    box-shadow: 0 0 20px $primary;
+  }
+
+           
+ 
+          
