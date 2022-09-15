@@ -64,8 +64,8 @@ class UserProfile(models.Model):
     newsletter = models.BooleanField(default=False)
     terms_conditions = models.BooleanField(default=False)
     
-    def __unicode__(self):  # __str__
-        return unicode(self.user_name)
+    # def __unicode__(self):  # __str__
+    #     return unicode(self.user_name)
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

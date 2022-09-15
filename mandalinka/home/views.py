@@ -82,8 +82,8 @@ def new_user_view(request):
             user.email = email
             user.username = user.first_name + user.last_name + user.email.split("@")[0]
             user.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
+            # username = form.cleaned_data.get('username')
+            # raw_password = form.cleaned_data.get('password1')
             print(user.id)
             userProf = UserProfile.objects.get(user_name_id=user.id)
             userProf.phone = form.cleaned_data.get("phone")
@@ -102,6 +102,7 @@ def new_user_view(request):
             if form.cleaned_data.get("food_attr"):
                 userProf.alergies.set(form.cleaned_data.get("alergies"))
             userProf.save()
+            username = form.cleaned_data.get("firstname")+" "+form.cleaned_data.get("lastname")
             #send confirmation email
             mail_subject = 'Activate your user account.'
             message = render_to_string('home/template_activate_account.html', {
@@ -139,9 +140,10 @@ def new_user_view(request):
 
     # print(form.errors)
     
-    districts = CityDistrictPostal.objects.values_list("district")
-    cities = CityDistrictPostal.objects.values_list("city")
-    postal_codes = CityDistrictPostal.objects.values_list("postal")
+    districts = [x[0] for x in CityDistrictPostal.objects.values_list("district").distinct()]
+    cities = [x[0] for x in CityDistrictPostal.objects.values_list("city").distinct()]
+    postal_codes = [x[0] for x in CityDistrictPostal.objects.values_list("postal").distinct()]
+    print(postal_codes)
     streets = Streets.objects.all()
     return render(request, 'home/new_user.html',
                     {'form': form,

@@ -66,7 +66,7 @@ class SignupForm(UserCreationForm):
     house_no = forms.CharField(label="Číslo domu *", required=True, widget=forms.TextInput(charfield_widget))
     district = forms.CharField(label="Mestská časť/Okres *",required=True, widget=forms.TextInput(merge(charfield_widget, {'list':'districts'})))
     city = forms.CharField(label="Mesto *",required=True, widget=forms.TextInput(merge(charfield_widget,{'list':'cities'})))
-    postal = forms.CharField(label="PSČ *",min_length=1, max_length=6,required=True, widget=forms.TextInput(merge(charfield_widget,{'list':'postal_codes'})))
+    postal = forms.CharField(label="PSČ *",min_length=1, max_length=6,required=True, help_text='Zadajte "-" ak pre Vašu adresu nie je definované PSČ', widget=forms.TextInput(merge(charfield_widget,{'list':'postal_codes'})))
     country = forms.ChoiceField(label="Krajina *",choices=COUNTRIES, required=True, widget=forms.Select(select_widget))
     
     class Meta:
@@ -194,7 +194,7 @@ class SignupForm(UserCreationForm):
             if street not in expected_streets:
                 #if the provided street is not associated with any of the given city, district and postal than it has to be wrong
                 self.add_error('street', mark_safe(f"Check given street"))
-                self.add_error('postal', mark_safe(f"Check given postal {postal}"))
+                self.add_error('postal', mark_safe(f"Check given postal {postal}: if there is no postal code in your address fill in '-'"))
                 self.add_error('city', mark_safe(f"Check given city {city}"))
 
                 raise ValidationError(
@@ -239,7 +239,7 @@ class SignupForm(UserCreationForm):
             expected_postal = [x[0] if x[0] != '' else '-' for x in valid_city.values_list("postal").distinct()]
             if postal not in expected_postal:
                 #if there is no valid combination with postal
-                self.add_error('postal', mark_safe(f"Check if postal {postal} is associated with the district {district}:: if there is no postal code in your address fill in '-'"))
+                self.add_error('postal', mark_safe(f"Check if postal {postal} is associated with the district {district}: if there is no postal code in your address fill in '-'"))
 
                 raise ValidationError(
                     mark_safe(f"""For the city <strong>{city}</strong>, district <strong>{district}</strong> and street <strong>{street}</strong>
