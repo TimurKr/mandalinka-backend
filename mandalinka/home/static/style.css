@@ -10931,11 +10931,6 @@ div.login-window {
   width: 85%;
   margin-left: auto;
   margin-right: auto;
-  background: #0d6efd; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to left, #6c757d, #0d6efd); /* Chrome 10-25, Safari 5.1-6 */
-  background-image: linear-gradient(to top, #BFAB96 0%, #637064 100%);
-  background: None;
-  background-image: None;
 }
 
 .alert:empty {

@@ -12,7 +12,7 @@ Zaregistrujte sa!
 
     <div class="alert alert-danger">{{ form.non_field_errors }}</div>
 
-    <!-- Nav tabs -->
+<!-- Nav tabs -->
 
     <ul class="nav nav-pills nav-fill my-1 sticky-top bg-light shadow rounded" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
@@ -55,11 +55,13 @@ Zaregistrujte sa!
         </li>
     </ul>
 
-    <!-- Tab panes -->
+
+
+<!-- Tab panes -->
 
     <div class="tab-content">
 
-        <!-- Panel General -->
+    <!-- Panel General -->
 
         <div class="tab-pane active" id="general" role="tabpanel" aria-labelledby="general-tab" tabindex="0">
             <div class="row g-2 my-2">
@@ -137,14 +139,16 @@ Zaregistrujte sa!
                     <label class="{% if form.password2.errors %} is.invalid {% endif %}" for="{{ form.password2.id_for_label }}">
                         {{ form.password2.label }}
                     </label>
-                    <p class="my-0">
-                        <svg class="bi bi-info-circle pb-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                            fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-                        </svg>
-                        {{ form.password2.help_text }}
-                    </p>
+                    {% if form.password2.help_text %}
+                        <p class="my-0">
+                            <svg class="bi bi-info-circle pb-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                            </svg>
+                            {{ form.password2.help_text }}
+                        </p>
+                    {% endif %}
                     <div class="invalid-feedback ps-2">
                         {{ form.password2.errors }}
                     </div>
@@ -171,26 +175,27 @@ Zaregistrujte sa!
             </div>
         </div>
 
-        <!-- Panel Preferences -->
+    <!-- Panel Preferences -->
 
         <div class="tab-pane" id="preferences" role="tabpanel" aria-labelledby="preferences-tab" tabindex="0">
 
             <!-- Portion size -->
-            <div class="row mt-3">
-                <h3 class="col-8 p-2 align-middle">
-                    Koľko vás bude pravidelne jedávať?
+            <div class="row mb-2">
+                <h3 class="col-9 my-2">
+                    Koľko vás bude pravidelne jedávať? *
                 </h3>
-                <div class="btn-group col-4 my-2" role="group" aria-label="radio toggle">
+        
+                <div class="btn-group col-3 my-2" role="group" aria-label="radio toggle">
                     {% for attr in form.num_portions %}
                     <input type="radio" class="btn-check" name='portions' id="{{ attr.id_for_label }}"
                         autocomplete="off">
-                    <label class="btn btn-outline-primary" for="{{ attr.id_for_label }}">
+                    <label class="btn btn-outline-primary" for="{{ attr.id_for_label }}">    
                         {{ attr.choice_label }}
                     </label>
                     {% endfor %}
                 </div>
                 <div class="invalid-feedback ps-2">
-                    {% firstof form.email.errors form.password1.help_text %}
+                    {% firstof form.email.errors 'Toto pole je povinné' %}
                 </div>
             </div>
 
@@ -256,7 +261,7 @@ Zaregistrujte sa!
             </div>
         </div>
 
-        <!-- Adresa -->
+    <!-- Panel Adresa -->
 
         <div class="tab-pane" id="shipping" role="tabpanel" aria-labelledby="shipping-tab" tabindex="0">
 
@@ -279,7 +284,11 @@ Zaregistrujte sa!
                         <option value="{{ street.street }}"></option>
                         {% endfor %}
                     </datalist>
-                    <div class="alert alert-danger">{{ form.street.errors }}</div>
+
+                    <div class="invalid-feedback ps-2">
+                        {{ form.street.errors }}
+                    </div>
+
                 </div>
 
                 <!-- Číslo domu -->
@@ -292,7 +301,9 @@ Zaregistrujte sa!
                         {{ form.house_no.label }}
                     </label>
                     <p class="my-0">{{ form.house_no.help_text }}</p>
-                    <div class="alert alert-danger">{{ form.house_no.errors }}</div>
+                    <div class="invalid-feedback ps-2">
+                        {{ form.house_no.errors }}
+                    </div>                
                 </div>
 
                 <!-- District -->
@@ -311,7 +322,9 @@ Zaregistrujte sa!
                         <option value="{{ district.district }}"></option>
                         {% endfor %}
                     </datalist>
-                    <div class="alert alert-danger">{{ form.district.errors }}</div>
+                    <div class="invalid-feedback ps-2">
+                        {{ form.district.errors }}
+                    </div>
                 </div>
 
                 <!-- PSČ -->
@@ -330,7 +343,9 @@ Zaregistrujte sa!
                         <option value="{{ postal.code }}"></option>
                         {% endfor %}
                     </datalist>
-                    <div class="alert alert-danger">{{ form.postal.errors }}</div>
+                    <div class="invalid-feedback ps-2">
+                        {{ form.postal.errors }}
+                    </div>
                 </div>
 
                 <!-- Mesto -->
@@ -349,7 +364,9 @@ Zaregistrujte sa!
                         <option value="{{ city.city }}"></option>
                         {% endfor %}
                     </datalist>
-                    <div class="alert alert-danger">{{ form.city.errors }}</div>
+                    <div class="invalid-feedback ps-2">
+                        {{ form.city.errors }}
+                    </div>
                 </div>
 
                 <!-- Krajina -->
@@ -357,7 +374,9 @@ Zaregistrujte sa!
                 <div class="col-sm-4 form-floating">
                     {{ form.country }}
                 </div>
-                <div class="alert alert-danger">{{ form.country.errors }}</div>
+                <div class="invalid-feedback ps-2">
+                    {{ form.country.errors }}
+                </div>
 
             </div>
         </div>
@@ -375,7 +394,7 @@ Zaregistrujte sa!
         </div>
 
         <!-- Buttons -->
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between mt-3">
             <div class="btn-group shadow" role="group">
                 <button type="button" class="btn btn-outline-secondary" id="btn-prev" disabled>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
@@ -395,6 +414,8 @@ Zaregistrujte sa!
         </div>
     </div>
 </form>
+
+<p class="mt-2">* Pole je povinné</p>
 
 <script>
 
@@ -439,12 +460,15 @@ Zaregistrujte sa!
                 }
             }
         });
+    //     document.querySelector('.needs-validation').addEventListener('submit', event => {
+    //         if (!form.checkValidity()) {
+    //             event.preventDefault()
+    //             event.stopPropagation()
+    //             document.querySelector('.nav').firstElementChild.firstElementChild.click()
+    //         }
+    //         form.classList.add('was-validated')
+    //     }, false)
     });
-    
-
-    // $('.btn-previous').click(function () {
-    //     $('.nav > .active').prev('li').find('button').trigger('click');
-    // });
 
             // Code for validation
     (() => {
@@ -459,6 +483,7 @@ Zaregistrujte sa!
                 if (!form.checkValidity()) {
                     event.preventDefault()
                     event.stopPropagation()
+                    document.querySelector('.nav').firstElementChild.firstElementChild.click()
                 }
 
                 form.classList.add('was-validated')
@@ -466,21 +491,5 @@ Zaregistrujte sa!
         })
     })()
 
-    
-
-    
-
-    // const triggerTabList = document.querySelectorAll('#myTab button')
-    // triggerTabList.forEach(triggerEl => {
-    //     const tabTrigger = new bootstrap.Tab(triggerEl)
-
-    //     triggerEl.addEventListener('click', event => {
-    //         event.preventDefault()
-    //         tabTrigger.show()
-    //     })
-    // }
-    // )
-    // const triggerGeneralTabEl = document.querySelector('#myTab button[data-bs-target="#profile"]')
-    // bootstrap.Tab.getInstance(triggerEl).show() // Select tab by name  
   </script>
 {% endblock %}
