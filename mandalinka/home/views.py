@@ -1,4 +1,4 @@
-    from django.views.generic import TemplateView
+from django.views.generic import TemplateView
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
@@ -101,6 +101,7 @@ def new_user_view(request):
                 "terms_conditions")
 
             if form.cleaned_data.get("food_attr"):
+                print("food_attr:",form.cleaned_data.get("food_attr"))
                 userProf.food_preferences.set(
                     form.cleaned_data.get("food_attr"))
             if form.cleaned_data.get("food_attr"):
