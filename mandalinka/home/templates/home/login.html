@@ -6,18 +6,26 @@
 
 {% block body %}
 
+    {% load crispy_forms_tags %}
 
+    <!-- {% crispy form %} -->
 
-    <form class="frm px-4 pb-3" action="{% url 'home:login' %}" method="post">
+    <form class="needs-validation" novalidate action="{% url 'home:login' %}" method="post">
         {% csrf_token %}
-        {% for elem in form %}
+
+        {{ form|crispy }}
+
+        <!-- {% for elem in form %}
         <div class="form-floating my-2">
             {{ elem }}
             <label for="{{ elem.id_for_label }}">
                 {{ elem.label }}
             </label>
+            <div class="invalid-feedback ps-2">
+                Meno alebo heslo nesprávne
+            </div>
         </div>
-        {% endfor %}
+        {% endfor %} -->
 
         <p class="my-1">Zabudli ste heslo? Kliknite <a class="link-primary" href="/password_reset">sem</a>!</p>
         <div class="row g-3 mt-3 mb-2">
@@ -34,6 +42,28 @@
             </div>
         </div>
     </form>   
+
+    <script>        // Code for validation
+        (() => {
+            'use strict'
+    
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.needs-validation')
+    
+            // Loop over them and prevent submission
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+    
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    
+    </script>
 
 
 

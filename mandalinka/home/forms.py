@@ -1,16 +1,22 @@
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
-
-from home.models import CityDistrictPostal
-
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django.urls import reverse
+
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
+
 from home.models import CityDistrictPostal, UserProfile, FoodAttribute
 from recepty.models import Alergen
 
+
+
+
+
 charfield_widget = {'class': 'form-control opacity-75 rounded-2 shadow',
-                    'placeholder': 'Password'}
+                    'placeholder': 'Problem here'}
 checkbox_widget = {'class':'form-check-input'}
 select_widget = {'class':'form-select opacity-75 rounded-2 shadow border-dark'}
 
@@ -18,8 +24,23 @@ def merge(dict1, dict2):
     return {**dict1, **dict2} 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(label="Email", widget=forms.TextInput(charfield_widget))
-    password = forms.CharField(label="Heslo", widget=forms.PasswordInput(charfield_widget))
+
+    username = forms.CharField(
+        label="Email", 
+        widget=forms.TextInput(charfield_widget)
+        )
+
+    password = forms.CharField(
+        label="Heslo", 
+        widget=forms.PasswordInput(charfield_widget)
+        )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_action = reverse('home:login')
+        self.helper.form_class = 'needs-validation'
+        self.helper.form_attrs = {'novalidate':''}
  
  
 class SignupForm(UserCreationForm):

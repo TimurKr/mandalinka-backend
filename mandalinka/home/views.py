@@ -29,12 +29,14 @@ class HomePageView(TemplateView):
 # Create your views here.
 
 # Je toto vôbec niekedy použité??
+
+
 def index(request):
     return render(request, "home/home.html")
 
 
 def login_view(request):
-    
+
     if request.method == "POST":
         print(request.POST)
         form = LoginForm(request.POST)
@@ -51,15 +53,15 @@ def login_view(request):
             return HttpResponseRedirect(reverse("home:home"))
         # Otherwise, return login page again with new context
         else:
+            form.fields["password"].widget.attrs["class"] = "form-control opacity-75 rounded-2 shadow is-invalid"
             return render(request, "home/login.html", {
-                "message": "Meno alebo heslo nesprávne",
-                "message_type": "danger",
                 "form": form
             })
 
     return render(request, "home/login.html", {
         "form": LoginForm()
     })
+
 
 def logout_view(request):
     logout(request)
@@ -68,6 +70,7 @@ def logout_view(request):
                 "message_type": "success",
                 "form": LoginForm()
             })
+
 
 def new_user_view(request):
 
@@ -80,7 +83,8 @@ def new_user_view(request):
             user.first_name = form.cleaned_data.get('firstname')
             user.last_name = form.cleaned_data.get('lastname')
             user.email = email
-            user.username = user.first_name + user.last_name + user.email.split("@")[0]
+            user.username = user.first_name + \
+                user.last_name + user.email.split("@")[0]
             user.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
@@ -88,17 +92,19 @@ def new_user_view(request):
             userProf = UserProfile.objects.get(user_name_id=user.id)
             userProf.phone = form.cleaned_data.get("phone")
             userProf.street = form.cleaned_data.get("street")
-            userProf.house_no =form.cleaned_data.get("house_no")
+            userProf.house_no = form.cleaned_data.get("house_no")
             userProf.city = form.cleaned_data.get("city")
             userProf.district = form.cleaned_data.get("district")
             userProf.postal = form.cleaned_data.get("postal")
             userProf.country = form.cleaned_data.get("country")
 
             userProf.newsletter = form.cleaned_data.get("newsletter")
-            userProf.terms_conditions = form.cleaned_data.get("terms_conditions")
+            userProf.terms_conditions = form.cleaned_data.get(
+                "terms_conditions")
 
             if form.cleaned_data.get("food_attr"):
-                userProf.food_preferences.set(form.cleaned_data.get("food_attr"))
+                userProf.food_preferences.set(
+                    form.cleaned_data.get("food_attr"))
             if form.cleaned_data.get("food_attr"):
                 userProf.alergies.set(form.cleaned_data.get("alergies"))
             userProf.save()
@@ -116,7 +122,7 @@ def new_user_view(request):
                 mess = f'Dear <b>{username}</b>, please go to you email <b>{email}</b> inbox and click on \
                     received activation link to confirm and complete the registration. <b>Note:</b> Check your spam folder.'
             else:
-                mess= f'Problem sending confirmation email to {mail}, check if you typed it correctly.'
+                mess = f'Problem sending confirmation email to {mail}, check if you typed it correctly.'
 
             return render(request, "home/home.html", {
                 "message": mark_safe(mess),
@@ -130,15 +136,17 @@ def new_user_view(request):
                 continue
             elif obj in field_names:
                 print(obj, form.errors[obj].as_data())
-                form.fields[obj].widget.attrs["class"] = form.fields[obj].widget.attrs.get("class","") + " is-invalid"
+                form.fields[obj].widget.attrs["class"] = form.fields[obj].widget.attrs.get(
+                    "class", "") + " is-invalid"
             else:
-                form.fields[obj].widget.attrs["class"] = form.fields[obj].widget.attrs.get("class","") + " is-valid"
-    
+                form.fields[obj].widget.attrs["class"] = form.fields[obj].widget.attrs.get(
+                    "class", "") + " is-valid"
+
     else:
         form = SignupForm()
 
     # print(form.errors)
-    
+
     districts = CityDistrictPostal.objects.values_list("district")
     cities = CityDistrictPostal.objects.values_list("city")
     postal_codes = CityDistrictPostal.objects.values_list("postal")
@@ -151,11 +159,12 @@ def new_user_view(request):
                      'streets': streets
     })
 
+
 def activate(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
-    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
 
     if user is not None and account_activation_token.check_token(user, token):
@@ -189,30 +198,40 @@ def activate(request, uidb64, token):
 #     else:
 #         messages.error(request, f'Problem sending confirmation email to {to_email}, check if you typed it correctly.')
 
+
 def password_reset_request(request):
-	if request.method == "POST":
-		password_reset_form = PasswordResetForm(request.POST)
-		if password_reset_form.is_valid():
-			data = password_reset_form.cleaned_data['email']
-			associated_users = User.objects.filter(Q(email=data))
-			if associated_users.exists():
-				for user in associated_users:
-					subject = "Password Reset Requested"
-					email_template_name = "home/password/password_reset_email.txt"
-					c = {
-					"email":user.email,
-					'domain':'127.0.0.1:8000',
-					'site_name': 'Website',
-					"uid": urlsafe_base64_encode(force_bytes(user.pk)),
-					"user": user,
-					'token': default_token_generator.make_token(user),
-					'protocol': 'http',
-					}
-					email = render_to_string(email_template_name, c)
-					try:
-						send_mail(subject, email, 'admin@example.com' , [user.email], fail_silently=False)
-					except BadHeaderError:
-						return HttpResponse('Invalid header found.')
-					return redirect ("/password_reset/done/")
-	password_reset_form = PasswordResetForm()
-	return render(request=request, template_name="home/password/password_reset.html", context={"password_reset_form":password_reset_form})
+    if request.method == "POST":
+        password_reset_form = PasswordResetForm(request.POST)
+        if password_reset_form.is_valid():
+            data = password_reset_form.cleaned_data['email']
+            associated_users = User.objects.filter(Q(email=data))
+            if associated_users.exists():
+                for user in associated_users:
+                    subject = "Password Reset Requested"
+                    email_template_name = "home/password/password_reset_email.txt"
+                    c = {
+                    "email": user.email,
+                    'domain': '127.0.0.1:8000',
+                    'site_name': 'Website',
+                    "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                    "user": user,
+                    'token': default_token_generator.make_token(user),
+                    'protocol': 'http',
+                    }
+                    email = render_to_string(email_template_name, c)
+                    try:
+                        send_mail(subject, email, 'admin@example.com',
+                                  [user.email], fail_silently=False)
+                    except BadHeaderError:
+                        return HttpResponse('Invalid header found.')
+                    return redirect("/password_reset/done/")
+            else:  # email not in our database
+                password_reset_form.fields["email"].widget.attrs["class"] = "form-control opacity-75 rounded-2 shadow is-invalid"
+                return render(request=request, template_name="home/password/password_reset.html", 
+                    context={"password_reset_form":password_reset_form})
+    password_reset_form = PasswordResetForm()
+    password_reset_form.fields["email"].widget.attrs["class"] = "form-control opacity-75 rounded-2 shadow"
+    password_reset_form.fields["email"].widget.attrs["placeholder"] = "Email"
+
+    return render(request=request, template_name="home/password/password_reset.html", 
+        context={"password_reset_form":password_reset_form})
