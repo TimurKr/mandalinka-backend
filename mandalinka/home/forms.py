@@ -28,6 +28,17 @@ class CustomFormField(FloatingField):
     attrs = {'class': 'form-control opacity-75 rounded-2 shadow',
                     'placeholder': 'Add label'}
 
+
+
+
+# Tu zadajte nové forms. argumenty ku novým poliam vždy formátujte v poradí:
+# 1. label 
+# 2. help_text
+# 3. choices / queryset
+# 4. required
+# 5. ...
+# posledné. widget
+
 class LoginForm(forms.Form):
 
     username = forms.CharField(label="Email")
@@ -65,56 +76,119 @@ class LoginForm(forms.Form):
                 )
             )
         
-        
- 
  
 class SignupForm(UserCreationForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # self.fields['username'].label = "Prihlasovacie meno"
-        # self.fields['username'].help_text = 'Username (150 characters or fewer, letters, digits and @/./+/-/_ only)'
-        # self.fields['username'].widget = forms.TextInput(charfield_widget)
-        self.fields['password1'].label = "Heslo *"
-        self.fields['password1'].widget = forms.PasswordInput(attrs=charfield_widget)
-        self.fields['password2'].label = "Heslo znova *"
-        self.fields['password2'].widget = forms.PasswordInput(attrs=charfield_widget)
-        self.fields['password2'].help_text = None
 
+        # Osobné veci
 
+    firstname = forms.CharField(
+        label="Meno", 
+        widget=forms.TextInput(merge(charfield_widget)),
+    )
+    lastname = forms.CharField(
+        label="Priezvisko",
+    )
+    email = forms.EmailField(
+        label="Email", 
+        max_length=254, 
+        widget=forms.EmailInput(charfield_widget),
+    )
+    phone = forms.CharField(
+        label="Telefónne číslo",
+        help_text='Môže byť použité počas doručovania', 
+        required=True, 
+        min_length=5, 
+        widget=forms.TextInput(merge(charfield_widget,{'value':'+421'})),
+    )
+
+        # Newsletter a obchodné podmienky
+
+    newsletter = forms.BooleanField(
+        label="Súhlasíte so zasielaním propagačných emailov?", 
+        required=False,
+        widget=forms.CheckboxInput(checkbox_widget), 
+        )
+    terms_conditions = forms.BooleanField(
+        label="Súhlasíte so obchodnými podmienkami? *",
+        required=True,
+        widget=forms.CheckboxInput(checkbox_widget),
+        )
+    
+        # Preferencie 
+
+    num_portions = forms.ChoiceField(
+        label="Portions", 
+        help_text="Koľko porcí z každého jedla chcete dostávať?",
+        choices=UserProfile.portions_options,
+        widget=forms.RadioSelect(), 
+        required=False
+    )
+
+    food_attributes = forms.ModelMultipleChoiceField(
+        label="Attributes", 
+        help_text="Zvolte obľúbené atribúty", 
+        queryset=FoodAttribute.objects.all(), 
+        required=False,
+        widget=forms.CheckboxSelectMultiple(), 
+    )
+    alergies = forms.ModelMultipleChoiceField(
+        label="Alergens", 
+        help_text="Zvolte vaše alergie", 
+        queryset=Alergen.objects.all(), 
+        required=False,
+        widget=forms.CheckboxSelectMultiple(), 
+    )
 
     COUNTRIES = (
         ("CZ","SK"),
         ("SK","CZ"),
     )
-    firstname = forms.CharField(label="Meno *", widget=forms.TextInput(charfield_widget))
-    lastname = forms.CharField(label="Priezvisko *", widget=forms.TextInput(charfield_widget))
-    email = forms.EmailField(label="Email *", max_length=254, widget=forms.EmailInput(charfield_widget))
-    phone = forms.CharField(min_length=5, label="Telefónne číslo *", help_text='Môže byť použité počas doručovania', required=True, widget=forms.TextInput(merge(charfield_widget,{'value':'+421'})))
 
-    newsletter = forms.BooleanField(label="Súhlasíte so zasielaním propagačných emailov?", 
-                                    widget=forms.CheckboxInput(checkbox_widget), required=False)
-    terms_conditions = forms.BooleanField(label="Súhlasíte so obchodnými podmienkami? *",
-                                            widget=forms.CheckboxInput(checkbox_widget),
-                                            required=True)
+        # Adresa
+
+    street = forms.CharField(
+        label="Ulica", 
+        required=True, 
+        widget=forms.TextInput(merge(charfield_widget, {'list': 'streets'}))
+    )
+    house_no = forms.CharField(
+        label="Číslo domu", 
+        required=True, 
+        widget=forms.TextInput(charfield_widget)
+    )
+    district = forms.CharField(
+        label="Mestská časť/Okres", 
+        required=True,
+        widget=forms.TextInput(merge(charfield_widget, {'list': 'districts'}))
+    )
+    city = forms.CharField(
+        label="Mesto", 
+        required=True, 
+        widget=forms.TextInput(merge(charfield_widget, {'list': 'cities'}))
+        )
+    postal = forms.CharField(
+        label="PSČ", 
+        help_text='Zadajte "-" ak pre Vašu adresu nie je definované PSČ',
+        required=True, 
+        min_length=1, 
+        max_length=6, 
+        widget=forms.TextInput(merge(charfield_widget, {'list': 'postal_codes'}))
+    )
+    country = forms.ChoiceField(
+        label="Krajina", 
+        choices=COUNTRIES, 
+        required=True, 
+        widget=forms.Select(select_widget)
+    )
     
-    num_portions = forms.ChoiceField(label="Portions", help_text="Koľko porcí z každého jedla chcete dostávať? *",
-                                        choices=UserProfile.portions_options,
-                                        widget=forms.RadioSelect(), required=False)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['password1'].label = "Heslo"
+        self.fields['password1'].widget = forms.PasswordInput(attrs=charfield_widget)
+        self.fields['password2'].label = "Heslo znova"
+        self.fields['password2'].widget = forms.PasswordInput(attrs=charfield_widget)
+        self.fields['password2'].help_text = None
 
-    food_attributes = forms.ModelMultipleChoiceField(label="Attributes", help_text="Zvolte obľúbené atribúty", 
-                                                queryset=FoodAttribute.objects.all(), 
-                                                widget=forms.CheckboxSelectMultiple(), required=False)
-    alergies = forms.ModelMultipleChoiceField(label="Alergens", help_text="Zvolte vaše alergie", 
-                                                queryset=Alergen.objects.all(), 
-                                                widget=forms.CheckboxSelectMultiple(), required=False)
-
-    street = forms.CharField(label="Ulica *",required=True, widget=forms.TextInput(merge(charfield_widget,{'list':'streets'})))
-    house_no = forms.CharField(label="Číslo domu *", required=True, widget=forms.TextInput(charfield_widget))
-    district = forms.CharField(label="Mestská časť/Okres *",required=True, widget=forms.TextInput(merge(charfield_widget, {'list':'districts'})))
-    city = forms.CharField(label="Mesto *",required=True, widget=forms.TextInput(merge(charfield_widget,{'list':'cities'})))
-    postal = forms.CharField(label="PSČ *",min_length=1, max_length=6,required=True, help_text='Zadajte "-" ak pre Vašu adresu nie je definované PSČ', widget=forms.TextInput(merge(charfield_widget,{'list':'postal_codes'})))
-    country = forms.ChoiceField(label="Krajina *",choices=COUNTRIES, required=True, widget=forms.Select(select_widget))
-    
     class Meta:
         model = User
         fields = ["firstname",
