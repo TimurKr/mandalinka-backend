@@ -101,6 +101,7 @@ def new_user_view(request):
                 "terms_conditions")
 
             if form.cleaned_data.get("food_attr"):
+                print("food_attr:",form.cleaned_data.get("food_attr"))
                 userProf.food_preferences.set(
                     form.cleaned_data.get("food_attr"))
             if form.cleaned_data.get("food_attr"):

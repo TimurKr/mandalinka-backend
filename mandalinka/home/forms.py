@@ -156,26 +156,26 @@ class SignupForm(UserCreationForm):
     def clean_district(self):
         data = self.cleaned_data['district']
         if not CityDistrictPostal.objects.filter(district=data).exists():
-            raise ValidationError("Unknown district name - make sure you choose from given list and use special characters")
+            raise ValidationError(f"Unknown district name {data}- make sure you choose from given list and use special characters")
         return data
 
     def clean_city(self):
         data = self.cleaned_data['city']
         if not CityDistrictPostal.objects.filter(city=data).exists():
-            raise ValidationError("Unknown city - make sure you choose from given list and use special characters")
+            raise ValidationError(f"Unknown city {data}- make sure you choose from given list and use special characters")
         return data
 
     def clean_postal(self):
         data = self.cleaned_data['postal']
         #some streets have no postal codes in Bratislava (Adlerova, Alexyho...) - user should leave '-'
         if not CityDistrictPostal.objects.filter(postal=data).exists() and data != '-':
-            raise ValidationError("Unknown postal code - make sure you choose from given list and use special characters")
+            raise ValidationError(f"Unknown postal code {data}- make sure you choose from given list and use special characters")
         return data
 
     def clean_country(self):
         data = self.cleaned_data['country']
         if data not in ["SK", "CZ"]:
-            raise ValidationError("Unknown country - make sure you choose from given list and use special characters")
+            raise ValidationError(f"Unknown country {data} - make sure you choose from given list and use special characters")
         return data
 
     def clean(self):
@@ -188,7 +188,6 @@ class SignupForm(UserCreationForm):
         valid_city = CityDistrictPostal.objects.filter(city=city, district=district)
         if not valid_city:
             # There is no such combination - the user probably used wrong district
-            
             for_city = CityDistrictPostal.objects.filter(city=city)
             if not for_city:
                 raise ValidationError(
@@ -228,10 +227,13 @@ class SignupForm(UserCreationForm):
             )
         elif num_res == 1 and valid_city[0].street != '' and valid_city[0].street != street:
             #if there is only one row then it either needs additional info (street) or its enough
-            self.add_error('street', mark_safe(f"For given address a street is required"))
+            if not street:
+                self.add_error('street', mark_safe(f"For given address a street is required"))
+            else:
+                self.add_error('street', mark_safe(f"Check if street {street} is in the given list"))
             raise ValidationError(
                 mark_safe(f"""We only have city <strong>{city}</strong>, district <strong>{district}</strong>, postal code <strong>{postal}</strong>
-                associated with street <strong>{valid_city.street}</strong>. Check your input and try again.""")
+                associated with street <strong>{valid_city[0].street}</strong>. Check your input and try again.""")
             )
         elif num_res > 1:
             #If the query returns more than one then it has to depend on the street - checking that
