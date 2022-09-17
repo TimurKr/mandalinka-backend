@@ -1,3 +1,4 @@
+from ensurepip import bootstrap
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
@@ -5,13 +6,13 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
-
 from home.models import CityDistrictPostal, UserProfile, FoodAttribute
 from recepty.models import Alergen
 
-
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, HTML, Div, Submit
+from crispy_forms.bootstrap import StrictButton 
+from crispy_bootstrap5.bootstrap5 import FloatingField
 
 
 
@@ -23,24 +24,48 @@ select_widget = {'class':'form-select opacity-75 rounded-2 shadow border-dark'}
 def merge(dict1, dict2):
     return {**dict1, **dict2} 
 
+class CustomFormField(FloatingField):
+    attrs = {'class': 'form-control opacity-75 rounded-2 shadow',
+                    'placeholder': 'Add label'}
+
 class LoginForm(forms.Form):
 
-    username = forms.CharField(
-        label="Email", 
-        widget=forms.TextInput(charfield_widget)
-        )
-
-    password = forms.CharField(
-        label="Heslo", 
-        widget=forms.PasswordInput(charfield_widget)
-        )
+    username = forms.CharField(label="Email")
+    password = forms.CharField(label="Heslo")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_action = reverse('home:login')
         self.helper.form_class = 'needs-validation'
-        self.helper.form_attrs = {'novalidate':''}
+        self.helper.form_attrs = {'novalidate':True}
+        self.helper.layout = Layout(
+                CustomFormField('username', 'password'),
+                HTML("<p> \
+                    Zabudli ste heslo? Kliknite \
+                    <a class='link-primary' href='{% url 'home:password_reset' %}'> \
+                    sem</a>!</p>"
+                ),
+                Div(
+                    Div(
+                        StrictButton('Zaregistrovať sa', 
+                            css_class='btn btn-outline-dark w-100 rounded-2 shadow',
+                            onclick=f'location.href=\"{reverse("home:new_user")}\"'
+                        ),
+                        css_class='col-sm-6'
+                    ),
+                    Div(
+                        Submit('submit', 'Prihlásiť sa',
+                            css_class='btn btn-primary bg-gradient w-100 rounded-2 shadow'
+                        ),
+                        css_class='col-sm-6'
+
+                    ),
+                    css_class='row g-3'
+                )
+            )
+        
+        
  
  
 class SignupForm(UserCreationForm):

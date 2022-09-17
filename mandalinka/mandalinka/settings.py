@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'recepty',
     'home',
     'crispy_forms',
+    'crispy_bootstrap5',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -137,4 +138,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 GOOGLE_API_KEY = 'AIzaSyAqhtCRKVAGeLaqgIBqkxM57jPFMv1NVh8'
 AUTHENTICATION_BACKENDS = ('home.models.EmailBackend',)
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_ALLOWED_TEMPLATE_PACKS = ("bootstrap5", "uni_form")
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"

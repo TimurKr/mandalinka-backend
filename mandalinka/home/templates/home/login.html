@@ -1,21 +1,22 @@
 {% extends "home/login_layout.html" %}
 
+{% load crispy_forms_tags %}
+
+
 {% block title %}
     Vitajte naspäť!
 {% endblock %}
 
 {% block body %}
 
-    {% load crispy_forms_tags %}
+    {% crispy form %}
 
-    <!-- {% crispy form %} -->
-
-    <form class="needs-validation" novalidate action="{% url 'home:login' %}" method="post">
+    <!-- <form class="needs-validation" novalidate action="{% url 'home:login' %}" method="post">
         {% csrf_token %}
 
         {{ form|crispy }}
 
-        <!-- {% for elem in form %}
+        {% for elem in form %}
         <div class="form-floating my-2">
             {{ elem }}
             <label for="{{ elem.id_for_label }}">
@@ -25,23 +26,31 @@
                 Meno alebo heslo nesprávne
             </div>
         </div>
-        {% endfor %} -->
+        {% endfor %}
 
-        <p class="my-1">Zabudli ste heslo? Kliknite <a class="link-primary" href="/password_reset">sem</a>!</p>
-        <div class="row g-3 mt-3 mb-2">
-            <div class="col-sm-6 my-1">
-                <a class="btn btn-outline-dark w-100 px-2 rounded-2 shadow" 
-                    onclick="location.href='{% url 'home:new_user' %}'" 
+        <p class="my-1">
+            Zabudli ste heslo? Kliknite 
+            <a class="link-primary" href="{% url 'home:password_reset' %}">
+                sem
+            </a>
+            !
+        </p>
+        <div class="row g-3">
+            <div class="col-sm-6">
+                <button class="btn btn-outline-dark w-100 rounded-2 shadow" 
+                    onclick='location.href="{% url 'home:new_user' %}"'
                     type="button"> 
-                    Zaregistrovať sa </a>
+                    Zaregistrovať sa 
+                </button>
             </div>
-            <div class="col-sm-6 my-1">
-                <button class="btn btn-primary text-light bg-gradient w-100 px-2 rounded-2 shadow" 
-                type="submit"> 
-                Prihlásiť sa </button>
+            <div class="col-sm-6">
+                <button class="btn btn-primary bg-gradient w-100 rounded-2 shadow" 
+                    type="submit"> 
+                    Prihlásiť sa 
+                </button>
             </div>
         </div>
-    </form>   
+    </form>    -->
 
     <script>        // Code for validation
         (() => {
