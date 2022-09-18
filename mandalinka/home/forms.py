@@ -83,10 +83,11 @@ class SignupForm(UserCreationForm):
 
     firstname = forms.CharField(
         label="Meno", 
-        widget=forms.TextInput(merge(charfield_widget)),
+        widget=forms.TextInput(charfield_widget),
     )
     lastname = forms.CharField(
         label="Priezvisko",
+        widget=forms.TextInput(charfield_widget),
     )
     email = forms.EmailField(
         label="Email", 
