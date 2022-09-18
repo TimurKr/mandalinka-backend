@@ -27,7 +27,10 @@ from django.contrib.auth.tokens import default_token_generator
 
 # Je toto vôbec niekedy použité??
 def index(request):
-    context = {"loginform": LoginForm()}
+    context = {
+        "loginform": LoginForm(),
+        "signupform": SignupForm(),
+    }
     return render(request, "home/home.html", context)
 
 
@@ -51,6 +54,7 @@ def login_view(request):
             form.add_error(None, "Email alebo heslo nesprávne")
             context = {
                 "loginform": form,
+                "signupform": SignupForm(),
                 "focus": "LoginModal",
             }
             return render(request, "home/home.html", context)
