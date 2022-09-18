@@ -6,12 +6,12 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-from home.models import CityDistrictPostal, UserProfile, FoodAttribute
-from recepty.models import Alergen
+from home.models import CityDistrictPostal, UserProfile
+from recepty.models import Alergen, FoodAttribute
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, HTML, Div, Submit
-from crispy_forms.bootstrap import StrictButton, TabHolder, Tab
+from crispy_forms.bootstrap import StrictButton
 from crispy_bootstrap5.bootstrap5 import FloatingField
 
 

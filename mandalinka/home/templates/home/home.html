@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
-{% block body %}
-    <h1>Jeden pomaranč sa zaľúbil raz do Darinky Mandalinky</h1>    
-    <h1> Ale, ale, ale... 
+{% block landing_view %}
+    <h1 class="title p-5 m-5 ps-0">Mandalinka</h1>
+    <h4>Jeden pomaranč sa zaľúbil raz do Darinky Mandalinky</h4>    
+    <h4> Ale, ale, ale... 
         {% if request.user.first_name %}
             {{request.user.first_name}}
         {% elif request.user.username %}
@@ -12,6 +13,6 @@
         {% endif %} 
 
         od {{ request.user.profile.street }} je zase hladný
-    </h1>   
+    </h4>   
 
 {% endblock %}

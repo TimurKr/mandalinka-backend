@@ -29,19 +29,6 @@ class EmailBackend(ModelBackend):
 
 
 # Create your models here.
-class Alergen(models.Model):
-    title = models.CharField(max_length=63, verbose_name="Alergén")
-    code = models.IntegerField(primary_key=True, verbose_name="Kód alergénu")
-
-    def __str__(self):
-        return f"{self.code}: {self.title}"
-
-
-class FoodAttribute(models.Model):
-    attr = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.attr
 
 class UserProfile(models.Model):
 
@@ -49,8 +36,8 @@ class UserProfile(models.Model):
     email = models.EmailField(max_length=254,blank=False)
     phone = models.CharField(max_length=20,blank=False)
 
-    food_preferences = models.ManyToManyField(FoodAttribute, related_name="users", blank=True)
-    alergies = models.ManyToManyField(Alergen, related_name="users", blank=True)
+    food_preferences = models.ManyToManyField('recepty.FoodAttribute', related_name="users", blank=True)
+    alergies = models.ManyToManyField('recepty.Alergen', related_name="users", blank=True)
     portions_options = [(2, "2"), (4, "4"), (6, "6")]
     num_portions = models.IntegerField(default=2, choices=portions_options, blank=False)
 

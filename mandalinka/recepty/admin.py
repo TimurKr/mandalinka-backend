@@ -16,19 +16,25 @@ class RecipeVersionAdmin(admin.ModelAdmin):
 
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ("id", "title", "description")
+    filter_horizontal = ("attributes",)
 
 class StepsAdmin(admin.ModelAdmin):
     list_display = ("id", "step")
     filter_horizontal = ("recipes",)
 
-
 class IngredientAdmin(admin.ModelAdmin):
     list_display = ("id", "title", "unit")
     filter_horizontal = ("alergens",)
 
-class RecipeInstanceAdmin(admin.ModelAdmin):
-    pass
+class RatingInline(admin.StackedInline):
+    model = RecipeInstance
+    fields = ('recipe_version',)
+    extra = 1
+    max_num = 12
 
+class DeliveryInstanceAdmin(admin.ModelAdmin):
+    # filter_horizontal = ("normal_recipes",)
+    inlines = (RatingInline,)
 
 # Register your models here.
 admin.site.register(RecipeVersion, RecipeVersionAdmin)
@@ -37,6 +43,7 @@ admin.site.register(Step, StepsAdmin)
 admin.site.register(IngredientInstance)
 admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Alergen)
-admin.site.register(RecipeInstance, RecipeInstanceAdmin)
-admin.site.register(Rating)
+admin.site.register(FoodAttribute)
+admin.site.register(RecipeInstance)
+admin.site.register(DeliveryInstance, DeliveryInstanceAdmin)
 

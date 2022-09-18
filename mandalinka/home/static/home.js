@@ -16,8 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             LoginForm.classList.add('was-validated');
         }, false)
-
-        
     
     })()
 })

@@ -10957,11 +10957,20 @@ div.scrollmenu div {
 }
 
 .btn-fancy:hover {
-  background-position: right center; /* change the direction of the change here */
+  background-position: right center;
+  /* change the direction of the change here */
   color: #fff;
   text-decoration: none;
 }
 
 .btn-fancy:enabled {
   box-shadow: 0 0 20px #0d6efd;
+}
+
+.landing-view {
+  background: #26D0CE;
+}
+.landing-view .title {
+  color: orange;
+  font-size: 8rem;
 }/*# sourceMappingURL=style.css.map */
