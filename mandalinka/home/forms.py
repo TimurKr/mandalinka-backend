@@ -11,7 +11,7 @@ from recepty.models import Alergen
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, HTML, Div, Submit
-from crispy_forms.bootstrap import StrictButton 
+from crispy_forms.bootstrap import StrictButton, TabHolder, Tab
 from crispy_bootstrap5.bootstrap5 import FloatingField
 
 
@@ -24,11 +24,23 @@ select_widget = {'class':'form-select opacity-75 rounded-2 shadow border-dark'}
 def merge(dict1, dict2):
     return {**dict1, **dict2} 
 
-class CustomFormField(FloatingField):
+class CustomSubmitButton(Submit):
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.field_classes = 'btn btn-primary bg-gradient w-100 rounded-2 shadow'
+
+class CustomSecondaryButton(StrictButton):
+    field_classes = 'btn btn-outline-dark w-100 rounded-2 shadow'
+
+class CustomTextField(FloatingField):
     attrs = {'class': 'form-control opacity-75 rounded-2 shadow',
                     'placeholder': 'Add label'}
 
-
+default_errors = {
+    'required': 'Toto pole je povinné',
+    'invalid': 'Zadajte valídnu hodnotu'
+}
 
 
 # Tu zadajte nové forms. argumenty ku novým poliam vždy formátujte v poradí:
@@ -41,17 +53,18 @@ class CustomFormField(FloatingField):
 
 class LoginForm(forms.Form):
 
-    username = forms.CharField(label="Email")
-    password = forms.CharField(label="Heslo")
+    username = forms.CharField(label="Email", error_messages=default_errors)
+    password = forms.CharField(label="Heslo", error_messages=default_errors)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_action = reverse('home:login')
+        self.helper.form_id = 'LoginForm'
         self.helper.form_class = 'needs-validation'
-        self.helper.form_attrs = {'novalidate':True}
+        self.helper.attrs = {'novalidate':''}
         self.helper.layout = Layout(
-                CustomFormField('username', 'password'),
+                CustomTextField('username', 'password'),
                 HTML("<p> \
                     Zabudli ste heslo? Kliknite \
                     <a class='link-primary' href='{% url 'home:password_reset' %}'> \
@@ -59,22 +72,19 @@ class LoginForm(forms.Form):
                 ),
                 Div(
                     Div(
-                        StrictButton('Zaregistrovať sa', 
-                            css_class='btn btn-outline-dark w-100 rounded-2 shadow',
+                        CustomSecondaryButton('Zaregistrovať sa', 
                             onclick=f'location.href=\"{reverse("home:new_user")}\"'
                         ),
                         css_class='col-sm-6'
                     ),
                     Div(
-                        Submit('submit', 'Prihlásiť sa',
-                            css_class='btn btn-primary bg-gradient w-100 rounded-2 shadow'
-                        ),
+                        CustomSubmitButton('submit', 'Prihlásiť sa'),
                         css_class='col-sm-6'
-
                     ),
                     css_class='row g-3'
                 )
             )
+
         
  
 class SignupForm(UserCreationForm):
@@ -110,7 +120,7 @@ class SignupForm(UserCreationForm):
         widget=forms.CheckboxInput(checkbox_widget), 
         )
     terms_conditions = forms.BooleanField(
-        label="Súhlasíte so obchodnými podmienkami? *",
+        label="Súhlasíte so obchodnými podmienkami?",
         required=True,
         widget=forms.CheckboxInput(checkbox_widget),
         )
@@ -122,7 +132,6 @@ class SignupForm(UserCreationForm):
         help_text="Koľko porcí z každého jedla chcete dostávať?",
         choices=UserProfile.portions_options,
         widget=forms.RadioSelect(), 
-        required=False
     )
 
     food_attributes = forms.ModelMultipleChoiceField(
@@ -189,6 +198,30 @@ class SignupForm(UserCreationForm):
         self.fields['password2'].label = "Heslo znova"
         self.fields['password2'].widget = forms.PasswordInput(attrs=charfield_widget)
         self.fields['password2'].help_text = None
+            # Might use this once
+        # self.helper = FormHelper(self)
+        # self.helper.form_action = reverse('home:login')
+        # self.helper.form_id = 'SignupForm'
+        # self.helper.form_class = 'needs-validation'
+        # self.helper.attrs = {'novalidate':''}
+        # self.helper.layout = Layout(
+        #     TabHolder(
+        #         Tab('Osobné údaje',
+        #             CustomTextField('firstname','lastname', 'email','phone'),
+        #             'newsletter', 'terms_conditions',
+        #             CustomTextField('password1', 'password2'),
+        #         ),
+        #         Tab('Preferencie', 
+        #             'num_portions', 'food_attributes', 'alergies',
+        #         ),
+        #         Tab('Adresa', 
+        #             CustomTextField('street', 'house_no','district','city','postal'),
+        #             'country'
+        #         ),
+        #         Tab('Čas doručovanie'),
+        #         Tab('Spôsob platby')
+        #     )
+        # )
 
     class Meta:
         model = User
