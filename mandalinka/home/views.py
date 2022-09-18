@@ -23,21 +23,17 @@ from django.db.models.query_utils import Q
 from django.contrib.auth.tokens import default_token_generator
 
 
-class HomePageView(TemplateView):
-    template_name = "home/home.html"
-
 # Create your views here.
 
 # Je toto vôbec niekedy použité??
 def index(request):
-    return render(request, "home/home.html")
+    context = {"loginform": LoginForm()}
+    return render(request, "home/home.html", context)
 
 
 def login_view(request):
-
     if request.method == "POST":
-        print(request.POST)
-        form = LoginForm(request.POST)
+        
         # Accessing username and password from form data
         username = request.POST["username"]
         password = request.POST["password"]
@@ -51,23 +47,20 @@ def login_view(request):
             return HttpResponseRedirect(reverse("home:home"))
         # Otherwise, return login page again with new context
         else:
-            form.fields["password"].widget.attrs["class"] = "form-control opacity-75 rounded-2 shadow is-invalid"
-            return render(request, "home/login.html", {
-                "form": form
-            })
+            form = LoginForm(request.POST)
+            form.add_error(None, "Email alebo heslo nesprávne")
+            context = {
+                "loginform": form,
+                "focus": "LoginModal",
+            }
+            return render(request, "home/home.html", context)
+    return HttpResponseRedirect(reverse("home:home"))
 
-    return render(request, "home/login.html", {
-        "form": LoginForm()
-    })
 
 
 def logout_view(request):
     logout(request)
-    return render(request, "home/home.html", {
-                "message": "Boli ste úspešne odhlásený!",
-                "message_type": "success",
-                "form": LoginForm()
-            })
+    return HttpResponseRedirect(reverse("home:home"))
 
 
 def new_user_view(request):

@@ -52,7 +52,7 @@ div.scrollmenu div {
  }
 
           
- #submit {
+  .btn-fancy {
     background-image: linear-gradient(to right, #1A2980 0%, #26D0CE  51%, #1A2980  100%);
     text-align: center;
     transition: 0.5s;
@@ -61,13 +61,13 @@ div.scrollmenu div {
     border: none;
   }
 
-  #submit:hover {
+  .btn-fancy:hover {
     background-position: right center; /* change the direction of the change here */
     color: #fff;
     text-decoration: none;
   }
 
-  #submit:enabled {
+  .btn-fancy:enabled {
     box-shadow: 0 0 20px $primary;
   }
 

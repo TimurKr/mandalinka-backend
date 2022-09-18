@@ -28,7 +28,10 @@ class CustomFormField(FloatingField):
     attrs = {'class': 'form-control opacity-75 rounded-2 shadow',
                     'placeholder': 'Add label'}
 
-
+default_errors = {
+    'required': 'Toto pole je povinné',
+    'invalid': 'Zadajte valídnu hodnotu'
+}
 
 
 # Tu zadajte nové forms. argumenty ku novým poliam vždy formátujte v poradí:
@@ -41,15 +44,16 @@ class CustomFormField(FloatingField):
 
 class LoginForm(forms.Form):
 
-    username = forms.CharField(label="Email")
-    password = forms.CharField(label="Heslo")
+    username = forms.CharField(label="Email", error_messages=default_errors)
+    password = forms.CharField(label="Heslo", error_messages=default_errors)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_action = reverse('home:login')
+        self.helper.form_id = 'LoginForm'
         self.helper.form_class = 'needs-validation'
-        self.helper.form_attrs = {'novalidate':True}
+        self.helper.attrs = {'novalidate':''}
         self.helper.layout = Layout(
                 CustomFormField('username', 'password'),
                 HTML("<p> \
@@ -75,6 +79,7 @@ class LoginForm(forms.Form):
                     css_class='row g-3'
                 )
             )
+
         
  
 class SignupForm(UserCreationForm):
