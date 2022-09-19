@@ -32,12 +32,20 @@ class EmailBackend(ModelBackend):
 
 class UserProfile(models.Model):
 
-    user_name = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
+    user_name = models.OneToOneField(User, related_name='profile', on_delete=models.DO_NOTHING)
     email = models.EmailField(max_length=254,blank=False)
     phone = models.CharField(max_length=20,blank=False)
 
-    food_preferences = models.ManyToManyField('recepty.FoodAttribute', related_name="users", blank=True)
-    alergies = models.ManyToManyField('recepty.Alergen', related_name="users", blank=True)
+    food_preferences = models.ManyToManyField(
+        'recepty.FoodAttribute', 
+        related_name="users",
+        blank=True
+    )
+    alergies = models.ManyToManyField(
+        'recepty.Alergen', 
+        related_name="users", 
+        blank=True
+    )
     portions_options = [(2, "2"), (4, "4"), (6, "6")]
     num_portions = models.IntegerField(default=2, choices=portions_options, blank=False)
 
@@ -62,6 +70,9 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
+    # When you create a super user, it is imposible to log in to admin, this shows error.
+    # comment the following line out, log in, edit your account fill in all requred fields,
+    # and uncomment it again
     instance.profile.save()
     print("saved")
 
@@ -77,3 +88,16 @@ class CityDistrictPostal(models.Model):
     postal = models.CharField(max_length=150)
     country = models.CharField(blank=False, max_length=3)
 
+    
+
+class Order(models.Model):
+    # If user is null, his/her account has been deleted
+    user = models.ForeignKey(User, related_name='orders', 
+        on_delete=models.SET_NULL, null=True
+    )
+    delivery_day = models.ForeignKey('recepty.DeliveryDay', related_name='orders', 
+        on_delete=models.SET_NULL, null=True,
+    )
+    recipes = models.ManyToManyField('recepty.RecipeVersion', through='recepty.RecipeOrderInstance', related_name='orders',
+        verbose_name='Recepty', help_text='Zvolte si recepty a množstvo porcií'
+    )

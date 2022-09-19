@@ -2,6 +2,7 @@ from enum import unique
 from pyexpat import model
 from django.db import models
 from django.core.validators import RegexValidator
+from django.contrib.auth.models import User
 
 # Create your models here.
 # class Address(models.Model):
@@ -72,20 +73,18 @@ class Ingredient(models.Model):
     )
     
     UNITS_TO_SELECT = [
-        ("", "Zvolte jednotku"),
+        (None, "Zvolte jednotku"),
         ("g", "gramy"),
         ("ml", "mililitre"),
         ("ks", "kusy"), 
         ]
     unit = models.CharField(
-        choices=UNITS_TO_SELECT, 
+        max_length=3, choices=UNITS_TO_SELECT, 
         verbose_name="Jednotka", help_text="Zvolte jednotku")
 
-    alergens = models.ManyToManyField(
-        Alergen, 
+    alergens = models.ManyToManyField(Alergen, related_name="ingredients",
         blank=True, 
-        verbose_name="Alergény", help_text="Zvolte všetky alergény:", 
-        related_name="ingredients"
+        verbose_name="Alergény", help_text="Zvolte všetky alergény:"
     )
 
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="Čas vzniku")
@@ -95,10 +94,17 @@ class Ingredient(models.Model):
         return f"{self.title}"
 
 class Step(models.Model):
-    step = models.TextField(max_length=250, help_text="Krok: ")
-    step_img = models.ImageField(upload_to=f"recepty/static/photos/", help_text="Pridajte obrazok ku kroku", default=None)
-    step_no = models.IntegerField(verbose_name="Krok cislo:", help_text="Zadaj poradie kroku")
-    recipe = models.ForeignKey("RecipeVersion", on_delete=models.CASCADE, related_name="Steps", null=True, blank=True)
+    text = models.TextField(
+        max_length=250, 
+        verbose_name="Opis", help_text="Krok"
+    )
+    step_img = models.ImageField(
+        upload_to=f"recepty/static/photos/", 
+        verbose_name="Obrázok", help_text="Pridajte obrazok ku kroku"
+    )
+    step_no = models.IntegerField(
+        verbose_name="Krok cislo:", help_text="Zadaj poradie kroku"
+    )
     
     date_modified = models.DateTimeField(auto_now=True, verbose_name="Naposledy upravené")
 
@@ -117,10 +123,35 @@ class Recipe(models.Model):
     thumbnail = models.ImageField(upload_to=f"recepty/static/photos/", help_text="Pridajte thumbnail", default=None)
     active = models.BooleanField(default=True, verbose_name="Aktívny")
 
-    attributes = models.ManyToManyField(FoodAttribute, related_name="recipes", blank=True)
+    attributes = models.ManyToManyField(FoodAttribute, related_name="recipes", 
+        blank=True
+    )
+    prep_time = models.IntegerField(
+        verbose_name="Čas prípravy", help_text="Zadajte dĺžku prípravy"
+    )
+    difficulty = models.IntegerField(
+        choices=[
+            (1, "Easy"),
+            (2, "Medium"),
+            (3, "Hard"),
+            (4, "Profesional"),
+        ],
+        verbose_name="Náročnosť", help_text="Zadajte náročnosť"
+    )
+    
+    pescetarian = models.BooleanField(verbose_name="Pescetarian",default=False)
+    vegetarian = models.BooleanField(verbose_name="Vegetarian",default=False)
+    vegan = models.BooleanField(verbose_name="Vegan",default=False)
+    gluten_free = models.BooleanField(verbose_name="Gluten Free",default=False)
+
 
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="Čas vzniku")
     date_modified = models.DateTimeField(auto_now=True, verbose_name="Naposledy upravené")
+    created_by = models.ForeignKey(User, related_name="recipes", 
+        on_delete=models.SET_NULL,
+        verbose_name="Created by", help_text="Zvolte seba",
+        blank=True, null=True
+    )
 
     def __str__(self):
         return f"{self.title}"
@@ -133,17 +164,27 @@ class Recipe(models.Model):
         # deactivates all of its verions
         pass
 
-class RecipeInstance(models.Model):
-    recipe_version = models.ForeignKey('RecipeVersion', on_delete=models.PROTECT, verbose_name="Recept")
-    delivery_instance = models.ForeignKey('DeliveryInstance', on_delete=models.PROTECT, verbose_name="Rozvoz")
+class RecipeOrderInstance(models.Model):
+    recipe = models.ForeignKey('RecipeVersion',
+        on_delete=models.CASCADE)
+    order = models.ForeignKey('home.Order',
+        on_delete=models.PROTECT
+    )
+    
+    portions = models.IntegerField(
+        verbose_name='Množstvo porcií'
+    )
 
-    choices_amount = [("1", "Porcia bola malá"),
+        # Rating
+    choices_amount = [
+        (None, "Vyhovovala vám porcia"),
+        ("1", "Porcia bola malá"),
         ("2", "Porcia mohla byť trochu väčšia"), 
         ("3", "Porcia bola akurát"),
         ("4", "Stačilo by trochu menej"),
         ("5", "Porcia bola príliš veľká")]
     amount = models.CharField(
-        blank=True, default=None, 
+        blank=True, default=None, max_length=1,
         choices=choices_amount, 
         verbose_name="Hodnotenie množstva", help_text="Sedelo množstvo jedla s objednanou porciou?"
     )
@@ -154,37 +195,31 @@ class RecipeInstance(models.Model):
         ("4", "4"), 
         ("5", "5")]
     taste = models.CharField(
-        blank=True, default=None, 
+        blank=True, default=None, max_length=1,
         choices=choices_stars, 
         verbose_name="Chuť", help_text="Viac je lepšie"
     )
     delivery = models.CharField(
-        blank=True, default=None, 
+        blank=True, default=None, max_length=1,
         choices=choices_stars, 
         verbose_name="Doručenie", help_text="Viac je lepšie"
     )
     
-    date_created = models.DateTimeField(auto_now_add=True, verbose_name="Čas vzniku")
-    date_modified = models.DateTimeField(auto_now=True, verbose_name="Naposledy upravené")
-
-    def __str__(self):
-        amount = '*' * int(self.amount or 0)
-        taste = '*' * int(self.taste or 0)
-        delivery = '*' * int(self.delivery or 0)
-        return f"{self.recipe_version} z dňa {self.delivery_instance.date}: {amount}/{taste}/{delivery}"
-
 class RecipeVersion(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="recipe_versions")
-    version = models.IntegerField(verbose_name="Verzia receptu", help_text="Zadajte koľkatá je to verzia receptu")
-    prep_time = models.IntegerField(verbose_name="Čas prípravy", help_text="Zadajte dĺžku prípravy")
-
-    ingredients = models.ManyToManyField(
-        Ingredient, through=IngredientInstance, 
-        help_text="Zvolte všetky ingrediencie", related_name="recipes"
+    recipe = models.ForeignKey(Recipe, related_name="versions",
+        on_delete=models.PROTECT
     )
-    steps = models.ManyToManyField(
-        Step, blank=True, 
-        verbose_name="Kroky", help_text="Pridajte kroky", related_name="recipes"
+    version = models.IntegerField(
+        verbose_name="Verzia receptu", help_text="Zadajte koľkatá je to verzia receptu"
+    )
+    
+        # Actual recipe info 
+    ingredients = models.ManyToManyField(Ingredient, through=IngredientInstance, related_name="recipes",
+        help_text="Zvolte všetky ingrediencie"
+    )
+    steps = models.ManyToManyField(Step, related_name="recipes",
+        blank=True, 
+        verbose_name="Kroky", help_text="Pridajte kroky"
     )
 
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="Čas vzniku")
@@ -207,16 +242,16 @@ class RecipeVersion(models.Model):
         return "No ratings"
 
 
-class DeliveryInstance(models.Model):
-    
+class DeliveryDay(models.Model):
+
     date = models.DateField(blank=False, verbose_name="Dátum")
+
+    recipes = models.ManyToManyField('recepty.RecipeVersion', related_name="delivery_days",
+        verbose_name="Recepty na výber", help_text="Zvolte, ktoré recepty budú v daný deň na výber"
+    )
+
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="Čas vzniku")
     date_modified = models.DateTimeField(auto_now=True, verbose_name="Naposledy upravené")
-
-    recipes = models.ManyToManyField(
-        RecipeVersion, through=RecipeInstance,
-        verbose_name="Recepty", 
-        related_name="usages")
 
     def __str__(self):
         return f"Rozvoz z dňa {self.date}"
