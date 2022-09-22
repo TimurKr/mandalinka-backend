@@ -12,7 +12,6 @@
             niekto
         {% endif %} 
 
-        od {{ request.user.profile.street }} je zase hladný
-    </h4>   
-
+        z {% firstof request.user.profile.street "" %} je zase hladný
+    </h4>
 {% endblock %}

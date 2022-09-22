@@ -193,7 +193,7 @@ Zaregistrujte sa!
                     {% for attr in form.num_portions %}
                     <input type="radio" class="btn-check" name='portions' id="{{ attr.id_for_label }}"
                         autocomplete="off">
-                    <label class="btn btn-outline-primary" for="{{ attr.id_for_label }}">    
+                    <label class="btn btn-outline-primary{% if attr.choice_label == '2'%} active{% endif %}" for="{{ attr.id_for_label }}">    
                         {{ attr.choice_label }}
                     </label>
                     {% endfor %}

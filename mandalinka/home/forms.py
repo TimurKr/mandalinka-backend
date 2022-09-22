@@ -1,3 +1,4 @@
+from email.policy import default
 from ensurepip import bootstrap
 from django import forms
 from django.core.exceptions import ValidationError
@@ -54,7 +55,7 @@ default_errors = {
 class LoginForm(forms.Form):
 
     username = forms.CharField(label="Email", error_messages=default_errors)
-    password = forms.CharField(label="Heslo", error_messages=default_errors)
+    password = forms.CharField(label="Heslo", error_messages=default_errors, widget=forms.PasswordInput())
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -90,7 +91,6 @@ class LoginForm(forms.Form):
 class SignupForm(UserCreationForm):
 
         # Osobné veci
-
     firstname = forms.CharField(
         label="Meno", 
         widget=forms.TextInput(charfield_widget),
@@ -131,9 +131,9 @@ class SignupForm(UserCreationForm):
         label="Portions", 
         help_text="Koľko porcí z každého jedla chcete dostávať?",
         choices=UserProfile.portions_options,
+        initial=2,
         widget=forms.RadioSelect(), 
     )
-
     food_attributes = forms.ModelMultipleChoiceField(
         label="Attributes", 
         help_text="Zvolte obľúbené atribúty", 
@@ -198,30 +198,6 @@ class SignupForm(UserCreationForm):
         self.fields['password2'].label = "Heslo znova"
         self.fields['password2'].widget = forms.PasswordInput(attrs=charfield_widget)
         self.fields['password2'].help_text = None
-            # Might use this once
-        # self.helper = FormHelper(self)
-        # self.helper.form_action = reverse('home:login')
-        # self.helper.form_id = 'SignupForm'
-        # self.helper.form_class = 'needs-validation'
-        # self.helper.attrs = {'novalidate':''}
-        # self.helper.layout = Layout(
-        #     TabHolder(
-        #         Tab('Osobné údaje',
-        #             CustomTextField('firstname','lastname', 'email','phone'),
-        #             'newsletter', 'terms_conditions',
-        #             CustomTextField('password1', 'password2'),
-        #         ),
-        #         Tab('Preferencie', 
-        #             'num_portions', 'food_attributes', 'alergies',
-        #         ),
-        #         Tab('Adresa', 
-        #             CustomTextField('street', 'house_no','district','city','postal'),
-        #             'country'
-        #         ),
-        #         Tab('Čas doručovanie'),
-        #         Tab('Spôsob platby')
-        #     )
-        # )
 
     class Meta:
         model = User
@@ -401,5 +377,25 @@ class SignupForm(UserCreationForm):
                     mark_safe(f"""For the city <strong>{city}</strong>, district <strong>{district}</strong> and street <strong>{street}</strong>
                     there are only following postal codes provided: <strong><ul><li>{'</li><li>'.join(expected_postal)}</li></ul></strong>""")
                 )
+
+
+class EditProfile(forms.Form):
+
+    test = forms.CharField(max_length=64)
+
+    def __init__(self,*args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_action = reverse('home:my_account')
+        self.helper.form_id = 'LoginForm'
+        self.helper.form_class = 'needs-validation'
+        self.helper.attrs = {'novalidate':''}
+        self.helper.layout = Layout(
+            CustomTextField('test'),
+            Div(
+                CustomSubmitButton('submit', 'Prihlásiť sa'),
+                css_class='col-sm-6'
+            ),
+        )
 
 

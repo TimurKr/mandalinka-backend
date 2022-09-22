@@ -36,7 +36,7 @@ def index(request):
 
 def login_view(request):
     if request.method == "POST":
-        
+        print(request)
         # Accessing username and password from form data
         username = request.POST["username"]
         password = request.POST["password"]
@@ -233,3 +233,9 @@ def password_reset_request(request):
 
     return render(request=request, template_name="home/password/password_reset.html", 
         context={"password_reset_form":password_reset_form})
+
+def my_account_view(request):
+    if request.method == "POST":
+        return HttpResponseRedirect(reverse('home:home'))
+    context = {"form": EditProfile()}
+    return render(request,"home/my_account.html",context)
