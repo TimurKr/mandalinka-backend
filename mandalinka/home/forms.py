@@ -391,5 +391,7 @@ class EditProfile(SignupForm):
         self.helper.form_id = 'LoginForm'
         self.helper.form_class = 'needs-validation'
         self.helper.attrs = {'novalidate':''}
+        self.fields.pop('password1')
+        self.fields.pop('password2')
 
 

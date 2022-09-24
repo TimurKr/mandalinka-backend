@@ -1,26 +1,27 @@
 from django.views.generic import TemplateView
-
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
+from django.db.models.query_utils import Q
+from django.template.loader import render_to_string
+from django.core.mail import send_mail, EmailMessage, BadHeaderError
 
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.models import User
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
+
+
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
 
 from home.forms import *
 from home.models import Streets
 
-from django.template.loader import render_to_string
-from django.contrib.sites.shortcuts import get_current_site
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_str
-from django.core.mail import send_mail, EmailMessage, BadHeaderError
-
 from .tokens import account_activation_token
 
-from django.contrib.auth.forms import PasswordResetForm
-from django.contrib.auth.models import User
-from django.db.models.query_utils import Q
-from django.contrib.auth.tokens import default_token_generator
 
 
 # Create your views here.
@@ -232,10 +233,18 @@ def password_reset_request(request):
     return render(request=request, template_name="home/password/password_reset.html", 
         context={"password_reset_form":password_reset_form})
 
+@login_required
 def my_account_view(request):
     if request.method == "POST":
-        return HttpResponseRedirect(reverse('home:home'))
+        form = EditProfile(request.POST)
+        if form.is_valid():
+            # Tu treba pridať uloženie zmenených dát
+            return HttpResponseRedirect(reverse('home:home'))
+        else:
+            pass
 
+            
+        
     context = {
         "form": EditProfile(
             initial={
