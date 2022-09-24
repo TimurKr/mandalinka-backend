@@ -378,10 +378,7 @@ class SignupForm(UserCreationForm):
                     there are only following postal codes provided: <strong><ul><li>{'</li><li>'.join(expected_postal)}</li></ul></strong>""")
                 )
 
-
-class EditProfile(forms.Form):
-
-    test = forms.CharField(max_length=64)
+class EditProfile(SignupForm):
 
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -390,12 +387,5 @@ class EditProfile(forms.Form):
         self.helper.form_id = 'LoginForm'
         self.helper.form_class = 'needs-validation'
         self.helper.attrs = {'novalidate':''}
-        self.helper.layout = Layout(
-            CustomTextField('test'),
-            Div(
-                CustomSubmitButton('submit', 'Prihlásiť sa'),
-                css_class='col-sm-6'
-            ),
-        )
 
 

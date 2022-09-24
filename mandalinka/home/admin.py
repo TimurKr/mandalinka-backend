@@ -12,6 +12,7 @@ class UserProfileInline(admin.StackedInline):
     model = UserProfile
     can_delete = False
     verbose_name_plural = 'users'
+    filter_horizontal = ('food_preferences', 'alergies')
     
 # Define a new User admin
 class UserAdmin(BaseUserAdmin):

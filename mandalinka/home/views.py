@@ -24,8 +24,6 @@ from django.contrib.auth.tokens import default_token_generator
 
 
 # Create your views here.
-
-# Je toto vôbec niekedy použité??
 def index(request):
     context = {
         "loginform": LoginForm(),
@@ -237,5 +235,18 @@ def password_reset_request(request):
 def my_account_view(request):
     if request.method == "POST":
         return HttpResponseRedirect(reverse('home:home'))
-    context = {"form": EditProfile()}
+
+    context = {
+        "form": EditProfile(
+            initial={
+                'firstname': request.user.first_name,
+                'lastname': request.user.last_name,
+                'email': request.user.email,
+                'phone': request.user.profile.phone,
+                'newsletter': request.user.profile.newsletter,
+                'terms_conditions': request.user.profile.terms_conditions,
+                'food_attributes': request.user.profile.food_preferences.all(),
+            }
+        )
+    }
     return render(request,"home/my_account.html",context)
