@@ -14,11 +14,6 @@
 
         <div class="alert alert-danger">{{ form.non_field_errors }}</div>
 
-
-        
-
-        <!-- Panel General -->
-
         <div class="row g-2 my-2">
 
             <!-- Meno -->
@@ -78,8 +73,6 @@
             </div>
 
 
-            <!-- Newsletter -->
-
             <div class="col-12 form-check form-switch mx-2">
                 {{ form.newsletter }}
                 <label for="{{ form.newsletter.id_for_label }}" class="form-check-label">
@@ -96,8 +89,6 @@
                 </label>
             </div>
         </div>
-
-        <!-- Panel Preferences -->
 
         <!-- Portion size -->
         <div class="row mb-2">
@@ -155,8 +146,6 @@
             {% endfor %}
         </div>
 
-
-
         <!-- Alergies -->
 
         <h3 class="mt-3">
@@ -181,7 +170,6 @@
             {% endfor %}
         </div>
 
-        <!-- Panel Adresa -->
 
         <h3>Zadajte adresu doručenia</h3>
         <div class="row g-3 my-2">
@@ -315,9 +303,12 @@
 
 
         <!-- Buttons -->
-        <div class="d-flex justify-content-right mt-3">
-            <button type="submit" class="btn btn-fancy" id="submit">
-                Zaregistrovať sa
+        <div class="d-flex justify-content-end mt-3 g-3">
+            <a class="btn btn-outline-primary mx-2" role="button" href="{% url 'home:my_account' %}">
+                Zrušiť zmeny
+            </a>
+            <button type="submit" class="btn btn-primary mx-2" id="submit">
+                Uložiť zmeny
             </button>
         </div>
         

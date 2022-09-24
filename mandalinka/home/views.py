@@ -253,7 +253,6 @@ def my_account_view(request):
                 'city': request.user.profile.city,
                 'postal': request.user.profile.postal,
                 'country': request.user.profile.country,
-                
             }
         )
     }

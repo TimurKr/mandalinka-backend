@@ -420,9 +420,15 @@ Zaregistrujte sa!
                     </svg>
                 </button>
             </div>
-            <button type="submit" class="btn btn-fancy" id="submit" disabled>
-                Zaregistrovať sa
-            </button>
+            <div>
+                <a class="btn btn-outline-primary mx-2" role="button" href="{% url 'home:login' %}">
+                    Prihlásiť sa
+                </a>
+                <button type="submit" class="btn btn-fancy" id="submit" disabled>
+                    Zaregistrovať sa
+                </button>
+            </div>
+            
         </div>
     </div>
 </form>

@@ -46,7 +46,9 @@
     <nav class="navbar navbar-expand py-3 sticky-top">
         <div class="container-fluid px-5">
 
-            <img class="img-fluid" width=35rem src="{% static 'favicon.ico' %}" alt="">
+            <a href="{% url 'home:home'%}">
+                <img class="img-fluid" width=35rem src="{% static 'favicon.ico' %}" alt="">
+            </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
                 <span class="navbar-toggler-icon"></span>
