@@ -191,12 +191,11 @@ Zaregistrujte sa!
         
                 <div class="btn-group col-3 my-2" role="group" aria-label="radio toggle">
                     {% for attr in form.num_portions %}
-                    <input type="radio" class="btn-check" name='portions' id="{{ attr.id_for_label }}"
-                        autocomplete="off">
-                    <label class="btn btn-outline-primary{% if attr.choice_label == '2'%} active{% endif %}" for="{{ attr.id_for_label }}">    
-                        {{ attr.choice_label }}
-                    </label>
-                    {% endfor %}
+                        {{ attr.tag }}
+                        <label class="btn btn-outline-primary" for="{{ attr.id_for_label }}">    
+                            {{ attr.choice_label }}
+                        </label>
+                        {% endfor %}
                 </div>
                 <div class="invalid-feedback ps-2">
                     {% firstof form.email.errors 'Toto pole je povinné' %}
@@ -231,13 +230,15 @@ Zaregistrujte sa!
             </p>
             <div class="d-flex flex-wrap justify-content-center">
                 {% for attr in form.food_attributes %}
-                <input type="checkbox" class="btn-check" id="{{ attr.id_for_label }}" autocomplete="off">
-                <label class="btn btn-outline-primary m-1 px-3 py-1 rounded-2" for="{{ attr.id_for_label }}">
-                    {{ attr.choice_label }}
-                </label>
+                    <div>
+                        {{ attr.tag }}
+                        <label class="{{ form.fields.food_attributes.label_classes }}" 
+                            for="{{ attr.id_for_label }}">
+                            {{ attr.choice_label }}
+                        </label>
+                    </div>
                 {% endfor %}
             </div>
-
 
 
             <!-- Alergies -->
@@ -257,10 +258,10 @@ Zaregistrujte sa!
             </p>
             <div class="d-flex flex-wrap justify-content-center">
                 {% for attr in form.alergies %}
-                <input type="checkbox" class="btn-check" id="{{ attr.id_for_label }}" autocomplete="off">
-                <label class="btn btn-outline-primary m-1 px-3 py-1 rounded-2" for="{{ attr.id_for_label }}">
-                    {{ attr.choice_label }}
-                </label>
+                    {{ attr.tag }}
+                    <label class="{{ form.fields.alergies.label_classes }}" for="{{ attr.id_for_label }}">
+                        {{ attr.choice_label }}
+                    </label>
                 {% endfor %}
             </div>
         </div>

@@ -21,6 +21,8 @@ charfield_widget = {'class': 'form-control opacity-75 rounded-2 shadow',
                     'placeholder': 'Problem here'}
 checkbox_widget = {'class':'form-check-input'}
 select_widget = {'class':'form-select opacity-75 rounded-2 shadow border-dark'}
+radioselect_widget = {'class':'btn-check'}
+radioselect_label_class = 'btn btn-outline-primary m-1 px-3 py-1 rounded-2'
 
 def merge(dict1, dict2):
     return {**dict1, **dict2} 
@@ -132,27 +134,24 @@ class SignupForm(UserCreationForm):
         help_text="Koľko porcí z každého jedla chcete dostávať?",
         choices=UserProfile.portions_options,
         initial=2,
-        widget=forms.RadioSelect(), 
+        widget=forms.RadioSelect(radioselect_widget), 
     )
     food_attributes = forms.ModelMultipleChoiceField(
         label="Attributes", 
         help_text="Zvolte obľúbené atribúty", 
         queryset=FoodAttribute.objects.all(), 
         required=False,
-        widget=forms.CheckboxSelectMultiple(), 
+        widget=forms.CheckboxSelectMultiple(radioselect_widget), 
     )
     alergies = forms.ModelMultipleChoiceField(
         label="Alergens", 
         help_text="Zvolte vaše alergie", 
         queryset=Alergen.objects.all(), 
         required=False,
-        widget=forms.CheckboxSelectMultiple(), 
+        widget=forms.CheckboxSelectMultiple(radioselect_widget), 
     )
-
-    COUNTRIES = (
-        ("CZ","SK"),
-        ("SK","CZ"),
-    )
+    food_attributes.label_classes = radioselect_label_class
+    alergies.label_classes = radioselect_label_class
 
         # Adresa
 
@@ -184,6 +183,10 @@ class SignupForm(UserCreationForm):
         max_length=6, 
         widget=forms.TextInput(merge(charfield_widget, {'list': 'postal_codes'}))
     )
+    COUNTRIES = (
+        ("SK","Slovensko"),
+        ("other","Iné"),
+    )
     country = forms.ChoiceField(
         label="Krajina", 
         choices=COUNTRIES, 
@@ -198,6 +201,7 @@ class SignupForm(UserCreationForm):
         self.fields['password2'].label = "Heslo znova"
         self.fields['password2'].widget = forms.PasswordInput(attrs=charfield_widget)
         self.fields['password2'].help_text = None
+
 
     class Meta:
         model = User

@@ -246,6 +246,14 @@ def my_account_view(request):
                 'newsletter': request.user.profile.newsletter,
                 'terms_conditions': request.user.profile.terms_conditions,
                 'food_attributes': request.user.profile.food_preferences.all(),
+                'alergies': request.user.profile.alergies.all(),
+                'street': request.user.profile.street, 
+                'house_no': request.user.profile.house_no,
+                'district': request.user.profile.district,
+                'city': request.user.profile.city,
+                'postal': request.user.profile.postal,
+                'country': request.user.profile.country,
+                
             }
         )
     }
