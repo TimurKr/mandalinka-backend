@@ -71,6 +71,12 @@ class Ingredient(models.Model):
     price_per_unit = models.FloatField(
         verbose_name="Cena na jednotku", help_text="Zadajte cenu na nižšie zvolenú jednotku"
     )
+
+    img = models.ImageField(
+        upload_to=f"recepty/static/photos/", 
+        verbose_name="Obrázok", help_text="Pridajte obrazok ku kroku",
+        blank=True, null=True, default=None
+    )
     
     UNITS_TO_SELECT = [
         (None, "Zvolte jednotku"),
@@ -98,11 +104,12 @@ class Step(models.Model):
         max_length=250, 
         verbose_name="Opis", help_text="Krok"
     )
-    step_img = models.ImageField(
+    img = models.ImageField(
         upload_to=f"recepty/static/photos/", 
-        verbose_name="Obrázok", help_text="Pridajte obrazok ku kroku"
+        verbose_name="Obrázok", help_text="Pridajte obrazok ku kroku",
+        blank=True, null=True, default=None
     )
-    step_no = models.IntegerField(
+    no = models.IntegerField(
         verbose_name="Krok cislo:", help_text="Zadaj poradie kroku"
     )
     
@@ -120,7 +127,10 @@ class Step(models.Model):
 class Recipe(models.Model):
     title = models.CharField(max_length=63, unique=True, help_text="Názov receptu")
     description = models.TextField(max_length=127, verbose_name="Opis jedla", help_text="Zadajte stručný opis jedla")
-    thumbnail = models.ImageField(upload_to=f"recepty/static/photos/", help_text="Pridajte thumbnail", default=None)
+    thumbnail = models.ImageField(
+        upload_to=f"recepty/static/photos/", 
+        help_text="Pridajte thumbnail", 
+        blank=True, null=True, default=None)
     active = models.BooleanField(default=True, verbose_name="Aktívny")
 
     attributes = models.ManyToManyField(FoodAttribute, related_name="recipes", 
