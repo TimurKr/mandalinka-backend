@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+{% block includes %}
+    <script src="{% static 'home.js' %}"></script>
+    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+{% endblock %}
+
 {% block landing_view %}
     <h1 class="title p-5 m-5 ps-0">Mandalinka</h1>
     <h4>Jeden pomaranč sa zaľúbil raz do Darinky Mandalinky</h4>    
@@ -14,4 +24,12 @@
 
         z {% firstof request.user.profile.street "" %} je zase hladný
     </h4>
+{% endblock %}
+
+
+
+{% block current_order %}
+    <div id="CurrentOrder"></div>
+
+    <script src="{% static 'recipe_widget.jsx' %}" type="text/babel"></script>
 {% endblock %}

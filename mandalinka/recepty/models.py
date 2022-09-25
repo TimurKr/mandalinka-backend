@@ -115,7 +115,7 @@ class Step(models.Model):
     #     ]
 
     def __str__(self):
-        return f"text: {self.step}"
+        return f"Krok č. {self.step_no}"
 
 class Recipe(models.Model):
     title = models.CharField(max_length=63, unique=True, help_text="Názov receptu")

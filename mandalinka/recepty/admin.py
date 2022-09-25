@@ -7,7 +7,7 @@ from .models import *
 # Has to go befor RecipeVersionAdmin
 class IngredientInstanceInline(admin.TabularInline):
     model = IngredientInstance
-    extra = 1
+    extra = 2
     
 
 class RecipeVersionAdmin(admin.ModelAdmin):
