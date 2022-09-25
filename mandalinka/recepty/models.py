@@ -122,7 +122,7 @@ class Step(models.Model):
     #     ]
 
     def __str__(self):
-        return f"Krok č. {self.step_no}"
+        return f"Krok č. {self.no}"
 
 class Recipe(models.Model):
     title = models.CharField(max_length=63, unique=True, help_text="Názov receptu")
@@ -176,7 +176,7 @@ class Recipe(models.Model):
 
 class RecipeOrderInstance(models.Model):
     recipe = models.ForeignKey('RecipeVersion',
-        on_delete=models.CASCADE)
+        on_delete=models.CASCADE, related_name="order_instance")
     order = models.ForeignKey('home.Order',
         on_delete=models.PROTECT
     )
@@ -243,7 +243,7 @@ class RecipeVersion(models.Model):
     def avg_rating(self):
         rating_sum = 0
         rating_num = 0
-        for rating in self.ratings.all():
+        for rating in self.order_instance.all():
             if rating.taste:
                 rating_sum += int(rating.taste)
                 rating_num += 1
@@ -257,7 +257,8 @@ class DeliveryDay(models.Model):
     date = models.DateField(blank=False, verbose_name="Dátum")
 
     recipes = models.ManyToManyField('recepty.RecipeVersion', related_name="delivery_days",
-        verbose_name="Recepty na výber", help_text="Zvolte, ktoré recepty budú v daný deň na výber"
+        verbose_name="Recepty na výber", help_text="Zvolte, ktoré recepty budú v daný deň na výber",
+        blank=True
     )
 
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="Čas vzniku")

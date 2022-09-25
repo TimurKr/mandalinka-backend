@@ -1,10 +1,12 @@
 from xmlrpc.client import boolean
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.urls import reverse
+from django.core.serializers import serialize
+from django.utils.timezone import now
 from django import forms
 
-from recepty.models import Recipe
+from recepty.models import Recipe, DeliveryDay
 
 
 class NewRecipeForm(forms.Form):
@@ -36,3 +38,23 @@ def novy_recept(request):
         "form": NewRecipeForm(),
         "head":"Pridajte recept"
     })
+
+def load_recepty(request):
+    if request.user.is_authenticated:
+        delivery_day = DeliveryDay.objects.filter(date__gte=now().date()).order_by('date').first()
+        recipes = []
+        for recipeversion in delivery_day.recipes.all():
+
+            # Add necessary info for desplay in recipe_widget here
+            recipes.append({
+                'title': recipeversion.recipe.title,
+                'description': recipeversion.recipe.description
+            })
+
+        response = {
+            'date': delivery_day.date,
+            'recipes': recipes,
+        }
+        return JsonResponse(response)
+        
+    return HttpResponseRedirect(reverse('home:home'))
