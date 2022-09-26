@@ -1,3 +1,5 @@
+#first run get_cities_csv form bash, and download ULICE.csv from slovak post website if not already downloaded
+#run python3 manage.py shell and copy paste the following code
 
 from home.models import CityDistrictPostal, Streets
 
