@@ -244,7 +244,12 @@ def my_account_view(request):
             pass
 
             
-        
+    districts = [x[0] for x in CityDistrictPostal.objects.values_list("district").distinct()]
+    cities = [x[0] for x in CityDistrictPostal.objects.values_list("city").distinct()]
+    postal_codes = [x[0] for x in CityDistrictPostal.objects.values_list("postal").distinct()]
+    print(postal_codes)
+    streets = Streets.objects.all()
+    
     context = {
         "form": EditProfile(
             initial={
@@ -263,6 +268,11 @@ def my_account_view(request):
                 'postal': request.user.profile.postal,
                 'country': request.user.profile.country,
             }
-        )
+        ),
+        'districts': districts,
+        'cities': cities,
+        'postal_codes': postal_codes,
+        'streets': streets
     }
+    
     return render(request,"home/my_account.html",context)
