@@ -7,20 +7,23 @@ class RecipeWidget extends React.Component {
         this.state = {
             title: props.data.title,
             description: props.data.description,
-            thumbnail: props.data.thumbnail
+            thumbnail: props.data.thumbnail,
+            type_color: props.data.type_color,
         }
     }
 
     render() {
         return (
             <div className="col-md-3 col-sm-6">
-                <div className="card">
-                    <div className="card-body">
-                        <img src={this.state.thumbnail} className="card-img-top" alt='img_alt'></img>
-                        <h5 className="card-title">{this.state.title}</h5>
-                        <p className="card-text">{this.state.description}</p>
-                        <a href="#" className="btn btn-primary">Go somewhere</a>
+                <div className="card" style={{background: this.state.type_color}}>
+                    <div className="card-body p-2">
+                        <div className="bg-light">
+                            <img src={this.state.thumbnail} className="card-img-top" alt='img_alt'></img>
+                            <h5 className="card-title">{this.state.title}</h5>
+                            <p className="card-text">{this.state.description}</p>
+                        </div>
                     </div>
+                    <a href="#" className="btn btn-primary">Go somewhere</a>
                 </div>
             </div>
         )

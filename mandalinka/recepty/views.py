@@ -40,27 +40,37 @@ def novy_recept(request):
     })
 
 def load_next_order(request):
-    if request.user.is_authenticated:
-        delivery_day = DeliveryDay.objects.filter(date__gte=now().date()).order_by('date').first()
-        recipes = []
-        for recipeversion in delivery_day.recipes.all():
+    delivery_day = DeliveryDay.objects.filter(date__gte=now().date()).order_by('date').first()
+    recipes = []
+    for recipeversion in delivery_day.recipes.all():
+        # Add necessary info for display in recipe_widget here
 
-            # Add necessary info for desplay in recipe_widget here
-            recipes.append({
-                'title': recipeversion.recipe.title,
-                'description': recipeversion.recipe.description,
-            })
+        # Change color maping here
+        if recipeversion.recipe.pescetarian:
+            type_color = "blue"
+        elif recipeversion.recipe.vegetarian:
+            type_color = "green"
+        elif recipeversion.recipe.vegan:
+            type_color = "yellow"
+        else:
+            type_color = "red"
 
-                
-            if recipeversion.recipe.thumbnail:
-                recipes[-1]["thumbnail"] = recipeversion.recipe.thumbnail.url
-            else:
-                recipes[-1]["thumbnail"] = None
+        recipes.append({
+            'title': recipeversion.recipe.title,
+            'description': recipeversion.recipe.description,
+            'type_color': type_color,
+        })
 
-        response = {
-            'date': delivery_day.date,
-            'recipes': recipes,
-        }
-        return JsonResponse(response)
+            
+        if recipeversion.recipe.thumbnail:
+            recipes[-1]["thumbnail"] = recipeversion.recipe.thumbnail.url
+        else:
+            recipes[-1]["thumbnail"] = None
+
+    response = {
+        'date': delivery_day.date,
+        'recipes': recipes,
+    }
+    return JsonResponse(response)
         
-    return HttpResponseForbidden(request)
+    
