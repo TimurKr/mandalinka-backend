@@ -16,12 +16,15 @@ class RecipeVersionAdmin(admin.ModelAdmin):
     inlines = (IngredientInstanceInline,)
     
 class RecipeAdmin(admin.ModelAdmin):
+    list_display = ("__str__", "active", "thumbnail",)
     filter_horizontal = ("attributes",)
     
 class StepsAdmin(admin.ModelAdmin):
+    list_display = ("__str__", "img",)
     filter_horizontal = ("recipes",)
     
 class IngredientAdmin(admin.ModelAdmin):
+    list_display = ("title", "price_per_unit", "img",)
     filter_horizontal = ("alergens",)
     
 class DeliveryDayAdmin(admin.ModelAdmin):

@@ -73,7 +73,7 @@ class Ingredient(models.Model):
     )
 
     img = models.ImageField(
-        upload_to=f"recepty/static/photos/", 
+        upload_to="ingredients", 
         verbose_name="Obrázok", help_text="Pridajte obrazok ku kroku",
         blank=True, null=True, default=None
     )
@@ -105,7 +105,7 @@ class Step(models.Model):
         verbose_name="Opis", help_text="Krok"
     )
     img = models.ImageField(
-        upload_to=f"recepty/static/photos/", 
+        upload_to="steps", 
         verbose_name="Obrázok", help_text="Pridajte obrazok ku kroku",
         blank=True, null=True, default=None
     )
@@ -128,7 +128,7 @@ class Recipe(models.Model):
     title = models.CharField(max_length=63, unique=True, help_text="Názov receptu")
     description = models.TextField(max_length=127, verbose_name="Opis jedla", help_text="Zadajte stručný opis jedla")
     thumbnail = models.ImageField(
-        upload_to=f"recepty/static/photos/", 
+        upload_to="recipes", 
         help_text="Pridajte thumbnail", 
         blank=True, null=True, default=None)
     active = models.BooleanField(default=True, verbose_name="Aktívny")

@@ -1,6 +1,6 @@
 from xmlrpc.client import boolean
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponseForbidden
 from django.urls import reverse
 from django.core.serializers import serialize
 from django.utils.timezone import now
@@ -39,7 +39,7 @@ def novy_recept(request):
         "head":"Pridajte recept"
     })
 
-def load_recepty(request):
+def load_next_order(request):
     if request.user.is_authenticated:
         delivery_day = DeliveryDay.objects.filter(date__gte=now().date()).order_by('date').first()
         recipes = []
@@ -48,8 +48,14 @@ def load_recepty(request):
             # Add necessary info for desplay in recipe_widget here
             recipes.append({
                 'title': recipeversion.recipe.title,
-                'description': recipeversion.recipe.description
+                'description': recipeversion.recipe.description,
             })
+
+                
+            if recipeversion.recipe.thumbnail:
+                recipes[-1]["thumbnail"] = recipeversion.recipe.thumbnail.url
+            else:
+                recipes[-1]["thumbnail"] = None
 
         response = {
             'date': delivery_day.date,
@@ -57,4 +63,4 @@ def load_recepty(request):
         }
         return JsonResponse(response)
         
-    return HttpResponseRedirect(reverse('home:home'))
+    return HttpResponseForbidden(request)
