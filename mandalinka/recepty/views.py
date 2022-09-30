@@ -55,10 +55,20 @@ def load_next_order(request):
         else:
             type_color = "red"
 
+        try: 
+            num_por = request.user.orders.get(delivery_day_id = delivery_day.id).order_instance.get(recipe_id = recipeversion.id).portions
+        except:
+            num_por = 0
+
         recipes.append({
             'title': recipeversion.recipe.title,
             'description': recipeversion.recipe.description,
             'type_color': type_color,
+            'attributes': [i.attr for i in recipeversion.recipe.attributes.all()],
+            'alergens': [[alergen.code, alergen.title] for ingredient in recipeversion.ingredients.all() for alergen in ingredient.alergens.all()],
+            'order_data': {
+                'value': num_por,
+            }
         })
 
             

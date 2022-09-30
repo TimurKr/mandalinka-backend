@@ -177,7 +177,7 @@ class Recipe(models.Model):
 class RecipeOrderInstance(models.Model):
     recipe = models.ForeignKey('RecipeVersion',
         on_delete=models.CASCADE, related_name="order_instance")
-    order = models.ForeignKey('home.Order',
+    order = models.ForeignKey('home.Order', related_name="order_instance",
         on_delete=models.PROTECT
     )
     
