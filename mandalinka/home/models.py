@@ -58,6 +58,11 @@ class UserProfile(models.Model):
 
     newsletter = models.BooleanField(default=False)
     terms_conditions = models.BooleanField(default=False)
+
+    pescetarian = models.BooleanField(verbose_name="Pescetarian",default=False)
+    vegetarian = models.BooleanField(verbose_name="Vegetarian",default=False)
+    vegan = models.BooleanField(verbose_name="Vegan",default=False)
+    gluten_free = models.BooleanField(verbose_name="Gluten Free",default=False)
     
     # def __unicode__(self):  # __str__
     #     return unicode(self.user_name)
@@ -99,5 +104,6 @@ class Order(models.Model):
         on_delete=models.SET_NULL, null=True,
     )
     recipes = models.ManyToManyField('recepty.RecipeVersion', through='recepty.RecipeOrderInstance', related_name='orders',
+        blank=True,
         verbose_name='Recepty', help_text='Zvolte si recepty a množstvo porcií'
     )

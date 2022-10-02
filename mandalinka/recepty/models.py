@@ -3,6 +3,8 @@ from pyexpat import model
 from django.db import models
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import User
+from django.utils.timezone import now
+from home.models import Order
 
 # Create your models here.
 # class Address(models.Model):
@@ -177,9 +179,8 @@ class Recipe(models.Model):
 class RecipeOrderInstance(models.Model):
     recipe = models.ForeignKey('RecipeVersion',
         on_delete=models.CASCADE, related_name="order_instance")
-    order = models.ForeignKey('home.Order', related_name="order_instance",
-        on_delete=models.PROTECT
-    )
+    order = models.ForeignKey('home.Order',
+        on_delete=models.CASCADE, related_name="order_instance")
     
     portions = models.IntegerField(
         verbose_name='Množstvo porcií'
@@ -194,7 +195,7 @@ class RecipeOrderInstance(models.Model):
         ("4", "Stačilo by trochu menej"),
         ("5", "Porcia bola príliš veľká")]
     amount = models.CharField(
-        blank=True, default=None, max_length=1,
+        blank=True, default=None, null=True, max_length=1,
         choices=choices_amount, 
         verbose_name="Hodnotenie množstva", help_text="Sedelo množstvo jedla s objednanou porciou?"
     )
@@ -205,12 +206,12 @@ class RecipeOrderInstance(models.Model):
         ("4", "4"), 
         ("5", "5")]
     taste = models.CharField(
-        blank=True, default=None, max_length=1,
+        blank=True, default=None, null=True, max_length=1,
         choices=choices_stars, 
         verbose_name="Chuť", help_text="Viac je lepšie"
     )
     delivery = models.CharField(
-        blank=True, default=None, max_length=1,
+        blank=True, default=None, null=True, max_length=1,
         choices=choices_stars, 
         verbose_name="Doručenie", help_text="Viac je lepšie"
     )
@@ -261,9 +262,59 @@ class DeliveryDay(models.Model):
         blank=True
     )
 
+    is_final = models.BooleanField(
+        default=False, 
+        help_text="If set to True, new orders will be created"
+    )
+
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="Čas vzniku")
     date_modified = models.DateTimeField(auto_now=True, verbose_name="Naposledy upravené")
 
+    def save(self, *args, **kvargs):
+        if self.is_final and self.date >= now().date():
+            self.update_orders()
+        return super().save(*args, **kvargs)
+
+
     def __str__(self):
         return f"Rozvoz z dňa {self.date}"
+
+    def update_orders(self): # Create order for every active user
+        for user in User.objects.filter(is_active=True):
+            # Create order
+            order, created = Order.objects.update_or_create(user=user, delivery_day=self)
+
+            # Get all recipes for a given user
+            recipes = []
+            for recipe in self.recipes.all():
+                # If user vegan and recipe not
+                if user.profile.vegan and not recipe.recipe.vegan: 
+                    continue
+                # If user vegetarian and recipe not
+                elif user.profile.vegetarian and not (recipe.recipe.vegan or recipe.recipe.vegetarian):
+                    continue
+                # If user pescetarian and recipe not
+                elif user.profile.pescetarian and not (recipe.recipe.vegan or recipe.recipe.vegetarian or recipe.recipe.pescetarian):
+                    continue
+                # If user gluten-free and recipe not
+                elif user.profile.gluten_free and not recipe.recipe.gluten_free:
+                    continue
+
+                recipes.append(recipe)
+
+            # Count matching attributes of each recipe with users preferences
+            matching_attributes = {}
+            for recipe in recipes:
+                matching_attributes[recipe.id] = recipe.recipe.attributes.all().intersection(user.profile.food_preferences.all()).count()
+
+            # Pick the recipes with the most matching cases
+            recipes_to_order = []
+            for i in range(2): # Needs to change to 3
+                recipes_to_order.append(max(matching_attributes))
+                matching_attributes.pop(max(matching_attributes))
+                
+            # Add recipes to the Order
+            for recipe in self.recipes.all():
+                order.recipes.add(recipe, through_defaults={'portions': 0 if recipe.id not in recipes_to_order else user.profile.num_portions})
+        
 

@@ -1,4 +1,21 @@
+
 const root = ReactDOM.createRoot(document.getElementById('CurrentOrder'));
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
 
 class Alergens extends React.Component {
     constructor(props) {
@@ -31,13 +48,13 @@ class OrderdInterface extends React.Component {
     constructor(props) {
         super(props);
         this.minus_sign_enabled = 
-            <a role="button" onClick={this.remove_portions}>
+            <a role="button" onClick={this.change_portions.bind(this, -2)}>
                 <i className="bi bi-dash-circle-fill enabled"/>
             </a>
         this.minus_sign_disabled = 
             <i className="bi bi-dash-circle-dotted disabled"/>
         this.plus_sign_enabled = 
-            <a role="button" onClick={this.add_portions}>
+            <a role="button" onClick={this.change_portions.bind(this, 2)}>
                 <i className="bi bi-plus-circle-fill enabled"/>
             </a>
         this.plus_sign_disnabled = 
@@ -66,38 +83,38 @@ class OrderdInterface extends React.Component {
             active: active,
             recipe_id: props.data.recipe_order_instance_id,
         };
-
-        this.remove_portions = this.remove_portions.bind(this);
-        // this.statics.recipe_id = props.data.recipe_order_instance_id;
     }
 
-    add_portions = () => {
-        
+    change_portions(change) { 
         const put_info = {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                // 'X-CSRFToken': Cookies.get('csrftoken'),
+                'X-CSRFToken': getCookie('csrftoken'),
             },
             body: JSON.stringify({
-                recipe: this.state.recipe_id,
-                new_value: this.state.value + 2,
+                recipe_id: this.state.recipe_id,
+                new_value: this.state.value + change,
             }),
             mode: 'same-origin',
         };
+
         fetch(`/edit_order`, put_info)
         .then((answer) => {
-            if (answer == 'OK') {
-                this.setState({value: this.state.value + 2})
+            if (answer.status === 200) {
+                this.setState({value: this.state.value + change});
+                if (this.state.value + change <= 0) {
+                    this.setState({minus_sign: this.minus_sign_disabled})
+                } else {
+                    this.setState({minus_sign: this.minus_sign_enabled})
+                }
             } else {
                 console.error(answer)
             }
         })
-        console.log('add_portions');
-    }
-
-    remove_portions(){
-        console.log('remove_portions', this);
+        .catch((err) => {
+            // Tu by sa mal vypísať nejaký error užívatelovi
+        })
     }
 
     render() {
@@ -215,5 +232,7 @@ class OrderEditing extends React.Component {
 }
 
 
-root.render(<OrderEditing />);
+root.render(
+        <OrderEditing />
+);
 
