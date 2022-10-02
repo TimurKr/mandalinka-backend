@@ -6,6 +6,8 @@ from django.dispatch import receiver
 from django.core.exceptions import MultipleObjectsReturned
 from django.contrib.auth.backends import ModelBackend, UserModel
 from django.db.models import Q
+from django.apps import apps
+from mandalinka import constants
 
 class EmailBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
@@ -70,6 +72,12 @@ class UserProfile(models.Model):
             alergens.add((alergen.code, alergen.title))
         return list(alergens)
 
+    def generate_future_orders(self):
+        """ This function is called after activation, 
+        creates Orders for all future delivery_days """
+
+        # for 
+
     # def __unicode__(self):  # __str__
     #     return unicode(self.user_name)
 
@@ -114,5 +122,20 @@ class Order(models.Model):
         blank=True,
         verbose_name='Recepty', help_text='Zvolte si recepty a množstvo porcií'
     )
+
+    def get_portions(self):
+        """ Returns the total number of portions """
+        sum = 0
+        for recipe in self.order_instance.all():
+            sum += recipe.portions
+        return sum
+
+    def is_fullfilled(self):
+        """ Returns False if not enough portions is ordered """
+        portions = self.get_portions()
+        required_portions = self.user.profile.num_portions * constants.SELECTED_RECIPES_PER_DELIVERY_DAY
+        if portions < required_portions:
+            return False
+        return True
 
 

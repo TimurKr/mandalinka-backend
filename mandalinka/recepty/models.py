@@ -4,7 +4,9 @@ from django.db import models
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import User
 from django.utils.timezone import now
-from home.models import Order
+from django.apps import apps
+from mandalinka import constants
+
 
 # Create your models here.
 # class Address(models.Model):
@@ -288,12 +290,18 @@ class DeliveryDay(models.Model):
         return f"Rozvoz z dňa {self.date}"
 
     def update_orders(self): # Create order for every active user
+        # Localy import Object model
+        Order = apps.get_model('home','Order')
+
         for user in User.objects.filter(is_active=True):
+            user_alergies = set(user.profile.get_alergens())
+
             # Create order
-            order, created = Order.objects.update_or_create(user=user, delivery_day=self, auto_created=True)
+            Order = apps.get_model('home','Order')
+            order, created = Order.objects.update_or_create(user=user, delivery_day=self)
 
             # Get all recipes for a given user
-            recipes = []
+            allowed_recipes = []
             for recipe in self.recipes.all():
                 # If user vegan and recipe not
                 if user.profile.vegan and not recipe.recipe.vegan: 
@@ -307,25 +315,31 @@ class DeliveryDay(models.Model):
                 # If user gluten-free and recipe not
                 elif user.profile.gluten_free and not recipe.recipe.gluten_free:
                     continue
-                # If the food has any alergens
-                elif set(recipe.get_alergens()) & set(user.profile.get_alergens()):
+                
+                # If the food has any alergens user cant have
+                food_alergies = set(recipe.get_alergens())
+                if (user_alergies & food_alergies):
                     continue
 
-                recipes.append(recipe)
+                allowed_recipes.append(recipe)
 
             # Count matching attributes of each recipe with users preferences
             matching_attributes = {}
-            for recipe in recipes:
+            for recipe in allowed_recipes:
                 matching_attributes[recipe.id] = recipe.recipe.attributes.all().intersection(user.profile.food_preferences.all()).count()
 
             # Pick the recipes with the most matching cases
-            recipes_to_order = []
-            for i in range(3): # Needs to change to 3
-                recipes_to_order.append(max(matching_attributes, key=matching_attributes.get))
+            recipes_w_portions = {}
+            for i in range(constants.SELECTED_RECIPES_PER_DELIVERY_DAY): 
+                if len(matching_attributes) == 0: # If no more foods are available
+                    break
+                recipes_w_portions[(max(matching_attributes, key=matching_attributes.get))] = user.profile.num_portions
                 matching_attributes.pop(max(matching_attributes))
                 
             # Add recipes to the Order
             for recipe in self.recipes.all():
-                order.recipes.add(recipe, through_defaults={'portions': 0 if recipe.id not in recipes_to_order else user.profile.num_portions})
+                order.recipes.add(recipe, 
+                    through_defaults = {'portions': recipes_w_portions.get(recipe.id, 0)}
+                )
         
 
