@@ -241,6 +241,14 @@ class RecipeVersion(models.Model):
     def __str__(self):
         return f"{self.recipe} v.{self.version}"
 
+    # Returns a list of tuples, where first item is code and second title
+    def get_alergens(self):
+        alergens = set()
+        for ingredient in self.ingredients.all():
+            for alergen in ingredient.alergens.all():
+                alergens.add((alergen.code, alergen.title))
+        return list(alergens)
+
     def avg_rating(self):
         rating_sum = 0
         rating_num = 0
@@ -282,7 +290,7 @@ class DeliveryDay(models.Model):
     def update_orders(self): # Create order for every active user
         for user in User.objects.filter(is_active=True):
             # Create order
-            order, created = Order.objects.update_or_create(user=user, delivery_day=self)
+            order, created = Order.objects.update_or_create(user=user, delivery_day=self, auto_created=True)
 
             # Get all recipes for a given user
             recipes = []
@@ -299,6 +307,9 @@ class DeliveryDay(models.Model):
                 # If user gluten-free and recipe not
                 elif user.profile.gluten_free and not recipe.recipe.gluten_free:
                     continue
+                # If the food has any alergens
+                elif set(recipe.get_alergens()) & set(user.profile.get_alergens()):
+                    continue
 
                 recipes.append(recipe)
 
@@ -309,8 +320,8 @@ class DeliveryDay(models.Model):
 
             # Pick the recipes with the most matching cases
             recipes_to_order = []
-            for i in range(2): # Needs to change to 3
-                recipes_to_order.append(max(matching_attributes))
+            for i in range(3): # Needs to change to 3
+                recipes_to_order.append(max(matching_attributes, key=matching_attributes.get))
                 matching_attributes.pop(max(matching_attributes))
                 
             # Add recipes to the Order

@@ -66,7 +66,7 @@ def load_next_order(request):
             'description': recipeversion.recipe.description,
             'type_color': type_color,
             'attributes': [i.attr for i in recipeversion.recipe.attributes.all()],
-            'alergens': [[alergen.code, alergen.title] for ingredient in recipeversion.ingredients.all() for alergen in ingredient.alergens.all()],
+            'alergens': recipeversion.get_alergens(),
             'order_data': {
                 'value': num_por,
                 'recipe_order_instance_id': order_instance.id,

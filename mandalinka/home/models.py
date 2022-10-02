@@ -64,6 +64,12 @@ class UserProfile(models.Model):
     vegan = models.BooleanField(verbose_name="Vegan",default=False)
     gluten_free = models.BooleanField(verbose_name="Gluten Free",default=False)
     
+    def get_alergens(self):
+        alergens = set()
+        for alergen in self.alergies.all():
+            alergens.add((alergen.code, alergen.title))
+        return list(alergens)
+
     # def __unicode__(self):  # __str__
     #     return unicode(self.user_name)
 
@@ -103,7 +109,10 @@ class Order(models.Model):
     delivery_day = models.ForeignKey('recepty.DeliveryDay', related_name='orders', 
         on_delete=models.SET_NULL, null=True,
     )
+
     recipes = models.ManyToManyField('recepty.RecipeVersion', through='recepty.RecipeOrderInstance', related_name='orders',
         blank=True,
         verbose_name='Recepty', help_text='Zvolte si recepty a množstvo porcií'
     )
+
+
