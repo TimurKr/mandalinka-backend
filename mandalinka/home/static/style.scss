@@ -19,6 +19,7 @@ $font-family-sans-serif: "Baskerville", system-ui, -apple-system, "Segoe UI", Ro
 
 
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css");
 
 // body.login{
 //     background: $primary;  /* fallback for old browsers */
@@ -27,7 +28,17 @@ $font-family-sans-serif: "Baskerville", system-ui, -apple-system, "Segoe UI", Ro
 //     background-image: radial-gradient(circle,$white 30%, #FF9B42 100%);
 // }
 
+.order-interface {
+  font-size: 1.5em;
+  color: $white;
+  .enabled {
+    color: $white;
+    &:hover {
+      color: shift-color($white, 15%);
+    }
+  }
 
+}
 
 div.login-window {
   max-width: 35rem;

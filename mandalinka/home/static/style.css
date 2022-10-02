@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css");
 @font-face {
   font-family: "Baskerville";
   src: url("./baskerville-cufonfonts-webfont/Baske1.woff");
@@ -10926,6 +10927,17 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.order-interface {
+  font-size: 1.5em;
+  color: #fff;
+}
+.order-interface .enabled {
+  color: #fff;
+}
+.order-interface .enabled:hover {
+  color: #d9d9d9;
+}
+
 div.login-window {
   max-width: 35rem;
   width: 85%;

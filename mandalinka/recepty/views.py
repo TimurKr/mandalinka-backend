@@ -56,7 +56,8 @@ def load_next_order(request):
             type_color = "red"
 
         try: 
-            num_por = request.user.orders.get(delivery_day_id = delivery_day.id).order_instance.get(recipe_id = recipeversion.id).portions
+            order_instance = request.user.orders.get(delivery_day_id = delivery_day.id).order_instance.get(recipe_id = recipeversion.id)
+            num_por = order_instance.portions
         except:
             num_por = 0
 
@@ -68,6 +69,7 @@ def load_next_order(request):
             'alergens': [[alergen.code, alergen.title] for ingredient in recipeversion.ingredients.all() for alergen in ingredient.alergens.all()],
             'order_data': {
                 'value': num_por,
+                'recipe_order_instance_id': order_instance.id,
             }
         })
 
@@ -82,5 +84,5 @@ def load_next_order(request):
         'recipes': recipes,
     }
     return JsonResponse(response)
-        
+
     

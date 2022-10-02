@@ -1,6 +1,6 @@
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from django.db.models.query_utils import Q
 from django.template.loader import render_to_string
@@ -276,3 +276,10 @@ def my_account_view(request):
     }
     
     return render(request,"home/my_account.html",context)
+
+@login_required
+def edit_order_view(request):
+    if request.method == 'PUT':
+        
+        return HttpResponse('OK')
+    return HttpResponse('Error')
