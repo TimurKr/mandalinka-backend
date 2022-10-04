@@ -33,6 +33,7 @@ $font-family-sans-serif: "Baskerville", system-ui, -apple-system, "Segoe UI", Ro
   color: $white;
   .enabled {
     color: $white;
+    color: linear-gradient(top, $white, shift-color($white, 15%));
     &:hover {
       color: shift-color($white, 15%);
     }

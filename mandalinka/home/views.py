@@ -1,3 +1,4 @@
+from time import sleep
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
@@ -283,6 +284,7 @@ def my_account_view(request):
 def edit_order_view(request):
     if request.method == 'PUT':
         body = json.loads(request.body)
+        sleep(.2) # Artificially slow the response to work on placeholders
         try:
             recipe_order = RecipeOrderInstance.objects.get(id=body['recipe_id'])
             recipe_order.portions = body['new_value']

@@ -47,6 +47,7 @@ class OrderdInterface extends React.Component {
     
     constructor(props) {
         super(props);
+
         this.minus_sign_enabled = 
             <a role="button" onClick={this.change_portions.bind(this, -2)}>
                 <i className="bi bi-dash-circle-fill enabled"/>
@@ -59,6 +60,10 @@ class OrderdInterface extends React.Component {
             </a>
         this.plus_sign_disnabled = 
             <i className="bi bi-plus-circle-dotted disabled"/>
+        this.loading_button = 
+            <div className="spinner-border spinner-border-sm" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </div>
 
         let minus_sign;
         let plus_sign;
@@ -99,20 +104,34 @@ class OrderdInterface extends React.Component {
             mode: 'same-origin',
         };
 
+        if (change >= 0) {
+            this.setState({plus_sign: this.loading_button})
+        } else if (change <= 0) {
+            this.setState({minus_sign: this.loading_button})
+        }
+
         fetch(`/edit_order`, put_info)
         .then((answer) => {
             if (answer.status === 200) {
+                // Set value
                 this.setState({value: this.state.value + change});
-                if (this.state.value + change <= 0) {
-                    this.setState({minus_sign: this.minus_sign_disabled})
-                } else {
-                    this.setState({minus_sign: this.minus_sign_enabled})
+
+                if (change >= 0) {
+                    this.setState({plus_sign: this.plus_sign_enabled})
+                } else if (change <= 0) {
+                    
+                    if (this.state.value + change <= 0) {
+                        this.setState({minus_sign: this.minus_sign_disabled})
+                    } else {
+                        this.setState({minus_sign: this.minus_sign_enabled})
+                    }  
                 }
             } else {
                 console.error(answer)
             }
         })
         .catch((err) => {
+            console.error("Hej! niečo sa posralo")
             // Tu by sa mal vypísať nejaký error užívatelovi
         })
     }
@@ -145,7 +164,7 @@ class RecipeWidget extends React.Component {
                     {attr}
                 </div>
             )
-        })       
+        })
 
         this.state = {
             title: props.data.title,
@@ -167,7 +186,7 @@ class RecipeWidget extends React.Component {
                         <div className="bg-light rounded-2">
                             <img src={this.state.thumbnail} className="card-img-top rounded-2" alt='img_alt'></img>
                             <h4 className="card-title px-2 mt-2">{this.state.title}</h4>
-                            <p className="card-text px-2 m-0">{this.state.description}</p>
+                                <p className="card-text px-2 m-0">{this.state.description}</p>
                             <div className="d-flex flex-wrap justify-content-center">
                                 {this.state.attributes}
                             </div>
@@ -190,8 +209,6 @@ class OrderEditing extends React.Component {
             recipes: [],
             thumbnail: '',
         }
-
-        
     }
 
     componentDidMount() {
@@ -200,11 +217,11 @@ class OrderEditing extends React.Component {
         .then(response => {
             this.setState({
                 date: response.date,
-                recipes: response.recipes
+                recipes: response.recipes,
             });
         })
         .catch(error => {
-            console.log("Error: ", error);
+            console.log("Chybyčka: ", error);
         })
     }
 
@@ -219,7 +236,7 @@ class OrderEditing extends React.Component {
                     />
             )
         }
-
+        
         return (
             <div className="container-fluid">
             <h2 className="mb-4">Recepty na najbližšiu objednávku z dňa {this.state.date}</h2>
