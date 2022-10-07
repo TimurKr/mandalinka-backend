@@ -1,21 +1,6 @@
-
 const root = ReactDOM.createRoot(document.getElementById('CurrentOrder'));
 
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
+import getCookie from '/react-manda-lib/get_cookie.jsx';
 
 class Alergens extends React.Component {
     constructor(props) {
@@ -117,9 +102,11 @@ class OrderdInterface extends React.Component {
                 this.setState({value: this.state.value + change});
 
                 if (change >= 0) {
-                    this.setState({plus_sign: this.plus_sign_enabled})
+                    this.setState({
+                        plus_sign: this.plus_sign_enabled,
+                        minus_sign: this.minus_sign_enabled
+                    })
                 } else if (change <= 0) {
-                    
                     if (this.state.value + change <= 0) {
                         this.setState({minus_sign: this.minus_sign_disabled})
                     } else {
