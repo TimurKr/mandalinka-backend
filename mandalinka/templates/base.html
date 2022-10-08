@@ -96,11 +96,12 @@
     {% block my_account %}
     {% endblock %}
 
+</section>
+<section id="current-order", style="background: #FA8072">
     {% if request.user.is_authenticated %}
         {% block current_order %}
         {% endblock %}
     {% endif %}
-
 </section>
    
 
