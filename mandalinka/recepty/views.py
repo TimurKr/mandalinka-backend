@@ -1,6 +1,6 @@
 from xmlrpc.client import boolean
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, JsonResponse, HttpResponseForbidden
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponseBadRequest
 from django.urls import reverse
 from django.core.serializers import serialize
 from django.utils.timezone import now
@@ -42,6 +42,13 @@ def novy_recept(request):
 def load_next_order(request):
     delivery_day = DeliveryDay.objects.filter(date__gte=now().date()).order_by('date').first()
     recipes = []
+
+    
+    try:
+        order = request.user.orders.get(delivery_day_id = delivery_day.id)
+    except:
+        return HttpResponseBadRequest()
+
     for recipeversion in delivery_day.recipes.all():
         # Add necessary info for display in recipe_widget here
 
@@ -55,10 +62,10 @@ def load_next_order(request):
             type = "meat"
 
         try: 
-            order_instance = request.user.orders.get(delivery_day_id = delivery_day.id).order_instance.get(recipe_id = recipeversion.id)
+            order_instance = order.recipe_instance.get(recipe_id = recipeversion.id)
             num_por = order_instance.portions
         except:
-            num_por = 0
+            return HttpResponseBadRequest()
 
         recipes.append({
             'title': recipeversion.recipe.title,
@@ -69,7 +76,8 @@ def load_next_order(request):
             'order_data': {
                 'value': num_por,
                 'recipe_order_instance_id': order_instance.id,
-            }
+            },
+            'price': recipeversion.get_price(),
         })
 
             
@@ -80,7 +88,10 @@ def load_next_order(request):
 
     response = {
         'date': delivery_day.date,
+        'pickup': order.pickup,
+        'order_id': order.id,
         'recipes': recipes,
+        'price': sum([r['price'] for r in recipes]),
     }
     return JsonResponse(response)
 

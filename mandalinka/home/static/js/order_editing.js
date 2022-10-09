@@ -9,6 +9,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var root = ReactDOM.createRoot(document.getElementById('CurrentOrder'));
 
 import RecipeWidget from './recipe_widget.js';
+import DeliveryType from './delivery_type.js';
+import getCookie from './get_cookie.js';
+import Cart from './cart.js';
 
 var OrderEditing = function (_React$Component) {
     _inherits(OrderEditing, _React$Component);
@@ -18,10 +21,32 @@ var OrderEditing = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (OrderEditing.__proto__ || Object.getPrototypeOf(OrderEditing)).call(this, props));
 
+        _this.toggle_pickup = function () {
+            var put_info = {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({
+                    order_id: _this.state.order_id
+                }),
+                mode: 'same-origin'
+            };
+
+            fetch('/toggle_pickup', put_info).then(function (response) {
+                return response.json();
+            }).then(function (response) {
+                _this.setState({ pickup: response.pickup });
+            });
+        };
+
         _this.state = {
             date: '...',
             recipes: [],
-            thumbnail: ''
+            thumbnail: '',
+            order_id: undefined,
+            price: "66.66"
         };
         return _this;
     }
@@ -36,7 +61,10 @@ var OrderEditing = function (_React$Component) {
             }).then(function (response) {
                 _this2.setState({
                     date: response.date,
-                    recipes: response.recipes
+                    pickup: response.pickup,
+                    recipes: response.recipes,
+                    order_id: response.order_id,
+                    price: response.price
                 });
             }).catch(function (error) {
                 console.log("Chybyčka: ", error);
@@ -56,18 +84,29 @@ var OrderEditing = function (_React$Component) {
                     type: this.state.recipes[i].type,
                     attributes: this.state.recipes[i].attributes,
                     alergens: this.state.recipes[i].alergens,
-                    order_data: this.state.recipes[i].order_data
+                    order_data: this.state.recipes[i].order_data,
+                    price: this.state.recipes[i].price
                 }));
             }
 
             return React.createElement(
                 'div',
-                { className: 'container-fluid' },
+                { className: 'order-editing container-fluid position-relative' },
                 React.createElement(
-                    'h2',
-                    { className: 'mb-4' },
-                    'Recepty na najbli\u017E\u0161iu objedn\xE1vku z d\u0148a ',
-                    this.state.date
+                    'div',
+                    { className: 'header d-flex align-items-center mb-3' },
+                    React.createElement(
+                        'div',
+                        { className: 'me-auto p-2' },
+                        React.createElement(
+                            'h2',
+                            null,
+                            'Recepty na podelok ',
+                            this.state.date
+                        )
+                    ),
+                    React.createElement(DeliveryType, { pickup: this.state.pickup, toggle: this.toggle_pickup }),
+                    React.createElement(Cart, { price: this.state.price })
                 ),
                 React.createElement(
                     'div',

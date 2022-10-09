@@ -123,6 +123,8 @@ class Order(models.Model):
         verbose_name='Recepty', help_text='Zvolte si recepty a množstvo porcií'
     )
 
+    pickup = models.BooleanField(default=False)
+
     def get_portions(self):
         """ Returns the total number of portions """
         sum = 0
@@ -137,5 +139,13 @@ class Order(models.Model):
         if portions < required_portions:
             return False
         return True
+
+    def toggle_pickup(self):
+        if self.pickup:
+            self.pickup = False
+        else:
+            self.pickup = True
+        self.save()
+        
 
 

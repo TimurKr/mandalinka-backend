@@ -15,4 +15,5 @@ urlpatterns = [
     path("password_reset", views.password_reset_request, name="password_reset"),
     path("my_account", views.my_account_view, name="my_account"),
     path("edit_order", views.edit_order_view, name="edit_order"),
+    path("toggle_pickup", views.toggle_pickup_view, name="toggle_pickup"),
 ]

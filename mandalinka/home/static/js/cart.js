@@ -6,62 +6,58 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import Alergens from './alergens.js';
-import OrderInterface from './order_interface.js';
-import Attributes from './attributes.js';
+var Cart = function (_React$Component) {
+	_inherits(Cart, _React$Component);
 
-var RecipeWidget = function (_React$Component) {
-	_inherits(RecipeWidget, _React$Component);
+	function Cart() {
+		_classCallCheck(this, Cart);
 
-	function RecipeWidget() {
-		_classCallCheck(this, RecipeWidget);
-
-		return _possibleConstructorReturn(this, (RecipeWidget.__proto__ || Object.getPrototypeOf(RecipeWidget)).apply(this, arguments));
+		return _possibleConstructorReturn(this, (Cart.__proto__ || Object.getPrototypeOf(Cart)).apply(this, arguments));
 	}
 
-	_createClass(RecipeWidget, [{
-		key: 'render',
+	_createClass(Cart, [{
+		key: "render",
 		value: function render() {
-
 			return React.createElement(
-				'div',
-				{ className: 'col-md-3 col-sm-6 col-6' },
+				"div",
+				null,
 				React.createElement(
-					'div',
-					{ className: "recipe-widget position-relative " + this.props.type },
+					"a",
+					{ type: "button", className: "cart btn btn-outline-primary", "data-bs-toggle": "modal", "data-bs-target": "#exampleModal" },
+					this.props.price + ' €'
+				),
+				React.createElement(
+					"div",
+					{ className: "modal fade", id: "exampleModal", tabIndex: "-1", "aria-labelledby": "exampleModalLabel", "aria-hidden": "true" },
 					React.createElement(
-						'div',
-						{ className: 'card-body p-2 pb-0' },
+						"div",
+						{ className: "modal-dialog" },
 						React.createElement(
-							'div',
-							{ className: 'bg-light rounded-2 position-relative' },
-							React.createElement('img', { src: this.props.thumbnail, className: 'card-img-top rounded-2', alt: 'img_alt' }),
+							"div",
+							{ className: "modal-content" },
 							React.createElement(
-								'div',
-								{ className: 'price-tag position-absolute top-0 start-0' },
-								this.props.price + ' €'
+								"div",
+								{ className: "modal-header" },
+								React.createElement(
+									"h1",
+									{ className: "modal-title fs-5", id: "exampleModalLabel" },
+									"Objend\xE1vka"
+								),
+								React.createElement("button", { type: "button", className: "btn-close", "data-bs-dismiss": "modal", "aria-label": "Close" })
 							),
 							React.createElement(
-								'h4',
-								{ className: 'card-title px-2 mt-2' },
-								this.props.title
-							),
-							React.createElement(
-								'p',
-								{ className: 'card-text px-2 m-0' },
-								this.props.description
-							),
-							React.createElement(Attributes, { attrs: this.props.attributes })
-						),
-						React.createElement(Alergens, { data: this.props.alergens })
-					),
-					React.createElement(OrderInterface, { data: this.props.order_data })
+								"div",
+								{ className: "modal-body" },
+								"Tu bude raz zoznam objedn\xE1vky"
+							)
+						)
+					)
 				)
 			);
 		}
 	}]);
 
-	return RecipeWidget;
+	return Cart;
 }(React.Component);
 
-export default RecipeWidget;
+export default Cart;

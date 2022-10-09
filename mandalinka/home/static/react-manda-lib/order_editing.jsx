@@ -1,6 +1,9 @@
 const root = ReactDOM.createRoot(document.getElementById('CurrentOrder'));
 
 import RecipeWidget from './recipe_widget.js';
+import DeliveryType from './delivery_type.js';
+import getCookie from './get_cookie.js';
+import Cart from './cart.js';
 
 class OrderEditing extends React.Component {
     constructor(props) {
@@ -10,6 +13,8 @@ class OrderEditing extends React.Component {
             date: '...',
             recipes: [],
             thumbnail: '',
+            order_id: undefined,
+            price: "66.66"
         }
     }
 
@@ -19,12 +24,35 @@ class OrderEditing extends React.Component {
             .then(response => {
                 this.setState({
                     date: response.date,
+                    pickup: response.pickup,
                     recipes: response.recipes,
+                    order_id: response.order_id,
+                    price: response.price,
                 });
             })
             .catch(error => {
                 console.log("Chybyčka: ", error);
             })
+    }
+
+    toggle_pickup = () => {
+        const put_info = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({
+                order_id: this.state.order_id,
+            }),
+            mode: 'same-origin',
+        };
+        
+        fetch(`/toggle_pickup`, put_info)
+        .then((response) => response.json())
+        .then((response) => {
+            this.setState({pickup: response.pickup});
+        })
     }
 
     render() {
@@ -41,13 +69,20 @@ class OrderEditing extends React.Component {
                     attributes={this.state.recipes[i].attributes}
                     alergens={this.state.recipes[i].alergens}
                     order_data={this.state.recipes[i].order_data}
+                    price={this.state.recipes[i].price}
                 />
             )
         }
 
         return (
-            <div className="container-fluid">
-                <h2 className="mb-4">Recepty na najbližšiu objednávku z dňa {this.state.date}</h2>
+            <div className="order-editing container-fluid position-relative">
+                <div className="header d-flex align-items-center mb-3">
+                    <div className="me-auto p-2">
+                        <h2>Recepty na podelok {this.state.date}</h2>
+                    </div>
+                    <DeliveryType pickup={this.state.pickup} toggle={this.toggle_pickup}/>
+                    <Cart price={this.state.price}/>
+                </div>
                 <div className="row gx-3 gy-4">
                     {recipes}
                 </div>

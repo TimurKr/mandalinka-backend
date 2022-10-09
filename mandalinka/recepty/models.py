@@ -58,7 +58,8 @@ class FoodAttribute(models.Model):
 
 class IngredientInstance(models.Model):
     ingredient = models.ForeignKey("Ingredient", on_delete=models.PROTECT)
-    recipe_version = models.ForeignKey("RecipeVersion", on_delete=models.CASCADE)
+    recipe_version = models.ForeignKey("RecipeVersion", on_delete=models.CASCADE, 
+        related_name="ingredients_mid")
     amount = models.IntegerField(
         verbose_name="Množstvo", help_text="Zadajte množstvo danej potraviny"
     )
@@ -170,10 +171,6 @@ class Recipe(models.Model):
     def __str__(self):
         return f"{self.title}"
 
-    def cost(self):
-        # Needs attention
-        pass
-
     def deactivate():
         # deactivates all of its verions
         pass
@@ -182,7 +179,7 @@ class RecipeOrderInstance(models.Model):
     recipe = models.ForeignKey('RecipeVersion',
         on_delete=models.CASCADE, related_name="order_instance")
     order = models.ForeignKey('home.Order',
-        on_delete=models.CASCADE, related_name="order_instance")
+        on_delete=models.CASCADE, related_name="recipe_instance")
     
     portions = models.IntegerField(
         verbose_name='Množstvo porcií'
@@ -261,7 +258,12 @@ class RecipeVersion(models.Model):
         if rating_num:
             return rating_sum/rating_num
         return "No ratings"
-
+    
+    def get_price(self):
+        sum = 0
+        for ingredient in self.ingredients_mid.all():
+            sum += ingredient.amount * ingredient.ingredient.price_per_unit
+        return sum
 
 class DeliveryDay(models.Model):
 

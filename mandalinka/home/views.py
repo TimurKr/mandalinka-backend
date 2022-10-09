@@ -1,7 +1,7 @@
 from time import sleep
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.urls import reverse
 from django.db.models.query_utils import Q
 from django.template.loader import render_to_string
@@ -19,7 +19,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 
 from home.forms import *
-from home.models import Streets
+from home.models import Streets, Order
 from recepty.models import RecipeOrderInstance
 import json
 from .tokens import account_activation_token
@@ -292,4 +292,13 @@ def edit_order_view(request):
         except:
             return HttpResponseBadRequest()
         return HttpResponse(status=200)
+    return HttpResponseBadRequest()
+
+@login_required
+def toggle_pickup_view(request):
+    body = json.loads(request.body)
+    if request.method == 'PUT':
+        order = Order.objects.get(id=body['order_id'])
+        order.toggle_pickup()
+        return JsonResponse({'pickup':order.pickup})
     return HttpResponseBadRequest()

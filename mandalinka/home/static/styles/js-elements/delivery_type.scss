@@ -1,0 +1,74 @@
+@import "../custom_variables.scss";
+
+.delivery-type {
+    font-size: 2em;
+    padding: 0px 15px;
+    margin: 15px 5px 0px 0px ;
+    > a {
+        padding: 5px 5px;
+    }
+    > .active {
+        color: $primary;
+        > span {
+            animation: selected .3s ease;
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 40;
+            font-size: 40px;
+        }
+        
+    }
+    > .inactive {
+        color: gray;
+        > span {
+            animation: unselected .3s ease;
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 200,
+            'GRAD' 0,
+            'opsz' 40;
+            font-size: 40px;
+            
+        }
+        &:hover {
+            > span{
+                animation: hover .2s ease;
+                font-variation-settings: 'wght' 500;
+            }
+        }
+        
+    }
+}
+
+@keyframes selected {
+    0% {
+        color: grey;
+    }
+    100% {
+        color: $primary;
+    }
+}
+
+@keyframes hover {
+    0% {
+        font-variation-settings: 'wght' 200;
+    }
+    100% {
+        font-variation-settings: 'wght' 500;
+    }
+}
+
+@keyframes unselected {
+    0% {
+        color: $primary;
+        font-variation-settings: 'wght' 500;
+    }
+    50% {
+        color: grey;
+    }
+    100% {
+        font-variation-settings: 'wght' 200;
+    }
+}
