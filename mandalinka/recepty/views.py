@@ -45,15 +45,14 @@ def load_next_order(request):
     for recipeversion in delivery_day.recipes.all():
         # Add necessary info for display in recipe_widget here
 
-        # Change color maping here
         if recipeversion.recipe.pescetarian:
-            type_color = "blue"
+            type = "pescetarian"
         elif recipeversion.recipe.vegetarian:
-            type_color = "green"
+            type = "vegetarian"
         elif recipeversion.recipe.vegan:
-            type_color = "yellow"
+            type = "vegan"
         else:
-            type_color = "red"
+            type = "meat"
 
         try: 
             order_instance = request.user.orders.get(delivery_day_id = delivery_day.id).order_instance.get(recipe_id = recipeversion.id)
@@ -64,7 +63,7 @@ def load_next_order(request):
         recipes.append({
             'title': recipeversion.recipe.title,
             'description': recipeversion.recipe.description,
-            'type_color': type_color,
+            'type': type,
             'attributes': [i.attr for i in recipeversion.recipe.attributes.all()],
             'alergens': recipeversion.get_alergens(),
             'order_data': {

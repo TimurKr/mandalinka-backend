@@ -6,36 +6,17 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import Alergens from './alergen_class.js';
+import Alergens from './alergens.js';
 import OrderInterface from './order_interface.js';
+import Attributes from './attributes.js';
 
 var RecipeWidget = function (_React$Component) {
     _inherits(RecipeWidget, _React$Component);
 
-    function RecipeWidget(props) {
+    function RecipeWidget() {
         _classCallCheck(this, RecipeWidget);
 
-        var _this = _possibleConstructorReturn(this, (RecipeWidget.__proto__ || Object.getPrototypeOf(RecipeWidget)).call(this, props));
-
-        var attributes = [];
-        props.data.attributes.forEach(function (attr) {
-            attributes.push(React.createElement(
-                'div',
-                { className: 'm-1 px-2 bg-primary text-light rounded-5 font-size-sm', key: attr },
-                attr
-            ));
-        });
-
-        _this.state = {
-            title: props.data.title,
-            description: props.data.description,
-            thumbnail: props.data.thumbnail,
-            type_color: props.data.type_color,
-            attributes: attributes,
-            alergens: props.data.alergens,
-            order_data: props.data.order_data
-        };
-        return _this;
+        return _possibleConstructorReturn(this, (RecipeWidget.__proto__ || Object.getPrototypeOf(RecipeWidget)).apply(this, arguments));
     }
 
     _createClass(RecipeWidget, [{
@@ -47,33 +28,29 @@ var RecipeWidget = function (_React$Component) {
                 { className: 'col-md-3 col-sm-6 col-6' },
                 React.createElement(
                     'div',
-                    { className: 'card position-relative', style: { background: this.state.type_color } },
+                    { className: "recipe-widget position-relative " + this.props.type },
                     React.createElement(
                         'div',
                         { className: 'card-body p-2 pb-0' },
                         React.createElement(
                             'div',
                             { className: 'bg-light rounded-2' },
-                            React.createElement('img', { src: this.state.thumbnail, className: 'card-img-top rounded-2', alt: 'img_alt' }),
+                            React.createElement('img', { src: this.props.thumbnail, className: 'card-img-top rounded-2', alt: 'img_alt' }),
                             React.createElement(
                                 'h4',
                                 { className: 'card-title px-2 mt-2' },
-                                this.state.title
+                                this.props.title
                             ),
                             React.createElement(
                                 'p',
                                 { className: 'card-text px-2 m-0' },
-                                this.state.description
+                                this.props.description
                             ),
-                            React.createElement(
-                                'div',
-                                { className: 'd-flex flex-wrap justify-content-center' },
-                                this.state.attributes
-                            )
+                            React.createElement(Attributes, { attrs: this.props.attributes })
                         ),
-                        React.createElement(Alergens, { data: this.state.alergens })
+                        React.createElement(Alergens, { data: this.props.alergens })
                     ),
-                    React.createElement(OrderInterface, { data: this.state.order_data })
+                    React.createElement(OrderInterface, { data: this.props.order_data })
                 )
             );
         }

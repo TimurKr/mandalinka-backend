@@ -34,7 +34,13 @@ class OrderEditing extends React.Component {
             recipes.push(
                 <RecipeWidget
                     key={i}
-                    data={this.state.recipes[i]}
+                    thumbnail={this.state.recipes[i].thumbnail}
+                    title={this.state.recipes[i].title}
+                    description={this.state.recipes[i].description}
+                    type={this.state.recipes[i].type}
+                    attributes={this.state.recipes[i].attributes}
+                    alergens={this.state.recipes[i].alergens}
+                    order_data={this.state.recipes[i].order_data}
                 />
             )
         }
@@ -42,7 +48,7 @@ class OrderEditing extends React.Component {
         return (
             <div className="container-fluid">
                 <h2 className="mb-4">Recepty na najbližšiu objednávku z dňa {this.state.date}</h2>
-                <div className="row gx-2 gy-4">
+                <div className="row gx-3 gy-4">
                     {recipes}
                 </div>
             </div>

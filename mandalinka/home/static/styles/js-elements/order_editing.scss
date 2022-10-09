@@ -1,0 +1,9 @@
+@import "../custom_variables.scss";
+@import "./order_interface.scss";
+@import "./alergens.scss";
+@import "./recipe_widget.scss";
+@import "./attributes.scss";
+
+#current-order {
+    background: $off-white;
+}

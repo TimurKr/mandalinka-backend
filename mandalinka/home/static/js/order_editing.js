@@ -50,7 +50,13 @@ var OrderEditing = function (_React$Component) {
             for (var i = 0; i < this.state.recipes.length; i++) {
                 recipes.push(React.createElement(RecipeWidget, {
                     key: i,
-                    data: this.state.recipes[i]
+                    thumbnail: this.state.recipes[i].thumbnail,
+                    title: this.state.recipes[i].title,
+                    description: this.state.recipes[i].description,
+                    type: this.state.recipes[i].type,
+                    attributes: this.state.recipes[i].attributes,
+                    alergens: this.state.recipes[i].alergens,
+                    order_data: this.state.recipes[i].order_data
                 }));
             }
 
@@ -65,7 +71,7 @@ var OrderEditing = function (_React$Component) {
                 ),
                 React.createElement(
                     'div',
-                    { className: 'row gx-2 gy-4' },
+                    { className: 'row gx-3 gy-4' },
                     recipes
                 )
             );

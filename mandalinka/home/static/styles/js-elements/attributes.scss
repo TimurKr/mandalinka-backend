@@ -1,0 +1,12 @@
+@import "../custom_variables.scss";
+
+.attributes > .attr {
+    margin: 2px 3px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2) inset;
+
+    &:hover {
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    }
+}

@@ -10,19 +10,9 @@
 {% endblock %}
 
 {% block landing_view %}
-    <h1 class="title p-5 m-5 ps-0">Mandalinka</h1>
-    <h4>Jeden pomaranč sa zaľúbil raz do Darinky Mandalinky</h4>    
-    <h4> Ale, ale, ale... 
-        {% if request.user.first_name %}
-            {{request.user.first_name}}
-        {% elif request.user.username %}
-            {{request.user.username}}
-        {% else %}
-            niekto
-        {% endif %} 
-
-        z {% firstof request.user.profile.street "" %} je zase hladný
-    </h4>
+    <h1 class="title p-5 m-5 ps-0 mb-0 pb-0">Mandalinka</h1>
+    <h4 class="subtitle ps-5 pb-3">Jeden pomaranč sa zaľúbil raz do Darinky Mandalinky</h4>    
+    
 {% endblock %}
 
 

@@ -8,6 +8,18 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 import getCookie from './get_cookie.js';
 
+function spinner() {
+    return React.createElement(
+        "div",
+        { className: "spinner-border spinner-border-sm", role: "status" },
+        React.createElement(
+            "span",
+            { className: "visually-hidden" },
+            "Loading..."
+        )
+    );
+}
+
 var OrderInterface = function (_React$Component) {
     _inherits(OrderInterface, _React$Component);
 
@@ -16,51 +28,38 @@ var OrderInterface = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (OrderInterface.__proto__ || Object.getPrototypeOf(OrderInterface)).call(this, props));
 
-        _this.minus_sign_enabled = React.createElement(
-            "a",
-            { role: "button", onClick: _this.change_portions.bind(_this, -2) },
-            React.createElement("i", { className: "bi bi-dash-circle-fill enabled" })
-        );
-        _this.minus_sign_disabled = React.createElement("i", { className: "bi bi-dash-circle-dotted disabled" });
-        _this.plus_sign_enabled = React.createElement(
-            "a",
-            { role: "button", onClick: _this.change_portions.bind(_this, 2) },
-            React.createElement("i", { className: "bi bi-plus-circle-fill enabled" })
-        );
-        _this.plus_sign_disnabled = React.createElement("i", { className: "bi bi-plus-circle-dotted disabled" });
-        _this.loading_button = React.createElement(
-            "div",
-            { className: "spinner-border spinner-border-sm", role: "status" },
-            React.createElement(
-                "span",
-                { className: "visually-hidden" },
-                "Loading..."
-            )
-        );
+        _this.minus_sign = function () {
+            if (_this.state.value > 0) {
+                return React.createElement(
+                    "a",
+                    { role: "button", onClick: _this.change_portions.bind(_this, -2) },
+                    React.createElement("i", { className: "bi bi-dash-lg enabled" })
+                );
+            } else {
+                return React.createElement("i", { className: "bi bi-dash-lg disabled" });
+            }
+        };
 
-        var minus_sign = void 0;
-        var plus_sign = void 0;
-        var active = void 0;
-        if (props.data.value === 0) {
-            minus_sign = _this.minus_sign_disabled;
-            plus_sign = _this.plus_sign_enabled;
-            active = 'inactive';
-        } else if (props.data.value > 0) {
-            minus_sign = _this.minus_sign_enabled;
-            plus_sign = _this.plus_sign_enabled;
-            active = 'active';
-        } else {
-            console.error("Invalid value in OrderInterface");
+        _this.plus_sign = function () {
+            if (_this.state.value < 0) {
+                console.error("Trouble, too low value");
+                return React.createElement("i", { clasName: "bi bi-plus-lg disabled" });
+            } else {
+                return React.createElement(
+                    "a",
+                    { className: "p-0 m-0", role: "button", onClick: _this.change_portions.bind(_this, 2) },
+                    React.createElement("i", { className: "bi bi-plus-lg enabled" })
+                );
+            }
         };
 
         _this.state = {
             value: props.data.value,
             class: 'btn btn-primary',
-            minus_sign: minus_sign,
-            plus_sign: plus_sign,
-            active: active,
-            recipe_id: props.data.recipe_order_instance_id
+            recipe_id: props.data.recipe_order_instance_id,
+            loading: false
         };
+
         return _this;
     }
 
@@ -82,29 +81,15 @@ var OrderInterface = function (_React$Component) {
                 mode: 'same-origin'
             };
 
-            if (change >= 0) {
-                this.setState({ plus_sign: this.loading_button });
-            } else if (change <= 0) {
-                this.setState({ minus_sign: this.loading_button });
-            }
+            this.setState({ loading: true });
 
             fetch("/edit_order", put_info).then(function (answer) {
                 if (answer.status === 200) {
-                    // Set value
-                    _this2.setState({ value: _this2.state.value + change });
 
-                    if (change >= 0) {
-                        _this2.setState({
-                            plus_sign: _this2.plus_sign_enabled,
-                            minus_sign: _this2.minus_sign_enabled
-                        });
-                    } else if (change <= 0) {
-                        if (_this2.state.value + change <= 0) {
-                            _this2.setState({ minus_sign: _this2.minus_sign_disabled });
-                        } else {
-                            _this2.setState({ minus_sign: _this2.minus_sign_enabled });
-                        }
-                    }
+                    _this2.setState({
+                        value: _this2.state.value + change,
+                        loading: false
+                    });
                 } else {
                     console.error(answer);
                 }
@@ -116,27 +101,20 @@ var OrderInterface = function (_React$Component) {
     }, {
         key: "render",
         value: function render() {
-
             return React.createElement(
                 "div",
-                { className: 'hstack gap-2 px-2 bg-primary rounded-pill order-interface allign-middle position-absolute top-0 end-0 translate-middle-y ' + this.state.active },
-                this.state.minus_sign,
-                React.createElement(
+                {
+                    className: "hstack order-interface allign-middle position-absolute top-0 end-0 translate-middle-y  " + (this.state.value > 0 ? 'active' : 'inactive') },
+                this.minus_sign(),
+                this.state.loading ? spinner() : React.createElement(
                     "h3",
-                    { className: "m-0" },
+                    null,
                     " ",
                     this.state.value,
                     " "
                 ),
-                this.state.plus_sign
-            )
-
-            // <div className="btn-group position-absolute top-0 end-0 translate-middle-y">
-            //     <button type="button" className={this.state.class}>-</button>
-            //     <button type="button" className={this.state.class}>{this.state.value}</button>
-            //     <button type="button" className={this.state.class}>+</button>
-            // </div>
-            ;
+                this.plus_sign()
+            );
         }
     }]);
 

@@ -1,0 +1,26 @@
+@import "../custom_variables.scss";
+
+
+.recipe-widget{
+    border-radius: 10px;
+
+    &.vegan {
+        background: $vegan-color;
+        box-shadow: 0 0 10px 0 $vegan-color;
+    }
+
+    &.vegetarian {
+        background: $vegetarian-color;
+        box-shadow: 0 0 10px 0 $vegetarian-color;
+    }
+
+    &.pescetarian {
+        background: $pescetarian-color;
+        box-shadow: 0 0 10px 0 $pescetarian-color;
+    }
+
+    &.meat {
+        background: $meat-color;
+        box-shadow: 0 0 10px 0 $meat-color;
+    }
+}
