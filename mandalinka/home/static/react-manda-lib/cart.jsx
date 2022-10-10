@@ -1,9 +1,13 @@
 export default class Cart extends React.Component {
 	render() {
 		return (
-			<div>
-				<a type="button" className="cart btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-					{this.props.price + ' €'}
+			<div className="cart">
+				<a type="button" className="cart" data-bs-toggle="modal" data-bs-target="#exampleModal">
+					<p>{this.props.price + ' €'}
+						<span className="material-symbols-rounded">
+							shopping_cart
+						</span>
+					</p>
 				</a>
 
 				<div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

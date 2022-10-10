@@ -20,11 +20,20 @@ var Cart = function (_React$Component) {
 		value: function render() {
 			return React.createElement(
 				"div",
-				null,
+				{ className: "cart" },
 				React.createElement(
 					"a",
-					{ type: "button", className: "cart btn btn-outline-primary", "data-bs-toggle": "modal", "data-bs-target": "#exampleModal" },
-					this.props.price + ' €'
+					{ type: "button", className: "cart", "data-bs-toggle": "modal", "data-bs-target": "#exampleModal" },
+					React.createElement(
+						"p",
+						null,
+						this.props.price + ' €',
+						React.createElement(
+							"span",
+							{ className: "material-symbols-rounded" },
+							"shopping_cart"
+						)
+					)
 				),
 				React.createElement(
 					"div",
