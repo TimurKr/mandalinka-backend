@@ -8,7 +8,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 import getCookie from './get_cookie.js';
 
-function spinner() {
+function Spinner() {
     return React.createElement(
         "div",
         { className: "spinner-border spinner-border-sm", role: "status" },
@@ -85,7 +85,7 @@ var OrderInterface = function (_React$Component) {
                 if (answer.status === 200) {
                     console.log("Juchu, dostal som odpoveď 200");
                     _this2.props.onAmountChange(new_amount, _this2.props.recipe_order_instance_id);
-                    // this.setState({loading: false});
+                    _this2.setState({ loading: false });
                 } else {
                     console.error(answer);
                 }
@@ -102,7 +102,7 @@ var OrderInterface = function (_React$Component) {
                 {
                     className: "hstack order-interface allign-middle position-absolute top-0 end-0 translate-middle-y  " + (this.props.amount > 0 ? 'active' : 'inactive') },
                 this.minus_sign(),
-                this.state.loading ? spinner() : React.createElement(
+                this.state.loading ? React.createElement(Spinner, null) : React.createElement(
                     "h3",
                     null,
                     " ",

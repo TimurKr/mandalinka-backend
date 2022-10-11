@@ -23,12 +23,30 @@
         background: $meat-color;
         box-shadow: 0 0 10px 0 $meat-color;
     }
-}
+    
+    .price-tag {
+        background: $off-white;
+        margin: 5px 5px;
+        padding: 2px 10px;
+        border-radius: 15px;
+        font-weight: bold;
+        // box-shadow: 0 1px 8px 0 $vegan-color inset;
 
-.price-tag {
-    background: $off-white;
-    margin: 5px 5px;
-    padding: 2px 5px;
-    border-radius: 15px;
-    box-shadow: 0 1px 8px 0 $primary inset;
+        &.vegan{
+            background-color: $vegan-color;
+            color: white;
+        }
+        &.vegetarian{
+            background-color: $vegetarian-color;
+        }
+        &.pescetarian{
+            background-color: $pescetarian-color;
+        }
+        &.meat{
+            background-color: $meat-color;
+        }
+        p {
+            margin-bottom: 0;
+        }
+    }
 }

@@ -10934,6 +10934,9 @@ textarea.form-control-lg {
   color: #F28500;
   box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
 }
+.order-interface.active h3, .order-interface.active .h3 {
+  font-weight: bold;
+}
 .order-interface.inactive {
   color: grey;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2) inset;
@@ -10977,19 +10980,34 @@ textarea.form-control-lg {
   background: #FFB3B3;
   box-shadow: 0 0 10px 0 #FFB3B3;
 }
-
-.price-tag {
+.recipe-widget .price-tag {
   background: #F5EFE6;
   margin: 5px 5px;
-  padding: 2px 5px;
+  padding: 2px 10px;
   border-radius: 15px;
-  box-shadow: 0 1px 8px 0 #F28500 inset;
+  font-weight: bold;
+}
+.recipe-widget .price-tag.vegan {
+  background-color: #6D8B74;
+  color: white;
+}
+.recipe-widget .price-tag.vegetarian {
+  background-color: #C4DFAA;
+}
+.recipe-widget .price-tag.pescetarian {
+  background-color: #C1EFFF;
+}
+.recipe-widget .price-tag.meat {
+  background-color: #FFB3B3;
+}
+.recipe-widget .price-tag p {
+  margin-bottom: 0;
 }
 
 .attributes > .attr {
   margin: 2px 3px;
   padding: 2px 8px;
-  border-radius: 10px;
+  border-radius: 15px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2) inset;
 }
 .attributes > .attr:hover {

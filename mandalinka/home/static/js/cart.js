@@ -6,6 +6,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+import PriceTag from './price_tag.js';
+
 var Cart = function (_React$Component) {
 	_inherits(Cart, _React$Component);
 
@@ -25,9 +27,8 @@ var Cart = function (_React$Component) {
 					"a",
 					{ type: "button", className: "cart", "data-bs-toggle": "modal", "data-bs-target": "#exampleModal" },
 					React.createElement(
-						"p",
-						null,
-						this.props.price + ' €',
+						PriceTag,
+						{ price: this.props.price },
 						React.createElement(
 							"span",
 							{ className: "material-symbols-rounded" },

@@ -1,13 +1,15 @@
+import PriceTag from './price_tag.js';
+
 export default class Cart extends React.Component {
 	render() {
 		return (
 			<div className="cart">
-				<a type="button" className="cart" data-bs-toggle="modal" data-bs-target="#exampleModal">
-					<p>{this.props.price + ' €'}
+				<a type="button" className="cart" data-bs-toggle="modal" data-bs-target="#exampleModal">					
+					<PriceTag price={this.props.price}>
 						<span className="material-symbols-rounded">
 							shopping_cart
 						</span>
-					</p>
+					</PriceTag>
 				</a>
 
 				<div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

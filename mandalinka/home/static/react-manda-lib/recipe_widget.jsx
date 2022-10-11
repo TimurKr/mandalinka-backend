@@ -1,6 +1,7 @@
 import Alergens from './alergens.js';
 import OrderInterface from './order_interface.js';
 import Attributes from './attributes.js';
+import PriceTag from './price_tag.js';
 
 export default class RecipeWidget extends React.Component {
 
@@ -13,8 +14,8 @@ export default class RecipeWidget extends React.Component {
 						<div className="bg-light rounded-2 position-relative">
 							<img src={this.props.thumbnail} className="card-img-top rounded-2" alt='img_alt'>
 							</img>
-							<div className='price-tag position-absolute top-0 start-0'>
-								{this.props.price + ' €'}
+							<div className={"price-tag position-absolute top-0 start-0 " + this.props.type}>
+								<PriceTag price={this.props.price}></PriceTag>
 							</div>
 							<h4 className="card-title px-2 mt-2">{this.props.title}</h4>
 							<p className="card-text px-2 m-0">{this.props.description}</p>

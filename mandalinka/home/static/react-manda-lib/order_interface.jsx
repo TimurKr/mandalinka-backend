@@ -1,11 +1,9 @@
 import getCookie from './get_cookie.js';
 
-function spinner(){
-    return(
-        <div className="spinner-border spinner-border-sm" role="status">
-            <span className="visually-hidden">Loading...</span>
-        </div>
-    )
+function Spinner(){
+    return  <div className="spinner-border spinner-border-sm" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </div>
 }
 
 export default class OrderInterface extends React.Component {
@@ -41,7 +39,7 @@ export default class OrderInterface extends React.Component {
             if (answer.status === 200) {
                 console.log("Juchu, dostal som odpoveď 200");
                 this.props.onAmountChange(new_amount, this.props.recipe_order_instance_id);
-                // this.setState({loading: false});
+                this.setState({loading: false});
             } else {
                 console.error(answer);
             }
@@ -89,7 +87,7 @@ export default class OrderInterface extends React.Component {
                 {this.minus_sign()}
                 { 
                     this.state.loading
-                    ? spinner()
+                    ? <Spinner/>
                     : <h3> {this.props.amount} </h3>
                 }
                 {this.plus_sign()}

@@ -344,6 +344,7 @@ class DeliveryDay(models.Model):
                 matching_attributes.pop(max(matching_attributes))
                 
             # Add recipes to the Order
+            order.recipes.clear()
             for recipe in self.recipes.all():
                 order.recipes.add(recipe, 
                     through_defaults = {'portions': recipes_w_portions.get(recipe.id, 0)}

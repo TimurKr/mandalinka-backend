@@ -9,6 +9,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 import Alergens from './alergens.js';
 import OrderInterface from './order_interface.js';
 import Attributes from './attributes.js';
+import PriceTag from './price_tag.js';
 
 var RecipeWidget = function (_React$Component) {
 	_inherits(RecipeWidget, _React$Component);
@@ -38,8 +39,8 @@ var RecipeWidget = function (_React$Component) {
 							React.createElement('img', { src: this.props.thumbnail, className: 'card-img-top rounded-2', alt: 'img_alt' }),
 							React.createElement(
 								'div',
-								{ className: 'price-tag position-absolute top-0 start-0' },
-								this.props.price + ' €'
+								{ className: "price-tag position-absolute top-0 start-0 " + this.props.type },
+								React.createElement(PriceTag, { price: this.props.price })
 							),
 							React.createElement(
 								'h4',
