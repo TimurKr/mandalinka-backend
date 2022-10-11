@@ -42,9 +42,14 @@ def novy_recept(request):
 def load_next_order(request):
     delivery_day = DeliveryDay.objects.filter(date__gte=now().date()).order_by('date').first()
     recipes = {}
-
+    attrs = {}
     
-    try:
+    if request.user.is_authenticated:
+        user_food_pref = [a.attr for a in request.user.profile.food_preferences.all()]
+    else:
+        user_food_pref = []
+    
+    try: # Needs review
         order = request.user.orders.get(delivery_day_id = delivery_day.id)
     except:
         return HttpResponseBadRequest()
@@ -71,7 +76,7 @@ def load_next_order(request):
             'title': recipeversion.recipe.title,
             'description': recipeversion.recipe.description,
             'type': type,
-            'attributes': [i.attr for i in recipeversion.recipe.attributes.all()],
+            # 'attributes': [i.attr for i in recipeversion.recipe.attributes.all()],
             'alergens': recipeversion.get_alergens(),
             'amount': num_por,
             'price': recipeversion.get_price(),
@@ -83,11 +88,27 @@ def load_next_order(request):
         else:
             recipes[order_instance.id]["thumbnail"] = None
 
+        for attr in [i.attr for i in recipeversion.recipe.attributes.all()]:
+            if attr not in attrs.keys():
+                attrs[attr] = {
+                    'recipes': [],
+                    'favorite': False,
+                    'selected': False,
+                }
+                if request.user.is_authenticated and attr in user_food_pref:
+                    attrs[attr]['favorite'] = True
+            attrs[attr]['recipes'].append(str(order_instance.id))
+
+
+        
+            
+
     response = {
         'date': delivery_day.date,
         'pickup': order.pickup,
         'order_id': order.id,
         'recipes': recipes,
+        'attributes': attrs
     }
     return JsonResponse(response)
 

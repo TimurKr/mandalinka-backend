@@ -92,7 +92,8 @@ var OrderEditing = function (_React$Component) {
             date: '...',
             recipes: undefined,
             thumbnail: '',
-            order_id: undefined
+            order_id: undefined,
+            attributes: undefined
         };
         return _this;
     }
@@ -109,7 +110,8 @@ var OrderEditing = function (_React$Component) {
                     date: response.date,
                     pickup: response.pickup,
                     recipes: response.recipes,
-                    order_id: response.order_id
+                    order_id: response.order_id,
+                    attributes: response.attributes
                 });
                 _this2.set_total_price(response.recipes);
             }).catch(function (error) {
@@ -119,29 +121,16 @@ var OrderEditing = function (_React$Component) {
     }, {
         key: 'amount_change',
         value: function amount_change(new_amount, id) {
-            console.log('In amount change, id:' + id + ', new_amount: ' + new_amount + ', total_price: ' + this.total_price);
-            console.log('Attempt to change: ', this.state.recipes[id].amount);
-            // this.setState({
-            //     recipes: {
-            //         ... this.state.recipes,
-            //         id: {
-            //             ... this.state.recipes[id],
-            //             amount: new_amount,
-            //         }
-            //     }
-            // })
             this.setState(function (state) {
                 state.recipes[id].amount = new_amount;
                 return state;
             });
-
-            console.log('In amount change, id:' + id + ', new_amount: ' + new_amount + ', total_price: ' + this.total_price);
         }
     }, {
         key: 'render',
         value: function render() {
 
-            var recipes = [];
+            var recipes = {};
             this.set_total_price();
 
             if (this.state.recipes != undefined) {
@@ -156,20 +145,60 @@ var OrderEditing = function (_React$Component) {
 
                         var _ref4 = _slicedToArray(_ref3, 2);
 
-                        var key = _ref4[0];
-                        var value = _ref4[1];
+                        var rec_key = _ref4[0];
+                        var rec_data = _ref4[1];
 
-                        recipes.push(React.createElement(RecipeWidget, {
-                            key: key,
-                            thumbnail: value.thumbnail,
-                            title: value.title,
-                            description: value.description,
-                            type: value.type,
-                            attributes: value.attributes,
-                            alergens: value.alergens,
-                            amount: value.amount,
-                            recipe_order_instance_id: key,
-                            price: value.price,
+
+                        var recipe_attributes = {};
+                        var _iteratorNormalCompletion3 = true;
+                        var _didIteratorError3 = false;
+                        var _iteratorError3 = undefined;
+
+                        try {
+                            for (var _iterator3 = Object.entries(this.state.attributes)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                                var _ref5 = _step3.value;
+
+                                var _ref6 = _slicedToArray(_ref5, 2);
+
+                                var attr_key = _ref6[0];
+                                var attr_data = _ref6[1];
+
+                                if (attr_data.recipes.includes(rec_key)) {
+                                    recipe_attributes[attr_key] = {
+                                        favorite: attr_data.favorite,
+                                        selected: attr_data.selected
+                                    };
+                                }
+                            }
+                        } catch (err) {
+                            _didIteratorError3 = true;
+                            _iteratorError3 = err;
+                        } finally {
+                            try {
+                                if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                                    _iterator3.return();
+                                }
+                            } finally {
+                                if (_didIteratorError3) {
+                                    throw _iteratorError3;
+                                }
+                            }
+                        }
+
+                        if (recipes[rec_data.type] === undefined) {
+                            recipes[rec_data.type] = [];
+                        }
+                        recipes[rec_data.type].push(React.createElement(RecipeWidget, {
+                            key: rec_key,
+                            thumbnail: rec_data.thumbnail,
+                            title: rec_data.title,
+                            description: rec_data.description,
+                            type: rec_data.type,
+                            attributes: recipe_attributes,
+                            alergens: rec_data.alergens,
+                            amount: rec_data.amount,
+                            recipe_order_instance_id: rec_key,
+                            price: rec_data.price,
                             onAmountChange: this.amount_change
                         }));
                     }
@@ -185,6 +214,36 @@ var OrderEditing = function (_React$Component) {
                         if (_didIteratorError2) {
                             throw _iteratorError2;
                         }
+                    }
+                }
+            }
+
+            var final_recipes = [];
+            var _iteratorNormalCompletion4 = true;
+            var _didIteratorError4 = false;
+            var _iteratorError4 = undefined;
+
+            try {
+                for (var _iterator4 = Object.keys(recipes).sort().reverse()[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+                    var type = _step4.value;
+
+                    final_recipes.push(React.createElement(
+                        'div',
+                        { key: type, className: 'col-md-3 col-12' },
+                        recipes[type]
+                    ));
+                }
+            } catch (err) {
+                _didIteratorError4 = true;
+                _iteratorError4 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion4 && _iterator4.return) {
+                        _iterator4.return();
+                    }
+                } finally {
+                    if (_didIteratorError4) {
+                        throw _iteratorError4;
                     }
                 }
             }
@@ -211,7 +270,7 @@ var OrderEditing = function (_React$Component) {
                 React.createElement(
                     'div',
                     { className: 'row gx-3 gy-4' },
-                    recipes
+                    final_recipes
                 )
             );
         }

@@ -8,7 +8,7 @@ export default class RecipeWidget extends React.Component {
 	render() {
 
 		return (
-			<div className="col-md-3 col-sm-6 col-6">
+			<div className="col-md-12 col-6">
 				<div className={"recipe-widget position-relative " + this.props.type}>
 					<div className="card-body p-2 pb-0">
 						<div className="bg-light rounded-2 position-relative">
@@ -19,7 +19,7 @@ export default class RecipeWidget extends React.Component {
 							</div>
 							<h4 className="card-title px-2 mt-2">{this.props.title}</h4>
 							<p className="card-text px-2 m-0">{this.props.description}</p>
-							<Attributes attrs={this.props.attributes} />
+							<Attributes attrs={this.props.attributes} type={this.props.type}/>
 						</div>
 						<Alergens data={this.props.alergens} />
 					</div>

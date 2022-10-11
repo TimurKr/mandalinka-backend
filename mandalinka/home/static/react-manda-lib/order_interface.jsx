@@ -37,7 +37,6 @@ export default class OrderInterface extends React.Component {
         fetch(`/edit_order`, put_info)
         .then((answer) => {
             if (answer.status === 200) {
-                console.log("Juchu, dostal som odpoveď 200");
                 this.props.onAmountChange(new_amount, this.props.recipe_order_instance_id);
                 this.setState({loading: false});
             } else {

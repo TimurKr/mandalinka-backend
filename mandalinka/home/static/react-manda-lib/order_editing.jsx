@@ -18,6 +18,7 @@ class OrderEditing extends React.Component {
             recipes: undefined,
             thumbnail: '',
             order_id: undefined,
+            attributes: undefined,
         }
     }
 
@@ -30,6 +31,7 @@ class OrderEditing extends React.Component {
                     pickup: response.pickup,
                     recipes: response.recipes,
                     order_id: response.order_id,
+                    attributes: response.attributes
                 });
                 this.set_total_price(response.recipes);
             })
@@ -73,49 +75,58 @@ class OrderEditing extends React.Component {
     }
 
     amount_change(new_amount, id) {
-        console.log(`In amount change, id:${id}, new_amount: ${new_amount}, total_price: ${this.total_price}`);
-        console.log(`Attempt to change: `, this.state.recipes[id].amount)
-        // this.setState({
-        //     recipes: {
-        //         ... this.state.recipes,
-        //         id: {
-        //             ... this.state.recipes[id],
-        //             amount: new_amount,
-        //         }
-        //     }
-        // })
         this.setState(state => {
             state.recipes[id].amount = new_amount;
             return state;
         })
-        
-        console.log(`In amount change, id:${id}, new_amount: ${new_amount}, total_price: ${this.total_price}`);
     }
-
 
     render() {
 
-        const recipes = [];
+        const recipes = {};
         this.set_total_price();
 
         if (this.state.recipes != undefined) {
 
-            for (const [key, value] of Object.entries(this.state.recipes)) {
-                recipes.push(
+            for (const [rec_key, rec_data] of Object.entries(this.state.recipes)) {
+                
+                const recipe_attributes = {};
+                for(const [attr_key, attr_data] of Object.entries(this.state.attributes)) {
+                    if (attr_data.recipes.includes(rec_key)) {
+                        recipe_attributes[attr_key] = {
+                            favorite: attr_data.favorite,
+                            selected: attr_data.selected,
+                        }
+                    }
+                }
+
+                if (recipes[rec_data.type] === undefined) {
+                    recipes[rec_data.type] = [];
+                }
+                recipes[rec_data.type].push(
                     <RecipeWidget
-                    key={key}
-                    thumbnail={value.thumbnail}
-                    title={value.title}
-                    description={value.description}
-                    type={value.type}
-                    attributes={value.attributes}
-                    alergens={value.alergens}
-                    amount={value.amount}
-                    recipe_order_instance_id={key}
-                    price={value.price}
+                    key={rec_key}
+                    thumbnail={rec_data.thumbnail}
+                    title={rec_data.title}
+                    description={rec_data.description}
+                    type={rec_data.type}
+                    attributes={recipe_attributes}
+                    alergens={rec_data.alergens}
+                    amount={rec_data.amount}
+                    recipe_order_instance_id={rec_key}
+                    price={rec_data.price}
                     onAmountChange={this.amount_change}
                 />)
             }
+        }
+
+        const final_recipes = [];
+        for (const type of Object.keys(recipes).sort().reverse()) {
+            final_recipes.push(
+                <div key={type} className="col-md-3 col-12">
+                    {recipes[type]}
+                </div>
+            )
         }
 
         return (
@@ -128,7 +139,7 @@ class OrderEditing extends React.Component {
                     <Cart price={this.total_price}/>
                 </div>
                 <div className="row gx-3 gy-4">
-                    {recipes}
+                    {final_recipes}
                 </div>
             </div>
         );

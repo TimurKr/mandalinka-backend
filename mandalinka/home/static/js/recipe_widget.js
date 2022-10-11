@@ -26,7 +26,7 @@ var RecipeWidget = function (_React$Component) {
 
 			return React.createElement(
 				'div',
-				{ className: 'col-md-3 col-sm-6 col-6' },
+				{ className: 'col-md-12 col-6' },
 				React.createElement(
 					'div',
 					{ className: "recipe-widget position-relative " + this.props.type },
@@ -52,7 +52,7 @@ var RecipeWidget = function (_React$Component) {
 								{ className: 'card-text px-2 m-0' },
 								this.props.description
 							),
-							React.createElement(Attributes, { attrs: this.props.attributes })
+							React.createElement(Attributes, { attrs: this.props.attributes, type: this.props.type })
 						),
 						React.createElement(Alergens, { data: this.props.alergens })
 					),

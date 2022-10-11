@@ -83,7 +83,6 @@ var OrderInterface = function (_React$Component) {
 
             fetch("/edit_order", put_info).then(function (answer) {
                 if (answer.status === 200) {
-                    console.log("Juchu, dostal som odpoveď 200");
                     _this2.props.onAmountChange(new_amount, _this2.props.recipe_order_instance_id);
                     _this2.setState({ loading: false });
                 } else {

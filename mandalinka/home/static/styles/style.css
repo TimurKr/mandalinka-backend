@@ -11029,7 +11029,7 @@ textarea.form-control-lg {
 .delivery-type > .active > span {
   -webkit-animation: selected 0.3s ease;
           animation: selected 0.3s ease;
-  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 40;
+  font-variation-settings: "FILL" 0, "wght" 500, "GRAD" 0, "opsz" 40;
   font-size: 100%;
 }
 .delivery-type > .inactive {
