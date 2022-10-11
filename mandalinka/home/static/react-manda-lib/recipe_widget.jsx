@@ -22,7 +22,10 @@ export default class RecipeWidget extends React.Component {
 						</div>
 						<Alergens data={this.props.alergens} />
 					</div>
-					<OrderInterface data={this.props.order_data} />
+					<OrderInterface 
+						amount={this.props.amount}
+						recipe_order_instance_id={this.props.recipe_order_instance_id}
+						onAmountChange={this.props.onAmountChange} />
 				</div>
 			</div>
 		)

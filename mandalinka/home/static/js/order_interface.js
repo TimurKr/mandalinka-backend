@@ -29,7 +29,7 @@ var OrderInterface = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (OrderInterface.__proto__ || Object.getPrototypeOf(OrderInterface)).call(this, props));
 
         _this.minus_sign = function () {
-            if (_this.state.value > 0) {
+            if (_this.props.amount > 0) {
                 return React.createElement(
                     "a",
                     { role: "button", onClick: _this.change_portions.bind(_this, -2) },
@@ -41,8 +41,8 @@ var OrderInterface = function (_React$Component) {
         };
 
         _this.plus_sign = function () {
-            if (_this.state.value < 0) {
-                console.error("Trouble, too low value");
+            if (_this.props.amount < 0) {
+                console.error("Trouble, too low amount");
                 return React.createElement("i", { clasName: "bi bi-plus-lg disabled" });
             } else {
                 return React.createElement(
@@ -54,9 +54,6 @@ var OrderInterface = function (_React$Component) {
         };
 
         _this.state = {
-            value: props.data.value,
-            class: 'btn btn-primary',
-            recipe_id: props.data.recipe_order_instance_id,
             loading: false
         };
 
@@ -68,6 +65,7 @@ var OrderInterface = function (_React$Component) {
         value: function change_portions(change) {
             var _this2 = this;
 
+            var new_amount = this.props.amount + change;
             var put_info = {
                 method: 'PUT',
                 headers: {
@@ -75,8 +73,8 @@ var OrderInterface = function (_React$Component) {
                     'X-CSRFToken': getCookie('csrftoken')
                 },
                 body: JSON.stringify({
-                    recipe_id: this.state.recipe_id,
-                    new_value: this.state.value + change
+                    recipe_id: this.props.recipe_order_instance_id,
+                    new_amount: new_amount
                 }),
                 mode: 'same-origin'
             };
@@ -85,16 +83,14 @@ var OrderInterface = function (_React$Component) {
 
             fetch("/edit_order", put_info).then(function (answer) {
                 if (answer.status === 200) {
-
-                    _this2.setState({
-                        value: _this2.state.value + change,
-                        loading: false
-                    });
+                    console.log("Juchu, dostal som odpoveď 200");
+                    _this2.props.onAmountChange(new_amount, _this2.props.recipe_order_instance_id);
+                    // this.setState({loading: false});
                 } else {
                     console.error(answer);
                 }
             }).catch(function (err) {
-                console.error("Hej! niečo sa posralo");
+                console.error("Hej! niečo sa posralo", err);
                 // Tu by sa mal vypísať nejaký error užívatelovi
             });
         }
@@ -104,13 +100,13 @@ var OrderInterface = function (_React$Component) {
             return React.createElement(
                 "div",
                 {
-                    className: "hstack order-interface allign-middle position-absolute top-0 end-0 translate-middle-y  " + (this.state.value > 0 ? 'active' : 'inactive') },
+                    className: "hstack order-interface allign-middle position-absolute top-0 end-0 translate-middle-y  " + (this.props.amount > 0 ? 'active' : 'inactive') },
                 this.minus_sign(),
                 this.state.loading ? spinner() : React.createElement(
                     "h3",
                     null,
                     " ",
-                    this.state.value,
+                    this.props.amount,
                     " "
                 ),
                 this.plus_sign()

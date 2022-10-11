@@ -259,11 +259,16 @@ class RecipeVersion(models.Model):
             return rating_sum/rating_num
         return "No ratings"
     
-    def get_price(self):
+    def get_cost(self):
         sum = 0
         for ingredient in self.ingredients_mid.all():
             sum += ingredient.amount * ingredient.ingredient.price_per_unit
         return sum
+
+
+    def get_price(self):
+        return round(self.get_cost() * (1.2) + 0.5) - 0.1
+
 
 class DeliveryDay(models.Model):
 

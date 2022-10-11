@@ -55,7 +55,10 @@ var RecipeWidget = function (_React$Component) {
 						),
 						React.createElement(Alergens, { data: this.props.alergens })
 					),
-					React.createElement(OrderInterface, { data: this.props.order_data })
+					React.createElement(OrderInterface, {
+						amount: this.props.amount,
+						recipe_order_instance_id: this.props.recipe_order_instance_id,
+						onAmountChange: this.props.onAmountChange })
 				)
 			);
 		}

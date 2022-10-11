@@ -41,7 +41,7 @@ def novy_recept(request):
 
 def load_next_order(request):
     delivery_day = DeliveryDay.objects.filter(date__gte=now().date()).order_by('date').first()
-    recipes = []
+    recipes = {}
 
     
     try:
@@ -67,31 +67,27 @@ def load_next_order(request):
         except:
             return HttpResponseBadRequest()
 
-        recipes.append({
+        recipes[order_instance.id] = {
             'title': recipeversion.recipe.title,
             'description': recipeversion.recipe.description,
             'type': type,
             'attributes': [i.attr for i in recipeversion.recipe.attributes.all()],
             'alergens': recipeversion.get_alergens(),
-            'order_data': {
-                'value': num_por,
-                'recipe_order_instance_id': order_instance.id,
-            },
+            'amount': num_por,
             'price': recipeversion.get_price(),
-        })
+        }
 
             
         if recipeversion.recipe.thumbnail:
-            recipes[-1]["thumbnail"] = recipeversion.recipe.thumbnail.url
+            recipes[order_instance.id]["thumbnail"] = recipeversion.recipe.thumbnail.url
         else:
-            recipes[-1]["thumbnail"] = None
+            recipes[order_instance.id]["thumbnail"] = None
 
     response = {
         'date': delivery_day.date,
         'pickup': order.pickup,
         'order_id': order.id,
         'recipes': recipes,
-        'price': sum([r['price'] for r in recipes]),
     }
     return JsonResponse(response)
 

@@ -14,15 +14,13 @@ export default class OrderInterface extends React.Component {
         super(props);
 
         this.state = {
-            value: props.data.value,
-            class: 'btn btn-primary',
-            recipe_id: props.data.recipe_order_instance_id,
             loading: false,
         };
 
     }
 
     change_portions(change){ 
+        const new_amount = this.props.amount + change;
         const put_info = {
             method: 'PUT',
             headers: {
@@ -30,8 +28,8 @@ export default class OrderInterface extends React.Component {
                 'X-CSRFToken': getCookie('csrftoken'),
             },
             body: JSON.stringify({
-                recipe_id: this.state.recipe_id,
-                new_value: this.state.value + change,
+                recipe_id: this.props.recipe_order_instance_id,
+                new_amount: new_amount,
             }),
             mode: 'same-origin',
         };
@@ -41,24 +39,21 @@ export default class OrderInterface extends React.Component {
         fetch(`/edit_order`, put_info)
         .then((answer) => {
             if (answer.status === 200) {
-                
-                this.setState({
-                    value: this.state.value + change,
-                    loading: false
-            });
-
+                console.log("Juchu, dostal som odpoveď 200");
+                this.props.onAmountChange(new_amount, this.props.recipe_order_instance_id);
+                // this.setState({loading: false});
             } else {
-                console.error(answer)
+                console.error(answer);
             }
         })
         .catch((err) => {
-            console.error("Hej! niečo sa posralo")
+            console.error("Hej! niečo sa posralo", err)
             // Tu by sa mal vypísať nejaký error užívatelovi
         })
     }
 
     minus_sign = () => {
-        if (this.state.value > 0) {
+        if (this.props.amount > 0) {
             return (
                 <a role="button" onClick={this.change_portions.bind(this, -2)}>
                     <i className="bi bi-dash-lg enabled"></i>
@@ -72,8 +67,8 @@ export default class OrderInterface extends React.Component {
     }
 
     plus_sign = () => {
-        if (this.state.value < 0) {
-            console.error("Trouble, too low value");
+        if (this.props.amount < 0) {
+            console.error("Trouble, too low amount");
             return (
                 <i clasName="bi bi-plus-lg disabled"></i>
             )
@@ -90,12 +85,12 @@ export default class OrderInterface extends React.Component {
     render() {
         return (
             <div 
-                className={`hstack order-interface allign-middle position-absolute top-0 end-0 translate-middle-y  ${this.state.value > 0 ? 'active' : 'inactive'}`}>
+                className={`hstack order-interface allign-middle position-absolute top-0 end-0 translate-middle-y  ${this.props.amount > 0 ? 'active' : 'inactive'}`}>
                 {this.minus_sign()}
                 { 
                     this.state.loading
                     ? spinner()
-                    : <h3> {this.state.value} </h3>
+                    : <h3> {this.props.amount} </h3>
                 }
                 {this.plus_sign()}
             </div>
