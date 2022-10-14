@@ -11,7 +11,7 @@ class IngredientInstanceInline(admin.TabularInline):
     
 
 class RecipeVersionAdmin(admin.ModelAdmin):
-    list_display = ("recipe", "version", "avg_rating")
+    list_display = ("recipe", "version", "avg_rating", "get_cost", "get_price", "get_profit",)
     filter_vertical = ("steps",)
     inlines = (IngredientInstanceInline,)
     

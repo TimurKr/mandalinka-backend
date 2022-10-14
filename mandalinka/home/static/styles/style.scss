@@ -1,15 +1,24 @@
 @import "./custom_variables.scss";
 
-$font-family-sans-serif: "Baskerville", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+// Custom font styles
+@font-face {
+  font-family: MandalinkFont;
+  src: url();
+}
+$font-family-sans-serif:  system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
 
 
+// Bootstrap with icons
 @import "../../../node_modules/bootstrap/scss/bootstrap.scss";
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css");
 
+// React Apps
 
-// Elements
-
+    // Order editing
 @import "./js-elements/order_editing.scss";
+
+    // Account on homepage
+@import "./js-elements/landing_view.scss";
 
 
 // Icons 
