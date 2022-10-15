@@ -6,6 +6,10 @@
 @import "./delivery_type.scss";
 @import "./cart.scss";
 
-#current-order {
-    background: $off-white;
+#OrderEditingInterface{
+    background-color: $off-white;
+    padding-top: 20px;
+    #current-order {
+        background: $primary;
+    }
 }

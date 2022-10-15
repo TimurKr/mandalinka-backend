@@ -264,8 +264,12 @@ var OrderEditing = function (_React$Component) {
                             this.state.date
                         )
                     ),
-                    React.createElement(DeliveryType, { pickup: this.state.pickup, toggle: this.toggle_pickup }),
-                    React.createElement(Cart, { price: this.total_price })
+                    React.createElement(
+                        'div',
+                        { className: 'd-inline-flex align-items-center' },
+                        React.createElement(DeliveryType, { pickup: this.state.pickup, toggle: this.toggle_pickup }),
+                        React.createElement(Cart, { price: this.total_price })
+                    )
                 ),
                 React.createElement(
                     'div',

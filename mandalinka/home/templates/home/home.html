@@ -18,7 +18,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
         crossorigin="anonymous"></script>
-        <script src="{% static 'home.js' %}"></script>
+    <!-- General home javascript -->
+    <script src="{% static 'home.js' %}"></script>
     <!-- React  -->
     <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
@@ -26,7 +27,10 @@
     
 </head>
 
-    <!-- Login Modal -->
+
+<!-- Login Modal -->
+
+    {% load crispy_forms_tags %}
 
     {% if loginform and not request.user.is_authenticated %}
         <div class="modal fade {% if focus == 'LoginModal' %}active{% endif %}" id="LoginModal" tabindex="-1"
@@ -46,22 +50,39 @@
         </div>
     {% endif %}
 
-    <section id="landing_view" class="min-vh-100 position-relative">
+    <section id="LandingView" class="min-vh-100 position-relative">
 
+        <!-- Favicon -->
         <a href="#landing_view" class="position-absolute start-0 top-0 p-3">
             <img class="img-fluid" width=35rem src="{% static 'public/favicon.ico' %}" alt="">
         </a>
 
-        <div id="account" class="position-absolute top-0 end-0"></div>
-        <script type="module" src="{% static 'js/home_account' %}"></script>
+        <!-- Account icons -->
+        <div id="Account" is_authenticated="{{ request.user.is_authenticated }}" 
+            my_account_link="{% url 'home:my_account' %}"
+            log_out_link="{% url 'home:logout' %}"
+            new_user_link="{% url 'home:new_user' %}"
+            >
+        </div>
+        <script type="module" src="{% static 'js/landing_view.js' %}"></script>
         
-        <h1 class="title">Mandalinka</h1>
-        <hr/>
-        <h4 class="subtitle">Varenie bez starostí</h4>    
+        <!-- Titles -->
+        <div class="position-absolute top-50 start-50 translate-middle text-center">
+            <h1 id="Title">Mandalinka</h1>
+            <hr/>
+            <h4 id="Subtitle">Varenie bez starostí</h4>    
+        </div>
+
+        <!-- Arrow downwards -->
+        <div id="ArrowDown" class="position-absolute bottom-0 start-50 translete-middle-x">
+            <span class="material-symbols-rounded">
+                keyboard_double_arrow_down
+            </span>
+        </div>
 
     </section>
 
-    <section id="OrderEditinInterface" class="min-vh-100">
+    <section id="OrderEditingInterface" class="min-vh-100">
         
         <div id="CurrentOrder"></div>
         <script type="module" src="{% static 'js/order_editing.js' %}"></script>

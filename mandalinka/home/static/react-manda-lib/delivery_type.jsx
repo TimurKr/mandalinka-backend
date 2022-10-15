@@ -27,7 +27,7 @@ export default function DeliveryType(props) {
                 </span>
             </a>
     }
-    return  <div className="delivery-type h-stack">
+    return  <div className="delivery-type hstack">
                 {pickup}
                 <div className="vr"></div>
                 {delivery}

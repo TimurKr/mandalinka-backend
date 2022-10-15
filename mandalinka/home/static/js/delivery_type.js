@@ -42,7 +42,7 @@ export default function DeliveryType(props) {
     }
     return React.createElement(
         "div",
-        { className: "delivery-type h-stack" },
+        { className: "delivery-type hstack" },
         pickup,
         React.createElement("div", { className: "vr" }),
         delivery

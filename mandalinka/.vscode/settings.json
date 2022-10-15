@@ -8,10 +8,11 @@
    "liveSassCompile.settings.excludeList": [
       "/**/node_modules/**",
       "/.vscode/**",
-      "/**/styles/custom_variables.scss"
    ],
    "liveSassCompile.settings.partialsList": [
       "/**/styles/js-elements/**",
+      "/**/styles/fonts.scss",
+      "/**/styles/custom_variables.scss",
    ],
    "liveSassCompile.settings.generateMap": true,
    "liveSassCompile.settings.autoprefix": [

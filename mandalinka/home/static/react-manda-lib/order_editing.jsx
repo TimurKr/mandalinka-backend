@@ -135,8 +135,10 @@ class OrderEditing extends React.Component {
                     <div className="me-auto p-2">
                         <h2>Recepty na podelok {this.state.date}</h2>
                     </div>
-                    <DeliveryType pickup={this.state.pickup} toggle={this.toggle_pickup}/>
-                    <Cart price={this.total_price}/>
+                    <div className="d-inline-flex align-items-center">
+                        <DeliveryType pickup={this.state.pickup} toggle={this.toggle_pickup}/>
+                        <Cart price={this.total_price}/>
+                    </div>
                 </div>
                 <div className="row gx-3 gy-4">
                     {final_recipes}

@@ -2,10 +2,9 @@
 
 .delivery-type {
     padding: 0px 15px;
-    margin: 15px 5px 0px 0px ;
     font-size: 2em;
     > a {
-        padding: 5px 15px;
+        padding: 0px 15px;
     }
     > .active {
         color: $primary;
@@ -45,21 +44,13 @@
 }
 
 @keyframes selected {
-    0% {
-        color: grey;
-    }
-    100% {
-        color: $primary;
-    }
+    0% { color: grey; }
+    100% {color: $primary; }
 }
 
 @keyframes hover {
-    0% {
-        font-variation-settings: 'wght' 200;
-    }
-    100% {
-        font-variation-settings: 'wght' 500;
-    }
+    0% { font-variation-settings: 'wght' 200; }
+    100% { font-variation-settings: 'wght' 500; }
 }
 
 @keyframes unselected {
