@@ -51,12 +51,12 @@ class UserProfile(models.Model):
     portions_options = [(2, "2"), (4, "4"), (6, "6")]
     num_portions = models.IntegerField(default=2, choices=portions_options, blank=False)
 
-    street = models.CharField(max_length=150,blank=True)
-    house_no = models.CharField(max_length=8, blank=False)
-    district = models.CharField(max_length=50,blank=False)
-    city = models.CharField(max_length=100,blank=False)
-    postal = models.CharField(max_length=6,blank=False)
-    country = models.CharField(max_length=16, blank=False)
+    address = models.CharField(max_length=150,blank=True, verbose_name="Adresa a číslo domu")
+    address_note = models.TextField(max_length=256, blank=True, verbose_name="Poznámka pre kuriéra", help_text="(zvonček, poschodie, ...)")
+    city = models.CharField(max_length=100,blank=True, verbose_name="Mesto")
+    district = models.CharField(max_length=50,blank=True, verbose_name="Okres")
+    postal = models.CharField(max_length=6,blank=True, verbose_name="PSČ")
+    country = models.CharField(max_length=32, blank=True, verbose_name="Krajina")
 
     newsletter = models.BooleanField(default=False)
     terms_conditions = models.BooleanField(default=False)

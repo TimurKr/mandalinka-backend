@@ -4,93 +4,86 @@
 <html lang="sk">
 
 <head>
-    <title>Mandalinkine recepty</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Favicon -->
-    <link href="{% static 'public/favicon.ico' %}" rel="shortcut icon" type="image/png">
-    <!-- Custom icon -->
-    <link href="{% static 'styles/style.css' %}" rel="stylesheet">
-    <!-- Google symbols -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-    <!-- Bootstrap javascript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
-        crossorigin="anonymous"></script>
-    <!-- General home javascript -->
-    <script src="{% static 'home.js' %}"></script>
-    <!-- React  -->
-    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-    
+  <title>Mandalinkine recepty</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Favicon -->
+  <link href="{% static 'public/favicon.ico' %}" rel="shortcut icon" type="image/png">
+  <!-- Custom css -->
+  <link href="{% static 'styles/style.css' %}" rel="stylesheet">
+  <!-- Google symbols -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+  <!-- Bootstrap javascript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+    crossorigin="anonymous"></script>
+  <!-- General home javascript -->
+  <script src="{% static 'home.js' %}"></script>
+  <!-- React  -->
+  <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
 </head>
 
+<body>
+  <!-- Login Modal -->
 
-<!-- Login Modal -->
+  {% load crispy_forms_tags %}
 
-    {% load crispy_forms_tags %}
-
-    {% if loginform and not request.user.is_authenticated %}
-        <div class="modal fade {% if focus == 'LoginModal' %}active{% endif %}" id="LoginModal" tabindex="-1"
-            data-bs-backdrop="static" data-bs-keyboard="false"
-            aria-labelledby="LoginModalLabel" aria-hidden="false">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="LoginModalLabel">Prihláste sa</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        {% crispy loginform %}
-                    </div>
-                </div>
-            </div>
+  {% if loginform and not request.user.is_authenticated %}
+  <div class="modal fade {% if focus == 'LoginModal' %}active{% endif %}" id="LoginModal" tabindex="-1"
+    data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="LoginModalLabel" aria-hidden="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="LoginModalLabel">Prihláste sa</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-    {% endif %}
-
-    <section id="LandingView" class="min-vh-100 position-relative">
-
-        <!-- Favicon -->
-        <a href="#landing_view" class="position-absolute start-0 top-0 p-3">
-            <img class="img-fluid" width=35rem src="{% static 'public/favicon.ico' %}" alt="">
-        </a>
-
-        <!-- Account icons -->
-        <div id="Account" is_authenticated="{{ request.user.is_authenticated }}" 
-            my_account_link="{% url 'home:my_account' %}"
-            log_out_link="{% url 'home:logout' %}"
-            new_user_link="{% url 'home:new_user' %}"
-            >
+        <div class="modal-body">
+          {% crispy loginform %}
         </div>
-        <script type="module" src="{% static 'js/landing_view.js' %}"></script>
-        
-        <!-- Titles -->
-        <div class="position-absolute top-50 start-50 translate-middle text-center">
-            <h1 id="Title">Mandalinka</h1>
-            <hr/>
-            <h4 id="Subtitle">Varenie bez starostí</h4>    
-        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
 
-        <!-- Arrow downwards -->
-        <div id="ArrowDown" class="position-absolute bottom-0 start-50 translete-middle-x">
-            <span class="material-symbols-rounded">
-                keyboard_double_arrow_down
-            </span>
-        </div>
+  <section id="LandingView" class="min-vh-100 position-relative">
 
-    </section>
+    <!-- Favicon -->
+    <a href="#landing_view" class="position-absolute start-0 top-0 p-3">
+      <img class="img-fluid" width=35rem src="{% static 'public/favicon.ico' %}" alt="">
+    </a>
 
-    <section id="OrderEditingInterface" class="min-vh-100">
-        
-        <div id="CurrentOrder"></div>
-        <script type="module" src="{% static 'js/order_editing.js' %}"></script>
+    <!-- Account icons -->
+    <div id="Account" is_authenticated="{{ request.user.is_authenticated }}"
+      my_account_link="{% url 'home:my_account' %}" log_out_link="{% url 'home:logout' %}"
+      new_user_link="{% url 'home:new_user' %}">
+    </div>
+    <script type="module" src="{% static 'js/landing_view.js' %}"></script>
 
-    </section>
-    
+    <!-- Titles -->
+    <div class="position-absolute top-50 start-50 translate-middle text-center">
+      <h1 id="Title">Mandalinka</h1>
+      <hr />
+      <h4 id="Subtitle">Varenie bez starostí</h4>
+    </div>
 
+    <!-- Arrow downwards -->
+    <div id="ArrowDown" class="position-absolute bottom-0 start-50 translete-middle-x">
+      <span class="material-symbols-rounded">
+        keyboard_double_arrow_down
+      </span>
+    </div>
 
+  </section>
 
-{% block current_order %}
-{% endblock %}
+  <section id="OrderEditingInterface" class="min-vh-100">
+
+    <div id="CurrentOrder"></div>
+    <script type="module" src="{% static 'js/order_editing.js' %}"></script>
+
+  </section>
+</body>

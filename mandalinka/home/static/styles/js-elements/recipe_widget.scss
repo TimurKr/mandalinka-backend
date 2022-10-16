@@ -6,22 +6,26 @@
 
     &.vegan {
         background: $vegan-color;
-        box-shadow: 0 0 10px 0 $vegan-color;
+        // box-shadow: 0 0 10px 0 $vegan-color;
+        box-shadow: 0 0 10px 0 grey;
     }
 
     &.vegetarian {
         background: $vegetarian-color;
-        box-shadow: 0 0 10px 0 $vegetarian-color;
+        // box-shadow: 0 0 10px 0 $vegetarian-color;
+        box-shadow: 0 0 10px 0 grey;
     }
 
     &.pescetarian {
         background: $pescetarian-color;
-        box-shadow: 0 0 10px 0 $pescetarian-color;
+        // box-shadow: 0 0 10px 0 $pescetarian-color;
+        box-shadow: 0 0 10px 0 grey;
     }
 
     &.meat {
         background: $meat-color;
-        box-shadow: 0 0 10px 0 $meat-color;
+        // box-shadow: 0 0 10px 0 $meat-color;
+        box-shadow: 0 0 10px 0 grey;
     }
     
     .price-tag {

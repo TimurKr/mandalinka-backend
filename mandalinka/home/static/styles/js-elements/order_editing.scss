@@ -7,9 +7,12 @@
 @import "./cart.scss";
 
 #OrderEditingInterface{
-    background-color: $off-white;
+    background-color: $secondary-light;
     padding-top: 20px;
     #current-order {
         background: $primary;
     }
 }
+
+
+

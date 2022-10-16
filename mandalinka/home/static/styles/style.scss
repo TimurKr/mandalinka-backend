@@ -5,19 +5,23 @@
 @import "./fonts.scss";
 
 
-
 // Bootstrap with icons
 @import "../../../node_modules/bootstrap/scss/bootstrap.scss";
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css");
 
 
-    // React Apps
+
+
 
 // Landing view
 @import "./js-elements/landing_view.scss";
 
 // Order editing
 @import "./js-elements/order_editing.scss";
+
+// New user
+@import "./new_user.scss";
+
 
 // Icons 
 
@@ -31,13 +35,6 @@
 
 
 // General
-
-div.login-window {
-  max-width: 35rem;
-  width: 85%;
-  margin-left: auto;
-  margin-right: auto;
-}
 
 .alert:empty {
   display: none;
@@ -54,29 +51,17 @@ div.scrollmenu div {
 }
 
 
-// Main views
-
-html, body {
-  margin: 0px;
-  height: 100%;
-}
-
-.landing-view {
-  background: $off-white;
-  width: 100%;
-  
-  // height: 100%;
-
-  .title {
-    color: $primary;
-    font-size: 8rem;
-  }
-  .subtitle {
-    font-size: 1.5rem;
-  }
-}
-
+      
+        // Elements
 
 // Buttons
 
-@import "./js-elements/buttons.scss"
+@import "./js-elements/buttons.scss";
+
+// Maps
+
+@import "./maps.scss";
+
+// Input fields
+
+@import "./input_fields.scss";
