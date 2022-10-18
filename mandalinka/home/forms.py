@@ -11,7 +11,7 @@ from home.models import CityDistrictPostal, UserProfile
 from recepty.models import Alergen, FoodAttribute
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, HTML, Div, Submit
+from crispy_forms.layout import Layout, HTML, Div, BaseInput, Submit
 from crispy_forms.bootstrap import StrictButton
 from crispy_bootstrap5.bootstrap5 import FloatingField
 
@@ -27,18 +27,17 @@ radioselect_label_class = 'btn btn-outline-primary m-1 px-3 py-1 rounded-2'
 def merge(dict1, dict2):
     return {**dict1, **dict2} 
 
-class CustomSubmitButton(Submit):
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.field_classes = 'btn btn-primary bg-gradient w-100 rounded-2 shadow'
+class CustomSubmitButton(BaseInput):
+    input_type = 'submit'
+    field_classes = 'btn btn-primary bg-gradient w-100 rounded-2 shadow'
 
 class CustomSecondaryButton(StrictButton):
     field_classes = 'btn btn-outline-dark w-100 rounded-2 shadow'
 
 class CustomTextField(FloatingField):
-    attrs = {'class': 'form-control opacity-75 rounded-2 shadow',
-                    'placeholder': 'Add label'}
+    attrs = {'class': 'form-control col-12 opacity-75 rounded-2 shadow',
+                    'placeholder': 'Missing label'}
+
 
 default_errors = {
     'required': 'Toto pole je povinné',
@@ -88,11 +87,10 @@ class LoginForm(forms.Form):
                 )
             )
 
-        
- 
-class SignupForm(UserCreationForm):
 
-        # Osobné veci
+
+class NewUserForm(UserCreationForm):
+
     firstname = forms.CharField(
         label="Meno", 
         widget=forms.TextInput(charfield_widget),
@@ -114,8 +112,6 @@ class SignupForm(UserCreationForm):
         widget=forms.TextInput(merge(charfield_widget,{'value':'+421'})),
     )
 
-        # Newsletter a obchodné podmienky
-
     newsletter = forms.BooleanField(
         label="Súhlasíte so zasielaním propagačných emailov?", 
         required=False,
@@ -126,80 +122,6 @@ class SignupForm(UserCreationForm):
         required=True,
         widget=forms.CheckboxInput(checkbox_widget),
         )
-    
-        # Preferencie 
-
-    num_portions = forms.ChoiceField(
-        label="Portions", 
-        help_text="Koľko porcí z každého jedla chcete dostávať?",
-        choices=UserProfile.portions_options,
-        initial=2,
-        widget=forms.RadioSelect(radioselect_widget), 
-    )
-    food_attributes = forms.ModelMultipleChoiceField(
-        label="Attributes", 
-        help_text="Zvolte obľúbené atribúty", 
-        queryset=FoodAttribute.objects.all(), 
-        required=False,
-        widget=forms.CheckboxSelectMultiple(radioselect_widget), 
-    )
-    alergies = forms.ModelMultipleChoiceField(
-        label="Alergens", 
-        help_text="Zvolte vaše alergie", 
-        queryset=Alergen.objects.all(), 
-        required=False,
-        widget=forms.CheckboxSelectMultiple(radioselect_widget), 
-    )
-    food_attributes.label_classes = radioselect_label_class
-    alergies.label_classes = radioselect_label_class
-
-        # Adresa
-
-    address = forms.CharField(
-        label="Ulica a číslo domu",
-        required=False,
-        widget=forms.TextInput(charfield_widget)
-    )
-
-    address_note = forms.CharField(
-        label="Poznámka pre kuriéra",
-        required=False,
-        widget=forms.TextInput(charfield_widget)
-    )
-    
-    district = forms.CharField(
-        label="Mestská časť/Okres", 
-        required=False,
-        widget=forms.TextInput(charfield_widget)
-    )
-
-    city = forms.CharField(
-        label="Mesto", 
-        required=False, 
-        widget=forms.TextInput(charfield_widget)
-        )
-    postal = forms.CharField(
-        label="PSČ", 
-        required=False, 
-        widget=forms.TextInput(charfield_widget)
-    )
-
-    country = forms.CharField(
-        label="Krajina", 
-        required=False, 
-        widget=forms.TextInput(charfield_widget)
-    )
-
-    coordinates = forms.CharField(required=False, widget=forms.TextInput(attrs={'hidden':''}))
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['password1'].label = "Heslo"
-        self.fields['password1'].widget = forms.PasswordInput(attrs=charfield_widget)
-        self.fields['password2'].label = "Heslo znova"
-        self.fields['password2'].widget = forms.PasswordInput(attrs=charfield_widget)
-        self.fields['password2'].help_text = None
-
 
     class Meta:
         model = User
@@ -209,19 +131,171 @@ class SignupForm(UserCreationForm):
                 "phone",
                 "newsletter",
                 "terms_conditions",
-                "num_portions",
-                "food_attributes",
-                "alergies",
-                "address",
-                "address_note",
-                "city",
-                "district",
-                "postal",
-                "country",
                 "password1",
                 "password2",
-                "coordinates",
                 ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['password1'].label = "Heslo"
+        self.fields['password2'].label = "Heslo znova"
+        self.fields['password2'].help_text = None
+        
+        self.helper = FormHelper(self)
+        self.helper.form_action = reverse('home:new_user')
+        self.helper.form_id = 'NewUserForm'
+        self.helper.form_class = 'needs-validation'
+        self.helper.attrs = {'novalidate': ''}
+        self.helper.layout = Layout(
+            Div(
+                Div(CustomTextField('firstname'), css_class='col-sm-6'),
+                Div(CustomTextField('lastname'), css_class='col-sm-6'),
+                Div(CustomTextField('email'), css_class='col-sm-6'),
+                Div(CustomTextField('phone'), css_class='col-sm-6'),
+                Div(CustomTextField('password1'), css_class='col-12'),
+                Div(CustomTextField('password2'), css_class='col-12'),
+                StrictButton('Vrátiť domov', onclick=f'location.href=\"{reverse("home:home")}\"', 
+                    css_class='secondary-button col-sm-6'),
+                Submit('submit', 'Vytvoriť účet', css_class='primary-button col-sm-6'),
+                css_class='row g-2'
+            )
+            
+        )
+        
+ 
+# class SignupForm(UserCreationForm):
+
+#         # Osobné veci
+#     firstname = forms.CharField(
+#         label="Meno", 
+#         widget=forms.TextInput(charfield_widget),
+#     )
+#     lastname = forms.CharField(
+#         label="Priezvisko",
+#         widget=forms.TextInput(charfield_widget),
+#     )
+#     email = forms.EmailField(
+#         label="Email", 
+#         max_length=254, 
+#         widget=forms.EmailInput(charfield_widget),
+#     )
+#     phone = forms.CharField(
+#         label="Telefónne číslo",
+#         help_text='Môže byť použité počas doručovania', 
+#         required=True, 
+#         min_length=5, 
+#         widget=forms.TextInput(merge(charfield_widget,{'value':'+421'})),
+#     )
+
+#         # Newsletter a obchodné podmienky
+
+#     newsletter = forms.BooleanField(
+#         label="Súhlasíte so zasielaním propagačných emailov?", 
+#         required=False,
+#         widget=forms.CheckboxInput(checkbox_widget), 
+#         )
+#     terms_conditions = forms.BooleanField(
+#         label="Súhlasíte so obchodnými podmienkami?",
+#         required=True,
+#         widget=forms.CheckboxInput(checkbox_widget),
+#         )
+    
+#         # Preferencie 
+
+#     num_portions = forms.ChoiceField(
+#         label="Portions", 
+#         help_text="Koľko porcí z každého jedla chcete dostávať?",
+#         choices=UserProfile.portions_options,
+#         initial=2,
+#         widget=forms.RadioSelect(radioselect_widget), 
+#     )
+#     food_attributes = forms.ModelMultipleChoiceField(
+#         label="Attributes", 
+#         help_text="Zvolte obľúbené atribúty", 
+#         queryset=FoodAttribute.objects.all(), 
+#         required=False,
+#         widget=forms.CheckboxSelectMultiple(radioselect_widget), 
+#     )
+#     alergies = forms.ModelMultipleChoiceField(
+#         label="Alergens", 
+#         help_text="Zvolte vaše alergie", 
+#         queryset=Alergen.objects.all(), 
+#         required=False,
+#         widget=forms.CheckboxSelectMultiple(radioselect_widget), 
+#     )
+#     food_attributes.label_classes = radioselect_label_class
+#     alergies.label_classes = radioselect_label_class
+
+#         # Adresa
+
+#     address = forms.CharField(
+#         label="Ulica a číslo domu",
+#         required=False,
+#         widget=forms.TextInput(charfield_widget)
+#     )
+
+#     address_note = forms.CharField(
+#         label="Poznámka pre kuriéra",
+#         required=False,
+#         widget=forms.TextInput(charfield_widget)
+#     )
+    
+#     district = forms.CharField(
+#         label="Mestská časť/Okres", 
+#         required=False,
+#         widget=forms.TextInput(charfield_widget)
+#     )
+
+#     city = forms.CharField(
+#         label="Mesto", 
+#         required=False, 
+#         widget=forms.TextInput(charfield_widget)
+#         )
+#     postal = forms.CharField(
+#         label="PSČ", 
+#         required=False, 
+#         widget=forms.TextInput(charfield_widget)
+#     )
+
+#     country = forms.CharField(
+#         label="Krajina", 
+#         required=False, 
+#         widget=forms.TextInput(charfield_widget)
+#     )
+
+#     coordinates = forms.CharField(required=False, widget=forms.TextInput(attrs={'hidden':''}))
+
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.fields['password1'].label = "Heslo"
+#         self.fields['password1'].widget = forms.PasswordInput(attrs=charfield_widget)
+#         self.fields['password2'].label = "Heslo znova"
+#         self.fields['password2'].widget = forms.PasswordInput(attrs=charfield_widget)
+#         self.fields['password2'].help_text = None
+
+
+#     class Meta:
+#         model = User
+#         fields = ["firstname",
+#                 "lastname", 
+#                 "email",
+#                 "phone",
+#                 "newsletter",
+#                 "terms_conditions",
+#                 "num_portions",
+#                 "food_attributes",
+#                 "alergies",
+#                 "address",
+#                 "address_note",
+#                 "city",
+#                 "district",
+#                 "postal",
+#                 "country",
+#                 "password1",
+#                 "password2",
+#                 "coordinates",
+#                 ]
 
     # def clean_phone(self):
     #     data = self.cleaned_data['phone']
@@ -380,16 +454,16 @@ class SignupForm(UserCreationForm):
     #                 there are only following postal codes provided: <strong><ul><li>{'</li><li>'.join(expected_postal)}</li></ul></strong>""")
     #             )
 
-class EditProfile(SignupForm):
+# class EditProfile(SignupForm):
 
-    def __init__(self,*args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper(self)
-        self.helper.form_action = reverse('home:my_account')
-        self.helper.form_id = 'LoginForm'
-        self.helper.form_class = 'needs-validation'
-        self.helper.attrs = {'novalidate':''}
-        self.fields.pop('password1')
-        self.fields.pop('password2')
+#     def __init__(self,*args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.helper = FormHelper(self)
+#         self.helper.form_action = reverse('home:my_account')
+#         self.helper.form_id = 'LoginForm'
+#         self.helper.form_class = 'needs-validation'
+#         self.helper.attrs = {'novalidate':''}
+#         self.fields.pop('password1')
+#         self.fields.pop('password2')
 
 

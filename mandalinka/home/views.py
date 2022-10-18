@@ -69,93 +69,99 @@ def logout_view(request):
 
 
 def new_user_view(request):
-
-    if request.method == 'POST':
-        form = SignupForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data.get('email')
-            user = form.save(commit=False)
-            user.is_active = False
-            user.first_name = form.cleaned_data.get('firstname')
-            user.last_name = form.cleaned_data.get('lastname')
-            user.email = email
-            user.username = user.first_name + \
-                user.last_name + user.email.split("@")[0]
-            user.save()
-            # username = form.cleaned_data.get('username')
-            # raw_password = form.cleaned_data.get('password1')
-            print(user.id)
-            userProf = UserProfile.objects.get(user_name_id=user.id)
-            userProf.phone = form.cleaned_data.get("phone")
-            userProf.address = form.cleaned_data.get("address")
-            userProf.city = form.cleaned_data.get("city")
-            userProf.district = form.cleaned_data.get("district")
-            userProf.postal = form.cleaned_data.get("postal")
-            userProf.country = form.cleaned_data.get("country")
-
-            userProf.newsletter = form.cleaned_data.get("newsletter")
-            userProf.terms_conditions = form.cleaned_data.get(
-                "terms_conditions")
-
-            if form.cleaned_data.get("food_attr"):
-                print("food_attr:",form.cleaned_data.get("food_attr"))
-                userProf.food_preferences.set(
-                    form.cleaned_data.get("food_attr"))
-            if form.cleaned_data.get("food_attr"):
-                userProf.alergies.set(form.cleaned_data.get("alergies"))
-            userProf.save()
-            username = form.cleaned_data.get("firstname")+" "+form.cleaned_data.get("lastname")
-            #send confirmation email
-            mail_subject = 'Activate your user account.'
-            message = render_to_string('home/template_activate_account.html', {
-                'user': username,
-                'domain': get_current_site(request).domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': account_activation_token.make_token(user),
-                'protocol': 'https' if request.is_secure() else 'http'
-            })
-            mail = EmailMessage(mail_subject, message, to=[email])
-            if mail.send():
-                mess = f'Dear <b>{username}</b>, please go to you email <b>{email}</b> inbox and click on \
-                    received activation link to confirm and complete the registration. <b>Note:</b> Check your spam folder.'
-            else:
-                mess = f'Problem sending confirmation email to {mail}, check if you typed it correctly.'
-
-            return render(request, "home/home.html", {
-                "message": mark_safe(mess),
-                "message_type": "success",
-            })
-
-        for obj in form.fields:
-            field_names = list(form.errors.as_data())
-            print(obj)
-            if obj == "password1" or obj == "password2":
-                continue
-            elif obj in field_names:
-                print(obj, form.errors[obj].as_data())
-                form.fields[obj].widget.attrs["class"] = form.fields[obj].widget.attrs.get(
-                    "class", "") + " is-invalid"
-            else:
-                form.fields[obj].widget.attrs["class"] = form.fields[obj].widget.attrs.get(
-                    "class", "") + " is-valid"
-
+    if request.method == "POST":
+        pass
     else:
-        form = SignupForm()
+        form = NewUserForm()
+    return render(request, "home/new_new_user.html", {'form': form})
+# def new_user_view(request):
 
-    # print(form.errors)
+#     if request.method == 'POST':
+#         form = SignupForm(request.POST)
+#         if form.is_valid():
+#             email = form.cleaned_data.get('email')
+#             user = form.save(commit=False)
+#             user.is_active = False
+#             user.first_name = form.cleaned_data.get('firstname')
+#             user.last_name = form.cleaned_data.get('lastname')
+#             user.email = email
+#             user.username = user.first_name + \
+#                 user.last_name + user.email.split("@")[0]
+#             user.save()
+#             # username = form.cleaned_data.get('username')
+#             # raw_password = form.cleaned_data.get('password1')
+#             print(user.id)
+#             userProf = UserProfile.objects.get(user_name_id=user.id)
+#             userProf.phone = form.cleaned_data.get("phone")
+#             userProf.address = form.cleaned_data.get("address")
+#             userProf.city = form.cleaned_data.get("city")
+#             userProf.district = form.cleaned_data.get("district")
+#             userProf.postal = form.cleaned_data.get("postal")
+#             userProf.country = form.cleaned_data.get("country")
+
+#             userProf.newsletter = form.cleaned_data.get("newsletter")
+#             userProf.terms_conditions = form.cleaned_data.get(
+#                 "terms_conditions")
+
+#             if form.cleaned_data.get("food_attr"):
+#                 print("food_attr:",form.cleaned_data.get("food_attr"))
+#                 userProf.food_preferences.set(
+#                     form.cleaned_data.get("food_attr"))
+#             if form.cleaned_data.get("food_attr"):
+#                 userProf.alergies.set(form.cleaned_data.get("alergies"))
+#             userProf.save()
+#             username = form.cleaned_data.get("firstname")+" "+form.cleaned_data.get("lastname")
+#             #send confirmation email
+#             mail_subject = 'Activate your user account.'
+#             message = render_to_string('home/template_activate_account.html', {
+#                 'user': username,
+#                 'domain': get_current_site(request).domain,
+#                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+#                 'token': account_activation_token.make_token(user),
+#                 'protocol': 'https' if request.is_secure() else 'http'
+#             })
+#             mail = EmailMessage(mail_subject, message, to=[email])
+#             if mail.send():
+#                 mess = f'Dear <b>{username}</b>, please go to you email <b>{email}</b> inbox and click on \
+#                     received activation link to confirm and complete the registration. <b>Note:</b> Check your spam folder.'
+#             else:
+#                 mess = f'Problem sending confirmation email to {mail}, check if you typed it correctly.'
+
+#             return render(request, "home/home.html", {
+#                 "message": mark_safe(mess),
+#                 "message_type": "success",
+#             })
+
+#         for obj in form.fields:
+#             field_names = list(form.errors.as_data())
+#             print(obj)
+#             if obj == "password1" or obj == "password2":
+#                 continue
+#             elif obj in field_names:
+#                 print(obj, form.errors[obj].as_data())
+#                 form.fields[obj].widget.attrs["class"] = form.fields[obj].widget.attrs.get(
+#                     "class", "") + " is-invalid"
+#             else:
+#                 form.fields[obj].widget.attrs["class"] = form.fields[obj].widget.attrs.get(
+#                     "class", "") + " is-valid"
+
+#     else:
+#         form = SignupForm()
+
+#     # print(form.errors)
     
-    districts = [x[0] for x in CityDistrictPostal.objects.values_list("district").distinct()]
-    cities = [x[0] for x in CityDistrictPostal.objects.values_list("city").distinct()]
-    postal_codes = [x[0] for x in CityDistrictPostal.objects.values_list("postal").distinct()]
-    print(postal_codes)
-    streets = Streets.objects.all()
-    return render(request, 'home/new_user.html',
-                    {'form': form,
-                     'districts': districts,
-                     'cities': cities,
-                     'postal_codes': postal_codes,
-                     'streets': streets
-    })
+#     districts = [x[0] for x in CityDistrictPostal.objects.values_list("district").distinct()]
+#     cities = [x[0] for x in CityDistrictPostal.objects.values_list("city").distinct()]
+#     postal_codes = [x[0] for x in CityDistrictPostal.objects.values_list("postal").distinct()]
+#     print(postal_codes)
+#     streets = Streets.objects.all()
+#     return render(request, 'home/new_user.html',
+#                     {'form': form,
+#                      'districts': districts,
+#                      'cities': cities,
+#                      'postal_codes': postal_codes,
+#                      'streets': streets
+#     })
 
 
 def activate(request, uidb64, token):

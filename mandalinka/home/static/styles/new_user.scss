@@ -1,13 +1,18 @@
-.new-user-body {
+body#background {
+    background-color: $primary-light;
+}
+.mid-screen-body {
+    background-color: $off-white;
     max-width: 35rem;
     width: 85%;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 15vw auto 10vw auto;
+    padding: 10px;
+    border-radius: 20px;
+
     > #title {
         font-weight: bold;
         text-align: center;
-        margin-top: 15vw;
-        margin-bottom: 30px;
+        margin: 10px 10px;
         color:$primary;
     }
 
