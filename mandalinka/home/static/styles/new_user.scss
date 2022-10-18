@@ -10,4 +10,41 @@
         margin-bottom: 30px;
         color:$primary;
     }
+
+    .move-arrows {
+        color: $primary;
+        a.arrow {
+            margin: 0 10px;
+            transition: 0.5s;
+            font-variation-settings: 'wght' 400;
+            cursor: pointer;
+            span {
+                font-size: 200%;
+            }
+            &:hover span {
+                font-variation-settings: 'wght' 600;
+            }
+            &[disabled] {
+                cursor: default;
+                pointer-events:none;
+                span {
+                    color: grey;
+                }
+            }
+        }
+    }
+
+    #back-button {
+        color:$primary;
+        text-align: center;
+        transition: 0.5s;
+        box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2) inset;
+      
+      &:hover {
+        background-color: $primary;
+        color: black;
+        border: 1px solid $primary;
+        box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
+      }
+    }
 }

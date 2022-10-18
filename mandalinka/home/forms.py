@@ -184,12 +184,14 @@ class SignupForm(UserCreationForm):
         widget=forms.TextInput(charfield_widget)
     )
 
-    country = forms.ChoiceField(
+    country = forms.CharField(
         label="Krajina", 
         required=False, 
         widget=forms.TextInput(charfield_widget)
     )
-    
+
+    coordinates = forms.CharField(required=False, widget=forms.TextInput(attrs={'hidden':''}))
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['password1'].label = "Heslo"
@@ -217,50 +219,50 @@ class SignupForm(UserCreationForm):
                 "postal",
                 "country",
                 "password1",
-                "password2"
+                "password2",
+                "coordinates",
                 ]
 
-    def clean_phone(self):
-        data = self.cleaned_data['phone']
-        if data[:4] not in ["+421", "+420"]:
-            raise ValidationError("Unknown or missing dialing code")
-        #if len(data) < 5:
-         #   raise ValidationError("Phone number too short (must contain at least 5 numbers)")
-
-        return data
+    # def clean_phone(self):
+    #     data = self.cleaned_data['phone']
+    #     if data[:4] not in ["+421", "+420"]:
+    #         raise ValidationError("Unknown or missing dialing code")
+    #     #if len(data) < 5:
+    #      #   raise ValidationError("Phone number too short (must contain at least 5 numbers)")
+    #     return data
     
-    def clean_house_no(self):
-        data = self.cleaned_data['house_no']
-        for i in data:
-            if i not in '0123456789/-:':
-                raise ValidationError("House number can only contain numbers or /-: characters")
+    # def clean_house_no(self):
+    #     data = self.cleaned_data['house_no']
+    #     for i in data:
+    #         if i not in '0123456789/-:':
+    #             raise ValidationError("House number can only contain numbers or /-: characters")
 
-        return data
+    #     return data
 
-    def clean_district(self):
-        data = self.cleaned_data['district']
-        if not CityDistrictPostal.objects.filter(district=data).exists():
-            raise ValidationError(f"Unknown district name {data}- make sure you choose from given list and use special characters")
-        return data
+    # def clean_district(self):
+    #     data = self.cleaned_data['district']
+    #     if not CityDistrictPostal.objects.filter(district=data).exists():
+    #         raise ValidationError(f"Unknown district name {data}- make sure you choose from given list and use special characters")
+    #     return data
 
-    def clean_city(self):
-        data = self.cleaned_data['city']
-        if not CityDistrictPostal.objects.filter(city=data).exists():
-            raise ValidationError(f"Unknown city {data}- make sure you choose from given list and use special characters")
-        return data
+    # def clean_city(self):
+    #     data = self.cleaned_data['city']
+    #     if not CityDistrictPostal.objects.filter(city=data).exists():
+    #         raise ValidationError(f"Unknown city {data}- make sure you choose from given list and use special characters")
+    #     return data
 
-    def clean_postal(self):
-        data = self.cleaned_data['postal']
-        #some streets have no postal codes in Bratislava (Adlerova, Alexyho...) - user should leave '-'
-        if not CityDistrictPostal.objects.filter(postal=data).exists() and data != '-':
-            raise ValidationError(f"Unknown postal code {data}- make sure you choose from given list and use special characters")
-        return data
+    # def clean_postal(self):
+    #     data = self.cleaned_data['postal']
+    #     #some streets have no postal codes in Bratislava (Adlerova, Alexyho...) - user should leave '-'
+    #     if not CityDistrictPostal.objects.filter(postal=data).exists() and data != '-':
+    #         raise ValidationError(f"Unknown postal code {data}- make sure you choose from given list and use special characters")
+    #     return data
 
-    def clean_country(self):
-        data = self.cleaned_data['country']
-        if data not in ["SK", "CZ"]:
-            raise ValidationError(f"Unknown country {data} - make sure you choose from given list and use special characters")
-        return data
+    # def clean_country(self):
+    #     data = self.cleaned_data['country']
+    #     if data not in ["SK", "CZ"]:
+    #         raise ValidationError(f"Unknown country {data} - make sure you choose from given list and use special characters")
+    #     return data
 
     # def clean(self):
     #     cleaned_data = super().clean()

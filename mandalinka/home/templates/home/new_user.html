@@ -361,129 +361,17 @@
                   <label for="{{ form.country.id_for_label }}">
                     {{ form.country.label }}
                   </label>
-                </div>                
+                </div>         
+                
+                {{ form.coordinates }}
 
               </div>
               <div class="map col-sm-6 col-12" id="gmp-map"></div>
             </div>
             <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEZTFyo0Kf5YL5SWe6vmmfEMmF5QxSTbU&libraries=places&callback=initMap&solution_channel=GMP_QB_addressselection_v1_cABC" async defer></script>
         
-            {{ form.street }}
 
-            
-            <!-- <h3>Zadajte adresu doručenia</h3>
-            <div class="row g-3 my-2">
-
-
-              <div class="col-sm-8 form-floating">
-
-                {{ form.street }}
-
-                <label for="{{ form.street.id_for_label }}">
-                  {{ form.street.label }}
-                </label>
-                <p class="my-0">{{ form.street.help_text }}</p>
-
-                <datalist id="streets">
-                  {% for street in streets %}
-                  <option value="{{ street.street }}"></option>
-                  {% endfor %}
-                </datalist>
-
-                <div class="invalid-feedback ps-2">
-                  {{ form.street.errors }}
-                </div>
-
-              </div>
-
-
-              <div class="col-sm-4 form-floating">
-
-                {{ form.house_no }}
-
-                <label for="{{ form.house_no.id_for_label }}">
-                  {{ form.house_no.label }}
-                </label>
-                <p class="my-0">{{ form.house_no.help_text }}</p>
-                <div class="invalid-feedback ps-2">
-                  {{ form.house_no.errors }}
-                </div>
-              </div>
-
-
-              <div class="col-sm-6 form-floating">
-
-                {{ form.district }}
-
-                <label for="{{ form.district.id_for_label }}">
-                  {{ form.district.label }}
-                </label>
-                <p class="my-0">{{ form.district.help_text }}</p>
-
-                <datalist id="districts">
-                  {% for district in districts %}
-                  <option value="{{ district }}"></option>
-                  {% endfor %}
-                </datalist>
-                <div class="invalid-feedback ps-2">
-                  {{ form.district.errors }}
-                </div>
-              </div>
-
-
-              <div class="col-sm-6 form-floating">
-
-                {{ form.postal }}
-
-                <label for="{{ form.postal.id_for_label }}">
-                  {{ form.postal.label }}
-                </label>
-
-                <datalist id="postal_codes">
-                  {% for postal in postal_codes %}
-                  <option value="{{ postal }}"></option>
-                  {% endfor %}
-                </datalist>
-                <div class="invalid-feedback ps-2">
-                  {{ form.postal.errors }}
-                </div>
-                <p class="my-0">
-                  <svg class="bi bi-info-circle pb-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                    fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                    <path
-                      d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-                  </svg>
-                  {{ form.postal.help_text }}
-                </p> 
-              </div>
-
-              <div class="col-sm-8 form-floating">
-
-                {{ form.city }}
-
-                <label for="{{ form.city.id_for_label }}">
-                  {{ form.city.label }}
-                </label>
-                <p class="my-0">{{ form.city.help_text }}</p>
-
-                <datalist id="cities">
-                  {% for city in cities %}
-                  <option value="{{ city }}"></option>
-                  {% endfor %}
-                </datalist>
-                <div class="invalid-feedback ps-2">
-                  {{ form.city.errors }}
-                </div>
-              </div>
-              <div class="col-sm-4 form-floating">
-                {{ form.country }}
-              </div>
-              <div class="invalid-feedback ps-2">
-                {{ form.country.errors }}
-              </div>
-
-            </div> -->
+      
           </div>
 
           <!-- Čas doručenia -->
@@ -497,29 +385,25 @@
           </div>
 
           <!-- Buttons -->
-          <div class="d-flex justify-content-between mt-3">
-            <div class="btn-group shadow" role="group">
-              <button type="button" class="btn btn-outline-secondary" id="btn-prev" disabled>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                  class="bi bi-arrow-left" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd"
-                    d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
-                </svg>
-              </button>
+          <div class="d-flex align-items-center mt-3">
+            <a id="back-button" class="btn mx-2 me-auto" role="button" href="{% url 'home:login' %}">
+              Domov
+            </a>
+            <div class="move-arrows">
+              <a class="arrow" id="btn-prev" type="button" disabled>
+                <span class="material-symbols-rounded">
+                  arrow_back
+                </span>
+              </a>
 
-              <button type="button" class="btn btn-primary" id="btn-next">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                  class="bi bi-arrow-right" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd"
-                    d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
-                </svg>
-              </button>
+              <a class="arrow" id="btn-next">
+                <span class="material-symbols-rounded">
+                  arrow_forward
+                </span>
+              </a>
             </div>
             <div>
-              <a class="btn btn-outline-primary mx-2" role="button" href="{% url 'home:login' %}">
-                Prihlásiť sa
-              </a>
-              <button type="submit" class="btn btn-fancy" id="submit" disabled>
+              <button type="submit" class="btn btn-fancy ms-3" id="submit" hidden>
                 Zaregistrovať sa
               </button>
             </div>

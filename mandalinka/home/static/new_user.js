@@ -21,21 +21,21 @@ document.addEventListener("DOMContentLoaded", function () {
       button.onclick = function () {
         btnPrev.setAttribute('disabled', '');
         btnNext.removeAttribute('disabled');
-        btnSubm.setAttribute('disabled', '');
+        btnSubm.setAttribute('hidden', '');
         scroll(top);
       }
     } else if (tab === tabs[tabs.length - 1]) {
       button.onclick = function () {
         btnNext.setAttribute('disabled', '');
         btnPrev.removeAttribute('disabled');
-        btnSubm.removeAttribute('disabled');
+        btnSubm.removeAttribute('hidden');
         scroll(top);
       }
     } else {
       button.onclick = function () {
         btnNext.removeAttribute('disabled');
         btnPrev.removeAttribute('disabled');
-        btnSubm.setAttribute('disabled', '');
+        btnSubm.setAttribute('hidden', '');
         scroll(top);
       }
     }
@@ -115,6 +115,7 @@ function initMap() {
       'country': 'long_name',
       'postal_code': 'short_name',
     };
+
     const getAddressComp = function (type) {
       for (const component of place.address_components) {
         if (component.types[0] === type) {
@@ -124,25 +125,21 @@ function initMap() {
       return '';
     };
 
-    for (const component of componentForm) {
-      if (component === 'address') {
-        getFormInputElement(component).value =
-          getAddressComp('route') + ' ' + getAddressComp('street_number');
-      } else if (component === 'district') {
-        getFormInputElement('district').value = getAddressComp('sublocality_level_1');
-      } else if (component === 'city'){
-        getFormInputElement('city').value = getAddressComp('locality');
-      } else if (component === 'postal'){
-        getFormInputElement('postal').value = getAddressComp('postal_code');
-      } else if (component === 'country'){
-        getFormInputElement('country').value = getAddressComp('country');
-      }
-    }
+    getFormInputElement('address').value =
+      getAddressComp('route') + ' ' + getAddressComp('street_number');
+    getFormInputElement('district').value = getAddressComp('sublocality_level_1');
+    getFormInputElement('city').value = getAddressComp('locality');
+    getFormInputElement('postal').value = getAddressComp('postal_code');
+    getFormInputElement('country').value = getAddressComp('country');
+    getFormInputElement('coordinates').value = 
+      place.geometry.location.toJSON().lat.toString() + ',' + 
+      place.geometry.location.toJSON().lng.toString();
   }
 
   // Render selected location on map
   function renderAddress(place) {
     map.setCenter(place.geometry.location);
+    map.setZoom(16);
     marker.setPosition(place.geometry.location);
     marker.setVisible(true);
   }

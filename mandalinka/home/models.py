@@ -34,7 +34,7 @@ class EmailBackend(ModelBackend):
 
 class UserProfile(models.Model):
 
-    user_name = models.OneToOneField(User, related_name='profile', on_delete=models.DO_NOTHING)
+    user_name = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
     email = models.EmailField(max_length=254,blank=False)
     phone = models.CharField(max_length=20,blank=False)
 
@@ -57,6 +57,7 @@ class UserProfile(models.Model):
     district = models.CharField(max_length=50,blank=True, verbose_name="Okres")
     postal = models.CharField(max_length=6,blank=True, verbose_name="PSČ")
     country = models.CharField(max_length=32, blank=True, verbose_name="Krajina")
+    coordinates = models.JSONField(blank=True, null=True)
 
     newsletter = models.BooleanField(default=False)
     terms_conditions = models.BooleanField(default=False)

@@ -2,21 +2,14 @@
 
 
 .btn-fancy {
-    background-image: linear-gradient(to right, #1A2980 0%, #26D0CE 51%, #1A2980 100%);
+    color:$primary;
     text-align: center;
     transition: 0.5s;
-    background-size: 200% auto;
-    color: white;
-    border: none;
+    box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2) inset;
   
   &:hover {
-    background-position: right center;
-    /* change the direction of the change here */
-    color: #fff;
-    text-decoration: none;
-  }
-  
-  &:enabled {
-    box-shadow: 0 0 20px $primary;
+    background-color: $primary;
+    border: 1px solid $primary;
+    box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
   }
 }

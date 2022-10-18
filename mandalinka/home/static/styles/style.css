@@ -11287,16 +11287,43 @@ div.cart > a.cart:hover {
   margin-bottom: 30px;
   color: #F28500;
 }
+.new-user-body .move-arrows {
+  color: #F28500;
+}
+.new-user-body .move-arrows a.arrow {
+  margin: 0 10px;
+  transition: 0.5s;
+  font-variation-settings: "wght" 400;
+  cursor: pointer;
+}
+.new-user-body .move-arrows a.arrow span {
+  font-size: 200%;
+}
+.new-user-body .move-arrows a.arrow:hover span {
+  font-variation-settings: "wght" 600;
+}
+.new-user-body .move-arrows a.arrow[disabled] {
+  cursor: default;
+  pointer-events: none;
+}
+.new-user-body .move-arrows a.arrow[disabled] span {
+  color: grey;
+}
+.new-user-body #back-button {
+  color: #F28500;
+  text-align: center;
+  transition: 0.5s;
+  box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2) inset;
+}
+.new-user-body #back-button:hover {
+  background-color: #F28500;
+  color: black;
+  border: 1px solid #F28500;
+  box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
+}
 
 .material-symbols-rounded {
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 40;
-}
-
-div.login-window {
-  max-width: 35rem;
-  width: 85%;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .alert:empty {
@@ -11314,21 +11341,15 @@ div.scrollmenu div {
 }
 
 .btn-fancy {
-  background-image: linear-gradient(to right, #1A2980 0%, #26D0CE 51%, #1A2980 100%);
+  color: #F28500;
   text-align: center;
   transition: 0.5s;
-  background-size: 200% auto;
-  color: white;
-  border: none;
+  box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2) inset;
 }
 .btn-fancy:hover {
-  background-position: right center;
-  /* change the direction of the change here */
-  color: #fff;
-  text-decoration: none;
-}
-.btn-fancy:enabled {
-  box-shadow: 0 0 20px #F28500;
+  background-color: #F28500;
+  border: 1px solid #F28500;
+  box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
 }
 
 .address-selection {
