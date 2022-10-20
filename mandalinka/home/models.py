@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.exceptions import MultipleObjectsReturned
@@ -32,20 +32,12 @@ class EmailBackend(ModelBackend):
 
 # Create your models here.
 
-class User(AbstractUser):
+class UserProfile(models.Model):
 
-    # Basics
+    user_name = models.OneToOneField(User, related_name='profile', on_delete=models.DO_NOTHING)
+    email = models.EmailField(max_length=254,blank=False)
     phone = models.CharField(max_length=20,blank=False)
-    newsletter = models.BooleanField(default=False)
-    terms_conditions = models.BooleanField(default=False)
 
-    # Validations
-    is_email_valid = models.BooleanField(default=False)
-    is_address_valid = models.BooleanField(default=False)
-    is_payment_valid = models.BooleanField(default=False)
-    is_subscribed = models.BooleanField(default=False)
-
-    # Preferences 
     food_preferences = models.ManyToManyField(
         'recepty.FoodAttribute', 
         related_name="users",
@@ -56,22 +48,24 @@ class User(AbstractUser):
         related_name="users", 
         blank=True
     )
-    default_num_portions = models.IntegerField(default=2, blank=False)
-    pescetarian = models.BooleanField(verbose_name="Pescetarian",default=False)
-    vegetarian = models.BooleanField(verbose_name="Vegetarian",default=False)
-    vegan = models.BooleanField(verbose_name="Vegan",default=False)
-    gluten_free = models.BooleanField(verbose_name="Gluten Free",default=False)
+    portions_options = [(2, "2"), (4, "4"), (6, "6")]
+    num_portions = models.IntegerField(default=2, choices=portions_options, blank=False)
 
-    # Address
     address = models.CharField(max_length=150,blank=True, verbose_name="Adresa a číslo domu")
     address_note = models.TextField(max_length=256, blank=True, verbose_name="Poznámka pre kuriéra", help_text="(zvonček, poschodie, ...)")
     city = models.CharField(max_length=100,blank=True, verbose_name="Mesto")
     district = models.CharField(max_length=50,blank=True, verbose_name="Okres")
     postal = models.CharField(max_length=6,blank=True, verbose_name="PSČ")
     country = models.CharField(max_length=32, blank=True, verbose_name="Krajina")
-    coordinates = models.JSONField(blank=True, null=True)
 
+    newsletter = models.BooleanField(default=False)
+    terms_conditions = models.BooleanField(default=False)
 
+    pescetarian = models.BooleanField(verbose_name="Pescetarian",default=False)
+    vegetarian = models.BooleanField(verbose_name="Vegetarian",default=False)
+    vegan = models.BooleanField(verbose_name="Vegan",default=False)
+    gluten_free = models.BooleanField(verbose_name="Gluten Free",default=False)
+    
     def get_alergens(self):
         alergens = set()
         for alergen in self.alergies.all():
@@ -84,8 +78,8 @@ class User(AbstractUser):
 
         # for 
 
-    def save(self, *args, **kwargs):
-        return super().save(*args, **kwargs)
+    # def __unicode__(self):  # __str__
+    #     return unicode(self.user_name)
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
