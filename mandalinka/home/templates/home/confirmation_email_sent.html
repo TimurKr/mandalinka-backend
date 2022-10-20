@@ -1,0 +1,29 @@
+{% extends "home/mid_page_body_layout.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block page_name %}
+  Potvrďte email
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
+
+{% block title %}
+  Potvrďte zadanú emailovú adresu
+{% endblock %}
+
+{% block body %}
+  {% if success %}
+    <h6>
+      Na zadanú adresu sme odoslali potvrdzovací email. 
+      Prosím kliknite na link uvedený v spomínanpm emaili 
+      a pokračujte podľa inštrukcií
+    </h6>
+  {% endif %}
+  {% if not success %}
+    <h6>
+      Na zadanú emailovú adresu sa nám nepdarilo odoslať 
+      mail. Na probléme pracujeme.
+    </h6>
+{% endblock %}

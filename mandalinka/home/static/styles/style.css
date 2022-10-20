@@ -11292,6 +11292,13 @@ body#background {
   margin: 10px 10px;
   color: #F28500;
 }
+.mid-screen-body > form {
+  margin: 10px;
+  padding-top: 10px;
+}
+.mid-screen-body > form .mb-3 {
+  margin-bottom: inherit !important;
+}
 .mid-screen-body .move-arrows {
   color: #F28500;
 }

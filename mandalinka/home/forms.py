@@ -11,7 +11,7 @@ from home.models import CityDistrictPostal, UserProfile
 from recepty.models import Alergen, FoodAttribute
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, HTML, Div, BaseInput, Submit
+from crispy_forms.layout import Layout, HTML, Div, BaseInput, Submit, Field
 from crispy_forms.bootstrap import StrictButton
 from crispy_bootstrap5.bootstrap5 import FloatingField
 
@@ -19,7 +19,6 @@ from crispy_bootstrap5.bootstrap5 import FloatingField
 
 charfield_widget = {'class': 'form-control opacity-75',
                     'placeholder': 'Problem here'}
-checkbox_widget = {'class':'form-check-input'}
 select_widget = {'class':'form-select opacity-75 rounded-2 shadow border-dark'}
 radioselect_widget = {'class':'btn-check'}
 radioselect_label_class = 'btn btn-outline-primary m-1 px-3 py-1 rounded-2'
@@ -31,12 +30,15 @@ class CustomSubmitButton(BaseInput):
     input_type = 'submit'
     field_classes = 'btn btn-primary bg-gradient w-100 rounded-2 shadow'
 
+# class CustomSwitch(BaseInput):
+#     input_type = 'checkbox'
+#     def __init__(self, name, value, **kwargs):
+#         super().__init__(name, value, **kwargs)
+#         self.att
+
+
 class CustomSecondaryButton(StrictButton):
     field_classes = 'btn btn-outline-dark w-100 rounded-2 shadow'
-
-class CustomTextField(FloatingField):
-    attrs = {'class': 'form-control col-12 opacity-75 rounded-2 shadow',
-                    'placeholder': 'Missing label'}
 
 
 default_errors = {
@@ -66,7 +68,7 @@ class LoginForm(forms.Form):
         self.helper.form_class = 'needs-validation'
         self.helper.attrs = {'novalidate':''}
         self.helper.layout = Layout(
-                CustomTextField('username', 'password'),
+                FloatingField('username', 'password'),
                 HTML("<p> \
                     Zabudli ste heslo? Kliknite \
                     <a class='link-primary' href='{% url 'home:password_reset' %}'> \
@@ -93,34 +95,34 @@ class NewUserForm(UserCreationForm):
 
     firstname = forms.CharField(
         label="Meno", 
-        widget=forms.TextInput(charfield_widget),
+        required=True,
+        max_length=255,
     )
     lastname = forms.CharField(
         label="Priezvisko",
-        widget=forms.TextInput(charfield_widget),
+        required=True,
+        max_length=255,
     )
     email = forms.EmailField(
         label="Email", 
-        max_length=254, 
-        widget=forms.EmailInput(charfield_widget),
+        required=True, 
+        max_length=255,
     )
     phone = forms.CharField(
         label="Telefónne číslo",
         help_text='Môže byť použité počas doručovania', 
         required=True, 
         min_length=5, 
-        widget=forms.TextInput(merge(charfield_widget,{'value':'+421'})),
+        widget=forms.TextInput({'value':'+421'}),
     )
 
     newsletter = forms.BooleanField(
         label="Súhlasíte so zasielaním propagačných emailov?", 
         required=False,
-        widget=forms.CheckboxInput(checkbox_widget), 
         )
     terms_conditions = forms.BooleanField(
         label="Súhlasíte so obchodnými podmienkami?",
         required=True,
-        widget=forms.CheckboxInput(checkbox_widget),
         )
 
     class Meta:
@@ -134,6 +136,7 @@ class NewUserForm(UserCreationForm):
                 "password1",
                 "password2",
                 ]
+                
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -149,15 +152,18 @@ class NewUserForm(UserCreationForm):
         self.helper.attrs = {'novalidate': ''}
         self.helper.layout = Layout(
             Div(
-                Div(CustomTextField('firstname'), css_class='col-sm-6'),
-                Div(CustomTextField('lastname'), css_class='col-sm-6'),
-                Div(CustomTextField('email'), css_class='col-sm-6'),
-                Div(CustomTextField('phone'), css_class='col-sm-6'),
-                Div(CustomTextField('password1'), css_class='col-12'),
-                Div(CustomTextField('password2'), css_class='col-12'),
+                Div(FloatingField('firstname'), css_class='col-sm-6'),
+                Div(FloatingField('lastname'), css_class='col-sm-6'),
+                Div(FloatingField('email'), css_class='col-sm-6'),
+                Div(FloatingField('phone'), css_class='col-sm-6'),
+                Div(FloatingField('password1'), css_class='col-12'),
+                Div(FloatingField('password2'), css_class='col-12'),
+                Div(Field('newsletter'), css_class='col-12 form-check form-switch ms-2 pe-2'),
+                Div(Field('terms_conditions'), css_class='col-12 form-check form-switch ms-2 pe-2'),
                 StrictButton('Vrátiť domov', onclick=f'location.href=\"{reverse("home:home")}\"', 
                     css_class='secondary-button col-sm-6'),
-                Submit('submit', 'Vytvoriť účet', css_class='primary-button col-sm-6'),
+                Submit('submit', 'Vytvoriť účet', 
+                    css_class='primary-button col-sm-6'),
                 css_class='row g-2'
             )
             

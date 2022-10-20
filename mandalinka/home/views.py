@@ -30,7 +30,6 @@ from .tokens import account_activation_token
 def index(request):
     context = {
         "loginform": LoginForm(),
-        "signupform": SignupForm(),
     }
     return render(request, "home/home.html", context)
 
@@ -55,7 +54,6 @@ def login_view(request):
             form.add_error(None, "Email alebo heslo nesprávne")
             context = {
                 "loginform": form,
-                "signupform": SignupForm(),
                 "focus": "LoginModal",
             }
             return render(request, "home/home.html", context)
@@ -70,10 +68,45 @@ def logout_view(request):
 
 def new_user_view(request):
     if request.method == "POST":
-        pass
+        form = NewUserForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.first_name = form.cleaned_data.get("firstname")
+            user.last_name = form.cleaned_data.get("lastname")
+            user.email = form.cleaned_data.get("email")
+            user.username = user.first_name + user.last_name + user.email.split('@')[0]
+            user.save()     
+            userProf = UserProfile.objects.get(user_name_id = user.id)     
+            userProf.phone = form.cleaned_data.get("phone")
+            userProf.newsletter = form.cleaned_data.get("newsletter")
+            userProf.terms_conditions = form.cleaned_data.get("terms_conditions")
+            userProf.save()
+
+
+            #send confirmation email
+            name = user.get_full_name()
+            mail_subject = 'Potvrdenie emailu pre MANDALINKU'
+            message = render_to_string('home/email_activation_mail.html', {
+                'user': name,
+                'domain': get_current_site(request).domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+                'protocol': 'https' if request.is_secure() else 'http'
+            })
+            mail = EmailMessage(mail_subject, message, to=[user.email])
+
+            if mail.send():
+                return render(request, "home/confirmation_email_sent.html", {'success': True})
+                # mess = f'Dear <b>{name}</b>, please go to you email <b>{email}</b> inbox and click on \
+                #     received activation link to confirm and complete the registration. <b>Note:</b> Check your spam folder.'
+            else:
+                return render(request, "home/confirmation_email_sent.html", {'success': False})
+                # mess = f'Problem sending confirmation email to {mail}, check if you typed it correctly.'
+
     else:
         form = NewUserForm()
-    return render(request, "home/new_new_user.html", {'form': form})
+    return render(request, "home/new_user.html", {'form': form})
+
 # def new_user_view(request):
 
 #     if request.method == 'POST':

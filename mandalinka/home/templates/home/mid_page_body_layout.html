@@ -1,11 +1,13 @@
 {% load static %}
-{% load crispy_forms_tags %}
 
 <!DOCTYPE html>
 <html lang="sk">
 
 <head>
-  <title>Nový užívatel</title>
+  <title>
+    {% block page_name %}
+    {% endblock %}
+  </title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Favicon -->
   <link href="{% static 'public/favicon.ico' %}" rel="shortcut icon" type="image/png">
@@ -20,8 +22,9 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
     crossorigin="anonymous"></script>
-  <!-- Javascriptavascript -->
-  <script src="{% static 'new_user.js' %}"></script>
+  <!-- Javascript -->
+  {% block javascript %}
+  {% endblock %}
 </head>
 
 <body id="background" class="min-vh-100">
@@ -33,12 +36,14 @@
 
 
     <div class="mid-screen-body container-fluid">
-        <h2 id="title">Vytvorte si účet</h2>
+      <h2 id="title">
+        {% block title %}
+        {% endblock %}
+      </h2>
 
-        {% crispy form %}
+      {% block body %}
+      {% endblock %}
     </div>
 </body>
-
-
 
 </html>
