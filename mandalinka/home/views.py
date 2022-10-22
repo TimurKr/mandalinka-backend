@@ -1,3 +1,4 @@
+from re import I
 from time import sleep
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
@@ -25,7 +26,8 @@ from .tokens import account_activation_token
 
 
 
-# Create your views here.
+# Basics ------------------------------------------------------------------------------------------------
+
 def home(request):
     if request.user.is_authenticated:
         context = {}
@@ -58,13 +60,13 @@ def login_view(request):
         }
     return render(request, "home/home.html", context)
 
-        
-
 
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("home:home"))
 
+
+# New user creation --------------------------------------------------------------------------------------
 
 def new_user_view(request):
     if request.method == "POST":
@@ -75,10 +77,9 @@ def new_user_view(request):
             user = form.save()
                 
             #send confirmation email
-            name = user.get_full_name()
             mail_subject = 'Potvrdenie emailu pre MANDALINKU'
             message = render_to_string('home/new_user/email_activation_mail.txt', {
-                'name': name,
+                'name': user.first_name,
                 'pronoun': user.pronoun,
                 'domain': get_current_site(request).domain,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
@@ -88,7 +89,10 @@ def new_user_view(request):
             mail = EmailMessage(mail_subject, message, to=[user.email])
 
             if mail.send():
-                return render(request, "home/new_user/email_activation_sent.html")
+                return render(request, "home/new_user/email_activation_sent.html", context={
+                    'name': user.first_name,
+                    'pronoun': user.pronoun,
+                })
             else:
                 logout()
                 user.delete()
@@ -124,6 +128,8 @@ def activate(request, uidb64, token):
                 "form": LoginForm(),
             })
 
+
+# Password reset --------------------------------------------------------------------------------------
 
 def password_reset_request(request):
     if request.method == "POST":
@@ -172,7 +178,7 @@ class PasswordResetCompleteView(auth_views.PasswordResetCompleteView):
     title = 'Heslo zmenené úspešne'
 
 
-
+# Account management ---------------------------------------------------------------------------------------
 
 @login_required
 def my_account_view(request):
@@ -217,6 +223,64 @@ def my_account_view(request):
 #     }
     
     return render(request,"home/my_account.html")#,context)
+
+@login_required
+def manage_addresses(request):
+    addresses = []
+    for address in request.user.addresses.all():
+        addresses.append({
+            'id': address.id, 
+            'name': address.name, 
+            'address': address.address
+        })
+        
+    return render(request,"home/manage/addresses.html", 
+        context={
+            'addresses': addresses,
+        })
+
+@login_required
+def add_address(request):
+    if request.method == 'POST':
+        form = AddAddressForm(request.POST)
+        try:
+            address = form.save()
+        except ValueError:
+            address = None
+        if address is not None:
+            request.user.addresses.add(address)
+            return HttpResponseRedirect(reverse('home:manage_addresses'))
+    else:
+        form = AddAddressForm()
+    return render(request,"home/manage/add_address.html", context={'form':form})
+
+@login_required
+def edit_address(request, address_id):
+    try:
+        address = Address.objects.get(id=address_id)
+    except:
+        return HttpResponseBadRequest()
+
+    if request.method == 'POST':
+        form = EditAddressForm(address_id,request.POST, instance=address)
+        try:
+            form.save()
+        except ValueError:
+            return render(request,"home/manage/edit_address.html", context={'form':form})
+        return HttpResponseRedirect(reverse('home:manage_addresses'))
+    else:
+        form = EditAddressForm(address_id, instance=address)
+        return render(request,"home/manage/edit_address.html", context={'form':form})
+
+@login_required
+def delete_address(request, address_id):
+    try:
+        address = Address.objects.get(id=address_id)
+    except:
+        return HttpResponseBadRequest()
+    address.delete()
+    return HttpResponseRedirect(reverse('home:manage_addresses'))
+    
 
 @login_required
 def edit_order_view(request):

@@ -1,0 +1,47 @@
+{% extends 'home/mid_page_body_layout.html' %}
+{% load static %}
+
+{% block page_name %}
+Vaše adresy
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
+
+{% block title %}
+Upravte si vaše adresy
+{% endblock %}
+
+{% block body %}
+<table class="table">
+  <tbody>
+    {% for address in addresses %}
+    <tr>
+      <td>{{ address.name }}</td>
+      <td>{{ address.address }}</td>
+      <td>
+        <a href="{% url 'home:edit_address' address_id=address.id %}" role="button">
+          <span class="material-symbols-rounded" style="color: black">
+            edit
+          </span>
+        </a>
+      </td>
+      <td>
+        <a href="{% url 'home:delete_address' address_id=address.id %}" role="button">
+          <span class="material-symbols-rounded" style="color: red">
+            delete
+          </span>
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<div class="row">
+  <div class="col-auto ms-auto">
+    <a href="{% url 'home:add_address' %}" class="btn btn-success" role="button">
+      Pridajte novú adresu
+    </a>
+  </div>
+</div>
+{% endblock %}

@@ -11,7 +11,21 @@ from mandalinka import constants
 
 
 
+
 # Create your models here.
+class Address(models.Model):
+    name = models.CharField(max_length=32, default="Domov", verbose_name="Názov adresy", help_text="Názov, pod ktorým uložíme túto adresu")
+    address = models.CharField(max_length=128, verbose_name="Adresa a číslo domu", help_text="Nezabudnite pridať číslo domu")
+    note = models.TextField(max_length=256, blank=True, verbose_name="Poznámka pre kuriéra", help_text="(zvonček, poschodie, ...)")
+    city = models.CharField(max_length=100, verbose_name="Mesto")
+    district = models.CharField(max_length=50,blank=True, verbose_name="Okres")
+    postal = models.CharField(max_length=6, verbose_name="PSČ")
+    country = models.CharField(max_length=32, blank=True, verbose_name="Krajina")
+    coordinates = models.CharField(max_length=64)
+
+    def __str__(self):
+        return '%s: %s' % (self.name, self.address)
+
 
 class User(AbstractUser):
 
@@ -32,9 +46,10 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ('first_name', 'last_name', 'phone', 'terms_conditions')
 
+    addresses = models.ManyToManyField(Address, related_name='users', blank=True)
+
     # Validations
     is_email_valid = models.BooleanField(default=False)
-    is_address_valid = models.BooleanField(default=False)
     is_payment_valid = models.BooleanField(default=False)
     is_subscribed = models.BooleanField(default=False)
 
@@ -54,15 +69,6 @@ class User(AbstractUser):
     vegetarian = models.BooleanField(verbose_name="Vegetarian",default=False)
     vegan = models.BooleanField(verbose_name="Vegan",default=False)
     gluten_free = models.BooleanField(verbose_name="Gluten Free",default=False)
-
-    # Address
-    address = models.CharField(max_length=150,blank=True, verbose_name="Adresa a číslo domu")
-    address_note = models.TextField(max_length=256, blank=True, verbose_name="Poznámka pre kuriéra", help_text="(zvonček, poschodie, ...)")
-    city = models.CharField(max_length=100,blank=True, verbose_name="Mesto")
-    district = models.CharField(max_length=50,blank=True, verbose_name="Okres")
-    postal = models.CharField(max_length=6,blank=True, verbose_name="PSČ")
-    country = models.CharField(max_length=32, blank=True, verbose_name="Krajina")
-    coordinates = models.JSONField(blank=True, null=True)
 
     class Meta(AbstractUser.Meta):
         abstract = False

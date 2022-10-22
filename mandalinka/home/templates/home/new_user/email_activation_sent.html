@@ -15,8 +15,31 @@
 
 {% block body %}
 <h6 class="p-3">
-  Na zadanú adresu sme odoslali potvrdzovací email. 
-  Nachádza sa v ňom link, ktorý vás presmeruje na dokončenie prihlásenia.
-  Skontrolujte si spam.
+  {% if pronoun == 'they' %}
+  Na zadanú emailovú adresu sme odoslali mail s linkom na dokončenie registrácie.
+  
+  {% else %}
+  Ahoj {{ name }},
+  na tvoju emailovú adresu sme odoslali mail s linkom na dokončenie registrácie.
+  
+  {% endif %}
+</h6>
+<h6 class="p-3 pt-0">
+  {% if pronoun == 'they' %}
+  Ak Vám mail nepríde do pár minút, skontrolujte spam 
+  a uistite sa, že ste zadali správnu adresu.
+  Ak vám aj napriek tomu neprišiel, kontaktujte nás.
+  
+  {% elif pronoun == 'male' %}
+  Ak ti mail nepríde do pár minút, skontroluj si spam 
+  a uisti sa, že si zadal správnu adresu.
+  Ak ti aj napriek tomu neprišiel, kontaktuj nás.
+  
+  {% elif pronoun == 'female' %}
+  Ak ti mail nepríde do pár minút, skontroluj si spam 
+  a uisti sa, že si zadala správnu adresu.
+  Ak ti aj napriek tomu neprišiel, kontaktuj nás.
+  
+  {% endif %}
 </h6>
 {% endblock %}

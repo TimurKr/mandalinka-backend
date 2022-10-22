@@ -11283,7 +11283,7 @@ body#background {
   max-width: 35rem;
   width: 85%;
   margin: 15vw auto 10vw auto;
-  padding: 10px;
+  padding: 25px;
   border-radius: 20px;
 }
 .mid-screen-body > #title {
@@ -11385,7 +11385,7 @@ div.scrollmenu div {
   box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
 }
 
-form .form-floating input, form .form-floating select {
+form .form-floating input, form .form-floating select, form .form-floating textarea {
   border-radius: 10px;
   box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
   color: black;

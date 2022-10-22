@@ -1,10 +1,11 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
 
 # Register your models here.
-from home.models import User, Order
+from home.models import User, Order, Address
 from recepty.models import RecipeOrderInstance
     
+class UserAdmin(admin.ModelAdmin):
+    filter_horizontal = ('addresses',)
 
 class RecipeOrderInstanceInline(admin.TabularInline):
     model = RecipeOrderInstance
@@ -15,5 +16,6 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = (RecipeOrderInstanceInline,)
 
 # Re-register UserAdmin
-admin.site.register(User)
+admin.site.register(User, UserAdmin)
+admin.site.register(Address)
 admin.site.register(Order, OrderAdmin)

@@ -5,18 +5,17 @@ from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import forms as auth_forms
-from django.contrib.auth.models import User
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
-from home.models import User
+from home.models import User, Address
 from recepty.models import Alergen, FoodAttribute
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, HTML, Div, BaseInput, Submit, Field
+from crispy_forms.layout import Layout, HTML, Div, BaseInput, Submit, Field, Hidden
 from crispy_forms.bootstrap import StrictButton
 from crispy_bootstrap5.bootstrap5 import FloatingField
-
+ 
 
 class CustomSubmitButton(BaseInput):
     input_type = 'submit'
@@ -24,6 +23,7 @@ class CustomSubmitButton(BaseInput):
 
 class CustomSecondaryButton(StrictButton):
     field_classes = 'btn btn-outline-dark w-100 rounded-2 shadow'
+
 
 # default_errors = {
 #     'required': 'Toto pole je povinné',
@@ -176,6 +176,89 @@ class SetPasswordForm(auth_forms.SetPasswordForm):
             )
         )
 
+class BaseAddressForm(forms.ModelForm):
+
+    class Meta:
+        model = Address
+        fields = (
+            'name',
+            'address',
+            'note',
+            'city',
+            'district',
+            'postal', 
+            'country', 
+            'coordinates',
+        )
+    def __init__(self,*args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['coordinates'].widget = forms.HiddenInput()
+
+        self.helper = FormHelper(self)
+
+        try:
+            self.helper.form_id = self.form_id
+        except:
+            self.helper.form_id = None
+        try:
+            self.helper.form_action = self.form_action 
+        except:
+            self.helper.form_action = None
+
+        self.helper.form_class = 'needs-validation'
+        self.helper.attrs = {'novalidate': ''}
+
+        if self.secondary_button_action and self.secondary_button_title:
+            secondary_button = Div(
+                StrictButton(self.secondary_button_title, onclick=f'location.href=\"{self.secondary_button_action}\"', css_class='secondary-button'), 
+                    css_class='col-sm-6'),
+        else: 
+            secondary_button = None
+
+        self.helper.layout = Layout(
+            Div(
+                Div(
+                    HTML(
+                        '<h5 class="title"> \
+                            <span class="material-symbols-rounded">home_pin</span> \
+                            Zadajte adresu doručenia \
+                        </h5>'),
+                    FloatingField('name'), 
+                    FloatingField('address'),
+                    FloatingField('note'),
+                    FloatingField('city'),
+                    FloatingField('district'),
+                    FloatingField('postal'),
+                    FloatingField('country'),
+                    'coordinates',
+                    css_class='map-panel col-sm-6 col-12'
+                ),
+                Div(css_class='map col-sm-6 col-12', css_id='gmp-map'),
+                secondary_button,
+                Div(Submit('submit', 'Uložiť', css_class="primary-button"), 
+                    css_class='col-sm-6 ms-auto'),
+                css_class='address-selection row g-3'
+            ),
+            HTML('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEZTFyo0Kf5YL5SWe6vmmfEMmF5QxSTbU&libraries=places&callback=initMap&solution_channel=GMP_QB_addressselection_v1_cABC" async defer></script>'),
+        )
+
+class AddFirstAddress(BaseAddressForm):
+    # form_action = reverse('home:home') ??????????????????????????
+    form_id = 'first-address'
+
+class AddAddressForm(BaseAddressForm):
+    form_action = reverse_lazy('home:add_address')
+    form_id = 'add-address'
+    secondary_button_action = reverse_lazy('home:manage_addresses')
+    secondary_button_title = 'Naspäť'
+
+class EditAddressForm(BaseAddressForm):
+    form_id = 'edit-address'
+    secondary_button_action = reverse_lazy('home:manage_addresses')
+    secondary_button_title = 'Naspäť'
+    def __init__(self, address_id, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper.form_action = reverse('home:edit_address', args=address_id)
 
 class FoodPreferencesForm(forms.ModelForm):
     pass
