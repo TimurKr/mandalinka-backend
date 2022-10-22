@@ -74,7 +74,6 @@ class LoginForm(auth_forms.AuthenticationForm):
             password=self.cleaned_data.get('password')
             )
 
-
 class NewUserForm(auth_forms.UserCreationForm):
 
     class Meta:
@@ -177,6 +176,8 @@ class SetPasswordForm(auth_forms.SetPasswordForm):
         )
 
 class BaseAddressForm(forms.ModelForm):
+    secondary_button_action = None
+    secondary_button_title = None
 
     class Meta:
         model = Address
@@ -242,8 +243,8 @@ class BaseAddressForm(forms.ModelForm):
             HTML('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEZTFyo0Kf5YL5SWe6vmmfEMmF5QxSTbU&libraries=places&callback=initMap&solution_channel=GMP_QB_addressselection_v1_cABC" async defer></script>'),
         )
 
-class AddFirstAddress(BaseAddressForm):
-    # form_action = reverse('home:home') ??????????????????????????
+class FirstAddressForm(BaseAddressForm):
+    form_action = reverse_lazy('home:add_first_address')
     form_id = 'first-address'
 
 class AddAddressForm(BaseAddressForm):
@@ -260,8 +261,30 @@ class EditAddressForm(BaseAddressForm):
         super().__init__(*args, **kwargs)
         self.helper.form_action = reverse('home:edit_address', args=address_id)
 
-class FoodPreferencesForm(forms.ModelForm):
-    pass
+class EditPreferencesForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = (
+            'food_preferences',
+            'alergies',
+            'default_num_portions',
+            'diets',
+        )
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        self.helper = FormHelper(self)
+        self.helper.form_action = reverse('home:edit_preferences')
+        self.helper.form_id = 'edit-preferences'
+        self.helper.form_class = 'needs-validation'
+        self.helper.attrs = {'novalidate': ''}
+        self.helper.layout = Layout(
+            'food_preferences',
+            'alergies',
+            'default_num_portions',
+            'diets',
+        )
+    
 
 # class SignupForm(UserCreationForm):
 

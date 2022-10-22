@@ -66,7 +66,7 @@ def logout_view(request):
     return HttpResponseRedirect(reverse("home:home"))
 
 
-# New user creation --------------------------------------------------------------------------------------
+# New user creation ----------------------------------------------------------------------------------------
 
 def new_user_view(request):
     if request.method == "POST":
@@ -106,7 +106,7 @@ def new_user_view(request):
     return render(request, "home/new_user/create_user.html", {'form': form})
 
 
-def activate(request, uidb64, token):
+def activate_email(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
@@ -116,20 +116,40 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_email_valid = True
         user.save()
-        return render(request, "home/login.html", {
-                "message": 'Thank you for your email confirmation. Now you can login your account.',
-                "message_type": "success",
-                "form": LoginForm(),
-            })
+        login(request, user)
+        return render(request, 'home/new_user/add_address.html', {'form': FirstAddressForm()})
     else:
-        return render(request, "home/login.html", {
-                "message": 'Activation link is invalid!',
-                "message_type": "danger",
-                "form": LoginForm(),
-            })
+        return HttpResponseRedirect(reverse('home:home'))
+
+def add_first_address(request):
+    if request.method == 'POST':
+        form = FirstAddressForm(request.POST)
+        try:
+            address = form.save()
+        except ValueError:
+            address = None
+        if address is not None:
+            request.user.addresses.add(address)
+            return HttpResponseRedirect(reverse('home:home')) # ??????
+    else:
+        form = FirstAddressForm()
+    return render(request,"home/new_user/add_address.html", context={'form':form})
+
+def edit_preferences(request):
+    if request.method == "POST":
+        form = EditPreferencesForm(request.POST, instance=request.user)
+    else:
+        form = EditPreferencesForm(instance=request.user)
+        try:
+            form.save()
+        except ValidationError:
+            return render(request,"home/edit_preference.html", {'form', form})
+        return HttpResponseRedirect(reverse('home:home'))
+    return render(request,"home/edit_preference.html", {'form', form})
 
 
-# Password reset --------------------------------------------------------------------------------------
+
+# Password reset --------------------------------------------------------------------------------------------
 
 def password_reset_request(request):
     if request.method == "POST":
@@ -164,7 +184,6 @@ def password_reset_request(request):
         form = PasswordResetForm()
     return render(request, "home/password_reset/start.html", 
         context={"form":form})
-
 
 class PasswordResetSetView(auth_views.PasswordResetConfirmView):
     template_name = 'home/password_reset/set.html'
@@ -231,7 +250,8 @@ def manage_addresses(request):
         addresses.append({
             'id': address.id, 
             'name': address.name, 
-            'address': address.address
+            'address': address.address,
+            'primary': address.primary,
         })
         
     return render(request,"home/manage/addresses.html", 
@@ -248,7 +268,7 @@ def add_address(request):
         except ValueError:
             address = None
         if address is not None:
-            request.user.addresses.add(address)
+            request.user.add_address(address)
             return HttpResponseRedirect(reverse('home:manage_addresses'))
     else:
         form = AddAddressForm()
@@ -281,7 +301,17 @@ def delete_address(request, address_id):
     address.delete()
     return HttpResponseRedirect(reverse('home:manage_addresses'))
     
+@login_required
+def set_primary_address(request, address_id):
+    try:
+        address = Address.objects.get(id=address_id)
+    except:
+        return HttpResponseBadRequest()
+    address.set_primary()
+    return HttpResponseRedirect(reverse('home:manage_addresses'))
+    
 
+# Order APIs -----------------------------------------------------------------------------------------------
 @login_required
 def edit_order_view(request):
     if request.method == 'PUT':

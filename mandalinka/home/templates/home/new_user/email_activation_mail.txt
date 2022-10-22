@@ -14,6 +14,6 @@ Prosím, dokonči registráciu kliknutím na nasledovný link:
 Prosím kliknite na link nižšie pre dokončenie registrácie:
 
 {% endif %}
-http://{{ domain }}{% url 'home:activate' uidb64=uid token=token %}
+http://{{ domain }}{% url 'home:activate_email' uidb64=uid token=token %}
 
 {% endautoescape %}

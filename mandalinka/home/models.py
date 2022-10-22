@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.db.models.signals import post_save
+from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.core.exceptions import MultipleObjectsReturned
 from django.db.models import Q
@@ -23,9 +23,25 @@ class Address(models.Model):
     country = models.CharField(max_length=32, blank=True, verbose_name="Krajina")
     coordinates = models.CharField(max_length=64)
 
+    primary = models.BooleanField(default=True)
+
+    user = models.ForeignKey('home.User', blank=True, null=True, related_name='addresses', on_delete=models.CASCADE)
+
     def __str__(self):
         return '%s: %s' % (self.name, self.address)
 
+    def set_primary(self):
+        prev_primary = self.user.addresses.get(primary=True)
+        prev_primary.primary = False
+        prev_primary.save()
+        self.primary = True
+        self.save()
+
+class Diet(models.Model):
+    name = models.CharField(max_length=32)
+
+    def __str__(self):
+        return self.name
 
 class User(AbstractUser):
 
@@ -46,8 +62,6 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ('first_name', 'last_name', 'phone', 'terms_conditions')
 
-    addresses = models.ManyToManyField(Address, related_name='users', blank=True)
-
     # Validations
     is_email_valid = models.BooleanField(default=False)
     is_payment_valid = models.BooleanField(default=False)
@@ -65,10 +79,12 @@ class User(AbstractUser):
         blank=True
     )
     default_num_portions = models.IntegerField(default=2, blank=False)
-    pescetarian = models.BooleanField(verbose_name="Pescetarian",default=False)
-    vegetarian = models.BooleanField(verbose_name="Vegetarian",default=False)
-    vegan = models.BooleanField(verbose_name="Vegan",default=False)
-    gluten_free = models.BooleanField(verbose_name="Gluten Free",default=False)
+
+    diets = models.ManyToManyField(Diet, related_name='users')
+    # pescetarian = models.BooleanField(verbose_name="Pescetarian",default=False)
+    # vegetarian = models.BooleanField(verbose_name="Vegetarian",default=False)
+    # vegan = models.BooleanField(verbose_name="Vegan",default=False)
+    # gluten_free = models.BooleanField(verbose_name="Gluten Free",default=False)
 
     class Meta(AbstractUser.Meta):
         abstract = False
@@ -84,8 +100,31 @@ class User(AbstractUser):
         creates Orders for all future delivery_days """
         pass
 
+    def add_address(self, address: Address):
+        if address.primary:
+            for a in self.addresses.all():
+                a.primary = False
+                a.save()
+        self.addresses.add(address)
+        self.save()
+    
+    
+@receiver(post_delete, sender=Address)
+def choose_new_primary_address(sender, instance, using, **kwargs):
+    if instance.primary:
+        user = instance.user
+        if user is None:
+            return
+        try:
+            address = user.addresses.first()
+        except:
+            return
+        address.primary = True
+        address.save()
+
 
 # To sign in either with username or with email
+
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth import get_user_model
 class EmailVerification(ModelBackend):
