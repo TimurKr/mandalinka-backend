@@ -5,6 +5,7 @@ from django.core.validators import RegexValidator
 from django.contrib.auth.models import User
 from django.utils.timezone import now
 from django.apps import apps
+from django.conf import settings
 from mandalinka import constants
 
 
@@ -104,21 +105,21 @@ class Ingredient(models.Model):
     def __str__(self):
         return f"{self.title}"
 
-class Step(models.Model):
-    text = models.TextField(
-        max_length=250, 
-        verbose_name="Opis", help_text="Krok"
-    )
-    img = models.ImageField(
-        upload_to="steps", 
-        verbose_name="Obrázok", help_text="Pridajte obrazok ku kroku",
-        blank=True, null=True, default=None
-    )
-    no = models.IntegerField(
-        verbose_name="Krok cislo:", help_text="Zadaj poradie kroku"
-    )
+# class Step(models.Model):
+#     text = models.TextField(
+#         max_length=250, 
+#         verbose_name="Opis", help_text="Krok"
+#     )
+#     img = models.ImageField(
+#         upload_to="steps", 
+#         verbose_name="Obrázok", help_text="Pridajte obrazok ku kroku",
+#         blank=True, null=True, default=None
+#     )
+#     no = models.IntegerField(
+#         verbose_name="Krok cislo:", help_text="Zadaj poradie kroku"
+#     )
     
-    date_modified = models.DateTimeField(auto_now=True, verbose_name="Naposledy upravené")
+#     date_modified = models.DateTimeField(auto_now=True, verbose_name="Naposledy upravené")
 
     # class Meta:
     #     # ensuring each recipe has only one unique step_no
@@ -126,8 +127,8 @@ class Step(models.Model):
     #         models.UniqueConstraint(fields=['recipe','step_no'], name='unique_step_number')
     #     ]
 
-    def __str__(self):
-        return f"Krok č. {self.no}"
+    # def __str__(self):
+    #     return f"Krok č. {self.no}"
 
 class Recipe(models.Model):
     title = models.CharField(max_length=63, unique=True, help_text="Názov receptu")
@@ -162,8 +163,8 @@ class Recipe(models.Model):
 
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="Čas vzniku")
     date_modified = models.DateTimeField(auto_now=True, verbose_name="Naposledy upravené")
-    created_by = models.ForeignKey(User, related_name="recipes", 
-        on_delete=models.SET_NULL,
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="recipes", 
+        on_delete=models.PROTECT,
         verbose_name="Created by", help_text="Zvolte seba",
         blank=True, null=True
     )
@@ -227,10 +228,12 @@ class RecipeVersion(models.Model):
     ingredients = models.ManyToManyField(Ingredient, through=IngredientInstance, related_name="recipes",
         help_text="Zvolte všetky ingrediencie"
     )
-    steps = models.ManyToManyField(Step, related_name="recipes",
-        blank=True, 
-        verbose_name="Kroky", help_text="Pridajte kroky"
-    )
+    steps = models.TextField(blank=True, max_length=1024, 
+        verbose_name="Postup", help_text='Jednotlivé kroky oddelujte enterom')
+    # steps = models.ManyToManyField(Step, related_name="recipes",
+    #     blank=True, 
+    #     verbose_name="Kroky", help_text="Pridajte kroky"
+    # )
 
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="Čas vzniku")
     date_modified = models.DateTimeField(auto_now=True, verbose_name="Naposledy upravené")
@@ -306,7 +309,7 @@ class DeliveryDay(models.Model):
         # Localy import Object model
         Order = apps.get_model('home','Order')
 
-        for user in User.objects.filter(is_active=True):
+        for user in User.objects.filter(is_subscribed=True):
             user_alergies = set(user.profile.get_alergens())
 
             # Create order

@@ -34,7 +34,7 @@
   {% load crispy_forms_tags %}
 
   {% if loginform and not request.user.is_authenticated %}
-  <div class="modal fade {% if focus == 'LoginModal' %}active{% endif %}" id="LoginModal" tabindex="-1"
+  <div class="modal fade{% if focus == 'LoginModal' %} active{% endif %}" id="LoginModal" tabindex="-1"
     data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="LoginModalLabel" aria-hidden="false">
     <div class="modal-dialog">
       <div class="modal-content">

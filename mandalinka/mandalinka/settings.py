@@ -26,6 +26,7 @@ EMAIL_USE_TLS = True
 
 PASSWORD_RESET_TIMEOUT = 14400
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -41,8 +42,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'recepty',
-    'home',
     'crispy_forms',
     'crispy_bootstrap5',
     'django.contrib.admin',
@@ -51,6 +50,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'recepty',
+    'home',
 ]
 
 MIDDLEWARE = [
@@ -140,8 +141,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-GOOGLE_API_KEY = 'AIzaSyAqhtCRKVAGeLaqgIBqkxM57jPFMv1NVh8'
-AUTHENTICATION_BACKENDS = ('home.models.EmailBackend',)
+GOOGLE_API_KEY = 'AIzaSyCEZTFyo0Kf5YL5SWe6vmmfEMmF5QxSTbU'
+AUTHENTICATION_BACKENDS = ('home.models.EmailVerification',)
+
+AUTH_USER_MODEL = 'home.User'
+
 
 LOGIN_URL = '/'
 

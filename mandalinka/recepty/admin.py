@@ -12,16 +12,11 @@ class IngredientInstanceInline(admin.TabularInline):
 
 class RecipeVersionAdmin(admin.ModelAdmin):
     list_display = ("recipe", "version", "avg_rating", "get_cost", "get_price", "get_profit",)
-    filter_vertical = ("steps",)
     inlines = (IngredientInstanceInline,)
     
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ("__str__", "active", "thumbnail",)
     filter_horizontal = ("attributes",)
-    
-class StepsAdmin(admin.ModelAdmin):
-    list_display = ("__str__", "img",)
-    filter_horizontal = ("recipes",)
     
 class IngredientAdmin(admin.ModelAdmin):
     list_display = ("title", "price_per_unit", "img",)
@@ -33,7 +28,6 @@ class DeliveryDayAdmin(admin.ModelAdmin):
 # Register your models here.
 admin.site.register(RecipeVersion, RecipeVersionAdmin)
 admin.site.register(Recipe, RecipeAdmin)
-admin.site.register(Step, StepsAdmin)
 admin.site.register(IngredientInstance)
 admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Alergen)

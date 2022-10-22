@@ -3,17 +3,20 @@
 {% load crispy_forms_tags %}
 
 {% block page_name %}
-  Nový užívatel
+  Potvrďte email
 {% endblock %}
 
 {% block javascript %}
-  <script src="{% static 'new_user.js' %}"></script>
 {% endblock %}
 
 {% block title %}
-  Vytvorte si účet
+  Potvrďte zadanú emailovú adresu
 {% endblock %}
 
 {% block body %}
-  {% crispy form %}
+<h6 class="p-3">
+  Na zadanú adresu sme odoslali potvrdzovací email. 
+  Nachádza sa v ňom link, ktorý vás presmeruje na dokončenie prihlásenia.
+  Skontrolujte si spam.
+</h6>
 {% endblock %}

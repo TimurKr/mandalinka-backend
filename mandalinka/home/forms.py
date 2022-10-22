@@ -3,11 +3,13 @@ from ensurepip import bootstrap
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import forms as auth_forms
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 
-from home.models import CityDistrictPostal, UserProfile
+from home.models import User
 from recepty.models import Alergen, FoodAttribute
 
 from crispy_forms.helper import FormHelper
@@ -16,50 +18,26 @@ from crispy_forms.bootstrap import StrictButton
 from crispy_bootstrap5.bootstrap5 import FloatingField
 
 
-
-charfield_widget = {'class': 'form-control opacity-75',
-                    'placeholder': 'Problem here'}
-select_widget = {'class':'form-select opacity-75 rounded-2 shadow border-dark'}
-radioselect_widget = {'class':'btn-check'}
-radioselect_label_class = 'btn btn-outline-primary m-1 px-3 py-1 rounded-2'
-
-def merge(dict1, dict2):
-    return {**dict1, **dict2} 
-
 class CustomSubmitButton(BaseInput):
     input_type = 'submit'
     field_classes = 'btn btn-primary bg-gradient w-100 rounded-2 shadow'
 
-# class CustomSwitch(BaseInput):
-#     input_type = 'checkbox'
-#     def __init__(self, name, value, **kwargs):
-#         super().__init__(name, value, **kwargs)
-#         self.att
-
-
 class CustomSecondaryButton(StrictButton):
     field_classes = 'btn btn-outline-dark w-100 rounded-2 shadow'
 
+# default_errors = {
+#     'required': 'Toto pole je povinné',
+#     'invalid': 'Zadajte valídnu hodnotu'
+# }
 
-default_errors = {
-    'required': 'Toto pole je povinné',
-    'invalid': 'Zadajte valídnu hodnotu'
-}
 
+class LoginForm(auth_forms.AuthenticationForm):
 
-# Tu zadajte nové forms. argumenty ku novým poliam vždy formátujte v poradí:
-# 1. label 
-# 2. help_text
-# 3. choices / queryset
-# 4. required
-# 5. ...
-# posledné. widget
-
-class LoginForm(forms.Form):
-
-    username = forms.CharField(label="Email", error_messages=default_errors)
-    password = forms.CharField(label="Heslo", error_messages=default_errors, widget=forms.PasswordInput())
-
+    error_messages = {
+        "invalid_login": _("Zadajte valídny email a heslo."),
+        "inactive": _("Tento účet je deaktivovaný. Kontaktujte nás."),
+    }
+    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
@@ -89,61 +67,45 @@ class LoginForm(forms.Form):
                 )
             )
 
+    def get_user(self, request):
+        return authenticate(
+            request, 
+            username=self.cleaned_data.get('username'), 
+            password=self.cleaned_data.get('password')
+            )
 
 
-class NewUserForm(UserCreationForm):
-
-    firstname = forms.CharField(
-        label="Meno", 
-        required=True,
-        max_length=255,
-    )
-    lastname = forms.CharField(
-        label="Priezvisko",
-        required=True,
-        max_length=255,
-    )
-    email = forms.EmailField(
-        label="Email", 
-        required=True, 
-        max_length=255,
-    )
-    phone = forms.CharField(
-        label="Telefónne číslo",
-        help_text='Môže byť použité počas doručovania', 
-        required=True, 
-        min_length=5, 
-        widget=forms.TextInput({'value':'+421'}),
-    )
-
-    newsletter = forms.BooleanField(
-        label="Súhlasíte so zasielaním propagačných emailov?", 
-        required=False,
-        )
-    terms_conditions = forms.BooleanField(
-        label="Súhlasíte so obchodnými podmienkami?",
-        required=True,
-        )
+class NewUserForm(auth_forms.UserCreationForm):
 
     class Meta:
         model = User
-        fields = ["firstname",
-                "lastname", 
+        fields = ("first_name",
+                "pronoun",
+                "last_name", 
                 "email",
                 "phone",
                 "newsletter",
                 "terms_conditions",
                 "password1",
                 "password2",
-                ]
-                
+                )
+        labels = {
+            'newsletter': 'Súhlasíte so zasielaním propagačných emailov?',
+            'terms_conditions': 'Súhlasíte s obchodnými podmienkami?',
+        }
+        help_texts = {
+            'password1': None, 
+            'password2': None,
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.fields['password1'].label = "Heslo"
-        self.fields['password2'].label = "Heslo znova"
-        self.fields['password2'].help_text = None
+        self.fields['password1'].label = 'Heslo'
+        self.fields['password2'].label = 'Heslo znova'
+        self.fields['password1'].help_text = ''
+        self.fields['password2'].help_text = ''
+        self.fields['terms_conditions'].required = True
         
         self.helper = FormHelper(self)
         self.helper.form_action = reverse('home:new_user')
@@ -152,24 +114,72 @@ class NewUserForm(UserCreationForm):
         self.helper.attrs = {'novalidate': ''}
         self.helper.layout = Layout(
             Div(
-                Div(FloatingField('firstname'), css_class='col-sm-6'),
-                Div(FloatingField('lastname'), css_class='col-sm-6'),
+                Div(FloatingField('first_name'), css_class='col-sm-4 col-6'),
+                Div(FloatingField('pronoun'), css_class='col-sm-4 col-6'),
+                Div(FloatingField('last_name'), css_class='col-sm-4'),
                 Div(FloatingField('email'), css_class='col-sm-6'),
                 Div(FloatingField('phone'), css_class='col-sm-6'),
                 Div(FloatingField('password1'), css_class='col-12'),
                 Div(FloatingField('password2'), css_class='col-12'),
                 Div(Field('newsletter'), css_class='col-12 form-check form-switch ms-2 pe-2'),
                 Div(Field('terms_conditions'), css_class='col-12 form-check form-switch ms-2 pe-2'),
-                StrictButton('Vrátiť domov', onclick=f'location.href=\"{reverse("home:home")}\"', 
-                    css_class='secondary-button col-sm-6'),
-                Submit('submit', 'Vytvoriť účet', 
-                    css_class='primary-button col-sm-6'),
+                Div(StrictButton('Vrátiť domov', onclick=f'location.href=\"{reverse("home:home")}\"', css_class='secondary-button'), 
+                    css_class='col-sm-6'),
+                Div(Submit('submit', 'Vytvoriť účet',css_class="primary-button"), 
+                    css_class='col-sm-6'),
                 css_class='row g-2'
             )
-            
         )
-        
+
+    def save(self, commit=True):
+        instance = super().save(commit=commit)
+        instance.username = instance.first_name + '.' + instance.last_name + '.' + instance.email.split('@')[0]
+        instance.save()
+        return instance
  
+class PasswordResetForm(auth_forms.PasswordResetForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_action = reverse('home:password_reset')
+        self.helper.form_id = 'PasswordResetForm'
+        self.helper.form_class = 'needs-validation'
+        self.helper.attrs = {'novalidate': ''}
+        self.helper.layout = Layout(
+            Div(
+                Div(FloatingField('email'), css_class='col-sm-8'),
+                Div(Submit('submit', 'Odoslať email', css_class="primary-button"), css_class="col-sm-4"),
+                css_class='row g-2'
+            )
+        )
+
+class SetPasswordForm(auth_forms.SetPasswordForm):
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(user, *args, **kwargs)
+
+        self.fields['new_password1'].label = 'Heslo'
+        self.fields['new_password2'].label = 'Heslo znova'
+        self.fields['new_password1'].help_text = ''
+        self.fields['new_password2'].help_text = ''
+
+        self.helper = FormHelper(self)
+        # self.helper.form_action = reverse('home:password_reset_set')
+        self.helper.form_id = 'PasswordResetForm'
+        self.helper.form_class = 'needs-validation'
+        self.helper.attrs = {'novalidate': ''}
+        self.helper.layout = Layout(
+            Div(
+                Div(FloatingField('new_password1'), css_class='col-sm-12'),
+                Div(FloatingField('new_password2'), css_class='col-sm-12'),
+                Div(Submit('submit', 'Nastaviť nové heslo', css_class="primary-button"), css_class="ms-sm-auto"),
+                css_class='row g-2'
+            )
+        )
+
+
+class FoodPreferencesForm(forms.ModelForm):
+    pass
+
 # class SignupForm(UserCreationForm):
 
 #         # Osobné veci
@@ -471,5 +481,3 @@ class NewUserForm(UserCreationForm):
 #         self.helper.attrs = {'novalidate':''}
 #         self.fields.pop('password1')
 #         self.fields.pop('password2')
-
-

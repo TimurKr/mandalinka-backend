@@ -1,0 +1,38 @@
+{% extends 'home/mid_page_body_layout.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block page_name %}
+  Password reset
+{% endblock %}
+
+{% block javascript %}
+	<script>        // Code for validation
+		document.addEventListener("DOMContentLoaded", () => {
+			'use strict'
+			
+			// Fetch all the forms we want to apply custom Bootstrap validation styles to
+			const forms = document.querySelectorAll('.needs-validation')
+			
+			// Loop over them and prevent submission
+			Array.from(forms).forEach(form => {
+				form.addEventListener('submit', event => {
+					if (!form.checkValidity()) {
+						event.preventDefault()
+						event.stopPropagation()
+					}
+					
+					form.classList.add('was-validated')
+				}, false)
+			})
+		})
+	</script>
+{% endblock %}
+
+{% block title %}
+  Resetujte si heslo
+{% endblock %}
+
+{% block body %} 
+  {% crispy form %}
+{% endblock %}

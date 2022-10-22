@@ -75,7 +75,7 @@ class AccountIcon extends React.PureComponent {
                 </span>
               </a>
               <a href="#" data-bs-toggle="modal" data-bs-target="#LoginModal">
-                <span id="Login" className="material-symbols-rounded option">
+                <span id="LoginModalButton" className="material-symbols-rounded option">
                   login
                 </span>
                 <span className="custom-tooltip">Prihláste sa</span>

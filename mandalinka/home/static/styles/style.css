@@ -11385,11 +11385,19 @@ div.scrollmenu div {
   box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
 }
 
-.form-floating input {
+form .form-floating input, form .form-floating select {
   border-radius: 10px;
   box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
   color: black;
 }
-.form-floating label {
+form .form-floating label {
   color: grey;
+}
+form .primary-button {
+  width: 100%;
+  height: 100%;
+}
+form .secondary-button {
+  width: 100%;
+  height: 100%;
 }/*# sourceMappingURL=style.css.map */
