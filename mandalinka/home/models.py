@@ -68,19 +68,19 @@ class User(AbstractUser):
     is_subscribed = models.BooleanField(default=False)
 
     # Preferences
-    food_preferences = models.ManyToManyField(
-        'recepty.FoodAttribute', 
+    default_num_portions = models.IntegerField(default=4, blank=False, choices=((2,2),(4,4),(6,6)))
+    food_preferences = models.ManyToManyField('recepty.FoodAttribute', 
         related_name="users",
         blank=True
     )
-    alergies = models.ManyToManyField(
-        'recepty.Alergen', 
+    alergies = models.ManyToManyField('recepty.Alergen', 
         related_name="users", 
         blank=True
     )
-    default_num_portions = models.IntegerField(default=2, blank=False)
+    diets = models.ManyToManyField(Diet, 
+        related_name='users',
+        blank=True)
 
-    diets = models.ManyToManyField(Diet, related_name='users')
     # pescetarian = models.BooleanField(verbose_name="Pescetarian",default=False)
     # vegetarian = models.BooleanField(verbose_name="Vegetarian",default=False)
     # vegan = models.BooleanField(verbose_name="Vegan",default=False)
@@ -112,7 +112,10 @@ class User(AbstractUser):
 @receiver(post_delete, sender=Address)
 def choose_new_primary_address(sender, instance, using, **kwargs):
     if instance.primary:
-        user = instance.user
+        try:
+            user = instance.user
+        except:
+            return
         if user is None:
             return
         try:

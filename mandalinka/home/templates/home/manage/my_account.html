@@ -1,0 +1,67 @@
+{% extends 'home/manage/my_account_layout.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block general %}
+{% crispy general_form %}
+{% endblock %}
+
+{% block addresses %}
+<table class="table">
+  <thead>
+    <tr>
+      <td>Názov</td>
+      <td>Adresa</td>
+      <td class="text-center">Upraviť</td>
+      <td class="text-center">Vymazať</td>
+      <td class="text-center">Primárna</td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for address in addresses %}
+    <tr>
+      <td>{{ address.name }}</td>
+      <td>{{ address.address }}</td>
+      <td class="text-center">
+        <a href="{% url 'home:edit_address' address_id=address.id %}" role="button">
+          <span class="material-symbols-rounded" style="color: black">
+            edit
+          </span>
+        </a>
+      </td>
+      <td class="text-center">
+        <a href="{% url 'home:delete_address' address_id=address.id %}" role="button">
+          <span class="material-symbols-rounded" style="color: red">
+            delete
+          </span>
+        </a>
+      </td>
+      <td class="text-center">
+        {% if address.primary %}
+        <span class="material-symbols-rounded" style="color: gold; font-variation-settings: 'FILL' 1;">
+          star
+        </span>
+        {% else %}
+        <a href="{% url 'home:set_primary_address' address_id=address.id %}" role="button">
+          <span class="material-symbols-rounded" style="color: black">
+            star
+          </span>
+        </a>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<div class="row">
+  <div class="col-auto ms-auto">
+    <a href="{% url 'home:add_address' %}" class="btn btn-success" role="button">
+      Pridajte novú adresu
+    </a>
+  </div>
+</div>
+{% endblock %}
+
+{% block preferences %}
+  {% crispy preferences_form %}
+{% endblock %}

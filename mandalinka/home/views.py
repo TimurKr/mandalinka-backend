@@ -105,47 +105,52 @@ def new_user_view(request):
         form = NewUserForm()
     return render(request, "home/new_user/create_user.html", {'form': form})
 
-
 def activate_email(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-        user = None
-
-    if user is not None and account_activation_token.check_token(user, token):
-        user.is_email_valid = True
-        user.save()
-        login(request, user)
-        return render(request, 'home/new_user/add_address.html', {'form': FirstAddressForm()})
-    else:
         return HttpResponseRedirect(reverse('home:home'))
+    else:
+        if account_activation_token.check_token(user, token):
+            user.is_email_valid = True
+            user.save()
+            login(request, user)
+            return render(request, 'home/new_user/email_activation_confirmed.html', context={
+                        'name': user.first_name,
+                        'pronoun': user.pronoun,
+                    })
+        else:
+            return HttpResponseRedirect(reverse('home:home'))
 
+
+@login_required
 def add_first_address(request):
     if request.method == 'POST':
         form = FirstAddressForm(request.POST)
         try:
             address = form.save()
         except ValueError:
-            address = None
-        if address is not None:
+            pass
+        else:
             request.user.addresses.add(address)
-            return HttpResponseRedirect(reverse('home:home')) # ??????
+            return HttpResponseRedirect(reverse('home:add_preferences'))
     else:
         form = FirstAddressForm()
     return render(request,"home/new_user/add_address.html", context={'form':form})
 
-def edit_preferences(request):
-    if request.method == "POST":
-        form = EditPreferencesForm(request.POST, instance=request.user)
-    else:
-        form = EditPreferencesForm(instance=request.user)
+@login_required
+def set_preferences(request):
+    form = PreferencesForm(request.POST, instance=request.user)
+    if request.method == "POST":    
         try:
             form.save()
-        except ValidationError:
-            return render(request,"home/edit_preference.html", {'form', form})
-        return HttpResponseRedirect(reverse('home:home'))
-    return render(request,"home/edit_preference.html", {'form', form})
+        except ValueError:
+            pass
+        else:
+            return HttpResponseRedirect(reverse('home:add_first_payment'))
+    return render(request,"home/new_user/set_preference.html", {'form', form})
+
 
 
 
@@ -199,65 +204,41 @@ class PasswordResetCompleteView(auth_views.PasswordResetCompleteView):
 
 # Account management ---------------------------------------------------------------------------------------
 
-@login_required
-def my_account_view(request):
-#     if request.method == "POST":
-#         form = EditProfile(request.POST)
-#         if form.is_valid():
-#             # Tu treba pridať uloženie zmenených dát
-#             return HttpResponseRedirect(reverse('home:home'))
-#         else:
-#             pass
+def render_my_account(
+    request, 
+    general_form: GeneralUserInfoForm = None,
+    preferences_form: PreferencesForm = None,
+    ):
 
-            
-#     districts = [x[0] for x in CityDistrictPostal.objects.values_list("district").distinct()]
-#     cities = [x[0] for x in CityDistrictPostal.objects.values_list("city").distinct()]
-#     postal_codes = [x[0] for x in CityDistrictPostal.objects.values_list("postal").distinct()]
-#     print(postal_codes)
-#     streets = Streets.objects.all()
+    general_form = general_form or GeneralUserInfoForm(instance=request.user)
+    preferences_form = preferences_form or PreferencesForm(instance=request.user)
     
-#     context = {
-#         "form": EditProfile(
-#             initial={
-#                 'firstname': request.user.first_name,
-#                 'lastname': request.user.last_name,
-#                 'email': request.user.email,
-#                 'phone': request.user.profile.phone,
-#                 'newsletter': request.user.profile.newsletter,
-#                 'terms_conditions': request.user.profile.terms_conditions,
-#                 'food_attributes': request.user.profile.food_preferences.all(),
-#                 'alergies': request.user.profile.alergies.all(),
-#                 'street': request.user.profile.street, 
-#                 'house_no': request.user.profile.house_no,
-#                 'district': request.user.profile.district,
-#                 'city': request.user.profile.city,
-#                 'postal': request.user.profile.postal,
-#                 'country': request.user.profile.country,
-#             }
-#         ),
-#         'districts': districts,
-#         'cities': cities,
-#         'postal_codes': postal_codes,
-#         'streets': streets
-#     }
-    
-    return render(request,"home/my_account.html")#,context)
-
-@login_required
-def manage_addresses(request):
-    addresses = []
-    for address in request.user.addresses.all():
-        addresses.append({
+    addresses = [{
             'id': address.id, 
             'name': address.name, 
             'address': address.address,
             'primary': address.primary,
-        })
-        
-    return render(request,"home/manage/addresses.html", 
-        context={
-            'addresses': addresses,
-        })
+        } for address in request.user.addresses.all()]
+
+    return render(request,"home/manage/my_account.html",context = {
+        'general_form': general_form,
+        'addresses': addresses,
+        'preferences_form': preferences_form,
+    })
+
+@login_required
+def my_account_view(request):
+    return render_my_account(request)
+
+@login_required
+def edit_general(request):
+    if request.method == 'POST':
+        form = GeneralUserInfoForm(request.POST, instance=request.user)
+        try:
+            form.save()
+        except ValueError:
+            return render_my_account(request, general_form=form)
+    return HttpResponseRedirect(reverse('home:my_account'))
 
 @login_required
 def add_address(request):
@@ -266,10 +247,10 @@ def add_address(request):
         try:
             address = form.save()
         except ValueError:
-            address = None
-        if address is not None:
+            pass
+        else:
             request.user.add_address(address)
-            return HttpResponseRedirect(reverse('home:manage_addresses'))
+            return HttpResponseRedirect(reverse('home:my_account'))
     else:
         form = AddAddressForm()
     return render(request,"home/manage/add_address.html", context={'form':form})
@@ -286,8 +267,9 @@ def edit_address(request, address_id):
         try:
             form.save()
         except ValueError:
-            return render(request,"home/manage/edit_address.html", context={'form':form})
-        return HttpResponseRedirect(reverse('home:manage_addresses'))
+            pass
+        else:
+            return HttpResponseRedirect(reverse('home:my_account'))
     else:
         form = EditAddressForm(address_id, instance=address)
         return render(request,"home/manage/edit_address.html", context={'form':form})
@@ -299,7 +281,7 @@ def delete_address(request, address_id):
     except:
         return HttpResponseBadRequest()
     address.delete()
-    return HttpResponseRedirect(reverse('home:manage_addresses'))
+    return HttpResponseRedirect(reverse('home:my_account'))
     
 @login_required
 def set_primary_address(request, address_id):
@@ -307,9 +289,19 @@ def set_primary_address(request, address_id):
         address = Address.objects.get(id=address_id)
     except:
         return HttpResponseBadRequest()
-    address.set_primary()
-    return HttpResponseRedirect(reverse('home:manage_addresses'))
-    
+    else:
+        address.set_primary()
+        return HttpResponseRedirect(reverse('home:my_account'))
+
+@login_required
+def edit_preferences(request):
+    if request.method == 'POST':
+        form = PreferencesForm(request.POST, instance=request.user)
+        try:
+            form.save()
+        except ValueError:
+            return render_my_account(request, preferences_form=form)
+    return HttpResponseRedirect(reverse('home:my_account'))
 
 # Order APIs -----------------------------------------------------------------------------------------------
 @login_required

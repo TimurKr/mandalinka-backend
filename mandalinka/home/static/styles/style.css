@@ -11385,6 +11385,9 @@ div.scrollmenu div {
   box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
 }
 
+form .mb-3 {
+  margin-bottom: 0 !important;
+}
 form .form-floating input, form .form-floating select, form .form-floating textarea {
   border-radius: 10px;
   box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
@@ -11392,6 +11395,9 @@ form .form-floating input, form .form-floating select, form .form-floating texta
 }
 form .form-floating label {
   color: grey;
+}
+form .form-check {
+  display: inline-block;
 }
 form .primary-button {
   width: 100%;

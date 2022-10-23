@@ -45,7 +45,7 @@ def load_next_order(request):
     attrs = {}
     
     if request.user.is_authenticated:
-        user_food_pref = [a.attr for a in request.user.profile.food_preferences.all()]
+        user_food_pref = [a.attr for a in request.user.food_preferences.all()]
     else:
         user_food_pref = []
     

@@ -6,7 +6,7 @@ from recepty.models import RecipeOrderInstance
     
 
 class UserAdmin(admin.ModelAdmin):
-    # inlines = ('addresses',)
+    filter_horizontal = ('food_preferences', 'alergies', 'diets',)
     pass
 
 class RecipeOrderInstanceInline(admin.TabularInline):

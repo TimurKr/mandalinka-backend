@@ -1,4 +1,7 @@
 form {
+    .mb-3 {
+        margin-bottom: 0 !important;
+    }
     .form-floating {
         input, select, textarea {
             border-radius: 10px;
@@ -9,6 +12,9 @@ form {
             color: grey;
         }
     }
+    .form-check {
+        display: inline-block;
+    }
     .primary-button {
         width: 100%;
         height: 100%;
@@ -17,4 +23,5 @@ form {
         width: 100%;
         height: 100%;
     }
+
 }

@@ -6,6 +6,7 @@ from django.utils.safestring import mark_safe
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import forms as auth_forms
 from django.urls import reverse, reverse_lazy
+from django.urls.exceptions import NoReverseMatch
 from django.utils.translation import gettext_lazy as _
 
 from home.models import User, Address
@@ -16,21 +17,31 @@ from crispy_forms.layout import Layout, HTML, Div, BaseInput, Submit, Field, Hid
 from crispy_forms.bootstrap import StrictButton
 from crispy_bootstrap5.bootstrap5 import FloatingField
  
-
+# Custom Inputs -----------------------------------------------------------------------
 class CustomSubmitButton(BaseInput):
     input_type = 'submit'
     field_classes = 'btn btn-primary bg-gradient w-100 rounded-2 shadow'
 
 class CustomSecondaryButton(StrictButton):
-    field_classes = 'btn btn-outline-dark w-100 rounded-2 shadow'
+    field_classes = 'btn btn-outline-primary w-100 rounded-2 shadow'
 
+    def __init__(self, content, onclick: str = None, *args, **kwargs):
+        if onclick:
+            try:
+                onclick = f'location.href="{reverse(onclick)}"'
+            except NoReverseMatch:
+                pass
+            else:
+                super().__init__(content, onclick=onclick, *args, **kwargs)
+        super().__init__(content, *args, **kwargs)
 
-# default_errors = {
-#     'required': 'Toto pole je povinné',
-#     'invalid': 'Zadajte valídnu hodnotu'
-# }
+class CustomM2MWidget(forms.CheckboxSelectMultiple):
+    field_classes = 'pokus100'
 
+class CustomRadioWidget(forms.RadioSelect):
+    pass
 
+# Login -------------------------------------------------------------------------------
 class LoginForm(auth_forms.AuthenticationForm):
 
     error_messages = {
@@ -54,9 +65,7 @@ class LoginForm(auth_forms.AuthenticationForm):
                 ),
                 Div(
                     Div(
-                        CustomSecondaryButton('Zaregistrovať sa', 
-                            onclick=f'location.href=\"{reverse("home:new_user")}\"'
-                        ),
+                        CustomSecondaryButton('Zaregistrovať sa', onclick='home:new_user'),
                         css_class='col-sm-6'
                     ),
                     Div(
@@ -74,20 +83,21 @@ class LoginForm(auth_forms.AuthenticationForm):
             password=self.cleaned_data.get('password')
             )
 
+# General user info -------------------------------------------------------------------
 class NewUserForm(auth_forms.UserCreationForm):
-
     class Meta:
         model = User
-        fields = ("first_name",
-                "pronoun",
-                "last_name", 
-                "email",
-                "phone",
-                "newsletter",
-                "terms_conditions",
-                "password1",
-                "password2",
-                )
+        fields = (
+            "first_name",
+            "pronoun",
+            "last_name", 
+            "email",
+            "phone",
+            "newsletter",
+            "terms_conditions",
+            "password1",
+            "password2",
+            )
         labels = {
             'newsletter': 'Súhlasíte so zasielaním propagačných emailov?',
             'terms_conditions': 'Súhlasíte s obchodnými podmienkami?',
@@ -122,10 +132,8 @@ class NewUserForm(auth_forms.UserCreationForm):
                 Div(FloatingField('password2'), css_class='col-12'),
                 Div(Field('newsletter'), css_class='col-12 form-check form-switch ms-2 pe-2'),
                 Div(Field('terms_conditions'), css_class='col-12 form-check form-switch ms-2 pe-2'),
-                Div(StrictButton('Vrátiť domov', onclick=f'location.href=\"{reverse("home:home")}\"', css_class='secondary-button'), 
-                    css_class='col-sm-6'),
-                Div(Submit('submit', 'Vytvoriť účet',css_class="primary-button"), 
-                    css_class='col-sm-6'),
+                Div(CustomSecondaryButton('Vrátiť domov', onclick="home:home"), css_class='col-sm-6'),
+                Div(CustomSubmitButton('submit', 'Vytvoriť účet'), css_class='col-sm-6'),
                 css_class='row g-2'
             )
         )
@@ -135,7 +143,51 @@ class NewUserForm(auth_forms.UserCreationForm):
         instance.username = instance.first_name + '.' + instance.last_name + '.' + instance.email.split('@')[0]
         instance.save()
         return instance
- 
+
+class GeneralUserInfoForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = (
+            "first_name",
+            "pronoun",
+            "last_name", 
+            "phone",
+            "newsletter",
+            "terms_conditions",
+        )
+        labels = {
+            'newsletter': 'Súhlasíte so zasielaním propagačných emailov?',
+            'terms_conditions': 'Súhlasíte s obchodnými podmienkami?',
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['terms_conditions'].required = True
+
+        self.helper = FormHelper(self)
+        self.helper.form_action = reverse_lazy('home:edit_general')
+        self.helper.form_id = 'general_info'
+        self.helper.form_class = 'needs-validation'
+        self.helper.attrs = {'novalidate': ''}
+        self.helper.layout = Layout(
+            Div(
+                Div(FloatingField('first_name'), css_class='col-8'),
+                Div(FloatingField('pronoun'), css_class='col-4'),
+                Div(FloatingField('last_name'), css_class='col-12'),
+                Div(FloatingField('phone'), css_class='col-12'),
+                Div(Field('newsletter'), css_class='col-12 form-check form-switch ms-2 pe-2'),
+                Div(Field('terms_conditions'), css_class='col-12 form-check form-switch ms-2 pe-2'),
+                Div(CustomSecondaryButton('Zmeniť heslo', onclick="home:home"), css_class='col-sm-4 col-6'),
+                Div(CustomSecondaryButton('Zmeniť email', onclick="home:home"), css_class='col-sm-4 col-6'),
+                Div(CustomSubmitButton('submit', 'Uložiť'), 
+                    css_class='col-sm-4'),
+                Div(CustomSecondaryButton('Vymazať účet', onclick="home:home", css_class='danger'), css_class='col-auto ms-auto'),
+                css_class='row g-2'
+            )
+        )
+
+# Password reset ----------------------------------------------------------------------
 class PasswordResetForm(auth_forms.PasswordResetForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -147,7 +199,7 @@ class PasswordResetForm(auth_forms.PasswordResetForm):
         self.helper.layout = Layout(
             Div(
                 Div(FloatingField('email'), css_class='col-sm-8'),
-                Div(Submit('submit', 'Odoslať email', css_class="primary-button"), css_class="col-sm-4"),
+                Div(CustomSubmitButton('submit', 'Odoslať email'), css_class="col-sm-4"),
                 css_class='row g-2'
             )
         )
@@ -170,11 +222,12 @@ class SetPasswordForm(auth_forms.SetPasswordForm):
             Div(
                 Div(FloatingField('new_password1'), css_class='col-sm-12'),
                 Div(FloatingField('new_password2'), css_class='col-sm-12'),
-                Div(Submit('submit', 'Nastaviť nové heslo', css_class="primary-button"), css_class="ms-sm-auto"),
+                Div(CustomSubmitButton('submit', 'Nastaviť nové heslo'), css_class="ms-sm-auto"),
                 css_class='row g-2'
             )
         )
 
+# Addresses ---------------------------------------------------------------------------
 class BaseAddressForm(forms.ModelForm):
     secondary_button_action = None
     secondary_button_title = None
@@ -211,8 +264,8 @@ class BaseAddressForm(forms.ModelForm):
 
         if self.secondary_button_action and self.secondary_button_title:
             secondary_button = Div(
-                StrictButton(self.secondary_button_title, onclick=f'location.href=\"{self.secondary_button_action}\"', css_class='secondary-button'), 
-                    css_class='col-sm-6'),
+                CustomSecondaryButton(self.secondary_button_title, onclick=self.secondary_button_action), 
+                css_class='col-sm-6')
         else: 
             secondary_button = None
 
@@ -236,8 +289,7 @@ class BaseAddressForm(forms.ModelForm):
                 ),
                 Div(css_class='map col-sm-6 col-12', css_id='gmp-map'),
                 secondary_button,
-                Div(Submit('submit', 'Uložiť', css_class="primary-button"), 
-                    css_class='col-sm-6 ms-auto'),
+                Div(CustomSubmitButton('submit', 'Uložiť'), css_class='col-sm-6 ms-auto'),
                 css_class='address-selection row g-3'
             ),
             HTML('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEZTFyo0Kf5YL5SWe6vmmfEMmF5QxSTbU&libraries=places&callback=initMap&solution_channel=GMP_QB_addressselection_v1_cABC" async defer></script>'),
@@ -250,18 +302,19 @@ class FirstAddressForm(BaseAddressForm):
 class AddAddressForm(BaseAddressForm):
     form_action = reverse_lazy('home:add_address')
     form_id = 'add-address'
-    secondary_button_action = reverse_lazy('home:manage_addresses')
+    secondary_button_action = 'home:my_account'
     secondary_button_title = 'Naspäť'
 
 class EditAddressForm(BaseAddressForm):
     form_id = 'edit-address'
-    secondary_button_action = reverse_lazy('home:manage_addresses')
+    secondary_button_action = 'home:my_account'
     secondary_button_title = 'Naspäť'
     def __init__(self, address_id, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper.form_action = reverse('home:edit_address', args=address_id)
 
-class EditPreferencesForm(forms.ModelForm):
+# Preferences -------------------------------------------------------------------------
+class PreferencesForm(forms.ModelForm):
     class Meta:
         model = User
         fields = (
@@ -270,6 +323,14 @@ class EditPreferencesForm(forms.ModelForm):
             'default_num_portions',
             'diets',
         )
+        widgets = {
+            'food_preferences': CustomM2MWidget(),
+            'alergies': CustomM2MWidget(),
+            'default_num_portions': CustomRadioWidget(),
+            'diets': CustomM2MWidget(),
+        }
+
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
@@ -283,6 +344,7 @@ class EditPreferencesForm(forms.ModelForm):
             'alergies',
             'default_num_portions',
             'diets',
+            CustomSubmitButton('submit', 'Uložiť')
         )
     
 
