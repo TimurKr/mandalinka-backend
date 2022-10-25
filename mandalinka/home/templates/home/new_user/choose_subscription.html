@@ -1,0 +1,28 @@
+{% extends "home/mid_page_body_layout.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block page_name %}
+  Odber
+{% endblock %}
+
+{% block javascript %}
+  <script src="{% static 'form_validation.js' %}"></script>
+{% endblock %}
+
+{% block title %}
+  Prajete si zapnúť pravidelný odber?
+{% endblock %}
+
+{% block body %}
+    <div class="row g-3">
+        <a class="btn col-6" id="no-subsribe">
+            <div style="height: 100px">Pokračovať bez odberu</div>
+        </a>
+        <a class="btn col-6" id="subsribe">
+            <div style="height: 100px">Zapnúť prabidelné doručovanie</div>
+        </a>
+    </div>
+  {% crispy form %}
+{% endblock %}

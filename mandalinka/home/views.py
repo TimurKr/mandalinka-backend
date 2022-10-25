@@ -141,16 +141,29 @@ def add_first_address(request):
 
 @login_required
 def set_preferences(request):
-    form = PreferencesForm(request.POST, instance=request.user)
     if request.method == "POST":    
+        form = SetPreferencesForm(request.POST, instance=request.user)
         try:
             form.save()
         except ValueError:
             pass
         else:
             return HttpResponseRedirect(reverse('home:add_first_payment'))
-    return render(request,"home/new_user/set_preference.html", {'form', form})
+    form = PreferencesForm(instance=request.user)
+    return render(request,"home/new_user/set_preferences.html", {'form': form})
 
+@login_required
+def add_first_payment(request):
+    if request.method == "POST":    
+        form = FirstPaymentForm(request.POST)
+        try:
+            form.save()
+        except ValueError:
+            pass
+        else:
+            return HttpResponseRedirect(reverse('home:my_account'))
+    form = FirstPaymentForm()
+    return render(request, 'home/new_user/choose_subscription.html', context={'form':form})
 
 
 

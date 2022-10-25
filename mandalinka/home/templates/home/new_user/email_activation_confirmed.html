@@ -10,15 +10,10 @@
 {% endblock %}
 
 {% block title %}
-  Potvrďte zadanú emailovú adresu
+Ďakujeme za potvrdenie emailovej adresy
 {% endblock %}
 
 {% block body %}
-<h6 class="p-3">
-
-  Ďakujeme za potvrdenie emailovej adresy
-  
-</h6>
 <h6 class="p-3 pt-0">
   {% if pronoun == 'they' %}
   Pokračujte pridaním adresy doručenia:
@@ -31,8 +26,9 @@
   
   {% endif %}
 </h6>
-
-<a href="{% url 'home:add_first_address' %}" class="btn btn-outline-dark mt-3 ms-auto" role="button">
-  Pridať adresu doručenia
-</a>
+<div class="row justify-content-center">
+  <a href="{% url 'home:add_first_address' %}" class="btn primary-button col-auto" role="button">
+    Pridať adresu doručenia
+  </a>
+</div>
 {% endblock %}

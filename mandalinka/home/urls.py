@@ -18,6 +18,7 @@ urlpatterns = [
     path('new_user/activate/<uidb64>/<token>', views.activate_email, name='activate_email'),
     path('new_user/add_address', views.add_first_address, name="add_first_address"),
     path('new_user/add_preferences', views.set_preferences, name="add_preferences"),
+    path('new_user/add_first_payment', views.add_first_payment, name="add_first_payment"),
 
 # Password reset
     path("password_reset", views.password_reset_request, name="password_reset"),

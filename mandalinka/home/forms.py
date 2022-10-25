@@ -36,7 +36,7 @@ class CustomSecondaryButton(StrictButton):
         super().__init__(content, *args, **kwargs)
 
 class CustomM2MWidget(forms.CheckboxSelectMultiple):
-    field_classes = 'pokus100'
+    pass
 
 class CustomRadioWidget(forms.RadioSelect):
     pass
@@ -324,10 +324,10 @@ class PreferencesForm(forms.ModelForm):
             'diets',
         )
         widgets = {
-            'food_preferences': CustomM2MWidget(),
-            'alergies': CustomM2MWidget(),
-            'default_num_portions': CustomRadioWidget(),
-            'diets': CustomM2MWidget(),
+            'food_preferences': forms.CheckboxSelectMultiple(),
+            'alergies': forms.CheckboxSelectMultiple(),
+            'default_num_portions': forms.RadioSelect(),
+            'diets': forms.CheckboxSelectMultiple(),
         }
 
 
@@ -346,7 +346,17 @@ class PreferencesForm(forms.ModelForm):
             'diets',
             CustomSubmitButton('submit', 'Uložiť')
         )
-    
+
+class SetPreferencesForm(PreferencesForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper.form_action = reverse('home:add_preferences')
+
+
+# Payments -------------------------------------------------------------------------
+
+class FirstPaymentForm(forms.Form):
+    pass
 
 # class SignupForm(UserCreationForm):
 
