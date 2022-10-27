@@ -1,0 +1,20 @@
+.address-selection {
+  width: 100%;
+  margin: 0;
+}
+.address-selection .title span {
+  position: relative;
+  top: 3px;
+}
+.address-selection > .map-panel {
+  display: flex;
+  row-gap: 10px;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.address-selection > .map {
+  min-height: 300px;
+  padding-left: 10px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
+}

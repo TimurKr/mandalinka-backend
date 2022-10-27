@@ -10,9 +10,10 @@
         "/.vscode/**",
     ],
     "liveSassCompile.settings.partialsList": [
-        "/**/scss/partials/*.scss",
+        "/**/css/_index.scss",
+        "/**/partials/*.scss",
     ],
-    "liveSassCompile.settings.generateMap": true,
+    "liveSassCompile.settings.generateMap": false,
     "liveSassCompile.settings.autoprefix": [
         "defaults"
     ],
