@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
 ################################# Validators ###################################
 
@@ -8,6 +9,12 @@ def validate_cooking_time_range(value):
         raise ValidationError(
             _('%(value)s is not in the required cooking range'),
             params = {'value': value},
+        )
+
+def validate_portions(value):
+    if value % 2 != 0 or value < 0 or value > 100:
+        raise ValidationError(
+            _('%(value)s is invalid amount of portions, should be even and on range 0<=x<=100]')
         )
 
 

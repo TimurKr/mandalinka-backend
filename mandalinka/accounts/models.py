@@ -3,7 +3,7 @@ from re import I
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-# to recieve signals
+# To recieve signals
 from django.dispatch import receiver
 
 
@@ -25,7 +25,7 @@ class User(AbstractUser):
     terms_conditions = models.BooleanField(blank=False)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ('username','first_name', 'last_name', 'phone', 'terms_conditions')
+    REQUIRED_FIELDS = ('first_name', 'last_name', 'phone', 'terms_conditions')
 
     # Validations
     is_email_valid = models.BooleanField(default=False)
@@ -70,13 +70,8 @@ class User(AbstractUser):
 
 @receiver(models.signals.pre_save, sender=User)
 def create_user_profile(sender, instance, created=False, **kwargs):
-    print("Sender:", sender)
-    print("instance", instance)
-    print("created", created)
-    if created:
+    if created and not instance.username:
         instance.username = instance.get_full_name()
-        print(f"Created user FN: {instance.first_name}, LN: {instance.last_name} username: {instance.username}")
-
 
 # Email verification 
 # to be able to verify through email as well as password

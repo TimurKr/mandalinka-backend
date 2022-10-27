@@ -1,0 +1,13 @@
+@font-face {
+    font-family: MandalinkaFont;
+    src: url("../../../fonts/NotoSerifDisplay/NotoSerifDisplay-Regular.ttf");
+  }
+
+@font-face {
+    font-family: MandalinkaFont;
+    src: url("../../../fonts/NotoSerifDisplay/NotoSerifDisplay-Bold.ttf");
+    font-weight: bold;
+}
+
+
+$font-family-sans-serif:  MandalinkaFont, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
