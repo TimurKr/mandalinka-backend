@@ -1,0 +1,52 @@
+// MID-PAGE-BODY ///////////////////////////////////////
+
+section.mid-page-body {
+  background-color: $primary-light;
+  min-height: 100vh;
+  padding-top: 15vw;
+  >div {
+    background-color: $off-white;
+    box-shadow: 0 0 25px 8px rgba(0, 0, 0, 0.2);
+    max-width: 35rem;
+    width: 85%;
+    padding: 25px;
+    margin: 0  auto 10vw auto;
+    border-radius: 20px;
+    >h2 {
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+// FORMS ///////////////////////////////////////////////
+form {
+  .primary-button {
+    width: 100%;
+    background-color: $primary;
+    color: $primary-text;
+    box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
+    transition: 0.2s ease-in-out;
+
+    &:hover {
+      box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2) inset;
+      border: 1px solid $primary;
+      color: $primary;
+    }
+  }
+
+  .secondary-button {
+    width: 100%;
+    color: $primary;
+    box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
+    transition: 0.2s ease-in-out;
+    &:hover {
+      // box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2) inset;
+      border: 1px solid $primary;
+    }
+  }
+
+  .mb-3 {
+    margin-bottom: 0px !important;
+  }
+}

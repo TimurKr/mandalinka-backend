@@ -10,6 +10,8 @@
 // Bootstrap with icons
 @import "../../../node_modules/bootstrap/scss/bootstrap.scss";
 
+// General
+@import "partials/general";
 
 // Importing app_specific styles
 @import "partials/accounts";

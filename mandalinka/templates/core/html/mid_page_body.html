@@ -1,15 +1,17 @@
-% extends 'core/html/base.html' %}
+{% extends 'core/html/base.html' %}
 {% load static %}
 
 
-{% block body %}
-<div class="mid-screen-body container-fluid">
-    <h2 id="title">
-        {% block title %}
+{% block core %}
+<section class="mid-page-body">
+    <div class="container-fluid">
+        <h2 id="title">
+            {% block title %}
+            {% endblock %}
+        </h2>
+        
+        {% block body %}
         {% endblock %}
-    </h2>
-
-    {% block body %}
-    {% endblock %}
-</div>
+    </div>
+</section>
 {% endblock %}

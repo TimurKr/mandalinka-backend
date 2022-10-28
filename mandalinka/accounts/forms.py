@@ -13,10 +13,10 @@ from crispy_bootstrap5.bootstrap5 import FloatingField
 
 class SubmitButton(BaseInput):
     input_type = 'submit'
-    field_classes = 'btn btn-primary bg-gradient w-100 rounded-2 shadow'
+    field_classes = 'btn primary-button'
 
 class SecondaryButton(StrictButton):
-    field_classes = 'btn btn-outline-primary w-100 rounded-2 shadow'
+    field_classes = 'btn secondary-button'
 
     def __init__(self, content, onclick: str = None, *args, **kwargs):
         if onclick:
@@ -56,7 +56,7 @@ class NewUserForm(auth_forms.UserCreationForm):
         super().__init__(*args, **kwargs)
 
         self.fields['password1'].label = 'Heslo'
-        self.fields['password2'].label = 'Heslo znova'
+        self.fields['password2'].label = 'Potvrďte heslo'
         self.fields['password1'].help_text = ''
         self.fields['password2'].help_text = ''
         self.fields['terms_conditions'].required = True
