@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_node_assets',
+    ''
     'accounts',
     'recipes',
 ]
@@ -130,6 +132,18 @@ STATIC_URL = 'static/'
 STATICFILES_DIR = [
     os.path.join(BASE_DIR, 'static/')
 ]
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django_node_assets.finders.NodeModulesFinder',
+]
+
+NODE_PACKAGE_JSON = os.path.join(BASE_DIR, 'package.json')
+
+NODE_MODULES_ROOT = os.path.join(BASE_DIR, 'node_modules/')
+
+NODE_PACKAGE_MANAGER_EXECUTABLE = '/usr/local/bin/npm'
 
 # Media files
 MEDIA_URL = 'media/'

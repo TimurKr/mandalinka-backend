@@ -1,0 +1,15 @@
+% extends 'core/html/base.html' %}
+{% load static %}
+
+
+{% block body %}
+<div class="mid-screen-body container-fluid">
+    <h2 id="title">
+        {% block title %}
+        {% endblock %}
+    </h2>
+
+    {% block body %}
+    {% endblock %}
+</div>
+{% endblock %}

@@ -1,13 +1,24 @@
-
-
-// Import variables
+// Variables
 @import "partials/variables";
 
 // Custom font styles
 @import "partials/fonts";
 
+// Google icons
+@import "partials/icons";
+
 // Bootstrap with icons
 @import "../../../node_modules/bootstrap/scss/bootstrap.scss";
+
+
+// Importing app_specific styles
+@import "partials/accounts";
+
+
+
+
+
+
 
 // // Landing view
 // @import "./js-elements/landing_view.scss";
@@ -17,17 +28,6 @@
 
 // // New user
 // @import "./new_user.scss";
-
-
-// // Icons 
-
-// .material-symbols-rounded {
-//   font-variation-settings:
-//     'FILL' 0,
-//     'wght' 400,
-//     'GRAD' 0,
-//     'opsz' 40;
-// }
 
 
 // // General
