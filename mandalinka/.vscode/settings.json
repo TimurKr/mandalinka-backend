@@ -2,21 +2,21 @@
     "liveSassCompile.settings.formats": [
         {
             "format": "expanded",
-            "extensionName": ".css",
-        },
+            "extensionName": ".css"
+        }
     ],
     "liveSassCompile.settings.excludeList": [
         "/**/node_modules/**",
-        "/.vscode/**",
+        "/.vscode/**"
     ],
     "liveSassCompile.settings.partialsList": [
         "/**/css/_index.scss",
         "/**/partials/*.scss",
-        "/**/sub_partials/*.scss",
+        "/**/sub_partials/*.scss"
     ],
     "liveSassCompile.settings.generateMap": false,
     "liveSassCompile.settings.autoprefix": [
         "defaults"
     ],
-    "liveSassCompile.settings.showOutputWindowOn": "Warning",
+    "liveSassCompile.settings.showOutputWindowOn": "Warning"
 }

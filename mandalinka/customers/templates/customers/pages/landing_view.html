@@ -1,0 +1,6 @@
+<section id="landing-view">
+  <div id="Account" is_authenticated="{{ request.user.is_authenticated }}" my_account_link="{% url 'home:my_account' %}"
+    log_out_link="{% url 'home:logout' %}" new_user_link="{% url 'home:new_user' %}">
+  </div>
+  <script type="module" src="{% static 'js/landing_view.js' %}"></script>
+</section>
