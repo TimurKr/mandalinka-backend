@@ -53,6 +53,7 @@ class User(AbstractUser):
     def __str__(self):
         return self.get_full_name()
 
+
     # def get_alergens(self):
     #     alergens = set()
     #     for alergen in self.alergies.all():
@@ -124,24 +125,31 @@ class Address(models.Model):
         return '%s: %s' % (self.name, self.address)
 
     def make_primary(self):
-        prev_primary = self.user.addresses.get(primary=True)
-        prev_primary.primary = False
-        prev_primary.save()
         self.primary = True
         self.save()
 
 @receiver(models.signals.post_delete, sender=Address)
 def choose_new_primary_address(sender, instance, using, **kwargs):
-    if instance.primary:
-        try:
-            user = instance.user
-        except:
-            return
-        if user is None:
-            return
-        try:
-            address = user.addresses.first()
-        except:
-            return
-        address.primary = True
-        address.save()
+    """ Prevent from not having primary address"""
+    if not instance.primary: return
+    user = instance.user
+    if not user: return
+    addresses = user.addresses.all()
+    if addresses.count() == 0:
+        # Send notification once notifications are implemented
+        pass
+    addresses.first().make_primary()
+
+@receiver(models.signals.post_save, sender=Address)
+def pick_primary_address(sender, instance, using, **kwargs):
+    """ Prevent form existing 2 primary addressess"""
+    if not instance.primary: return
+    user = instance.user
+    if not user: return
+    prev_primary_address = user.addresses.exclude(pk=instance.pk).filter(primary=True)
+    if prev_primary_address.count() == 0: return
+    prev_primary_address = prev_primary_address.first()
+    prev_primary_address.primary = False
+    prev_primary_address.save()
+    
+

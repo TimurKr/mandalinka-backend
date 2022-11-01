@@ -77,7 +77,7 @@ class NewUserForm(auth_forms.UserCreationForm):
                 Div(FloatingField('password2'), css_class='col-12'),
                 Div(Field('newsletter'), css_class='col-12 form-check form-switch ms-2 pe-2'),
                 Div(Field('terms_conditions'), css_class='col-12 form-check form-switch ms-2 pe-2'),
-                Div(SecondaryButton('Vrátiť domov'), css_class='col-sm-6'),
+                Div(SecondaryButton('Naspäť'), css_class='col-sm-6'),
                 Div(SubmitButton('submit', 'Vytvoriť účet'), css_class='col-sm-6'),
                 css_class='row g-2'
             )
