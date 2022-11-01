@@ -1,0 +1,14 @@
+{% autoescape off %}
+Ahoj {{ name }},
+{% if pronoun == "male" %}
+Ďakujeme že si sa rozhodol pridať sa k Mandalinke. 
+Prosím, dokonči registráciu kliknutím na nasledovný link:
+
+{% elif pronoun == "female" %}
+Ďakujeme že si sa rozhodla pridať sa k Mandalinke. 
+Prosím, dokonči registráciu kliknutím na nasledovný link:    
+
+{% endif %}
+http://{{ domain }}{% url 'accounts:email_confirmed' uidb64=uid token=token %}
+
+{% endautoescape %}

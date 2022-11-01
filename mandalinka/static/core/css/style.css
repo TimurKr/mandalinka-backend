@@ -9,7 +9,11 @@
   font-weight: bold;
 }
 .material-symbols-rounded {
+  font-size: 100% !important;
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 40;
+}
+.material-symbols-rounded.in-p {
+  font-variation-settings: "FILL" 0, "wght" 600, "GRAD" 0, "opsz" 24;
 }
 
 /*!
@@ -10951,7 +10955,7 @@ textarea.form-control-lg {
 section.mid-page-body {
   background-color: #f6b68e;
   min-height: 100vh;
-  padding-top: 15vw;
+  padding: 15vw 0;
 }
 section.mid-page-body > div {
   background-color: #fdf3ec;
@@ -10959,7 +10963,7 @@ section.mid-page-body > div {
   max-width: 35rem;
   width: 85%;
   padding: 25px;
-  margin: 0 auto 10vw auto;
+  margin: 0 auto;
   border-radius: 20px;
 }
 section.mid-page-body > div > h2, section.mid-page-body > div > .h2 {
@@ -10967,26 +10971,33 @@ section.mid-page-body > div > h2, section.mid-page-body > div > .h2 {
   margin-bottom: 20px;
 }
 
-form .primary-button {
-  width: 100%;
+.primary-button {
   background-color: #F28500;
   color: black;
   box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
   transition: 0.2s ease-in-out;
 }
-form .primary-button:hover {
+.primary-button:hover {
   box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2) inset;
   border: 1px solid #F28500;
   color: #F28500;
 }
-form .secondary-button {
-  width: 100%;
+
+.secondary-button {
   color: #F28500;
-  box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
   transition: 0.2s ease-in-out;
 }
-form .secondary-button:hover {
+.secondary-button:hover {
+  color: #F28500;
+  box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
   border: 1px solid #F28500;
+}
+
+form .title {
+  font-weight: bold;
+}
+form .primary-button, form .secondary-button {
+  width: 100%;
 }
 form .form-check-input:hover, form .form-check-label:hover {
   cursor: pointer;

@@ -1,0 +1,30 @@
+{% extends "core/html/mid_page_body.html" %}
+{% load static %}
+
+
+{% block page_name %}
+  Potvrdenie zadanej emailovej adresy
+{% endblock %}
+
+{% block title %}
+  Potvrď zadanú emailovú adresu
+{% endblock %}
+
+{% block body %}
+<h6>
+  Na tvoju emailovú adresu sme odoslali mail s linkom na dokončenie registrácie.
+</h6>
+<h6>
+  {% if pronoun == 'male' %}
+  Ak ti mail nepríde do pár minút, skontroluj si spam 
+  a uisti sa, že si zadal správnu adresu.
+  Ak ti aj napriek tomu neprišiel, kontaktuj nás.
+  
+  {% elif pronoun == 'female' %}
+  Ak ti mail nepríde do pár minút, skontroluj si spam 
+  a uisti sa, že si zadala správnu adresu.
+  Ak ti aj napriek tomu neprišiel, kontaktuj nás.
+  
+  {% endif %}
+</h6>
+{% endblock %}

@@ -1,13 +1,73 @@
 # To inherit models
+from email.policy import default
 from re import I
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from recipes.models import Diet
 
 # To recieve signals
 from django.dispatch import receiver
 
+# To handle exceptions
+from django.core.exceptions import ObjectDoesNotExist
+
+#################### Addresses #######################
+
+class Address(models.Model):
+    name = models.CharField(max_length=32, default="Domov", verbose_name="Názov adresy")
+    address = models.CharField(max_length=128, verbose_name="Adresa a číslo domu", help_text="Nezabudnite pridať číslo domu")
+    note = models.TextField(max_length=256, blank=True, verbose_name="Poznámka pre kuriéra", help_text="(zvonček, poschodie, ...)")
+    city = models.CharField(max_length=100, verbose_name="Mesto")
+    district = models.CharField(max_length=50,blank=True, verbose_name="Okres")
+    postal = models.CharField(max_length=6, verbose_name="PSČ")
+    country = models.CharField(max_length=32, blank=True, verbose_name="Krajina")
+    coordinates = models.CharField(max_length=64)
+
+    primary = models.BooleanField(default=True)
+
+    user = models.ForeignKey('accounts.User', blank=True, null=True, related_name='addresses', on_delete=models.CASCADE)
+
+    def __str__(self):
+        if self.primary:
+            return '*%s*: %s' % (self.name, self.address)
+        return '%s: %s' % (self.name, self.address)
+
+    def make_primary(self):
+        self.primary = True
+        self.save()
+
+@receiver(models.signals.post_delete, sender=Address)
+def choose_new_primary_address(sender, instance, using, **kwargs):
+    """ Prevent from not having primary address"""
+    if not instance.primary: return
+    try:
+        user = instance.user
+    except ObjectDoesNotExist:
+        return
+    if not user: return
+    addresses = user.addresses.all()
+    if addresses.count() == 0:
+        # Send notification once notifications are implemented
+        pass
+    addresses.first().make_primary()
+
+@receiver(models.signals.post_save, sender=Address)
+def pick_primary_address(sender, instance, using, **kwargs):
+    """ Prevent form existing 2 primary addressess"""
+    if not instance.primary: return
+    user = instance.user
+    if not user: return
+    prev_primary_address = user.addresses.exclude(pk=instance.pk).filter(primary=True)
+    if prev_primary_address.count() == 0: return
+    prev_primary_address = prev_primary_address.first()
+    prev_primary_address.primary = False
+    prev_primary_address.save()
+    
+
 
 #################### Users #######################
+def default_diet():
+    return Diet.objects.get(name='Bez diety')
 
 class User(AbstractUser):
     # Basics
@@ -16,7 +76,6 @@ class User(AbstractUser):
     PRONOUNS = (
         ('male', 'Mužský rod'),
         ('female', 'Ženský rod'),
-        ('they', 'Vykanie'),
     )
     pronoun = models.CharField('Oslovovanie', max_length=16, choices=PRONOUNS)
     email = models.EmailField('Email', unique=True)
@@ -25,7 +84,7 @@ class User(AbstractUser):
     terms_conditions = models.BooleanField(blank=False)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ('first_name', 'last_name', 'phone', 'terms_conditions')
+    REQUIRED_FIELDS = ('username','first_name', 'last_name', 'phone', 'terms_conditions')
 
     # Validations
     is_email_valid = models.BooleanField(default=False)
@@ -33,17 +92,22 @@ class User(AbstractUser):
     is_subscribed = models.BooleanField(default=False)
 
     # Preferences
-    default_num_portions = models.IntegerField(default=4, blank=False, choices=((2,2),(4,4),(6,6)))
-    food_preferences = models.ManyToManyField('recipes.Attribute', 
-        related_name="users",
-        blank=True
+    default_num_portions = models.IntegerField(
+        default=4, blank=False, choices=((2,2),(4,4),(6,6)),
+        verbose_name='Počet porcií', help_text='Koľko vás bude pravidelne jedávať?')
+    food_preferences = models.ManyToManyField('recipes.Attribute', related_name="users",
+        blank=True, default=None, 
+        verbose_name='Preferencie', help_text='Pri zvolení automatického objednávania vám vyberieme jedlá, ktoré budú zdielať najviac atríbutov s vašimi preferenciami.',
     )
     alergies = models.ManyToManyField('recipes.Alergen', 
         related_name="users", 
-        blank=True
+        blank=True, default=None,
+        verbose_name='Alergie', help_text="Máte nejaké alergie? Povedzte nám o nich teraz a my vám nikdy automaticky neobjednáme recept obsahujúci daný alergén."
     )
     diet = models.ManyToManyField('recipes.Diet', 
-        related_name='users'
+        related_name='users',
+        blank=True, default=None,
+        verbose_name='Diety', help_text='Máte nejaké diety? Pri automatickom objednávanií vám budeme vyberať iba z jednál, ktoré spadajú do vašej diety.',
     )
 
 
@@ -54,14 +118,15 @@ class User(AbstractUser):
         return self.get_full_name()
 
 
-    # def get_alergens(self):
-    #     alergens = set()
-    #     for alergen in self.alergies.all():
-    #         alergens.add((alergen.code, alergen.title))
-    #     return list(alergens)
+    def get_alergens(self):
+        """Return a set of alergies in the format ((code, name), (code, name), ...)"""
+        alergens = set()
+        for alergen in self.alergies.all():
+            alergens.add((alergen.code, alergen.name))
+        return list(alergens)
 
 
-    # def add_address(self, address: Address):
+    # def add_address(self, address):
     #     if address.primary:
     #         for a in self.addresses.all():
     #             a.primary = False
@@ -101,55 +166,4 @@ class EmailVerification(ModelBackend):
             return None
 
         return user if self.user_can_authenticate(user) else None
-
-
-#################### Addresses #######################
-
-class Address(models.Model):
-    name = models.CharField(max_length=32, default="Domov", verbose_name="Názov adresy", help_text="Názov, pod ktorým uložíme túto adresu")
-    address = models.CharField(max_length=128, verbose_name="Adresa a číslo domu", help_text="Nezabudnite pridať číslo domu")
-    note = models.TextField(max_length=256, blank=True, verbose_name="Poznámka pre kuriéra", help_text="(zvonček, poschodie, ...)")
-    city = models.CharField(max_length=100, verbose_name="Mesto")
-    district = models.CharField(max_length=50,blank=True, verbose_name="Okres")
-    postal = models.CharField(max_length=6, verbose_name="PSČ")
-    country = models.CharField(max_length=32, blank=True, verbose_name="Krajina")
-    coordinates = models.CharField(max_length=64)
-
-    primary = models.BooleanField(default=True)
-
-    user = models.ForeignKey('accounts.User', blank=True, null=True, related_name='addresses', on_delete=models.CASCADE)
-
-    def __str__(self):
-        if self.primary:
-            return '*%s*: %s' % (self.name, self.address)
-        return '%s: %s' % (self.name, self.address)
-
-    def make_primary(self):
-        self.primary = True
-        self.save()
-
-@receiver(models.signals.post_delete, sender=Address)
-def choose_new_primary_address(sender, instance, using, **kwargs):
-    """ Prevent from not having primary address"""
-    if not instance.primary: return
-    user = instance.user
-    if not user: return
-    addresses = user.addresses.all()
-    if addresses.count() == 0:
-        # Send notification once notifications are implemented
-        pass
-    addresses.first().make_primary()
-
-@receiver(models.signals.post_save, sender=Address)
-def pick_primary_address(sender, instance, using, **kwargs):
-    """ Prevent form existing 2 primary addressess"""
-    if not instance.primary: return
-    user = instance.user
-    if not user: return
-    prev_primary_address = user.addresses.exclude(pk=instance.pk).filter(primary=True)
-    if prev_primary_address.count() == 0: return
-    prev_primary_address = prev_primary_address.first()
-    prev_primary_address.primary = False
-    prev_primary_address.save()
-    
 

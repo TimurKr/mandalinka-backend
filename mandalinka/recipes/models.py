@@ -47,8 +47,7 @@ class Attribute(models.Model):
 class Diet(models.Model):
     name = models.CharField(
         max_length=32, 
-        primary_key=True, 
-        verbose_name="Patrí toto jedlo do nejakej diety",
+        primary_key=True,
     )
 
     def __str__(self):
