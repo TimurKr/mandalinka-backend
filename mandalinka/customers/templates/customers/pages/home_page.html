@@ -1,0 +1,14 @@
+{% extends 'core/html/base.html' %}
+{% load static %}
+
+{% block page_name %}
+    Mandalinka
+{% endblock %}
+
+{% block extra_head %}
+{% endblock %}
+
+{% block core %}
+    {% include 'customers/pages/includes/landing_view.html' %}
+    {% include 'customers/pages/includes/order_editing.html' %}
+{% endblock %}

@@ -11002,7 +11002,7 @@ form .primary-button, form .secondary-button {
 form .form-check-input:hover, form .form-check-label:hover {
   cursor: pointer;
 }
-form .mb-3 {
+form .row .mb-3 {
   margin-bottom: 0px !important;
 }
 

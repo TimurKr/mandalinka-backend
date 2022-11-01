@@ -1,5 +1,6 @@
 import json
 from re import I
+import re
 from time import sleep
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
@@ -26,6 +27,34 @@ from . import forms
 from .models import User, Address
 from .tokens import account_activation_token
 
+# BASICS ##################################################################################
+
+def login_view(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('customers:home_page'))
+
+    if request.method == "POST":
+        form = forms.LoginForm(request=request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+
+            # If user object is returned, log in and route to index page:
+            if user:
+                login(request, user)
+                return HttpResponseRedirect(reverse('customers:home_page'))
+    else:
+        form = form.LoginForm()
+
+    context = {
+            "loginform": form,
+            "focus": "LoginModal",
+        }
+    return render(request, "customers/pages/home_page.html", context)
+
+@login_required
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('customers:home_page'))
 
 # NEW USER ################################################################################
 
@@ -103,7 +132,6 @@ def add_first_address_view(request):
         form = forms.FirstAddressForm()
     return render(request,"accounts/new_user/pages/add_address.html", context={'form':form})
 
-
 @login_required
 def set_preferences_view(request):
     if request.method == "POST":    
@@ -137,7 +165,11 @@ def choose_plan_view(request):
 def my_account_view(request):
     return HttpResponseBadRequest(request)
 
-
 @login_required
 def edit_preferences(request):
+    return HttpResponseBadRequest(request)
+
+# PASSWORD RESET ###################################################################
+
+def password_reset_view(request):
     return HttpResponseBadRequest(request)

@@ -20,16 +20,48 @@ class SubmitButton(BaseInput):
 class SecondaryButton(StrictButton):
     field_classes = 'btn secondary-button'
 
-    def __init__(self, content, onclick: str = None, *args, **kwargs):
+    def __init__(self, content, onclick = None, *args, **kwargs):
         if onclick:
-            try:
-                onclick = f'location.href="{reverse(onclick)}"'
-            except NoReverseMatch:
-                pass
-            else:
-                super().__init__(content, onclick=onclick, *args, **kwargs)
-        super().__init__(content, *args, **kwargs)
+            onclick = f'location.href="{reverse(onclick)}"'
+            super().__init__(content, onclick=onclick, *args, **kwargs)
+        else:
+            super().__init__(content, *args, **kwargs)
 
+# BASICS ########################################################################
+
+class LoginForm(auth_forms.AuthenticationForm):
+
+    error_messages = {
+        "invalid_login": _("Zadajte valídny email a heslo."),
+        "inactive": _("Tento účet je deaktivovaný. Kontaktujte nás."),
+    }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_action = reverse('accounts:login')
+        self.helper.form_id = 'LoginForm'
+        self.helper.form_class = 'needs-validation'
+        self.helper.attrs = {'novalidate':''}
+        self.helper.layout = Layout(
+                FloatingField('username', 'password'),
+                HTML("<p> \
+                    Zabudli ste heslo? Kliknite \
+                    <a class='link-primary' href='{% url 'accounts:password_reset' %}'> \
+                    sem</a>!</p>"
+                ),
+                Div(
+                    Div(
+                        SecondaryButton('Zaregistrovať sa', onclick='accounts:new_user'),
+                        css_class='col-sm-6'
+                    ),
+                    Div(
+                        SubmitButton('submit', 'Prihlásiť sa'),
+                        css_class='col-sm-6'
+                    ),
+                    css_class='row g-3'
+                )
+            )
 
 # NEW USER ######################################################################
 
@@ -72,7 +104,7 @@ class NewUserForm(auth_forms.UserCreationForm):
         self.helper.attrs = {'novalidate': ''}
         self.helper.layout = Layout(
             Div(
-                Div(FloatingField('first_name'), css_class='col-sm-4 col-6'),
+                Div(FloatingField('first_name', autofocus=True), css_class='col-sm-4 col-6'),
                 Div(FloatingField('pronoun'), css_class='col-sm-4 col-6'),
                 Div(FloatingField('last_name'), css_class='col-sm-4'),
                 Div(FloatingField('email'), css_class='col-12'),
@@ -81,7 +113,7 @@ class NewUserForm(auth_forms.UserCreationForm):
                 Div(FloatingField('password2'), css_class='col-12'),
                 Div(Field('newsletter'), css_class='col-12 form-check form-switch ms-2 pe-2'),
                 Div(Field('terms_conditions'), css_class='col-12 form-check form-switch ms-2 pe-2'),
-                Div(SecondaryButton('Naspäť'), css_class='col-sm-6'),
+                Div(SecondaryButton('Naspäť', onclick='customers:home_page'), css_class='col-sm-6'),
                 Div(SubmitButton('submit', 'Vytvoriť účet'), css_class='col-sm-6'),
                 css_class='row g-2'
             )
