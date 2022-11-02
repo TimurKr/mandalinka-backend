@@ -43,7 +43,7 @@ def login_view(request):
                 login(request, user)
                 return HttpResponseRedirect(reverse('customers:home_page'))
     else:
-        form = form.LoginForm()
+        form = forms.LoginForm()
 
     context = {
             "loginform": form,
@@ -151,9 +151,9 @@ def choose_plan_view(request):
         pass
     elif request.method == 'GET':
         plan = request.GET.get('plan', '')
-        if plan is '0':
+        if plan == '0':
             return HttpResponseRedirect(reverse('customers:home_page'))
-        elif plan is '1':
+        elif plan == '1':
             return render(request,"accounts/new_user/pages/set_payment.html")
     return render(request,"accounts/new_user/pages/choose_plan.html")
         
@@ -171,5 +171,43 @@ def edit_preferences(request):
 
 # PASSWORD RESET ###################################################################
 
-def password_reset_view(request):
-    return HttpResponseBadRequest(request)
+def password_reset_request(request):
+    if request.method == "POST":
+        form = forms.PasswordResetForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            try:
+                user = User.objects.get(email=email)
+            except:
+                form.add_error(None, ValidationError('Užívateľ neexistuje', 'user_not_in_database'))
+            else:
+                form.send_mail(
+                    subject_template_name='accounts/password_reset/emails/subject.txt',
+                    email_template_name='accounts/password_reset/emails/body.txt',
+                    context = {
+                        'name': user.first_name,
+                        'pronoun': user.pronoun,
+                        'domain': '127.0.0.1:8000',
+                        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                        'token': default_token_generator.make_token(user),
+                        'protocol':  'http', 
+                        },
+                    from_email = 'admin@example.com',
+                    to_email = form.cleaned_data['email']
+                )
+                return render(request, 'accounts/password_reset/pages/email_sent.html', 
+                    context={'pronoun': user.pronoun})
+    else:
+        form = forms.PasswordResetForm()
+    return render(request, "accounts/password_reset/pages/request.html", {"form": form})
+
+class PasswordResetSetView(auth_views.PasswordResetConfirmView):
+    template_name = 'accounts/password_reset/pages/set.html'
+    form_class = forms.SetPasswordForm
+    reset_url_token = 'set-password'
+    success_url = reverse_lazy('accounts:password_reset_complete')
+    title = 'Zadajte nové heslo'
+
+class PasswordResetCompleteView(auth_views.PasswordResetCompleteView):
+    template_name = 'accounts/password_reset/pages/complete.html'
+    title = 'Heslo zmenené úspešne'

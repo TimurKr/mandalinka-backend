@@ -246,3 +246,44 @@ class SetPreferencesForm(PreferencesForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper.form_action = reverse('accounts:set_preferences')
+
+# PASSWORD RESET ###############################################################
+
+class PasswordResetForm(auth_forms.PasswordResetForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_action = reverse('accounts:password_reset')
+        self.helper.form_id = 'PasswordResetForm'
+        self.helper.form_class = 'needs-validation'
+        self.helper.attrs = {'novalidate': ''}
+        self.helper.layout = Layout(
+            Div(
+                Div(FloatingField('email'), css_class='col-12'),
+                Div(SubmitButton('submit', 'Odoslať'), css_class="col-auto ms-auto"),
+                css_class='row g-2'
+            )
+        )
+
+class SetPasswordForm(auth_forms.SetPasswordForm):
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(user, *args, **kwargs)
+
+        self.fields['new_password1'].label = 'Heslo'
+        self.fields['new_password2'].label = 'Heslo znova'
+        self.fields['new_password1'].help_text = ''
+        self.fields['new_password2'].help_text = ''
+
+        self.helper = FormHelper(self)
+        # self.helper.form_action = reverse('home:password_reset_set')
+        self.helper.form_id = 'PasswordResetForm'
+        self.helper.form_class = 'needs-validation'
+        self.helper.attrs = {'novalidate': ''}
+        self.helper.layout = Layout(
+            Div(
+                Div(FloatingField('new_password1'), css_class='col-12'),
+                Div(FloatingField('new_password2'), css_class='col-12'),
+                Div(SubmitButton('submit', 'Nastaviť nové heslo'), css_class="col-auto ms-sm-auto"),
+                css_class='row g-2'
+            )
+        )
