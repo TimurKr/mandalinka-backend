@@ -3,6 +3,8 @@ from django import forms
 
 from .models import User, Address
 
+from django.core.exceptions import ValidationError
+
 from django.urls import reverse, reverse_lazy
 from django.urls.exceptions import NoReverseMatch
 from django.utils.translation import gettext_lazy as _
@@ -63,7 +65,7 @@ class LoginForm(auth_forms.AuthenticationForm):
                 )
             )
 
-# NEW USER ######################################################################
+# GENERAL ######################################################################
 
 class NewUserForm(auth_forms.UserCreationForm):
     class Meta:
@@ -125,6 +127,46 @@ class NewUserForm(auth_forms.UserCreationForm):
         instance.save()
         return instance
 
+class GeneralUserInfoForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = (
+            "first_name",
+            "pronoun",
+            "last_name", 
+            "phone",
+            "newsletter",
+            "terms_conditions",
+        )
+        labels = NewUserForm.Meta.labels
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['terms_conditions'].required = True
+
+        self.helper = FormHelper(self)
+        self.helper.form_action = reverse_lazy('accounts:edit_general')
+        self.helper.form_id = 'general_info'
+        self.helper.form_class = 'needs-validation'
+        self.helper.attrs = {'novalidate': ''}
+        self.helper.layout = Layout(
+            Div(
+                Div(FloatingField('first_name'), css_class='col-8'),
+                Div(FloatingField('pronoun'), css_class='col-4'),
+                Div(FloatingField('last_name'), css_class='col-12'),
+                Div(FloatingField('phone'), css_class='col-12'),
+                Div(Field('newsletter'), css_class='col-12 form-check form-switch ms-2 pe-2'),
+                Div(Field('terms_conditions'), css_class='col-12 form-check form-switch ms-2 pe-2'),
+                Div(SecondaryButton('Zmeniť heslo', onclick="accounts:password_change"), css_class='col-sm-4 col-6'),
+                Div(SecondaryButton('Zmeniť email', onclick="accounts:email_change"), css_class='col-sm-4 col-6'),
+                Div(SubmitButton('submit', 'Uložiť'), 
+                    css_class='col-sm-4'),
+                Div(SecondaryButton('Vymazať účet', onclick="accounts:deactivate", css_class='danger'), css_class='col-auto ms-auto'),
+                css_class='row g-2'
+            )
+        )
+
 # ADDRESS #######################################################################
 
 class BaseAddressForm(forms.ModelForm):
@@ -143,6 +185,7 @@ class BaseAddressForm(forms.ModelForm):
             'country', 
             'coordinates',
         )
+
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['coordinates'].widget = forms.HiddenInput()
@@ -179,15 +222,23 @@ class BaseAddressForm(forms.ModelForm):
                     FloatingField('postal'),
                     FloatingField('country'),
                     'coordinates',
-                    css_class='map-panel col-sm-6 col-12'
+                    css_class='map-panel col-md-6 col-12'
                 ),
-                Div(css_class='map col-sm-6 col-12', css_id='gmp-map'),
+                Div(css_class='map col-md-6 col-12', css_id='gmp-map'),
                 secondary_button,
                 Div(SubmitButton('submit', 'Uložiť'), css_class='col-sm-6 ms-auto'),
                 css_class='address-selection row g-3'
             ),
             HTML('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEZTFyo0Kf5YL5SWe6vmmfEMmF5QxSTbU&libraries=places&callback=initMap&solution_channel=GMP_QB_addressselection_v1_cABC" async defer></script>'),
         )
+
+    def save(self, commit=True):
+        try:
+            return super().save(commit=commit)
+        except ValueError:
+            if self.errors.get('coordinates', None):
+                self.add_error('address',ValidationError('Pri zadávaní adresy zvolte z ponúkaného výberu. Uistite sa, že sa na mape zobrazuje správna adresa.', 'no_coordinates'))
+            return super().save(commit=commit)
 
 class FirstAddressForm(BaseAddressForm):
     form_action = reverse_lazy('accounts:add_first_address')
@@ -205,7 +256,7 @@ class EditAddressForm(BaseAddressForm):
     secondary_button_title = 'Naspäť'
     def __init__(self, address_id, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.helper.form_action = reverse('home:edit_address', args=address_id)
+        self.helper.form_action = reverse('accounts:edit_address', args=(address_id,))
 
 # PREFERENCES ##################################################################
 
@@ -247,7 +298,33 @@ class SetPreferencesForm(PreferencesForm):
         super().__init__(*args, **kwargs)
         self.helper.form_action = reverse('accounts:set_preferences')
 
-# PASSWORD RESET ###############################################################
+# PASSWORD MANIPULATION ###############################################################
+
+class PasswordChangeForm(auth_forms.PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['old_password'].label = 'Staré heslo'
+        self.fields['new_password1'].label = 'Heslo'
+        self.fields['new_password2'].label = 'Heslo znova'
+        self.fields['old_password'].help_text = ''
+        self.fields['new_password1'].help_text = ''
+        self.fields['new_password2'].help_text = ''
+
+        self.helper = FormHelper(self)
+        self.helper.form_id = 'PasswordChangeForm'
+        self.helper.form_class = 'needs-validation'
+        self.helper.attrs = {'novalidate': ''}
+        self.helper.layout = Layout(
+            Div(
+                Div(FloatingField('old_password'), css_class='col-12, pb-3'),
+                Div(FloatingField('new_password1'), css_class='col-12'),
+                Div(FloatingField('new_password2'), css_class='col-12'),
+                Div(SecondaryButton('Naspäť', 'accounts:my_account'), css_class="col-auto ms-sm-auto"),
+                Div(SubmitButton('submit', 'Nastaviť nové heslo'), css_class="col-auto"),
+                css_class='row g-2'
+            )
+        )
 
 class PasswordResetForm(auth_forms.PasswordResetForm):
     def __init__(self, *args, **kwargs):
@@ -275,7 +352,6 @@ class SetPasswordForm(auth_forms.SetPasswordForm):
         self.fields['new_password2'].help_text = ''
 
         self.helper = FormHelper(self)
-        # self.helper.form_action = reverse('home:password_reset_set')
         self.helper.form_id = 'PasswordResetForm'
         self.helper.form_class = 'needs-validation'
         self.helper.attrs = {'novalidate': ''}
@@ -283,7 +359,7 @@ class SetPasswordForm(auth_forms.SetPasswordForm):
             Div(
                 Div(FloatingField('new_password1'), css_class='col-12'),
                 Div(FloatingField('new_password2'), css_class='col-12'),
-                Div(SubmitButton('submit', 'Nastaviť nové heslo'), css_class="col-auto ms-sm-auto"),
+                Div(SubmitButton('submit', 'Nastaviť nové heslo'), css_class="col-auto ms-auto"),
                 css_class='row g-2'
             )
         )

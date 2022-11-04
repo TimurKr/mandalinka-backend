@@ -18,7 +18,17 @@ urlpatterns = [
 
     # Manage account
     path('my_account', views.my_account_view, name='my_account'),
+    path('my_account/edit_general', views.edit_general, name='edit_general'),
     path('my_account/edit_preferences', views.edit_preferences, name='edit_preferences'),
+
+    path('my_account/address/add_address', views.add_address, name="add_address"),
+    path('my_account/address/edit_address/<address_id>', views.edit_address, name="edit_address"),
+    path('my_account/address/delete_address/<address_id>', views.delete_address, name="delete_address"),
+    path('my_account/address/set_primary_address/<address_id>', views.set_primary_address, name="set_primary_address"),
+
+    path('my_account/password_change', views.PasswordChangeView.as_view(), name='password_change'),
+    path('my_account/email_change', views.email_change, name='email_change'),
+    path('my_account/deactivate', views.deactivate_account, name='deactivate'),
 
     # Password reset
     path('password_reset', views.password_reset_request, name='password_reset'),

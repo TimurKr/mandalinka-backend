@@ -10952,6 +10952,11 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+h2, .h2 {
+  display: flex;
+  align-items: center;
+}
+
 section.mid-page-body {
   background-color: #f6b68e;
   min-height: 100vh;
@@ -10969,6 +10974,10 @@ section.mid-page-body > div {
 section.mid-page-body > div > h2, section.mid-page-body > div > .h2 {
   font-weight: bold;
   margin-bottom: 20px;
+}
+section.mid-page-body > div > h2 > span, section.mid-page-body > div > .h2 > span {
+  font-size: 150% !important;
+  margin-right: 0.4em;
 }
 
 .primary-button {

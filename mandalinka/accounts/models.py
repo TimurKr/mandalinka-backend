@@ -25,7 +25,7 @@ class Address(models.Model):
 
     primary = models.BooleanField(default=True)
 
-    user = models.ForeignKey('accounts.User', blank=True, null=True, related_name='addresses', on_delete=models.CASCADE)
+    user = models.ForeignKey('accounts.User', related_name='addresses', on_delete=models.CASCADE)
 
     def __str__(self):
         if self.primary:
@@ -33,6 +33,7 @@ class Address(models.Model):
         return '%s: %s' % (self.name, self.address)
 
     def make_primary(self):
+        if self.primary: return
         self.primary = True
         self.save()
 
@@ -47,9 +48,9 @@ def choose_new_primary_address(sender, instance, using, **kwargs):
     if not user: return
     addresses = user.addresses.all()
     if addresses.count() == 0:
-        # Send notification once notifications are implemented
-        pass
-    addresses.first().make_primary()
+        # TODO: Send notification once notifications are implemented
+        return
+    addresses.last().make_primary()
 
 @receiver(models.signals.post_save, sender=Address)
 def pick_primary_address(sender, instance, using, **kwargs):

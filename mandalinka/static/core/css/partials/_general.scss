@@ -1,5 +1,8 @@
 // MID-PAGE-BODY ///////////////////////////////////////
-
+h2 {
+  display: flex;
+  align-items: center;
+}
 section.mid-page-body {
   background-color: $primary-light;
   min-height: 100vh;
@@ -15,6 +18,10 @@ section.mid-page-body {
     >h2 {
       font-weight: bold;
       margin-bottom: 20px;
+      >span{
+        font-size: 150% !important;
+        margin-right: 0.4em;
+      }
     }
   }
 }

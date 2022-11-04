@@ -158,15 +158,138 @@ def choose_plan_view(request):
     return render(request,"accounts/new_user/pages/choose_plan.html")
         
 
-
 # ACCOUNT MANAGEMENT ##############################################################
 
+def render_my_account(
+    request, section=None,
+    general_form: forms.GeneralUserInfoForm = None,
+    preferences_form: forms.PreferencesForm = None,
+    ):
+
+    general_form = general_form or forms.GeneralUserInfoForm(instance=request.user)
+    preferences_form = preferences_form or forms.PreferencesForm(instance=request.user)
+    
+    addresses = [
+        {
+            'id': address.id, 
+            'name': address.name, 
+            'address': address.address,
+            'primary': address.primary,
+        } for address in request.user.addresses.all().order_by('id')]
+
+    return render(request,"accounts/manage/pages/my_account.html",context = {
+        'section': section,
+        'general_form': general_form,
+        'addresses': addresses,
+        'preferences_form': preferences_form,
+    })
+
 @login_required
-def my_account_view(request):
-    return HttpResponseBadRequest(request)
+def my_account_view(request, section = None):
+    if request.method == 'GET':
+        section = request.GET.get('section', None)
+    return render_my_account(request, section=section)
+        
+
+@login_required
+def edit_general(request):
+    if request.method == 'POST':
+        form = forms.GeneralUserInfoForm(request.POST, instance=request.user)
+        try:
+            form.save()
+        except:
+            pass
+    return render_my_account(request, section='general', general_form = form or None)
+
+@login_required
+def add_address(request):
+    if request.method == 'POST':
+        form = forms.AddAddressForm(request.POST)
+        try:
+            address = form.save(commit=False)
+        except ValueError:
+            pass
+        else:
+            if request.user.addresses.filter(name=address.name).count() == 0:
+                address.user = request.user
+                address.save()
+                return HttpResponseRedirect(reverse('accounts:my_account')+'?section=addresses')
+            else:
+                form.add_error('name', ValidationError('Adresa s daným menom už existuje', 'name_not_unique'))
+    else:
+        form = forms.AddAddressForm()
+    return render(request,"accounts/manage/pages/add_address.html", {'form':form})
+
+@login_required
+def edit_address(request, address_id):
+    try:
+        address = Address.objects.get(id=address_id)
+    except:
+        return render_my_account(request, section=address)
+
+    if request.method == 'POST':
+        form = forms.EditAddressForm(address_id, request.POST, instance=address)
+        try:
+            address = form.save(commit=False)
+        except ValueError:
+            pass
+        else:
+            if request.user.addresses.filter(name=address.name).count() <= 1:
+                address.user = request.user
+                address.save()
+                return HttpResponseRedirect(reverse('accounts:my_account')+'?section=addresses')
+            else:
+                form.add_error('name', ValidationError('Adresa s daným menom už existuje', 'name_not_unique'))
+    else:
+        form = forms.EditAddressForm(address_id, instance=address)
+    return render(request,"accounts/manage/pages/edit_address.html", {'form':form})
+
+@login_required
+def delete_address(request, address_id):
+    try:
+        address = Address.objects.get(id=address_id)
+    except:
+        pass
+    else:
+        address.delete()
+    finally:
+        return HttpResponseRedirect(reverse('accounts:my_account')+'?section=addresses')
+
+@login_required
+def set_primary_address(request, address_id):
+    try:
+        address = Address.objects.get(id=address_id)
+    except:
+        pass
+    else:
+        address.make_primary()
+    finally:
+        return HttpResponseRedirect(reverse('accounts:my_account')+'?section=addresses')
+
 
 @login_required
 def edit_preferences(request):
+    if request.method == 'POST':
+        form = forms.PreferencesForm(request.POST, instance=request.user)
+        try:
+            form.save()
+        except:
+            pass
+    return render_my_account(request, section='preferences', preferences_form = form or None)
+
+class PasswordChangeView(auth_views.PasswordChangeView):
+    template_name = 'accounts/manage/pages/password_change.html'
+    form_class = forms.PasswordChangeForm
+    success_url = reverse_lazy('accounts:my_account')
+    title = 'Zmena hesla'
+
+
+@login_required
+def email_change(request):
+    return HttpResponseBadRequest(request)
+
+@login_required
+def deactivate_account(request):
     return HttpResponseBadRequest(request)
 
 # PASSWORD RESET ###################################################################

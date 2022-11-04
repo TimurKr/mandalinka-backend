@@ -7,5 +7,5 @@ class UserAdmin(admin.ModelAdmin):
     filter_horizontal = ('food_preferences', 'alergies', 'diet',)
 
 
-
 admin.site.register(User, UserAdmin)
+admin.site.register(Address)
