@@ -337,7 +337,8 @@ class PasswordResetForm(auth_forms.PasswordResetForm):
         self.helper.layout = Layout(
             Div(
                 Div(FloatingField('email'), css_class='col-12'),
-                Div(SubmitButton('submit', 'Odoslať'), css_class="col-auto ms-auto"),
+                Div(SecondaryButton('Naspäť', 'accounts:login'), css_class="col-auto ms-auto"),
+                Div(SubmitButton('submit', 'Odoslať'), css_class="col-auto"),
                 css_class='row g-2'
             )
         )

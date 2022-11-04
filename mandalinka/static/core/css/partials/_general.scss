@@ -1,8 +1,14 @@
 // MID-PAGE-BODY ///////////////////////////////////////
 h2 {
+  font-weight: bold;
   display: flex;
   align-items: center;
+  >span{
+    font-size: 150% !important;
+    margin-right: 0.4em;
+  }
 }
+
 section.mid-page-body {
   background-color: $primary-light;
   min-height: 100vh;

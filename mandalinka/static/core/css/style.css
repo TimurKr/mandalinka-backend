@@ -10953,8 +10953,13 @@ textarea.form-control-lg {
   }
 }
 h2, .h2 {
+  font-weight: bold;
   display: flex;
   align-items: center;
+}
+h2 > span, .h2 > span {
+  font-size: 150% !important;
+  margin-right: 0.4em;
 }
 
 section.mid-page-body {
