@@ -1,1 +1,6 @@
-<section id="order-editing"></section>
+{% load static %}
+<section id="order-editing">
+    <div id="current-order"></div>
+    <script type="module" src="{% static 'customers/js/order_editing.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'customers/css/order_editing.css' %}"/>
+</section>
