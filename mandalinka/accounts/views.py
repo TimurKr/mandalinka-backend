@@ -199,6 +199,8 @@ def edit_general(request):
             form.save()
         except:
             pass
+        else:
+            return HttpResponseRedirect(reverse('accounts:my_account')+'?section=general')
     return render_my_account(request, section='general', general_form = form or None)
 
 @login_required
@@ -275,6 +277,8 @@ def edit_preferences(request):
             form.save()
         except:
             pass
+        else:
+            return HttpResponseRedirect(reverse('accounts:my_account')+'?section=preferences')
     return render_my_account(request, section='preferences', preferences_form = form or None)
 
 class PasswordChangeView(auth_views.PasswordChangeView):

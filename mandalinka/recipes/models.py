@@ -11,18 +11,11 @@ def validate_cooking_time_range(value):
             params = {'value': value},
         )
 
-def validate_portions(value):
-    if value % 2 != 0 or value < 0 or value > 100:
-        raise ValidationError(
-            _('%(value)s is invalid amount of portions, should be even and on range 0<=x<=100]')
-        )
-
-
-
 ################################# Models ###################################
 
 class Alergen(models.Model):
     name = models.CharField(
+        unique = True,
         max_length=63, 
         verbose_name="Alergén"
     )
@@ -37,7 +30,7 @@ class Alergen(models.Model):
 class Attribute(models.Model):
     name = models.CharField(
         max_length=255, 
-        primary_key=True,
+        unique=True,
         verbose_name="Atribút",
     )
 
@@ -46,8 +39,8 @@ class Attribute(models.Model):
 
 class Diet(models.Model):
     name = models.CharField(
+        unique=True,
         max_length=32, 
-        primary_key=True,
     )
 
     def __str__(self):
@@ -55,24 +48,25 @@ class Diet(models.Model):
 
 
 class IngredientInstance(models.Model):
-    ingredient = models.ForeignKey("recipes.Ingredient", on_delete=models.PROTECT)
-    recipe_version = models.ForeignKey("recipes.Recipe", on_delete=models.PROTECT)
+    ingredient = models.ForeignKey("recipes.Ingredient", related_name="instances", 
+        on_delete=models.PROTECT
+    )
+    recipe = models.ForeignKey("recipes.Recipe", related_name="ingredients_mid",
+        on_delete=models.PROTECT
+    )
     amount = models.IntegerField(
         verbose_name="Množstvo", help_text="Zadajte množstvo danej potraviny"
     )
 
     def __str__(self):
-        return f"{self.amount} {self.ingredient.unit} {self.ingredient}"
+        return f"{self.amount} {self.ingredient.unit} {self.ingredient.name}"
 
 class Ingredient(models.Model):
-    title = models.CharField(
-        max_length=31, unique=True, 
+    name = models.CharField(
+        max_length=31, 
+        unique=True,
         verbose_name="Názov", help_text="Názov ingrediencie"
     )
-    price_per_unit = models.FloatField(
-        verbose_name="Cena na jednotku", help_text="Zadajte cenu na nižšie zvolenú jednotku"
-    )
-
     img = models.ImageField(
         upload_to="ingredients", 
         verbose_name="Obrázok", help_text="Pridajte obrazok ku kroku",
@@ -88,9 +82,12 @@ class Ingredient(models.Model):
     unit = models.CharField(
         max_length=3, choices=UNITS_TO_SELECT, 
         verbose_name="Jednotka", help_text="Zvolte jednotku")
+    price_per_unit = models.FloatField(
+        verbose_name="Cena na jednotku", help_text="Zadajte cenu na nižšie zvolenú jednotku"
+    )
 
     alergens = models.ManyToManyField('recipes.Alergen', related_name="ingredients",
-        blank=True, 
+        blank=True, default=None,
         verbose_name="Alergény", help_text="Zvolte všetky alergény:"
     )
 
@@ -98,32 +95,39 @@ class Ingredient(models.Model):
     date_modified = models.DateTimeField(auto_now=True, verbose_name="Naposledy upravené")
 
     def __str__(self):
-        return self.title
+        return self.name
 
 
 class Recipe(models.Model):
     # General
-    title = models.CharField(max_length=63, unique=True, verbose_name="Názov")
-    description = models.TextField(max_length=127, verbose_name="Opis jedla", help_text="Zadajte stručný opis jedla")
+    name = models.CharField(
+        max_length=63, 
+        unique=True, 
+        verbose_name="Názov"
+    )
+    description = models.TextField(
+        max_length=127, 
+        verbose_name="Opis jedla", help_text="Zadajte stručný opis jedla"
+    )
     thumbnail = models.ImageField(
         upload_to="recipes", 
         help_text="Pridajte thumbnail", 
-        blank=True, null=True)
-    active = models.BooleanField(
-        verbose_name="Aktívny",
+        blank=True, null=True
+    )
+    is_active = models.BooleanField(
         blank=True,
+        verbose_name="Aktívny", help_text="Používa sa tento recept ešte?"
     )
 
     # Relation to previous
     predecessor = models.ForeignKey('recipes.Recipe', related_name='successor', 
         on_delete=models.PROTECT, 
-        verbose_name='predchodca', 
+        verbose_name='Predchodca', 
         help_text='V prípade, že je tento recept iba pozmenený predchádzajúci, zvolte ktorý mu predchádzal',
-        blank=True
+        blank=True, null=True,
     )
 
     # Preparation
-
     ingredients = models.ManyToManyField('recipes.Ingredient', through='recipes.IngredientInstance', related_name="recipes",
         verbose_name='Ingrediencie',
         help_text="Zvolte všetky ingrediencie",
@@ -151,10 +155,12 @@ class Recipe(models.Model):
 
     attributes = models.ManyToManyField('recipes.Attribute', related_name="recipes", 
         blank=True,
+        verbose_name="Attribúty", help_text="Zadajte všetky atribúty jedla", 
     )
     
-    diet = models.ManyToManyField('recipes.Diet', 
-        related_name='recipes',
+    diet = models.ManyToManyField('recipes.Diet', related_name='recipes',
+        blank=True,
+        verbose_name="Dieta", help_text="Spadá tento recept do nejakých diet?"
     )
 
 
@@ -163,8 +169,24 @@ class Recipe(models.Model):
     created_by = models.ForeignKey('accounts.User', related_name="created_recipes", 
         on_delete=models.PROTECT,
         verbose_name="Created by", help_text="Zvolte seba",
-        blank=True, null=True
     )
 
     def __str__(self):
-        return f"{self.title}"
+        return f"{self.name}"
+
+class RecipeDeliveryInstance(models.Model):
+    recipe = models.ForeignKey('recipes.Recipe', related_name="delivery_days_mid",
+        on_delete=models.PROTECT
+    )
+    delivery_day = models.ForeignKey('deliveries.DeliveryDay', related_name='recipes_mid', 
+        on_delete=models.PROTECT
+    )
+    
+    cost = models.FloatField(
+        verbose_name='Reálne náklady',
+        blank=True, null=True, default=None,
+    )
+    price = models.FloatField(
+        verbose_name='Predajná cena',
+        blank=True, null=True, default=None,
+    )

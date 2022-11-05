@@ -10,15 +10,15 @@ class IngredientInstanceInline(admin.TabularInline):
     extra = 1
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ("title", "thumbnail",) # "get_cost", "get_price", "get_profit",)
+    list_display = ("name", "thumbnail",) # "get_cost", "get_price", "get_profit",)
 
-    filter_horizontal = ("attributes", "diet",)
+    filter_horizontal = ("attributes", "diet", )
     inlines = (IngredientInstanceInline,)
     
     
 
 class IngredientAdmin(admin.ModelAdmin):
-    list_display = ("title", "price_per_unit", "img",)
+    list_display = ("name", "price_per_unit", "img",)
     filter_horizontal = ("alergens",)
     
 class DeliveryDayAdmin(admin.ModelAdmin):
