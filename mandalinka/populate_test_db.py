@@ -9,6 +9,16 @@ from deliveries import models as deliveries_models
 class Error(Exception):
     pass
 
+
+
+# Needs to be run from the shell
+
+# % python manage.py shell
+# >> from populate_test_db import run
+# >> run()
+
+
+
 def run():
     print('Running...')
 

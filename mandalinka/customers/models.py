@@ -79,12 +79,29 @@ class Order(models.Model):
         help_text="True - pickup, False - delivery" 
     )
 
+    class Meta:
+        unique_together = ('user', 'delivery_day',)
+
+    ### OUTPUT ###
     def __str__(self):
         return f"Objednávka užívatela {self.user}, dňa {self.delivery_day.date.strftime('%d.%m.%Y')}"
 
+    ### INPUT ###
     def toggle_pickup(self):
         if self.pickup: 
             self.pickup = False
         else: 
             self.pickup = True
         self.save()
+
+    ### METHODS ###
+    def automaticaly_generate(self, force: bool=False):
+        """
+        Automaticaly add the best recipes based on preferences
+        force: bool -> True overrides the lack of subscription
+        """
+        if self.user.is_payment_valid or force:
+            print("I just tried generating automatic order based on preferences")
+            print("Order:", self)
+        else:
+            raise Exception("You must be subscribed")

@@ -106,8 +106,7 @@ def email_confirmed_view(request, uidb64, token):
         pass
     else:
         if account_activation_token.check_token(user, token):
-            user.is_email_valid = True
-            user.save()
+            user.validate_email()
             login(request, user)
             return render(request, 'accounts/new_user/pages/email_confirmed.html', context={
                         'name': user.first_name,
@@ -121,12 +120,12 @@ def add_first_address_view(request):
     if request.method == 'POST':
         form = forms.FirstAddressForm(request.POST)
         try:
-            address = form.save()
-            if request.user.addresses.all().count() == 0:
-                request.user.addresses.add(address)
+            address = form.save(commit=False)
         except ValueError:
             pass
         else:
+            address.user = request.user
+            address.save()
             return HttpResponseRedirect(reverse('accounts:set_preferences'))
     else:
         form = forms.FirstAddressForm()
@@ -152,8 +151,10 @@ def choose_plan_view(request):
     elif request.method == 'GET':
         plan = request.GET.get('plan', '')
         if plan == '0':
+            request.user.save()
             return HttpResponseRedirect(reverse('customers:home_page'))
         elif plan == '1':
+            request.user.start_subscription(force=True) #TODO: Remove force when we have working payments
             return render(request,"accounts/new_user/pages/set_payment.html")
     return render(request,"accounts/new_user/pages/choose_plan.html")
         

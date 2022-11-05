@@ -2,6 +2,7 @@
 from email.policy import default
 from re import I
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth.models import AbstractUser
 from recipes.models import Diet
 
@@ -9,7 +10,9 @@ from recipes.models import Diet
 from django.dispatch import receiver
 
 # To handle exceptions
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
+
+import datetime
 
 #################### Addresses #######################
 
@@ -88,9 +91,23 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ('username','first_name', 'last_name', 'phone', 'terms_conditions')
 
     # Validations
-    is_email_valid = models.BooleanField(default=False)
-    is_payment_valid = models.BooleanField(default=False)
-    is_subscribed = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True,
+        help_text=
+            "Designates whether this user should be treated as active. "
+            "Unselect this instead of deleting accounts."
+    )
+    is_email_valid = models.BooleanField(default=False, 
+        help_text=
+            "Designates whether this user has confirmed email. "
+    )
+    is_payment_valid = models.BooleanField(default=False, 
+        help_text=
+            "Designates whether this user has a valid payment option. "
+    )
+    is_subscribed = models.BooleanField(default=False,
+        help_text=
+            "Designates whether this user is subscribed, has automatic payments turned on. "
+    )
 
     # Preferences
     default_num_portions = models.IntegerField(
@@ -113,9 +130,22 @@ class User(AbstractUser):
     class Meta(AbstractUser.Meta):
         abstract = False
 
+        constraints = [
+            models.CheckConstraint(
+                check=Q(is_subscribed=True, is_payment_valid=True) | Q(is_subscribed=False),
+                name='Payment is required for subscription'),
+            models.CheckConstraint(
+                check=Q(is_payment_valid=True, is_email_valid=True) | Q(is_payment_valid=False),
+                name='Email confirmation is required for adding payment method'),
+            models.CheckConstraint(
+                check=Q(is_subscribed=True, is_active=True) | Q(is_subscribed=False),
+                name='Being active is required for subscription'),
+        ]
+
+
+    ### OUTPUTS ###
     def __str__(self):
         return self.get_full_name()
-
 
     def get_alergens(self):
         """Return a set of alergies in the format ((code, name), (code, name), ...)"""
@@ -125,13 +155,42 @@ class User(AbstractUser):
         return list(alergens)
 
 
-    # def add_address(self, address):
-    #     if address.primary:
-    #         for a in self.addresses.all():
-    #             a.primary = False
-    #             a.save()
-    #     self.addresses.add(address)
-    #     self.save()
+    ### INPUTS ###
+    def validate_email(self):
+        self.is_email_valid = True
+        self.generate_empty_orders()
+        self.save()
+
+    def start_subscription(self, force: bool = False):
+        """
+        Subscribtion generates all new orders
+        force: bool -> True overrides the need for valid payment
+        """
+        try:
+            self.is_subscribed = True
+            self.save()
+        except ValidationError as e:
+            if not force:
+                raise e
+        finally:
+            self.populate_future_orders()
+            # TODO: send success notification
+
+####################################### Next: finish order generation in all situations ##################################################
+
+    ### METHODS ###
+    def generate_empty_orders(self): # When new user is created
+        from django.apps import apps    
+        DeliveryDay = apps.get_model('deliveries', 'DeliveryDay')
+        for delivery_day in DeliveryDay.objects.filter(date__gte=datetime.date.today()):
+            self.orders.get_or_create(delivery_day=delivery_day)
+
+    def populate_future_orders(self): # When user subscribes
+        self.generate_empty_orders()
+        for order in self.orders.filter(delivery_day__date__gte=datetime.date.today()):
+            order.automaticaly_generate()
+
+
 
 @receiver(models.signals.pre_save, sender=User)
 def create_user_profile(sender, instance, created=False, **kwargs):

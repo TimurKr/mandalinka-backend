@@ -21,5 +21,14 @@ class DeliveryDay(models.Model):
     def save(self, generate_orders: bool = False, *args, **kwargs):
         super().save(*args, **kwargs)
         if generate_orders: 
-            # generate orders
-            pass
+            self.generate_orders()
+
+    def generate_orders(self):
+        from django.apps import apps    
+        User = apps.get_model('accounts', 'User')
+        for user in User.objects.filter(is_active=True):
+            (order, created) = user.orders.get_or_create(delivery_day=self)
+            assert created is False
+            if user.is_subscribed: 
+                order.automaticaly_generate()
+                
