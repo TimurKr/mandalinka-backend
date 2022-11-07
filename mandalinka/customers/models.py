@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.dispatch import receiver
+
 ################################# Validators ###################################
 
 from django.core.exceptions import ValidationError
@@ -79,12 +81,16 @@ class Order(models.Model):
         help_text="True - pickup, False - delivery" 
     )
 
+    payed = models.BooleanField(default=False)
+
+
     class Meta:
         unique_together = ('user', 'delivery_day',)
 
     ### OUTPUT ###
     def __str__(self):
         return f"Objednávka užívatela {self.user}, dňa {self.delivery_day.date.strftime('%d.%m.%Y')}"
+
 
     ### INPUT ###
     def toggle_pickup(self):
@@ -94,14 +100,22 @@ class Order(models.Model):
             self.pickup = True
         self.save()
 
+
     ### METHODS ###
     def automaticaly_generate(self, force: bool=False):
         """
         Automaticaly add the best recipes based on preferences
         force: bool -> True overrides the lack of subscription
         """
-        if self.user.is_payment_valid or force:
-            print("I just tried generating automatic order based on preferences")
+        if self.user._is_payment_valid or force:
+            print("I just tried generating automatic order based on preferences, but Timur didn't actually write the code yet.")
             print("Order:", self)
         else:
-            raise Exception("You must be subscribed")
+            raise Exception("You must be subscribed to automaticaly generate order")
+
+
+
+@receiver(models.signals.pre_save, sender=Order)
+def create_user_profile(sender, instance, created=False, **kwargs):
+    if created:
+        instance.pickup = instance.user.default_pickup

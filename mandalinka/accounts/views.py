@@ -154,7 +154,7 @@ def choose_plan_view(request):
             request.user.save()
             return HttpResponseRedirect(reverse('customers:home_page'))
         elif plan == '1':
-            request.user.start_subscription(force=True) #TODO: Remove force when we have working payments
+            request.user.start_subscription(force=True) #TODO: This will be only after the next step, setting payments
             return render(request,"accounts/new_user/pages/set_payment.html")
     return render(request,"accounts/new_user/pages/choose_plan.html")
         
@@ -295,7 +295,13 @@ def email_change(request):
 
 @login_required
 def deactivate_account(request):
-    return HttpResponseBadRequest(request)
+    return render(request, 'accounts/manage/pages/deactivate_account_check.html')
+
+@login_required
+def deactivate_account_fr(request):
+    # request.user.deactivate_account()
+    # logout(request)
+    return render(request, 'accounts/manage/pages/deactivate_account_done.html')
 
 # PASSWORD RESET ###################################################################
 

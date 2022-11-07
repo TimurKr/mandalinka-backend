@@ -1,0 +1,27 @@
+#recipes-list > div {
+  padding: 5em 5vh 20vh 5vh;
+  background-color: #f6b68e;
+  min-height: 100vh;
+}
+#recipes-list > div .recipe {
+  width: 100%;
+  min-height: 5em;
+  border-radius: 5px;
+  background-color: #fdf3ec;
+}
+#recipes-list > div .recipe div {
+  margin: auto 0;
+}
+#recipes-list > div .recipe div.info {
+  margin: 0.5em auto 0.5em 0.5em !important;
+}
+#recipes-list > div .recipe .img {
+  padding-left: 0;
+}
+#recipes-list > div .recipe .recipe-name {
+  margin: 0;
+}
+#recipes-list > div .recipe .recipe-description {
+  font-size: 75%;
+  margin: 0;
+}

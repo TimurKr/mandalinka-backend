@@ -72,7 +72,11 @@ class Ingredient(models.Model):
         verbose_name="Obrázok", help_text="Pridajte obrazok ku kroku",
         blank=True, null=True, default=None
     )
-    
+    is_active = models.BooleanField(
+        default=False, editable=False,
+        verbose_name="Aktívny", help_text="Používa sa táto ingrediencia ešte?"
+    )
+
     UNITS_TO_SELECT = [
         (None, "Zvolte jednotku"),
         ("g", "gramy"),
@@ -115,7 +119,7 @@ class Recipe(models.Model):
         blank=True, null=True
     )
     is_active = models.BooleanField(
-        blank=True,
+        default=False, editable=False,
         verbose_name="Aktívny", help_text="Používa sa tento recept ešte?"
     )
 
@@ -170,6 +174,11 @@ class Recipe(models.Model):
         on_delete=models.PROTECT,
         verbose_name="Created by", help_text="Zvolte seba",
     )
+
+    class Meta:
+        permissions = [
+            ('toggle_recipe_is_active', 'Can activate or deactivate any recipe'),
+        ]
 
     def __str__(self):
         return f"{self.name}"

@@ -96,15 +96,15 @@ class User(AbstractUser):
             "Designates whether this user should be treated as active. "
             "Unselect this instead of deleting accounts."
     )
-    is_email_valid = models.BooleanField(default=False, 
+    _is_email_valid = models.BooleanField(default=False, 
         help_text=
             "Designates whether this user has confirmed email. "
     )
-    is_payment_valid = models.BooleanField(default=False, 
+    _is_payment_valid = models.BooleanField(default=False, 
         help_text=
             "Designates whether this user has a valid payment option. "
     )
-    is_subscribed = models.BooleanField(default=False,
+    _is_subscribed = models.BooleanField(default=False,
         help_text=
             "Designates whether this user is subscribed, has automatic payments turned on. "
     )
@@ -113,6 +113,9 @@ class User(AbstractUser):
     default_num_portions = models.IntegerField(
         default=4, blank=False, choices=((2,2),(4,4),(6,6)),
         verbose_name='Počet porcií', help_text='Koľko vás bude pravidelne jedávať?')
+    default_pickup = models.BooleanField(default=False,
+        verbose_name='Osobné vyzdvihovanie', help_text='Zaškrtnite, ak si želáte objednávky vyzdvihovať osobne u nás v kamennej predajni.'
+    )
     food_preferences = models.ManyToManyField('recipes.Attribute', related_name="users",
         blank=True, 
         verbose_name='Preferencie', help_text='Pri zvolení automatického objednávania vám vyberieme jedlá, ktoré budú zdielať najviac atríbutov s vašimi preferenciami.',
@@ -132,13 +135,13 @@ class User(AbstractUser):
 
         constraints = [
             models.CheckConstraint(
-                check=Q(is_subscribed=True, is_payment_valid=True) | Q(is_subscribed=False),
+                check=Q(_is_subscribed=True, _is_payment_valid=True) | Q(_is_subscribed=False),
                 name='Payment is required for subscription'),
             models.CheckConstraint(
-                check=Q(is_payment_valid=True, is_email_valid=True) | Q(is_payment_valid=False),
+                check=Q(_is_payment_valid=True, _is_email_valid=True) | Q(_is_payment_valid=False),
                 name='Email confirmation is required for adding payment method'),
             models.CheckConstraint(
-                check=Q(is_subscribed=True, is_active=True) | Q(is_subscribed=False),
+                check=Q(_is_subscribed=True, is_active=True) | Q(_is_subscribed=False),
                 name='Being active is required for subscription'),
         ]
 
@@ -156,39 +159,61 @@ class User(AbstractUser):
 
 
     ### INPUTS ###
+    def deactivate_account(self):
+        self.is_subscribed = False
+        self.is_payment_valid = False
+        self.is_email_valid = False
+        self.is_active = False
+        self.__delete_all_future_orders()
+
     def validate_email(self):
         self.is_email_valid = True
-        self.generate_empty_orders()
+        self.__generate_empty_orders()
+        self.save()
+
+    def validate_payment(self):
+        self.is_payment_valid = True
         self.save()
 
     def start_subscription(self, force: bool = False):
         """
         Subscribtion generates all new orders
-        force: bool -> True overrides the need for valid payment
+        force: bool -> True overrides the need for valid payment, doesn't make _is_subscribed True
         """
         try:
-            self.is_subscribed = True
+            print('Trying to turn on subscription...')
+            self._is_subscribed = True
             self.save()
-        except ValidationError as e:
+        except Exception as e:
+            print('Failed to turn on subscription')
             if not force:
+                print('Raising error:')
                 raise e
         finally:
-            self.populate_future_orders()
+            print('Force made me continue...')
+            self.__populate_future_orders(force=force)
             # TODO: send success notification
 
-####################################### Next: finish order generation in all situations ##################################################
-
     ### METHODS ###
-    def generate_empty_orders(self): # When new user is created
+    def __generate_empty_orders(self): # When new user is created
         from django.apps import apps    
         DeliveryDay = apps.get_model('deliveries', 'DeliveryDay')
-        for delivery_day in DeliveryDay.objects.filter(date__gte=datetime.date.today()):
+        for delivery_day in DeliveryDay.objects.filter(date__gte=datetime.date.today(), public=True):
             self.orders.get_or_create(delivery_day=delivery_day)
 
-    def populate_future_orders(self): # When user subscribes
-        self.generate_empty_orders()
+    def __delete_all_future_orders(self):
+        self.order.filter(delivery_day__date__gte=datetime.date.today(), payed=False).delete()
+    
+    def populate_next_order(self):
+        """This relies on the fact that there is at least one future order"""
+        self.orders.filter(delivery_day__date__gte=datetime.date.today()).order_by('date').first().automaticaly_generate()
+
+
+    def __populate_future_orders(self, force=False):
+        """This relies on the fact that all future empty orders were created"""
         for order in self.orders.filter(delivery_day__date__gte=datetime.date.today()):
-            order.automaticaly_generate()
+            order.automaticaly_generate(force=force)
+
 
 
 

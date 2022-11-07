@@ -4,7 +4,7 @@ from accounts.models import *
 # Register your models here.
 
 class UserAdmin(admin.ModelAdmin):
-    filter_horizontal = ('food_preferences', 'diet', 'alergies', )
+    filter_horizontal = ('food_preferences', 'diet', 'alergies', 'groups', 'user_permissions',)
 
 
 admin.site.register(User, UserAdmin)

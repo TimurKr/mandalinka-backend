@@ -10985,6 +10985,26 @@ section.mid-page-body > div > h2 > span, section.mid-page-body > div > .h2 > spa
   margin-right: 0.4em;
 }
 
+.danger-button {
+  color: red !important;
+  transition: 0.2s ease-in-out;
+}
+.danger-button:hover {
+  background-color: red !important;
+  color: white !important;
+  border: None !important;
+  box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
+}
+
+.danger-light-button {
+  color: red !important;
+  transition: 0.2s ease-in-out;
+}
+.danger-light-button:hover {
+  border: 1px solid red !important;
+  box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
+}
+
 .primary-button {
   background-color: #F28500;
   color: black;

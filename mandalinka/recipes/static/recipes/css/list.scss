@@ -1,0 +1,29 @@
+@import '../../../../static/core/css/partials/variables';
+
+#recipes-list > div {
+    padding: 5em 5vh 20vh 5vh;
+    background-color: $primary-light;
+    min-height: 100vh;
+    .recipe {
+        width: 100%;
+        min-height: 5em;
+        border-radius: 5px;
+        background-color: $off-white;
+        div {
+            margin: auto 0;
+            &.info {
+                margin: 0.5em auto 0.5em 0.5em !important;
+            }
+        }
+        .img {
+            padding-left: 0;
+        }
+        .recipe-name {
+            margin: 0;
+        }
+        .recipe-description {
+            font-size: 75%;
+            margin: 0;
+        }
+    }
+}

@@ -6,8 +6,8 @@ app_name = 'accounts'
 
 urlpatterns = [
     # Basics
-    path('login', views.login_view, name='login'),
-    path('logout', views.logout_view, name='logout'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
 
     # New user
     path('new_user', views.new_user_view, name='new_user'),
@@ -29,6 +29,7 @@ urlpatterns = [
     path('my_account/password_change', views.PasswordChangeView.as_view(), name='password_change'),
     path('my_account/email_change', views.email_change, name='email_change'),
     path('my_account/deactivate', views.deactivate_account, name='deactivate'),
+    path('my_account/deactivate/fr', views.deactivate_account_fr, name='deactivate_fr'),
 
     # Password reset
     path('password_reset', views.password_reset_request, name='password_reset'),

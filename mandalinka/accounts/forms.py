@@ -162,7 +162,7 @@ class GeneralUserInfoForm(forms.ModelForm):
                 Div(SecondaryButton('Zmeniť email', onclick="accounts:email_change"), css_class='col-sm-4 col-6'),
                 Div(SubmitButton('submit', 'Uložiť'), 
                     css_class='col-sm-4'),
-                Div(SecondaryButton('Vymazať účet', onclick="accounts:deactivate", css_class='danger'), css_class='col-auto ms-auto'),
+                Div(SecondaryButton('Deaktivovať účet', onclick="accounts:deactivate", css_class='danger-button'), css_class='col-auto ms-auto'),
                 css_class='row g-2'
             )
         )
@@ -264,9 +264,10 @@ class PreferencesForm(forms.ModelForm):
     class Meta:
         model = User
         fields = (
+            'default_num_portions',
+            'default_pickup',
             'food_preferences',
             'alergies',
-            'default_num_portions',
             'diet',
         )
         widgets = {
@@ -290,6 +291,7 @@ class PreferencesForm(forms.ModelForm):
             'food_preferences',
             'diet',
             'alergies',
+            Div(Field('default_pickup'), css_class='form-check form-switch'),
             Div(Div(SubmitButton('submit', 'Uložiť'),css_class='col-6 ms-auto mt-3'),css_class='row')
         )
 
