@@ -9,6 +9,8 @@
             {% block title %}
             {% endblock %}
         </h2>
+
+        {% include 'core/html/message_warning.html' with message=message warning=warning only %}
         
         {% block body %}
         {% endblock %}

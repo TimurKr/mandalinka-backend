@@ -1,0 +1,36 @@
+{% extends 'core/html/base.html' %}
+{% load static %}
+
+{% block page_name %}
+Ingrediencie
+{% endblock %}
+
+{% block extra_head %}
+<link href="{% static 'recipes/css/list.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block core %}
+<section id="ingredients-list" class="manage-list">
+    <div>
+        <div class="p-3">
+            {% include 'core/html/message_warning.html' with message=message warning=warning only %}
+            <div class="row">
+                <div class="col-auto">
+                    <h2 id="title">
+                        Zoznam ingrediencií
+                    </h2>
+                </div>
+                <div class="col-auto ms-auto">
+                    <a role="button" class="btn dark-light-button" href="{% url 'recipes:manage' %}">Naspäť</a>
+                </div>
+                <div class="col-auto">
+                    <a role="button" class="btn success-button" href="{% url 'recipes:add_ingredient' %}">Pridať novú ingredienciu</a>
+                </div>
+            </div>
+            {% for ingredient in ingredients %}
+                {% include 'recipes/ingredients/widget.html' with ingredient=ingredient only %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

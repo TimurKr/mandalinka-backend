@@ -11005,6 +11005,45 @@ section.mid-page-body > div > h2 > span, section.mid-page-body > div > .h2 > spa
   box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
 }
 
+.success-button {
+  color: green !important;
+  transition: 0.2s ease-in-out;
+}
+.success-button:hover {
+  background-color: green !important;
+  color: white !important;
+  box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
+}
+
+.success-light-button {
+  color: green !important;
+  transition: 0.2s ease-in-out;
+}
+.success-light-button:hover {
+  border: 1px solid green !important;
+  box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
+}
+
+.dark-button {
+  color: black !important;
+  transition: 0.2s ease-in-out;
+}
+.dark-button:hover {
+  background-color: black !important;
+  color: white !important;
+  border: None !important;
+  box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
+}
+
+.dark-light-button {
+  color: black !important;
+  transition: 0.2s ease-in-out;
+}
+.dark-light-button:hover {
+  border: 1px solid black !important;
+  box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
+}
+
 .primary-button {
   background-color: #F28500;
   color: black;

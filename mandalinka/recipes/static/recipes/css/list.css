@@ -1,27 +1,34 @@
-#recipes-list > div {
+.manage-list > div {
   padding: 5em 5vh 20vh 5vh;
   background-color: #f6b68e;
   min-height: 100vh;
 }
-#recipes-list > div .recipe {
+.manage-list > div .recipe, .manage-list > div .ingredient {
   width: 100%;
-  min-height: 5em;
   border-radius: 5px;
   background-color: #fdf3ec;
 }
-#recipes-list > div .recipe div {
+
+#recipes-list .recipe div, #ingredients-list .ingredient div {
   margin: auto 0;
 }
-#recipes-list > div .recipe div.info {
-  margin: 0.5em auto 0.5em 0.5em !important;
+#recipes-list .recipe div.info, #ingredients-list .ingredient div.info {
+  margin: 0.5em !important;
 }
-#recipes-list > div .recipe .img {
+#recipes-list .recipe div.edit, #ingredients-list .ingredient div.edit {
+  margin-left: auto !important;
+}
+#recipes-list .recipe .img, #ingredients-list .ingredient .img {
   padding-left: 0;
 }
-#recipes-list > div .recipe .recipe-name {
+#recipes-list .recipe .name, #ingredients-list .ingredient .name {
   margin: 0;
 }
-#recipes-list > div .recipe .recipe-description {
+#recipes-list .recipe .description, #ingredients-list .ingredient .description {
   font-size: 75%;
+}
+#recipes-list .recipe .created, #recipes-list .recipe .edited, #ingredients-list .ingredient .created, #ingredients-list .ingredient .edited {
+  font-size: 75%;
+  color: grey;
   margin: 0;
 }

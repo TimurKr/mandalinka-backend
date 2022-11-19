@@ -98,8 +98,21 @@ class Ingredient(models.Model):
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="Čas vzniku")
     date_modified = models.DateTimeField(auto_now=True, verbose_name="Naposledy upravené")
 
+    class Meta:
+        permissions = [
+            ('toggle_is_active_ingredient', 'Can activate or deactivate any recipe'),
+        ]
+
     def __str__(self):
         return self.name
+
+    def activate(self):
+        self._is_active = True
+        self.save()
+    
+    def deactivate(self):
+        self._is_active = False
+        self.save()
 
 
 class Recipe(models.Model):
@@ -130,6 +143,11 @@ class Recipe(models.Model):
         help_text='V prípade, že je tento recept iba pozmenený predchádzajúci, zvolte ktorý mu predchádzal',
         blank=True, null=True,
     )
+    exclusive_predecessor = models.BooleanField(
+        default=True,
+        verbose_name='Deaktivovať predchodcu?',
+        help_text='Predchodca bude deaktivovaný až v momente, keď tento recept aktivujete'
+    )
 
     # Preparation
     ingredients = models.ManyToManyField('recipes.Ingredient', through='recipes.IngredientInstance', related_name="recipes",
@@ -148,11 +166,11 @@ class Recipe(models.Model):
         ],
         verbose_name="Náročnosť", help_text="Zadajte náročnosť"
     )
-    StF_time = models.IntegerField(
+    StF_cooking_time = models.IntegerField(
         validators=[validate_cooking_time_range],
         verbose_name="Čas varenia", help_text="Zadajte dĺžku varenia od začiatku do hotového jedla"
     )
-    active_time = models.IntegerField(
+    active_cooking_time = models.IntegerField(
         validators=[validate_cooking_time_range],
         verbose_name="Čas prípravy", help_text="Zadajte dĺžku aktívneho času varenia"
     )
@@ -177,11 +195,22 @@ class Recipe(models.Model):
 
     class Meta:
         permissions = [
-            ('toggle_recipe_is_active', 'Can activate or deactivate any recipe'),
+            ('toggle_is_active_recipe', 'Can activate or deactivate any recipe'),
         ]
 
     def __str__(self):
         return f"{self.name}"
+
+    def activate(self):
+        self.is_active = True
+        if self.exclusive_predecessor and self.predecessor:
+            self.predecessor.deactivate()
+        self.save()
+    
+    def deactivate(self):
+        self.is_active = False
+        self.save()
+        
 
 class RecipeDeliveryInstance(models.Model):
     recipe = models.ForeignKey('recipes.Recipe', related_name="delivery_days_mid",

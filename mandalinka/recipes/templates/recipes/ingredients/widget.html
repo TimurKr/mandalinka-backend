@@ -1,0 +1,27 @@
+<div class="row ingredient">
+    <div class="col-auto img">img: {{ ingredient.thumnail }}</div>
+    <div class="col-auto info">
+        <h6 class="name">{{ ingredient.name }}</h6>
+        <p class="edited">Posledná úprava: {{ ingredient.date_created }}</p>
+        <p class="created">Vytvorené: {{ ingredient.date_created }}, {{ ingredient.created_by }}</p>
+    </div>
+    <div class="col-auto edit">
+        <a role="button" class="btn dark-light-button"
+            href="{% url 'recipes:edit_ingredient' ingredient_id=ingredient.id %}">
+            Upraviť
+        </a>
+    </div>
+    <div class="col-auto activation">
+        {% if ingredient.is_active %}
+            <a role="button" class="btn danger-light-button"
+                href="{% url 'recipes:deactivate_ingredient' ingredient_id=ingredient.id %}">
+                Deaktivovať
+            </a>
+        {% elif not ingredient.is_active %}
+            <a role="button" class="btn success-light-button" 
+                href="{% url 'recipes:activate_ingredient' ingredient_id=ingredient.id %}">
+                Aktivovať
+            </a>
+        {% endif %}
+    </div>
+</div>

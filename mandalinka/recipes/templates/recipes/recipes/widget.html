@@ -1,0 +1,28 @@
+<div class="row recipe">
+    <div class="col-auto img">img: {{ recipe.thumnail }}</div>
+    <div class="col-auto info">
+        <h6 class="name">{{ recipe.name }}</h6>
+        <p class="description">{{ recipe.description }}</p>
+        <p class="edited">Posledná úprava: {{ recipe.date_created }}</p>
+        <p class="created">Vytvorené: {{ recipe.date_created }}, {{ recipe.created_by }}</p>
+    </div>
+    <div class="col-auto edit">
+        <a role="button" class="btn dark-light-button"
+            href="{% url 'recipes:edit_recipe' recipe_id=recipe.id %}">
+            Upraviť
+        </a>
+    </div>
+    <div class="col-auto activation">
+        {% if recipe.is_active %}
+            <a role="button" class="btn danger-light-button"
+                href="{% url 'recipes:deactivate_recipe' recipe_id=recipe.id %}">
+                Deaktivovať
+            </a>
+        {% elif not recipe.is_active %}
+            <a role="button" class="btn success-light-button" 
+                href="{% url 'recipes:activate_recipe' recipe_id=recipe.id %}">
+                Aktivovať
+            </a>
+        {% endif %}
+    </div>
+</div>
