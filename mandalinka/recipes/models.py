@@ -100,18 +100,18 @@ class Ingredient(models.Model):
 
     class Meta:
         permissions = [
-            ('toggle_is_active_ingredient', 'Can activate or deactivate any recipe'),
+            ('toggle_is_active_ingredient', 'Can activate or deactivate any ingredient'),
         ]
 
     def __str__(self):
         return self.name
 
     def activate(self):
-        self._is_active = True
+        self.is_active = True
         self.save()
     
     def deactivate(self):
-        self._is_active = False
+        self.is_active = False
         self.save()
 
 
@@ -153,6 +153,7 @@ class Recipe(models.Model):
     ingredients = models.ManyToManyField('recipes.Ingredient', through='recipes.IngredientInstance', related_name="recipes",
         verbose_name='Ingrediencie',
         help_text="Zvolte všetky ingrediencie",
+        blank=True,
     )
     steps = models.TextField(blank=True, max_length=1024, 
         verbose_name="Postup", help_text='Jednotlivé kroky oddelujte enterom')

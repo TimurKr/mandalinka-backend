@@ -36,6 +36,7 @@
       new bootstrap.Modal('#LoginModal').show()
     }
   }
+
 </script>
 
 {% endif %}
@@ -44,9 +45,13 @@
 <section id="landing-view">
 
   <!-- Account Icons -->
-  <div id="account-menu" is_authenticated="{{ request.user.is_authenticated }}"
-    my_account_link="{% url 'accounts:my_account' %}" log_out_link="{% url 'accounts:logout' %}"
-    new_user_link="{% url 'accounts:new_user' %}">
+  <div id="account-menu" 
+    is_authenticated="{{ request.user.is_authenticated }}"
+    is_staff="{{ request.user.is_staff }}"
+    my_account_link="{% url 'accounts:my_account' %}"
+    log_out_link="{% url 'accounts:logout' %}"
+    new_user_link="{% url 'accounts:new_user' %}"
+    recipes_link="{% url 'recipes:manage' %}">
   </div>
   <script type="module" src="{% static 'customers/js/landing_view_navigation.js' %}"></script>
 
@@ -58,17 +63,23 @@
   </div>
 
   <!-- Arrow downwards -->
-  <div id="arrow-down" class="position-absolute bottom-0 start-50 translete-middle-x">
+  <a id="arrow-down" class="position-absolute bottom-0 start-50 translete-middle-x">
     <span class="material-symbols-rounded">
       keyboard_double_arrow_down
     </span>
-  </div>
+  </a>
+  <script>
+    document.getElementById('arrow-down').addEventListener('click', () => {
+      document.getElementById('landing-view').nextElementSibling.scrollIntoView();
+    })
+  </script>
+  
+
+  <!-- CSS -->
+  
+  <link href="{% static 'customers/css/landing_view.css' %}" rel="stylesheet">
 
 </section>
 
 
 
-
-<!-- CSS -->
-
-<link href="{% static 'customers/css/landing_view.css' %}" rel="stylesheet">

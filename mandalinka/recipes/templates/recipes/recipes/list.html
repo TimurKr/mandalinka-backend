@@ -12,38 +12,57 @@ Recepty
 {% block core %}
 <section id="recipes-list" class="manage-list">
     <div>
-        <div class="p-3">
-
+        <div>
             {% include 'core/html/message_warning.html' with message=message warning=warning only %}
-            <div class="row">
-                
-
-                <div class="col-auto">
+            <div class="row heading">
+                <div class="col-auto title">
                     <h2 id="title">
                         Zoznam receptov
                     </h2>
                 </div>
-                <div class="col-auto ms-auto">
-                    <a role="button" class="btn dark-light-button" href="{% url 'recipes:manage' %}">Naspäť</a>
+                <div class="col-auto ms-auto actions btn-group-vertical">
+                    <a role="button" href="{% url 'recipes:manage' %}" class="btn dark-light-button">
+                        Späť
+                    </a>
+                    <a role="button" href="{% url 'recipes:add_recipe' %}" class="btn success-light-button">
+                        Pridať
+                    </a>
                 </div>
-                <div class="col-auto">
-                    <a role="button" class="btn success-button" href="{% url 'recipes:add_recipe' %}">Pridať recept</a>
-                </div>
-
             </div>
-            <h4>Nedávno vytvorené neakívne recepty</h4>
-            {% for recipe in recipes.recent %}
-                {% include 'recipes/recipes/widget.html' with recipe=recipe only %}
-            {% endfor %}
-            <h4>Aktuálne využívané recepty recepty</h4>
-            {% for recipe in recipes.active %}
-                {% include 'recipes/recipes/widget.html' with recipe=recipe only %}
-            {% endfor %}
-            <h4>Deaktivované recepty recepty</h4>
-            {% for recipe in recipes.inactive %}
-                {% include 'recipes/recipes/widget.html' with recipe=recipe only %}
-            {% endfor %}
             
+            {% if recipes.recent %}
+            <h4>Nedávno vytvorené neakívne recepty</h4>
+                <div class="list">
+                    <hr width="90%" style="margin: 0 auto;">
+                    {% for recipe in recipes.recent %}
+                        {% include 'recipes/recipes/widget.html' with recipe=recipe only %}
+                        <hr width="90%" style="margin: 0 auto;">
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if recipes.active %}
+            <h4>Aktuálne využívané recepty recepty</h4>
+            <div class="list">
+                <hr width="90%" style="margin: 0 auto;">
+                {% for recipe in recipes.active %}
+                    {% include 'recipes/recipes/widget.html' with recipe=recipe only %}
+                    <hr width="90%" style="margin: 0 auto;">
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if recipes.inactive %}
+            <h4>Deaktivované recepty recepty</h4>
+            <div class="list">
+                <hr width="90%" style="margin: 0 auto;">
+                {% for recipe in recipes.inactive %}
+                    {% include 'recipes/recipes/widget.html' with recipe=recipe only %}
+                    <hr width="90%" style="margin: 0 auto;">
+                {% endfor %}
+            </div>
+            {% endif %}
+
         </div>
     </div>
 </section>

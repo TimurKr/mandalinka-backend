@@ -16,12 +16,15 @@ document.addEventListener("DOMContentLoaded", function () {
       var _this = _possibleConstructorReturn(this, (AccountIcon.__proto__ || Object.getPrototypeOf(AccountIcon)).call(this, props));
 
       _this.state = {
-        isHovering: false,
-        isAuthenticated: root_div.getAttribute("is_authenticated")
+        isHovering: false
       };
+      _this.isAuthenticated = root_div.getAttribute("is_authenticated");
+      _this.isStaff = root_div.getAttribute("is_staff");
       _this.myAccountLink = root_div.getAttribute("my_account_link");
       _this.logOutLink = root_div.getAttribute("log_out_link");
       _this.newUserLink = root_div.getAttribute("new_user_link");
+      _this.recipesLink = root_div.getAttribute("recipes_link");
+
       _this.handleMouseOver = _this.handleMouseOver.bind(_this);
       _this.handleMouseOut = _this.handleMouseOut.bind(_this);
       return _this;
@@ -41,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
       key: "render",
       value: function render() {
 
-        if (this.state.isAuthenticated === "True") {
+        if (this.isAuthenticated === "True") {
           return React.createElement(
             "div",
             { id: "account-icons", className: "position-absolute top-0 end-0", onMouseOver: this.handleMouseOver, onMouseOut: this.handleMouseOut },
@@ -69,6 +72,20 @@ document.addEventListener("DOMContentLoaded", function () {
                   "span",
                   { className: "custom-tooltip" },
                   "Upravte si profil"
+                )
+              ),
+              this.isStaff === "True" && React.createElement(
+                "a",
+                { href: this.recipesLink },
+                React.createElement(
+                  "span",
+                  { id: "recipes", className: "material-symbols-rounded option" },
+                  "restaurant"
+                ),
+                React.createElement(
+                  "span",
+                  { className: "custom-tooltip" },
+                  "Recepty"
                 )
               ),
               React.createElement(

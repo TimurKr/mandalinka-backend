@@ -3,31 +3,42 @@
   background-color: #f6b68e;
   min-height: 100vh;
 }
-.manage-list > div .recipe, .manage-list > div .ingredient {
+.manage-list > div .heading {
+  vertical-align: middle;
+  align-items: center;
+}
+.manage-list > div .list {
   width: 100%;
-  border-radius: 5px;
+  border-radius: 15px;
   background-color: #fdf3ec;
 }
-
-#recipes-list .recipe div, #ingredients-list .ingredient div {
+.manage-list > div .recipe, .manage-list > div .ingredient {
+  padding: 0 0.5em;
+  margin: 0 auto;
+  transition: all 0.3s;
+}
+.manage-list > div .recipe:hover, .manage-list > div .ingredient:hover {
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+}
+.manage-list > div .recipe div, .manage-list > div .ingredient div {
   margin: auto 0;
 }
-#recipes-list .recipe div.info, #ingredients-list .ingredient div.info {
+.manage-list > div .recipe div.info, .manage-list > div .ingredient div.info {
   margin: 0.5em !important;
 }
-#recipes-list .recipe div.edit, #ingredients-list .ingredient div.edit {
+.manage-list > div .recipe div.actions, .manage-list > div .ingredient div.actions {
   margin-left: auto !important;
 }
-#recipes-list .recipe .img, #ingredients-list .ingredient .img {
+.manage-list > div .recipe .img, .manage-list > div .ingredient .img {
   padding-left: 0;
 }
-#recipes-list .recipe .name, #ingredients-list .ingredient .name {
+.manage-list > div .recipe .name, .manage-list > div .ingredient .name {
   margin: 0;
 }
-#recipes-list .recipe .description, #ingredients-list .ingredient .description {
+.manage-list > div .recipe .description, .manage-list > div .ingredient .description {
   font-size: 75%;
 }
-#recipes-list .recipe .created, #recipes-list .recipe .edited, #ingredients-list .ingredient .created, #ingredients-list .ingredient .edited {
+.manage-list > div .recipe .created, .manage-list > div .recipe .edited, .manage-list > div .ingredient .created, .manage-list > div .ingredient .edited {
   font-size: 75%;
   color: grey;
   margin: 0;

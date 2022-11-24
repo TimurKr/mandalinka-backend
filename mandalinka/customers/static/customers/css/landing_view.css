@@ -52,6 +52,18 @@
 #landing-view #account-icons:hover .menu {
   color: #F28500;
 }
+#landing-view #account-icons:hover a:nth-child(2) > .option {
+  -webkit-animation-delay: 0s;
+          animation-delay: 0s;
+}
+#landing-view #account-icons:hover a:nth-child(3) > .option {
+  -webkit-animation-delay: 0.1s;
+          animation-delay: 0.1s;
+}
+#landing-view #account-icons:hover a:nth-child(4) > .option {
+  -webkit-animation-delay: 0.2s;
+          animation-delay: 0.2s;
+}
 #landing-view #account-icons:hover .option {
   color: black;
   -webkit-animation: show 0.5s;
@@ -61,10 +73,6 @@
   opacity: 0;
   padding-bottom: 5px;
   padding-top: 5px;
-}
-#landing-view #account-icons:hover .option#log-out, #landing-view #account-icons:hover .option#sign-up {
-  -webkit-animation-delay: 0.2s;
-          animation-delay: 0.2s;
 }
 #landing-view #title {
   font-weight: bold;
@@ -82,6 +90,11 @@
 }
 #landing-view #arrow-down span {
   font-size: 200% !important;
+  color: black;
+}
+#landing-view #arrow-down:hover > span {
+  font-variation-settings: "wght" 500;
+  cursor: pointer;
 }
 
 @-webkit-keyframes show {

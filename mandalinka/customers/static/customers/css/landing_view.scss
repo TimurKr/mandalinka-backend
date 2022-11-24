@@ -70,6 +70,11 @@
                 color: $primary;
             }
 
+            @for $i from 2 through 4 {
+                a:nth-child(#{$i}) > .option {
+                    animation-delay: #{($i - 2) * 0.1}s;
+                }
+            }
             .option {
                 color: black;
                 animation: show 0.5s;
@@ -77,9 +82,9 @@
                 opacity: 0;
                 padding-bottom: 5px;
                 padding-top: 5px;
-                &#log-out, &#sign-up {
-                    animation-delay: 0.2s;
-                }
+                // &#log-out, &#sign-up {
+                //     animation-delay: 0.2s;
+                // }
             }
         }
 
@@ -91,6 +96,7 @@
     }
     
     #arrow-down {
+        
         animation: move ease-in-out;
         animation-duration: 1s;
         animation-iteration-count: infinite;
@@ -98,6 +104,12 @@
     
         span {
             font-size: 200% !important;
+            color: black;
+        }
+
+        &:hover > span {
+            font-variation-settings: 'wght' 500;
+            cursor: pointer;
         }
     }
 }

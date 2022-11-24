@@ -1,0 +1,51 @@
+{% extends "core/html/mid_page_body.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block page_name %}
+  Nový recept
+{% endblock %}
+
+{% block extra_head %}
+<script src="{% static 'core/js/form_validation.js' %}"></script> 
+{% endblock %}
+
+{% block title %}
+  Nový recept
+{% endblock %}
+
+{% block body %}
+  <form method="post" action="{% url 'recipes:edit_recipe_ingrediences' recipe_id=recipe_id %}">
+    {{ formset.management_form }}
+
+    {% for form in formset %}
+
+      {{ form.id }}
+
+      <div class="col-sm-8 form-floating">
+        {{ form.ingredient }}
+        <label for="{{ form.street.id_for_label }}">
+          {{ form.street.label }}
+        </label>
+        <p class="my-0">{{ form.street.help_text }}</p>
+
+        <datalist id="{{ form.ingredient.id }}">
+          {% for option in form.ingredient.options %}
+            <option value="{{ option }}"></option>
+          {% endfor %}
+        </datalist>
+      </div>
+
+      <div class="col-sm-8 form-floating">
+        {{ form.amount }}
+      </div>
+
+    {% endfor %}
+
+
+    <div class="row">
+      <input type="submit" name="submit" value="Uložiť" class="btn primary-button col-6 ms-auto" id="submit"/>
+    </div>
+  </form>
+{% endblock %}

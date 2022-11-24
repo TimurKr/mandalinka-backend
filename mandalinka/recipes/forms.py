@@ -1,12 +1,14 @@
 from django import forms
 
-from .models import Recipe
+from .models import Recipe, Ingredient, IngredientInstance
 
 from django.core.exceptions import ValidationError
 
 from django.urls import reverse, reverse_lazy
 from django.urls.exceptions import NoReverseMatch
 from django.utils.translation import gettext_lazy as _
+
+from django.contrib.admin.forms import *
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, HTML, BaseInput, Field
@@ -17,6 +19,10 @@ from crispy_bootstrap5.bootstrap5 import FloatingField
 class SubmitButton(BaseInput):
     input_type = 'submit'
     field_classes = 'btn primary-button'
+
+class SecondarySubmitButton(BaseInput):
+    input_type = 'submit'
+    field_classes = 'btn secondary-button'
 
 class SecondaryButton(StrictButton):
     field_classes = 'btn secondary-button'
@@ -29,15 +35,9 @@ class SecondaryButton(StrictButton):
             super().__init__(content, *args, **kwargs)
 
 
-class IngredientForm(forms.ModelForm):
-
-    class Meta:
-        model = Recipe
-        fields = ('__all__')
-
 # RECIPES #######################################################################
 
-class NewRecipeForm(forms.ModelForm):
+class RecipeForm(forms.ModelForm):
 
     step1 = forms.CharField(max_length=128,
         label='Krok 1',
@@ -83,7 +83,6 @@ class NewRecipeForm(forms.ModelForm):
             'name',
             'description',
             'thumbnail',
-            'ingredients',
             'steps',
             'difficulty',
             'StF_cooking_time', 
@@ -92,6 +91,10 @@ class NewRecipeForm(forms.ModelForm):
             'diet',
             'created_by',
         )
+        widgets = {
+            'diet': forms.CheckboxSelectMultiple(),
+            'attributes': forms.CheckboxSelectMultiple(),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -99,7 +102,6 @@ class NewRecipeForm(forms.ModelForm):
         self.fields['predecessor'].help_text += '. V každom poli kde zadáte "-" sa automaticky zdedia hodnoty z predchodcu.'
 
         self.helper = FormHelper(self)
-        self.helper.form_action = reverse_lazy('recipes:add_recipe')
         self.helper.form_id = 'general_info'
         self.helper.form_class = 'needs-validation'
         self.helper.attrs = {'novalidate': ''}
@@ -109,7 +111,6 @@ class NewRecipeForm(forms.ModelForm):
             'name',
             'description',
             'thumbnail',
-            'ingredients',
             'step1',
             'step2',
             'step3',
@@ -122,7 +123,7 @@ class NewRecipeForm(forms.ModelForm):
             'attributes',
             'diet',
             'created_by',
-            SubmitButton('Submit', 'Odoslať'),
+            SubmitButton('Submit', 'Vytvoriť'),
         )
 
     def save(self, commit=True):
@@ -139,4 +140,69 @@ class NewRecipeForm(forms.ModelForm):
             steps += '\n'
         steps.strip()
         self.steps = steps
+
+class NewRecipeForm(RecipeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper.form_action = reverse_lazy('recipes:add_recipe')
+
+
+class IngredientInstanceForm(forms.ModelForm):
+    class Meta:
+        model = IngredientInstance
+        fields = ('ingredient', 'amount')
+        widgets = {
+            'ingredient': forms.Select(),
+        }
+
+
+IngredientInstanceFormset = forms.inlineformset_factory(Recipe, IngredientInstance, 
+    form=IngredientInstanceForm, 
+    )
+    
         
+
+# INGREDIENTS #######################################################################
+
+class IngredientForm(forms.ModelForm):
+
+    class Meta:
+        model = Ingredient
+        fields = (
+            'name', 
+            'img', 
+            'unit',
+            'price_per_unit',
+            'alergens',
+        )
+        widgets = {
+            'alergens': forms.CheckboxSelectMultiple(),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_class = 'needs-validation'
+        self.helper.attrs = {'novalidate': ''}
+        self.helper.layout = Layout(
+            'name', 
+            'img', 
+            'unit',
+            'price_per_unit',
+            'alergens',
+            Div(
+                Div(SecondarySubmitButton('submit', 'Uložiť'), css_class='col-sm-6'),
+                Div(SubmitButton('submit', 'Uložiť a aktivovať'), css_class='col-sm-6'),
+                css_class='row g-2'
+            )
+        )
+
+class NewIngredientForm(IngredientForm):
+    def __init__(self,*args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper.form_action = reverse_lazy('recipes:add_ingredient')
+
+class EditIngredientForm(NewIngredientForm):
+    def __init__(self, ingredient_id, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper.form_action = reverse_lazy('recipes:edit_ingredient', args=(ingredient_id))

@@ -12,24 +12,46 @@ Ingrediencie
 {% block core %}
 <section id="ingredients-list" class="manage-list">
     <div>
-        <div class="p-3">
+        <div>
             {% include 'core/html/message_warning.html' with message=message warning=warning only %}
-            <div class="row">
-                <div class="col-auto">
+            <div class="row heading">
+                <div class="col-auto title">
                     <h2 id="title">
                         Zoznam ingrediencií
                     </h2>
                 </div>
-                <div class="col-auto ms-auto">
-                    <a role="button" class="btn dark-light-button" href="{% url 'recipes:manage' %}">Naspäť</a>
-                </div>
-                <div class="col-auto">
-                    <a role="button" class="btn success-button" href="{% url 'recipes:add_ingredient' %}">Pridať novú ingredienciu</a>
+                <div class="col-auto ms-auto actions btn-group-vertical">
+                    <a role="button" href="{% url 'recipes:manage' %}" class="btn dark-light-button">
+                        Späť
+                    </a>
+                    <a role="button" href="{% url 'recipes:add_ingredient' %}" class="btn success-light-button">
+                        Pridať
+                    </a>
                 </div>
             </div>
-            {% for ingredient in ingredients %}
-                {% include 'recipes/ingredients/widget.html' with ingredient=ingredient only %}
-            {% endfor %}
+
+            {% if ingredients.active %}
+            <h4>Aktívne</h4>
+            <div class="list">
+                <hr width="90%" style="margin: 0 auto;">
+                {% for ingredient in ingredients.active %}
+                    {% include 'recipes/ingredients/widget.html' with ingredient=ingredient only %}
+                    <hr width="90%" style="margin: 0 auto;">
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if ingredients.inactive %}
+            <h4>Neaktívne</h4>
+            <div class="list">
+                <hr width="90%" style="margin: 0 auto;">
+                {% for ingredient in ingredients.inactive %}
+                    {% include 'recipes/ingredients/widget.html' with ingredient=ingredient only %}
+                    <hr width="90%" style="margin: 0 auto;">
+                {% endfor %}
+            </div>
+            {% endif %}
+            
         </div>
     </div>
 </section>

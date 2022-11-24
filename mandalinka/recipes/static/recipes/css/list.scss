@@ -4,35 +4,47 @@
     padding: 5em 5vh 20vh 5vh;
     background-color: $primary-light;
     min-height: 100vh;
-    .recipe, .ingredient {
+    
+    .heading {
+        vertical-align: middle;
+        align-items: center;
+    }
+
+    .list {
         width: 100%;
-        border-radius: 5px;
+        border-radius: 15px;
         background-color: $off-white;
     }
-}
 
-#recipes-list .recipe, #ingredients-list .ingredient {
-    div {
-        margin: auto 0;
-        &.info {
-            margin: 0.5em !important;
+    .recipe, .ingredient {
+        padding: 0 0.5em; 
+        margin: 0 auto;
+        transition: all 0.3s;
+        &:hover {
+            box-shadow: 0px 0px 20px rgba(0,0,0, 0.2);
         }
-        &.edit {
-            margin-left: auto !important;
+        div {
+            margin: auto 0;
+            &.info {
+                margin: 0.5em !important;
+            }
+            &.actions {
+                margin-left: auto !important;
+            }
         }
-    }
-    .img {
-        padding-left: 0;
-    }
-    .name {
-        margin: 0;
-    }
-    .description {
-        font-size: 75%;
-    }
-    .created, .edited {
-        font-size: 75%;
-        color: grey;
-        margin: 0;
+        .img {
+            padding-left: 0;
+        }
+        .name {
+            margin: 0;
+        }
+        .description {
+            font-size: 75%;
+        }
+        .created, .edited {
+            font-size: 75%;
+            color: grey;
+            margin: 0;
+        }
     }
 }

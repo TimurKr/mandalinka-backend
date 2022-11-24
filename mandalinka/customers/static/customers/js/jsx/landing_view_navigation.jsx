@@ -5,11 +5,14 @@ document.addEventListener("DOMContentLoaded", () => {
       super(props);
       this.state = {
         isHovering: false,
-        isAuthenticated: root_div.getAttribute("is_authenticated"),
       };
+      this.isAuthenticated = root_div.getAttribute("is_authenticated");
+      this.isStaff = root_div.getAttribute("is_staff");
       this.myAccountLink = root_div.getAttribute("my_account_link");
       this.logOutLink = root_div.getAttribute("log_out_link");
       this.newUserLink = root_div.getAttribute("new_user_link");
+      this.recipesLink = root_div.getAttribute("recipes_link");
+
       this.handleMouseOver = this.handleMouseOver.bind(this);
       this.handleMouseOut = this.handleMouseOut.bind(this)
     }
@@ -24,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     render() {
 
-      if (this.state.isAuthenticated === "True") {
+      if (this.isAuthenticated === "True") {
         return (
           <div id="account-icons" className="position-absolute top-0 end-0" onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}>
             {
@@ -42,8 +45,16 @@ document.addEventListener("DOMContentLoaded", () => {
                   </span>
                   <span className="custom-tooltip">Upravte si profil</span>
                 </a>
+                { this.isStaff === "True" &&
+                  <a href={this.recipesLink}>
+                    <span id="recipes" className="material-symbols-rounded option">
+                      restaurant
+                    </span>
+                    <span className="custom-tooltip">Recepty</span>
+                  </a>
+                }
                 <a href={this.logOutLink}>
-                  <span  id="log-out" className="material-symbols-rounded option">
+                  <span id="log-out" className="material-symbols-rounded option">
                     logout
                   </span>
                   <span className="custom-tooltip">Odhláste sa</span>
