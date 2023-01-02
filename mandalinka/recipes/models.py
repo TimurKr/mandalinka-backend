@@ -5,9 +5,9 @@ from django.utils.translation import gettext_lazy as _
 ################################# Validators ###################################
 
 def validate_cooking_time_range(value):
-    if value > 300 or value < 1:
+    if value >= 300 or value < 1:
         raise ValidationError(
-            _('%(value)s is not in the required cooking range'),
+            _('%(value)s is not in the required cooking range [1, 300]'),
             params = {'value': value},
         )
 
@@ -104,7 +104,7 @@ class Ingredient(models.Model):
         ]
 
     def __str__(self):
-        return self.name
+        return f"{self.name} [{self.unit}]"
 
     def activate(self):
         self.is_active = True
@@ -169,11 +169,11 @@ class Recipe(models.Model):
     )
     StF_cooking_time = models.IntegerField(
         validators=[validate_cooking_time_range],
-        verbose_name="Čas varenia", help_text="Zadajte dĺžku varenia od začiatku do hotového jedla"
+        verbose_name="Čas varenia", help_text="Zadajte dĺžku varenia od začiatku do hotového jedla v minútach"
     )
     active_cooking_time = models.IntegerField(
         validators=[validate_cooking_time_range],
-        verbose_name="Čas prípravy", help_text="Zadajte dĺžku aktívneho času varenia"
+        verbose_name="Čas prípravy", help_text="Zadajte dĺžku aktívneho času varenia v minútach"
     )
 
     attributes = models.ManyToManyField('recipes.Attribute', related_name="recipes", 

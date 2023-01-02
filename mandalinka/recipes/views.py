@@ -55,7 +55,7 @@ def list_recipes(request):
     recipes = {
         'recent': Recipe.objects.filter(date_created__gte=datetime.date.today() - datetime.timedelta(days=7), is_active=False),
         'active': Recipe.objects.filter(is_active=True), 
-        'inactive': Recipe.objects.filter(is_active=False)
+        'inactive': Recipe.objects.filter(date_created__lte=datetime.date.today() - datetime.timedelta(days=7),is_active=False)
     }
     return render(request, 'recipes/recipes/list.html', {
             'recipes': recipes,
@@ -112,13 +112,24 @@ def edit_recipe(request, recipe_id):
 
 @permission_required('recipes.add_recipe', login_url='recipes:list_recipes')
 def edit_recipe_ingrediences(request, recipe_id):
+
+    try:
+        recipe = Recipe.objects.get(id=recipe_id)
+    except:
+        return HttpResponseRedirect(reverse('recipes:list_recipes'))
+
     if request.method == 'POST':
-        pass
+        formset = forms.IngredientInstanceFormset(request.POST, request.FILES, recipe)
+
+        if formset.is_valid():
+            formset.save()
+            return HttpResponseRedirect(reverse('recipes:list_recipes'))
+
     else:
-        formset = forms.IngredientInstanceFormset(instance=Recipe.objects.get(id=recipe_id))
+        formset = forms.IngredientInstanceFormset(instance=recipe)
     return render(request, 'recipes/recipes/edit_ingrediences.html', {
             'formset': formset,
-            "recipe_id": recipe_id
+            'recipe_id': recipe_id,
             })
 
 
@@ -219,24 +230,6 @@ def edit_ingredient(request, ingredient_id):
         form = forms.EditIngredientForm(ingredient_id, instance=ingredient)
     return render(request,"recipes/ingredients/edit.html", {'form':form})
 
-
-    if request.method == 'POST':
-        form = forms.IngredientForm(request.POST)
-        form.helper.form_action = reverse_lazy('recipes:edit_ingredient')
-        try:
-            i = form.save(commit=False)
-            if 'aktivovať' in request.POST['submit']:
-                i.activate()
-        except ValueError as e:
-            print(e)
-            print(form.errors.as_data())
-            pass
-        else:
-            i.save()
-            return HttpResponseRedirect(reverse('recipes:list_ingredients'))
-    else:
-        form = forms.IngredientForm(instance=Ingredient)
-    return render(request, 'recipes/ingredients/add.html', {'form': form})
 
 
 # ACTIVATE
