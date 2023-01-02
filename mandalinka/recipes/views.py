@@ -182,12 +182,13 @@ def add_ingredient(request):
         form = forms.NewIngredientForm(request.POST)
         try:
             ingredient = form.save(commit=False)
-            if 'aktivovať' in request.POST['submit']:
-                ingredient.activate()
         except ValueError as e:
             pass
         else:
+            if 'aktivovať' in request.POST['submit']:
+                ingredient.activate()
             ingredient.save()
+            form.save_m2m()
             return HttpResponseRedirect(reverse('recipes:list_ingredients'))
     else:
         form = forms.NewIngredientForm(initial={'created_by': request.user.id})
@@ -211,8 +212,8 @@ def edit_ingredient(request, ingredient_id):
         else:
             if 'aktivovať' in request.POST['submit']:
                 ingredient.activate()
-            form.save_m2m()
             ingredient.save()
+            form.save_m2m()
             return HttpResponseRedirect(reverse('recipes:list_ingredients'))
     else:
         form = forms.EditIngredientForm(ingredient_id, instance=ingredient)

@@ -92,7 +92,7 @@ class Ingredient(models.Model):
 
     alergens = models.ManyToManyField('recipes.Alergen', related_name="ingredients",
         blank=True, default=None,
-        verbose_name="Alergény", help_text="Zvolte všetky alergény:"
+        verbose_name="Alergény", help_text="Zvolte všetky alergény"
     )
 
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="Čas vzniku")
