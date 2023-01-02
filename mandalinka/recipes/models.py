@@ -79,15 +79,15 @@ class Ingredient(models.Model):
 
     UNITS_TO_SELECT = [
         (None, "Zvolte jednotku"),
-        ("g", "gramy"),
-        ("ml", "mililitre"),
-        ("ks", "kusy"), 
+        ("g", "Gram"),
+        ("ml", "Mililiter"),
+        ("ks", "Kus"), 
         ]
     unit = models.CharField(
         max_length=3, choices=UNITS_TO_SELECT, 
         verbose_name="Jednotka", help_text="Zvolte jednotku")
     price_per_unit = models.FloatField(
-        verbose_name="Cena na jednotku", help_text="Zadajte cenu na nižšie zvolenú jednotku"
+        verbose_name="Cena na jednotku", help_text="Zadajte cenu na zvolenú jednotku"
     )
 
     alergens = models.ManyToManyField('recipes.Alergen', related_name="ingredients",
@@ -119,7 +119,6 @@ class Recipe(models.Model):
     # General
     name = models.CharField(
         max_length=63, 
-        unique=True, 
         verbose_name="Názov"
     )
     description = models.TextField(
@@ -146,7 +145,8 @@ class Recipe(models.Model):
     exclusive_predecessor = models.BooleanField(
         default=True,
         verbose_name='Deaktivovať predchodcu?',
-        help_text='Predchodca bude deaktivovaný až v momente, keď tento recept aktivujete'
+        help_text='Predchodca bude deaktivovaný až v momente, keď tento recept aktivujete. \
+            Toto je vysoko odporúčané, nakoľko hrozia duplicitné recepty v prípade nezaškrtnutia.'
     )
 
     # Preparation

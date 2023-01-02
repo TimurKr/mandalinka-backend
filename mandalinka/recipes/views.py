@@ -69,19 +69,46 @@ def add_recipe(request):
     if request.method == 'POST':
         form = forms.NewRecipeForm(request.POST)
         try:
-            form.save()
+            form.is_valid()
             if form.cleaned_data['created_by'] != request.user and not request.user.is_superuser:
-                form.add_error('created_by', ValidationError('Nemáte povolenie pridávať recepty pod iným menom.', 'insufficient_permissions'))
-                raise Exception()
+                form.add_error('created_by', ValidationError(f'Nemáte povolenie pridávať recepty pod iným menom. Momentálne ste prihlásený ako {request.user.get_full_name()}', 'insufficient_permissions'))
+                raise ValueError('Nemáte povolenie pridávať recepty pod iným ako vlastným menom.', 'insufficient_permissions')
+            new_recipe = form.save()
         except ValueError as e:
             print(e)
             print(form.errors.as_data())
             pass
         else:
-            return HttpResponseRedirect(reverse('recipes:list_recipes'))
+            return HttpResponseRedirect(reverse('recipes:edit_recipe_ingrediences', args=(new_recipe.id, )))
     else:
-        form = forms.NewRecipeForm(initial={'created_by': request.user.id})
+        form = forms.NewRecipeForm(initial={'created_by': request.user})
     return render(request, 'recipes/recipes/add.html', {'form': form})
+
+
+@permission_required('recipes.add_recipe', login_url='recipes:list_recipes')
+def add_recipe_descendant(request, predecessor_id):
+    if request.method != 'GET':
+        return HttpResponseBadRequest(request)
+
+    try:
+        predecessor = Recipe.objects.get(id=predecessor_id)
+    except:
+        return HttpResponseBadRequest(request)
+
+    form = forms.NewRecipeForm(
+        initial = {
+            'predecessor': predecessor,
+            'created_by': request.user,
+            }, 
+        instance = predecessor)
+
+    return render(request, 'recipes/recipes/add.html', {'form': form})
+
+
+# EDIT TODO:
+@permission_required('recipes.change_recipe', login_url='recipes:list_recipes')
+def edit_recipe(request, recipe_id):
+    return list_recipes(request)
 
 @permission_required('recipes.add_recipe', login_url='recipes:list_recipes')
 def edit_recipe_ingrediences(request, recipe_id):
@@ -93,13 +120,6 @@ def edit_recipe_ingrediences(request, recipe_id):
             'formset': formset,
             "recipe_id": recipe_id
             })
-
-
-
-# EDIT TODO:
-@permission_required('recipes.change_recipe', login_url='recipes:list_recipes')
-def edit_recipe(request, recipe_id):
-    return list_recipes(request)
 
 
 # ACTIVATE
@@ -191,11 +211,12 @@ def edit_ingredient(request, ingredient_id):
         else:
             if 'aktivovať' in request.POST['submit']:
                 ingredient.activate()
+            form.save_m2m()
             ingredient.save()
             return HttpResponseRedirect(reverse('recipes:list_ingredients'))
     else:
         form = forms.EditIngredientForm(ingredient_id, instance=ingredient)
-    return render(request,"accounts/manage/pages/edit_address.html", {'form':form})
+    return render(request,"recipes/ingredients/edit.html", {'form':form})
 
 
     if request.method == 'POST':

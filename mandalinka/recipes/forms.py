@@ -39,42 +39,6 @@ class SecondaryButton(StrictButton):
 
 class RecipeForm(forms.ModelForm):
 
-    step1 = forms.CharField(max_length=128,
-        label='Krok 1',
-        help_text='Kroky sa zdedia iba v prípade, ak budú všetky "-"',
-        initial="-", strip=True,
-        required=False,
-    )
-    step2 = forms.CharField(max_length=128,
-        label='Krok 2', 
-        initial="-", strip=True,
-        required=False,
-    )
-    step3 = forms.CharField(max_length=128,
-        label='Krok 3', 
-        initial="-", strip=True, 
-        required=False,
-    )
-    step4 = forms.CharField(max_length=128,
-        label='Krok 4', 
-        initial="-", strip=True,
-        required=False,
-    )
-    step5 = forms.CharField(max_length=128,
-        label='Krok 5', 
-        initial="-", strip=True,
-        required=False,
-    )
-    step6 = forms.CharField(max_length=128,
-        label='Krok 6', 
-        initial="-", strip=True,
-        required=False,
-    )
-
-    steps_fields = (step1, step2, step3, step4, step5, step6)
-
-
-
     class Meta:
         model = Recipe
         fields = (
@@ -93,13 +57,11 @@ class RecipeForm(forms.ModelForm):
         )
         widgets = {
             'diet': forms.CheckboxSelectMultiple(),
-            'attributes': forms.CheckboxSelectMultiple(),
+            'attributes': forms.CheckboxSelectMultiple()
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        self.fields['predecessor'].help_text += '. V každom poli kde zadáte "-" sa automaticky zdedia hodnoty z predchodcu.'
 
         self.helper = FormHelper(self)
         self.helper.form_id = 'general_info'
@@ -111,12 +73,7 @@ class RecipeForm(forms.ModelForm):
             'name',
             'description',
             'thumbnail',
-            'step1',
-            'step2',
-            'step3',
-            'step4',
-            'step5',
-            'step6',
+            'steps',
             'difficulty',
             'StF_cooking_time', 
             'active_cooking_time',
@@ -127,19 +84,12 @@ class RecipeForm(forms.ModelForm):
         )
 
     def save(self, commit=True):
-        super().save(commit=commit)
-        print("saved")
-        if self.predecessor:
-            print("Budeme dediť")
-        else:
-            print("Nebudeme dediť")
-
-        steps = ''
-        for step in self.steps_fields:
-            steps += step
-            steps += '\n'
-        steps.strip()
-        self.steps = steps
+        instance = super().save(commit=commit)
+        # instance.steps = instance.steps.replace('\r', '').replace('\n\n', '\n')
+        instance.steps = "".join([s for s in instance.steps.strip().replace('\r', '').splitlines(True) if s.strip("\r\n").strip()])
+        if commit:
+            instance.save()
+        return instance
 
 class NewRecipeForm(RecipeForm):
     def __init__(self, *args, **kwargs):
@@ -156,8 +106,12 @@ class IngredientInstanceForm(forms.ModelForm):
         }
 
 
+
 IngredientInstanceFormset = forms.inlineformset_factory(Recipe, IngredientInstance, 
     form=IngredientInstanceForm, 
+    extra=2,
+    max_num=15,
+    validate_max=True,
     )
     
         
@@ -205,4 +159,4 @@ class NewIngredientForm(IngredientForm):
 class EditIngredientForm(NewIngredientForm):
     def __init__(self, ingredient_id, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.helper.form_action = reverse_lazy('recipes:edit_ingredient', args=(ingredient_id))
+        self.helper.form_action = reverse_lazy('recipes:edit_ingredient', args=(ingredient_id, ))

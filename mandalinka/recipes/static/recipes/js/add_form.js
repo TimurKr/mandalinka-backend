@@ -4,16 +4,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     predecessor_select = document.getElementById('id_predecessor')
     exclusive_predecessor = document.getElementById('div_id_exclusive_predecessor')
-    exclusive_predecessor.hidden = true
+
+    if (!predecessor_select.value) {
+        exclusive_predecessor.hidden = true
+    }
 
     predecessor_select.addEventListener('input', (value) => {
-        console.log(value)
         if (predecessor_select.value) {
-            exclusive_predecessor.hidden = false
+            window.location.replace(`/recipes/recipe/add/`+predecessor_select.value);
         } else {
-            exclusive_predecessor.hidden = true
+            window.location.replace(`/recipes/recipe/add`);
         }
     }, true);
-
-
 })
