@@ -12,4 +12,8 @@ document.addEventListener("DOMContentLoaded", function () {
             form.classList.add('was-validated')
         }, false)
     })
+
+    try {
+        document.querySelector(".invalid-feedback").scrollIntoView({behavior: "smooth", block: "center", inline: "center"})
+    } catch (e) {}
 })

@@ -67,6 +67,19 @@ class RecipeForm(forms.ModelForm):
         self.helper.form_id = 'general_info'
         self.helper.form_class = 'needs-validation'
         self.helper.attrs = {'novalidate': ''}
+
+    def save(self, commit=True):
+        instance = super().save(commit=commit)
+        # instance.steps = instance.steps.replace('\r', '').replace('\n\n', '\n')
+        instance.steps = "".join([s for s in instance.steps.strip().replace('\r', '').splitlines(True) if s.strip("\r\n").strip()])
+        if commit:
+            instance.save()
+        return instance
+
+class NewRecipeForm(RecipeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper.form_action = reverse_lazy('recipes:add_recipe')
         self.helper.layout = Layout(
             'predecessor',
             'exclusive_predecessor',
@@ -83,18 +96,32 @@ class RecipeForm(forms.ModelForm):
             SubmitButton('Submit', 'Vytvoriť'),
         )
 
-    def save(self, commit=True):
-        instance = super().save(commit=commit)
-        # instance.steps = instance.steps.replace('\r', '').replace('\n\n', '\n')
-        instance.steps = "".join([s for s in instance.steps.strip().replace('\r', '').splitlines(True) if s.strip("\r\n").strip()])
-        if commit:
-            instance.save()
-        return instance
-
-class NewRecipeForm(RecipeForm):
-    def __init__(self, *args, **kwargs):
+class EditRecipeForm(RecipeForm):
+    def __init__(self, recipe_id, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.helper.form_action = reverse_lazy('recipes:add_recipe')
+
+        self.fields['created_by'].disabled = True
+
+        self.helper.form_action = reverse_lazy('recipes:edit_recipe', args=(recipe_id, ))
+        self.helper.layout = Layout(
+            'name',
+            'predecessor',
+            'exclusive_predecessor',
+            'description',
+            'thumbnail',
+            'steps',
+            'difficulty',
+            'StF_cooking_time', 
+            'active_cooking_time',
+            'attributes',
+            'diet',
+            Div(
+                Div(SecondarySubmitButton('submit', 'Uložiť a vrátiť'), css_class='col-sm-6'),
+                Div(SubmitButton('submit', 'Uložiť'), css_class='col-sm-6'),
+                css_class='row g-2'
+            )
+        )
+
 
 
 class IngredientInstanceForm(forms.ModelForm):
@@ -104,13 +131,16 @@ class IngredientInstanceForm(forms.ModelForm):
         widgets = {
             'ingredient': forms.Select(),
         }
+    
+    class Media:
+        js = ("recipes/js/ingredients_formset.js",)
 
 
 
 IngredientInstanceFormset = forms.inlineformset_factory(Recipe, IngredientInstance, 
     form=IngredientInstanceForm, 
-    extra=2,
-    max_num=15,
+    extra=1,
+    max_num=6,
     validate_max=True,
     )
     
@@ -145,8 +175,8 @@ class IngredientForm(forms.ModelForm):
             'price_per_unit',
             'alergens',
             Div(
-                Div(SecondarySubmitButton('submit', 'Uložiť'), css_class='col-sm-6'),
-                Div(SubmitButton('submit', 'Uložiť a aktivovať'), css_class='col-sm-6'),
+                Div(SecondarySubmitButton('submit', 'Uložiť a vrátiť'), css_class='col-sm-6'),
+                Div(SubmitButton('submit', 'Uložiť a upravi'), css_class='col-sm-6'),
                 css_class='row g-2'
             )
         )

@@ -79,7 +79,7 @@ def add_recipe(request):
             print(form.errors.as_data())
             pass
         else:
-            return HttpResponseRedirect(reverse('recipes:edit_recipe_ingrediences', args=(new_recipe.id, )))
+            return HttpResponseRedirect(reverse('recipes:edit_recipe_ingredients', args=(new_recipe.id, )))
     else:
         form = forms.NewRecipeForm(initial={'created_by': request.user})
     return render(request, 'recipes/recipes/add.html', {'form': form})
@@ -107,28 +107,59 @@ def add_recipe_descendant(request, predecessor_id):
 
 # EDIT TODO:
 @permission_required('recipes.change_recipe', login_url='recipes:list_recipes')
-def edit_recipe(request, recipe_id):
-    return list_recipes(request)
+def edit_recipe(request, recipe_id, ingredients_formset=None):
+    try: 
+        recipe = Recipe.objects.get(id=recipe_id)
+    except:
+        return HttpResponseRedirect(reverse('recipes:list_recipes'))
+
+
+    if request.method == 'POST':
+        general_form = forms.EditRecipeForm(recipe_id, request.POST, instance=recipe)
+        try:
+            general_form.save()
+        except:
+            pass
+        else:
+            if 'vrátiť' in request.POST['submit']:
+                return HttpResponseRedirect(reverse('recipes:list_recipes'))
+    else:
+        general_form = forms.EditRecipeForm(recipe_id, instance=recipe)
+
+    ingredients_formset = ingredients_formset or forms.IngredientInstanceFormset(instance=recipe)
+
+    return render(request,"recipes/recipes/edit.html", {
+        'general_form': general_form,
+        'ingredients_formset': ingredients_formset,
+        'recipe_id': recipe_id,
+        })
 
 @permission_required('recipes.add_recipe', login_url='recipes:list_recipes')
-def edit_recipe_ingrediences(request, recipe_id):
+def edit_recipe_ingredients(request, recipe_id):
 
     try:
         recipe = Recipe.objects.get(id=recipe_id)
     except:
         return HttpResponseRedirect(reverse('recipes:list_recipes'))
 
-    if request.method == 'POST':
+    if request.method == 'POST': # TODO: Edit JavaScript to be able to add new ingredients 
         formset = forms.IngredientInstanceFormset(request.POST, request.FILES, recipe)
 
         if formset.is_valid():
             formset.save()
+            if request.POST['submit'] == 'Uložiť ingrediencie':
+                return HttpResponseRedirect(reverse('recipes:edit_recipe', args=(recipe_id,)))
             return HttpResponseRedirect(reverse('recipes:list_recipes'))
+        else:
+            if request.POST['submit'] == 'Uložiť ingrediencie':
+                request.method = 'GET'
+                return edit_recipe(request, recipe_id, formset)
+            pass
 
     else:
         formset = forms.IngredientInstanceFormset(instance=recipe)
-    return render(request, 'recipes/recipes/edit_ingrediences.html', {
-            'formset': formset,
+    return render(request, 'recipes/recipes/edit_ingredients.html', {
+            'ingredients_formset': formset,
             'recipe_id': recipe_id,
             })
 

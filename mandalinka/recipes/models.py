@@ -11,6 +11,13 @@ def validate_cooking_time_range(value):
             params = {'value': value},
         )
 
+def validate_positivity(value):
+    if value <= 0:
+        raise ValidationError(
+            _('%(value)s is not positive'),
+            params = {'value': value},
+        )
+
 ################################# Models ###################################
 
 class Alergen(models.Model):
@@ -55,7 +62,8 @@ class IngredientInstance(models.Model):
         on_delete=models.PROTECT
     )
     amount = models.IntegerField(
-        verbose_name="Množstvo", help_text="Zadajte množstvo danej potraviny"
+        verbose_name="Množstvo", help_text="Zadajte množstvo danej potraviny na dve porcie",
+        validators=(validate_positivity,)
     )
 
     def __str__(self):
@@ -200,7 +208,15 @@ class Recipe(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.name}"
+        result = f"{self.name}"
+        if Recipe.objects.filter(name=self.name).count() > 1:
+            version = 1
+            predecessor = self.predecessor
+            while predecessor:
+                version += 1
+                predecessor = predecessor.predecessor
+            result += f" v.{str(version)}"
+        return result
 
     def activate(self):
         self.is_active = True

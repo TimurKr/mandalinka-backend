@@ -1,7 +1,20 @@
-<div class="row recipe">
+<div class="row recipe" id="recipe_{{recipe.id}}">
     <div class="col-auto img">img: {{ recipe.thumnail }}</div>
     <div class="col-auto info">
-        <h6 class="name">{{ recipe.name }}</h6>
+        <h5 class="name" style="display:inline;"><b>{{ recipe }}</b></h5>
+        {% if recipe.predecessor %}
+            <p style="display:inline;">
+                - zdedné z 
+                <a href="#recipe_{{ recipe.predecessor.id }}" 
+                    style="color:black;"
+                    {% if recipe.exclusive_predecessor %}
+                    data-bs-toggle="tooltip" 
+                    data-bs-title="Exklusívne dedenie - pri aktivácií dediča sa deaktivuje predchodca"
+                    {% endif %}>
+                    {{ recipe.predecessor }}{% if recipe.exclusive_predecessor %} *{% endif %}
+                </a> 
+            </p>
+        {% endif %}
         <p class="description">{{ recipe.description }}</p>
         <p class="edited">Posledná úprava: {{ recipe.date_created }}</p>
         <p class="created">Vytvorené: {{ recipe.date_created }}, {{ recipe.created_by }}</p>
