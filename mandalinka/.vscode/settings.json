@@ -12,7 +12,8 @@
     "liveSassCompile.settings.partialsList": [
         "/**/css/_index.scss",
         "/**/partials/*.scss",
-        "/**/*partials*/*.scss"
+        "/**/*partials*/*.scss",
+        "/**/_*.scss",
     ],
     "liveSassCompile.settings.generateMap": false,
     "liveSassCompile.settings.autoprefix": [

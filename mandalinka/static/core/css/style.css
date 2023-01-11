@@ -10952,14 +10952,16 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
-h2, .h2 {
-  font-weight: bold;
+h2, .h2, h3, .h3, h4, .h4 {
   display: flex;
   align-items: center;
 }
-h2 > span, .h2 > span {
+h2 > span, .h2 > span, h3 > span, .h3 > span, h4 > span, .h4 > span {
   font-size: 150% !important;
   margin-right: 0.4em;
+}
+h2 > p, .h2 > p, h3 > p, .h3 > p, h4 > p, .h4 > p {
+  margin-bottom: 0;
 }
 
 section.mid-page-body {
@@ -11077,6 +11079,10 @@ form .form-check-input:hover, form .form-check-label:hover {
 }
 form .row .mb-3 {
   margin-bottom: 0px !important;
+}
+
+ul.errorlist {
+  margin-bottom: 0;
 }
 
 .address-selection {

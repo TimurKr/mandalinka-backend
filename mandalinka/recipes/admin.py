@@ -9,11 +9,17 @@ class IngredientInstanceInline(admin.TabularInline):
     model = IngredientInstance
     extra = 1
 
+class StepsInline(admin.TabularInline):
+    model = Step
+    extra = 1
+ 
+
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ("name", "thumbnail",) # "get_cost", "get_price", "get_profit",)
 
+    readonly_fields = ['automatic_errors']
     filter_horizontal = ("attributes", "diet", )
-    inlines = (IngredientInstanceInline,)
+    inlines = (IngredientInstanceInline, StepsInline)
     
     
 

@@ -19,5 +19,6 @@ services:
       - POSTGRES_NAME=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - GOOGLE_APPLICATION_CREDENTIALS=/usr/src/mandalinka/web/secrets/storage_credentials.json
     depends_on:
       - db

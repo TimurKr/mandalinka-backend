@@ -12,7 +12,7 @@ class DeliveryDay(models.Model):
         blank=True
     )
 
-    _public= models.BooleanField(default=False,
+    public= models.BooleanField(default=False,
         help_text='Označuje, či je recept verejný. '
             'Nikde nemeniť manuálne, iba pomocou save(public=True)',
         editable=False,

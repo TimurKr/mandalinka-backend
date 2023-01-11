@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages',
     'crispy_forms',
     'crispy_bootstrap5',
     'accounts',
@@ -141,9 +142,14 @@ STATICFILES_DIRS = [
 ]
 
 # Media files
-MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+# STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 
+GS_PROJECT_ID = 'brave-server-365708'
+GS_BUCKET_NAME = 'mandalinka'
+# GS_CREDENTIALS = 'secrets/storage_credentials.json'
+
+MEDIA_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

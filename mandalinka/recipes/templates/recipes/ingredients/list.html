@@ -35,7 +35,7 @@ Ingrediencie
             <div class="list">
                 <hr width="90%" style="margin: 0 auto;">
                 {% for ingredient in ingredients.active %}
-                    {% include 'recipes/ingredients/widget.html' with ingredient=ingredient only %}
+                    {% include 'recipes/ingredients/list_widget.html' with ingredient=ingredient only %}
                     <hr width="90%" style="margin: 0 auto;">
                 {% endfor %}
             </div>
@@ -46,7 +46,7 @@ Ingrediencie
             <div class="list">
                 <hr width="90%" style="margin: 0 auto;">
                 {% for ingredient in ingredients.inactive %}
-                    {% include 'recipes/ingredients/widget.html' with ingredient=ingredient only %}
+                    {% include 'recipes/ingredients/list_widget.html' with ingredient=ingredient only %}
                     <hr width="90%" style="margin: 0 auto;">
                 {% endfor %}
             </div>

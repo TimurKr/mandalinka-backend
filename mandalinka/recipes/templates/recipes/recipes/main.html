@@ -1,0 +1,203 @@
+{% extends 'recipes/layout.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block page %}
+<section id="recipes-list" class="manage-list">
+
+  <!-- New recipe modal -->
+  <div class="modal fade modal-dialog-scrollable" id="new-recipe-modal" data-bs-backdrop="static"
+    data-bs-keyboard="false" tabindex="-1" aria-labelledby="new-recipe-modal-title" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="new-recipe-modal-title">
+            <span class="material-symbols-rounded">ramen_dining</span>
+            Nový recept
+          </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          {% if new_recipe_form %}
+          {% crispy new_recipe_form %}
+          {% elif new_ingredients_formset %}
+          {% url 'recipes:add_recipe_ingredients' recipe_id=new_ingredients_formset.instance.id as action %}
+          {% include 'recipes/recipes/forms/ingredients_formset.html' with formset=new_ingredients_formset action=action %}
+          {% elif new_steps_formset %}
+          {% url 'recipes:add_recipe_steps' recipe_id=new_steps_formset.instance.id as action %}
+          {% include 'recipes/recipes/forms/steps_formset.html' with formset=new_steps_formset action=action %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% if is_new_recipe_modal_active %}
+  <script>
+    $(document).ready(function () {
+      $('#new-recipe-modal').removeClass('fade');
+      $('#new-recipe-modal').modal('show');
+      $('#new-recipe-modal').addClass('fade');
+    });
+  </script>
+  {% endif %}
+
+  <div>
+
+    <!-- HEADER -->
+    {% for message in messages %}
+    {% include 'core/html/message_warning.html' with message=message only %}
+    {% endfor %}
+    {% for warning in warnings %}
+    {% include 'core/html/message_warning.html' with warning=warning only %}
+    {% endfor %}
+    <div class="row heading">
+      <div class="col-auto title">
+        <h2 id="title">
+          Zoznam receptov
+        </h2>
+      </div>
+      <div class="col-auto ms-auto">
+        <button type="button" class="btn success-light-button" data-bs-toggle="modal"
+          data-bs-target="#new-recipe-modal">
+          Pridať nový recept
+        </button>
+      </div>
+    </div>
+
+    <!-- Recipes -->
+    <div class="accordion" id="accordionPanelsStayOpenExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse"
+            data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
+            aria-controls="panelsStayOpen-collapseOne">
+            <span class="material-symbols-rounded">construction</span>
+            Pripravované recepty
+          </button>
+        </h2>
+        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
+          aria-labelledby="panelsStayOpen-headingOne">
+          <div class="accordion-body">
+            <div class="list">
+              <hr width="90%" style="margin: 0 auto;">
+              {% for recipe in recipes.Preparation %}
+              {% include 'recipes/recipes/list_widget.html' with recipe=recipe only %}
+              <hr width="90%" style="margin: 0 auto;">
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse"
+            data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true"
+            aria-controls="panelsStayOpen-collapseTwo">
+            <span class="material-symbols-rounded">ramen_dining</span>
+            Aktívne recepty
+          </button>
+        </h2>
+        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show"
+          aria-labelledby="panelsStayOpen-headingTwo">
+          <div class="accordion-body">
+            <div class="list">
+              <hr width="90%" style="margin: 0 auto;">
+              {% for recipe in recipes.Active %}
+              {% include 'recipes/recipes/list_widget.html' with recipe=recipe only %}
+              <hr width="90%" style="margin: 0 auto;">
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse"
+            data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="true"
+            aria-controls="panelsStayOpen-collapseThree">
+            <span class="material-symbols-rounded" style="color:red;">block</span>
+            Deaktivované recepty
+          </button>
+        </h2>
+        <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show"
+          aria-labelledby="panelsStayOpen-headingThree">
+          <div class="accordion-body">
+            <div class="list">
+              <hr width="90%" style="margin: 0 auto;">
+              {% for recipe in recipes.Retired %}
+              {% include 'recipes/recipes/list_widget.html' with recipe=recipe only %}
+              <hr width="90%" style="margin: 0 auto;">
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Remove first and last separator form the lists
+      document.querySelectorAll(".list").forEach(list => {
+        list.removeChild(list.firstElementChild);
+        try {
+          list.removeChild(list.lastElementChild);
+        } catch (e) {
+        }
+      });
+
+      // Add info functionality
+
+      function load_recipe_info_widget(event) {
+        let id = this.getAttribute("recipe_id")
+
+        // Stop if action button was clicked
+        if (event.target.closest('.actions')) {
+          console.log('Bola stlačená nejaká akcia');
+          return;
+        }
+
+        let url = this.getAttribute("recipe_info_url")
+
+        console.log(`Loading recipe ${id}, from: ${url}`)
+
+        fetch(url, {
+          method:'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+          }
+        })
+        .then(response => response.text())
+        .then(data => {
+          console.log(`Data loaded: ${data}`)
+          $(`#${id}-modal .modal-body`).html(data);
+        })      
+        $(`#${id}-modal`).modal("show");
+      }
+
+      document.querySelectorAll(".recipe").forEach(recipe_list_widget => {
+        recipe_list_widget.addEventListener("click", load_recipe_info_widget);
+      })
+
+    })
+  </script>
+
+  {% if editing_recipe_id %}
+  <!-- Scroll to the editing_recipe if provided and open its modal -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+      let editing_recipe_widget = document.getElementById('recipe_{{ editing_recipe_id }}')
+      console.log(editing_recipe_widget)
+      editing_recipe_widget.scrollIntoView({behavior: "smooth", block: "center", inline: "center"})
+      try {
+        editing_recipe_widget.querySelector("button.edit-button").click()
+      } catch {}
+    })
+  </script>
+  {% endif %}
+
+</section>
+{% endblock %}

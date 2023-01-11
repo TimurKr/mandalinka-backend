@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 ################################# Validators ###################################
@@ -59,7 +60,7 @@ class IngredientInstance(models.Model):
         on_delete=models.PROTECT
     )
     recipe = models.ForeignKey("recipes.Recipe", related_name="ingredients_mid",
-        on_delete=models.PROTECT
+        on_delete=models.CASCADE
     )
     amount = models.IntegerField(
         verbose_name="Množstvo", help_text="Zadajte množstvo danej potraviny na dve porcie",
@@ -68,6 +69,11 @@ class IngredientInstance(models.Model):
 
     def __str__(self):
         return f"{self.amount} {self.ingredient.unit} {self.ingredient.name}"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.recipe.save()
+
 
 class Ingredient(models.Model):
     name = models.CharField(
@@ -122,6 +128,31 @@ class Ingredient(models.Model):
         self.is_active = False
         self.save()
 
+class Step(models.Model):
+
+    number = models.IntegerField(verbose_name="Poradie kroku", validators=[validate_positivity])
+    text = models.TextField(verbose_name="Text")
+
+    def upload_to(instance, filename):
+        return f'recipes/{slugify(instance.recipe.__str__())}/steps/{instance.number}.{filename.split(".")[1]}'
+
+    thumbnail = models.ImageField(
+        upload_to=upload_to, 
+        help_text="Pridajte thumbnail", 
+        blank=True, null=True
+    )
+
+    recipe = models.ForeignKey('Recipe', 
+        on_delete=models.CASCADE, related_name="steps"
+    )
+
+    def __str__(self):
+        return f'{self.recipe} step n. {self.number}: {self.text}'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.recipe.save()
+
 
 class Recipe(models.Model):
     # General
@@ -133,14 +164,14 @@ class Recipe(models.Model):
         max_length=127, 
         verbose_name="Opis jedla", help_text="Zadajte stručný opis jedla"
     )
+
+    def thumbnail_upload_to(instance, filename):
+        return f'recipes/{slugify(instance.__str__())}/thumbnail.{filename.split(".")[1]}'
+
     thumbnail = models.ImageField(
-        upload_to="recipes", 
+        upload_to=thumbnail_upload_to, 
         help_text="Pridajte thumbnail", 
         blank=True, null=True
-    )
-    is_active = models.BooleanField(
-        default=False, editable=False,
-        verbose_name="Aktívny", help_text="Používa sa tento recept ešte?"
     )
 
     # Relation to previous
@@ -163,8 +194,6 @@ class Recipe(models.Model):
         help_text="Zvolte všetky ingrediencie",
         blank=True,
     )
-    steps = models.TextField(blank=True, max_length=1024, 
-        verbose_name="Postup", help_text='Jednotlivé kroky oddelujte enterom')
 
     difficulty = models.IntegerField(
         choices=[
@@ -194,6 +223,61 @@ class Recipe(models.Model):
         verbose_name="Dieta", help_text="Spadá tento recept do nejakých diet?"
     )
 
+    description_finished = models.BooleanField(
+        default=False,
+        verbose_name='Opis finálne hotový', help_text='Odznačte, ak ešte treba opis jedla prerobiť/opraviť/skontrolovať'
+    )
+    steps_finished = models.BooleanField(
+        default=False,
+        verbose_name='Postup finálne hotový', help_text='Odznačte, ak ešte treba postup prerobiť/opraviť'
+    )
+    ingredients_finished = models.BooleanField(
+        default=False,
+        verbose_name='Ingrediencie finálne hotové', help_text='Odznačte, ak ešte treba ingrediencie prerobiť/opraviť'
+    )
+
+    todo = models.TextField(
+        blank=True, 
+        verbose_name='ToDo poznámka', 
+        help_text='Sem napíš všetko, čo ešte pre tento recept nie je hotové. Veci oddeluj enterom.'
+    )
+
+    class Statuses:
+        PREPARATION = "Preparation"
+        ACTIVE = "Active"
+        RETIRED = "Retired"
+        options = (
+        (PREPARATION, PREPARATION),
+        (ACTIVE, ACTIVE),
+        (RETIRED, RETIRED)
+    )
+
+    status = models.CharField(max_length=20, choices=Statuses.options, default=Statuses.ACTIVE)
+
+    class RecipeError:
+        def __init__(self, code, text):
+            self.code = code
+            self.text = text
+
+        def __str__(self):
+            return f"{self.code}: {self.text}"
+
+        def __repr__(self):
+            return self.__str__()
+
+    ERRORS = (
+        RecipeError("0", "Missing thumbnail"),
+        RecipeError("1", "Missing steps"),
+        RecipeError("2", "Missing ingredients"),
+        RecipeError("3", "Missing attributes"),
+        RecipeError("4", "Missing diet"),
+        RecipeError("5", "ToDo list not empty"),
+    )
+
+    automatic_errors = models.CharField(max_length=64, default="",
+        verbose_name="Errors", help_text=f"String of IDs representing errors separated by commas " + " | ".join([e.__str__() for e in ERRORS]))
+
+
 
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="Čas vzniku")
     date_modified = models.DateTimeField(auto_now=True, verbose_name="Naposledy upravené")
@@ -204,7 +288,7 @@ class Recipe(models.Model):
 
     class Meta:
         permissions = [
-            ('toggle_is_active_recipe', 'Can activate or deactivate any recipe'),
+            ('toggle_recipe_status', 'Can change recipe status'),
         ]
 
     def __str__(self):
@@ -219,14 +303,125 @@ class Recipe(models.Model):
         return result
 
     def activate(self):
-        self.is_active = True
+        self.status = self.Statuses.ACTIVE
         if self.exclusive_predecessor and self.predecessor:
-            self.predecessor.deactivate()
+            self.predecessor.retire()
         self.save()
     
-    def deactivate(self):
-        self.is_active = False
+    def retire(self):
+        self.status = self.Statuses.RETIRED
         self.save()
+
+    def deactivate(self):
+        self.status = self.Statuses.PREPARATION
+        self.save()
+
+    def is_active(self) -> bool:
+        if self.status is self.Statuses.ACTIVE:
+            return True
+        return False
+
+
+    def get_error(self, error_code: str) -> RecipeError:
+        """
+        Returns a RecipeError object with the corresponding code.
+        Raises Exception if code is invalid
+        """
+        for error in self.ERRORS:
+            if error.code is error_code:
+                return error
+        raise Exception("Invalid error code: %s" % error_code)
+
+    def add_error(self, error_code: str, save=True) -> None:
+        error = self.get_error(error_code)
+        temp = self.automatic_errors.split(',')
+        try:
+            temp.remove('')
+        except ValueError:
+            pass
+        temp.append(error.code)
+        temp = list(set(temp))
+        temp.sort(key=int)
+        self.automatic_errors = ",".join(temp)
+        if save:
+            self.save()
+
+    def remove_error(self, error_code: str, save=True) -> None:
+        error = self.get_error(error_code)
+
+        temp = self.automatic_errors.split(',')
+        try:
+            temp.remove(error.code)
+        except ValueError:
+            return
+        self.automatic_errors = ",".join(temp)
+        if save:
+            self.save()
+
+    def check_error(self, error_code: str) -> bool:
+        """Return True if error is present, False otherwise"""
+        error = self.get_error(error_code)
+
+        if error.code in self.automatic_errors.split(','):
+            return True
+        return False
+
+    def _update_errors(self):
+        if not self.thumbnail:
+            self.add_error("0", save=False)
+        else:
+            self.remove_error("0", save=False)
+
+        if self.steps.count() == 0:
+            self.add_error("1", save=False)
+        else:
+            self.remove_error("1", save=False)
+        
+        if self.ingredients.count() == 0:
+            self.add_error("2", save=False)
+        else:
+            self.remove_error("2", save=False)
+        
+        if self.attributes.count() == 0:
+            self.add_error("3", save=False)
+        else:
+            self.remove_error("3", save=False)
+        
+        if self.diet.count() == 0:
+            self.add_error("4", save=False)
+        else:
+            self.remove_error("4", save=False)
+
+        if self.todo != "":
+            self.add_error("5", save=False)
+        else:
+            self.remove_error("5", save=False)
+              
+    def unique_consecutive_step_numbers(self) -> bool:
+        """ Check if all steps have consecutive numbers from 1 up """
+        numbers = []
+
+        # Collect all numbers and check uniqueness
+        for step in self.steps.all():
+            if step.number in numbers:
+                return False
+            else:
+                numbers.append(step.number)
+
+        # Check if all numbers are consecutive from 1 up
+        i = 1
+        while True:
+            if i not in numbers:
+                if len(numbers) == i - 1:
+                    return True
+                else:
+                    return False
+            i += 1
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self._update_errors()
+        super().save(*args, **kwargs)
         
 
 class RecipeDeliveryInstance(models.Model):

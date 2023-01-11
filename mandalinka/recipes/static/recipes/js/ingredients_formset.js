@@ -1,11 +1,13 @@
-document.addEventListener("DOMContentLoaded", () => {
-    let ingredient_forms = document.querySelectorAll(".form-in-ingredients_formset")
+function create_add_button(formset_prefix) {
+    var formset = document.getElementById(`ingredients-formset-${formset_prefix}`)
+
+    let ingredient_forms = formset.querySelectorAll(`.form-in-ingredients_formset`)
+
     let empty_form = ingredient_forms[ingredient_forms.length - 1].cloneNode(true)
 
-    let formset = document.querySelector("#ingredients-form")
-    let add_button = document.querySelector("#add-ingredient")
-    let total_forms_field = document.querySelector("#id_ingredients_mid-TOTAL_FORMS")
-    let max_forms = document.querySelector("#id_ingredients_mid-MAX_NUM_FORMS").value
+    let add_button = formset.querySelector(`#add-ingredient-${formset_prefix}`)
+    let total_forms_field = formset.querySelector(`#id_${formset_prefix}-TOTAL_FORMS`)
+    let max_forms = formset.querySelector(`#id_${formset_prefix}-MAX_NUM_FORMS`).value
 
 
     function check_form_limit() {
@@ -18,23 +20,33 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    add_button.addEventListener("click", (e) => {
+    add_button.onclick = (e) => {
         e.preventDefault()
 
         let new_form_number = total_forms_field.value
              
-        empty_form.innerHTML = empty_form.innerHTML.replace(RegExp(`ingredients_mid-(\\d){1}-`,'g'), `ingredients_mid-${new_form_number}-`)
+        empty_form.innerHTML = empty_form.innerHTML.replace(RegExp(`${formset_prefix}-${new_form_number-1}`,'g'), `${formset_prefix}-${new_form_number}`)
 
-        ingredient_forms = document.querySelectorAll(".form-in-ingredients_formset")
+        ingredient_forms = formset.querySelectorAll(`.form-in-ingredients_formset`)
         ingredient_forms[ingredient_forms.length - 1].after(empty_form.cloneNode(true))
-        ingredient_forms = document.querySelectorAll(".form-in-ingredients_formset")
-        
-        document.getElementById(`id_ingredients_mid-${total_forms_field.value}-ingredient`).focus()
-
+        ingredient_forms = formset.querySelectorAll(`.form-in-ingredients_formset`)
+          
         total_forms_field.value++
-
+        
         check_form_limit()
-    })
+        
+        let new_focus_field = document.getElementById(`id_${formset_prefix}-${total_forms_field.value-1}-ingredient`)
+        new_focus_field.focus()
+    }
 
     check_form_limit()
-})
+}
+
+
+function execute_all_ingredient_forms() {
+    document.querySelectorAll(".ingredients-formset").forEach(element => {
+        create_add_button(element.getAttribute('prefix'))
+    });
+}
+
+document.addEventListener('DOMContentLoaded', execute_all_ingredient_forms)

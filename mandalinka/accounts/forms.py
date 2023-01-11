@@ -82,7 +82,7 @@ class NewUserForm(auth_forms.UserCreationForm):
             "password2",
             )
         labels = {
-            'newsletter': 'Súhlasíte so zasielaním propagačných emailov?',
+            'newsletter': 'Súhlasíte so zasielaním reklamných emailov?',
             'terms_conditions': 'Súhlasíte s obchodnými podmienkami?',
         }
         help_texts = {

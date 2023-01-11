@@ -16,25 +16,76 @@
 {% block title %}
   <span class="material-symbols-rounded">ramen_dining</span>
   Uprav recept
-  <a type="button" class="btn secondary-button ms-auto" href="{% url 'recipes:list_recipes' %}">Naspäť</a>
+  <a type="button" class="btn secondary-button ms-auto" href="{% url 'recipes:render_recipes' %}">Naspäť</a>
 
 {% endblock %}
 
 {% block body %}
 
+
+
+  <!-- GENERAL -->
+
   <h3>Všeobecné</h3>
 
   {% crispy general_form %}
-  
+
+  <div class="row">
+    <div class="col-auto ms-auto m-3 me-0">
+      <a type="button" class="btn secondary-button" href="{% url 'recipes:render_recipes' %}">Naspäť</a>
+    </div>
+  </div>
+    
+  <!-- STEPS -->
+
   <hr style="border-width: 3px;"/>
 
+  <h3>  
+    <span class="material-symbols-rounded">checklist</span>
+    Postup
+  </h3>
+
+  {% include 'core/html/message_warning.html' with warning=steps_formset.non_form_errors only %}
+
+  <form id="steps-form" method="post" action="{% url 'recipes:edit_recipe_steps' recipe_id=recipe_id %}" class="row g-3">
+    {% csrf_token %}
+    <div id="management_form">  
+      {{ steps_formset.management_form }}
+    </div>
+    
+    {% for form in steps_formset %}
+      <div class="form-in-steps_formset col-sm-6">
+        {{ form | crispy }}
+        <hr/>
+      </div>
+    {% endfor %}
+    
+
+    <div class="col-6 ms-auto">
+      <button type="button" class="btn secondary-button" id="add-step">Pridať krok</button>
+    </div>
+    <div class="col-6 ms-auto">
+      <input type="submit" name="submit" value="Uložiť postup" class="btn primary-button" id="submit"/>
+    </div>
+    <div class="w-100"></div>
+    <div class="col-auto ms-auto">
+      <a type="button" class="btn secondary-button" href="{% url 'recipes:render_recipes' %}">Naspäť</a>
+    </div>
+  </form>
+  {{ steps_formset.media }}
+
+  
+  <!-- INGREDIENTS -->
+  
+  <hr style="border-width: 3px;"/>
+  
   <h3>  
     <span class="material-symbols-rounded">egg_alt</span>
     Ingrediencie
   </h3>
-
-  {% include 'core/html/message_warning.html' with message=message warning=ingredients_formset.non_form_errors only %}
-
+  
+  {% include 'core/html/message_warning.html' with warning=ingredients_formset.non_form_errors only %}
+  
   <form id="ingredients-form" method="post" action="{% url 'recipes:edit_recipe_ingredients' recipe_id=recipe_id %}" class="row g-3">
     {% csrf_token %}
     <div id="management_form">  
@@ -42,13 +93,13 @@
     </div>
     
     {% for form in ingredients_formset %}
-      <div class="form-in-ingredients_formset col-sm-6">
-        {{ form | crispy }}
-        <hr/>
-      </div>
+    <div class="form-in-ingredients_formset col-sm-6">
+      {{ form | crispy }}
+      <hr/>
+    </div>
     {% endfor %}
     
-
+    
     <div class="col-6 ms-auto">
       <button type="button" class="btn secondary-button" id="add-ingredient">Pridať ingredienciu</button>
     </div>
@@ -57,9 +108,9 @@
     </div>
     <div class="w-100"></div>
     <div class="col-auto ms-auto">
-      <a type="button" class="btn secondary-button" href="{% url 'recipes:list_recipes' %}">Naspäť</a>
+      <a type="button" class="btn secondary-button" href="{% url 'recipes:render_recipes' %}">Naspäť</a>
     </div>
   </form>
   {{ ingredients_formset.media }}
-
+  
 {% endblock %}

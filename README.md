@@ -12,6 +12,8 @@ from the folder containing `docker.compose.yaml`.
 
 Link to open the webpage should be `http://127.0.0.1:8000/`. It will also be specified in the terminal output after the server is started.
 
+For proper functioning, you will need a `secrets` folder, which is not in VS due to safety reasons. To get this folder contact the author.
+
 ---
 ## Useful info for developers:
 
