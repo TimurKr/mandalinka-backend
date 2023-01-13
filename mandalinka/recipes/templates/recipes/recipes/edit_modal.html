@@ -1,0 +1,70 @@
+{% load crispy_forms_tags %}
+{% load static %}
+
+<!-- Editing Modal -->
+<div class="modal fade" id="edit-recipe-modal-{{ recipe.id }}" tabindex="-1" aria-labelledby="edit-modal-title"
+  aria-hidden="true" recipe_id="{{recipe_id}}">
+  <div class="modal-dialog modal-fullscreen p-5">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="edit-recipe-modal-title">
+          <span class="material-symbols-rounded">
+            lunch_dining
+          </span>
+          <p>
+            Upravte recept <strong>{{ recipe }}</strong>
+          </p>
+        </h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-lg-4" style="border-right: 1px solid lightgrey;">
+            <h4>
+              <span class="material-symbols-rounded">
+                tune
+              </span>
+              <p>
+                Všeobecné
+              </p>
+            </h4>
+
+            <div>  
+              {% include 'recipes/recipes/forms/general_form.html' with recipe=recipe form=recipe.edit_general_form %}
+            </div>
+
+          </div>
+          <div class="col-lg-4" style="border-right: 1px solid lightgrey;">
+            <h4>
+              <span class="material-symbols-rounded">
+                checklist
+              </span>
+              Kroky
+            </h4>
+            <div>
+              {% url 'recipes:edit_recipe_steps' recipe_id=recipe.id as action %}
+              {% include 'recipes/recipes/forms/steps_formset.html' with formset=recipe.edit_steps_formset recipe=recipe %}
+            </div>
+
+          </div>
+          <div class="col-lg-4">
+            <h4>
+              <span class="material-symbols-rounded">
+                egg_alt
+              </span>
+              Ingrediencie
+            </h4>
+
+            <div>
+              {% url 'recipes:edit_recipe_ingredients' recipe_id=recipe.id as action %}
+              {% include 'recipes/recipes/forms/ingredients_formset.html' with formset=recipe.edit_ingredients_formset recipe=recipe %}
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'core/js/form_validation.js' %}"></script>

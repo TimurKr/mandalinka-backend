@@ -1,0 +1,173 @@
+{% load crispy_forms_tags %}
+
+<div class="row recipe" id="recipe_{{recipe.id}}" recipe_id="{{recipe.id}}"
+  recipe_info_url="{% url 'recipes:recipe_info_widget' recipe_id=recipe.id %}"
+  {% if recipe.status == "Preparation" %}
+  recipe_edit_url="{% url 'recipes:recipe_edit_widget' recipe_id=recipe.id %}"
+  {% endif %}
+  onclick="load_recipe_info_modal(event)">
+  <!-- IMG -->
+  <div class="col-auto img">
+    {% if recipe.thumbnail %}
+    <img src="{{ recipe.thumbnail.url }}" alt='thumbnail'>
+    {% else %}
+    <img src="https://storage.cloud.google.com/mandalinka/recipes/template/IMG_4581.JPG" alt='thumbnail'>
+    {% endif %}
+  </div>
+  <!-- INFO -->
+  <div class="col info">
+    <h5 class="name">
+      {{ recipe }}
+    </h5>
+    <div class="errors">
+      {% if recipe.automatic_errors %}
+      <a href="#" data-bs-toggle="tooltip" data-bs-title="{{ recipe.ERRORS }}">
+        <span class="badge rounded-pill text-bg-warning" onclick="load_recipe_edit_modal(event)">
+          {{ recipe.automatic_errors }}
+        </span>
+      </a>
+      {% endif %}
+      {% if not recipe.description_finished %}
+      <a href="#" data-bs-toggle="tooltip" data-bs-title="Opis nie je označený za dokončený">
+        <span class="badge rounded-pill text-bg-danger" onclick="load_recipe_edit_modal(event)">
+          OPIS
+        </span>
+      </a>
+      {% endif %}
+      {% if not recipe.steps_finished %}
+      <a href="#" data-bs-toggle="tooltip" data-bs-title="Postup nie je označený za dokončený">
+        <span class="badge rounded-pill text-bg-danger" onclick="load_recipe_edit_modal(event)">
+          POSTUP
+        </span>
+      </a>
+      {% endif %}
+      {% if not recipe.ingredients_finished %}
+      <a href="#" data-bs-toggle="tooltip" data-bs-title="Ingrediencie nie sú označené za dokončené">
+        <span class="badge rounded-pill text-bg-danger" onclick="load_recipe_edit_modal(event)">
+          INGREDIENCIE
+        </span>
+      </a>
+      {% endif %}
+    </div>
+    {% if recipe.predecessor %}
+    <p class="inheritence">
+      - zdedné z
+      <a href="#recipe_{{ recipe.predecessor.id }}" style="color:black;" {% if recipe.exclusive_predecessor %}
+        data-bs-toggle="tooltip" data-bs-title="Exklusívne dedenie - pri aktivácií dediča sa deaktivuje predchodca"
+        {% endif %}>
+        {{ recipe.predecessor }}{% if recipe.exclusive_predecessor %} *{% endif %}
+      </a>
+    </p>
+    {% endif %}
+    <p class="description">{{ recipe.description }}</p>
+    <p class="edited">Posledná zmena status: {{ recipe.last_status_change }}</p>
+    <p class="edited">Posledná úprava: {{ recipe.date_created }}</p>
+    <p class="created">Vytvorené: {{ recipe.date_created }}, {{ recipe.created_by }}</p>
+  </div>
+  <!-- ACTIONS -->
+  <div class="col-auto ms-auto actions">
+    <div class="btn-group-vertical" role="group">
+      {% if recipe.status == 'Preparation' %}
+      <button type="button" class="btn dark-light-button edit-button"
+        onclick="load_recipe_edit_modal(event)">
+        Upraviť
+      </button>
+      {% endif %}
+      {% if recipe.status == "Preparation" %}
+      <a role="button" class="btn success-light-button" href="{% url 'recipes:activate_recipe' recipe_id=recipe.id %}">
+        Aktivovať
+      </a>
+      {% elif recipe.status == "Active" %}
+      <a role="button" class="btn danger-light-button" href="{% url 'recipes:deactivate_recipe' recipe_id=recipe.id %}">
+        Vrátiť na úpravu
+      </a>
+      <a role="button" class="btn danger-light-button" href="{% url 'recipes:retire_recipe' recipe_id=recipe.id %}">
+        Prestať používať
+      </a>
+      {% elif recipe.status == "Retired" %}
+      <a role="button" class="btn danger-light-button" href="{% url 'recipes:deactivate_recipe' recipe_id=recipe.id %}">
+        Vrátiť na úpravu
+      </a>
+      <a role="button" class="btn success-light-button" href="{% url 'recipes:activate_recipe' recipe_id=recipe.id %}">
+        Aktivovať
+      </a>
+      {% endif %}
+    </div>
+  </div>
+  <script>
+    // Add edit functionality
+    function load_recipe_edit_modal(event) {
+
+      let parent_recipe = event.target.closest('.recipe')
+      let id = parent_recipe.getAttribute("recipe_id")
+      let modal = $(`#edit-recipe-modal-${id}`)
+
+      if (modal.length != 0) {
+        modal.modal('show')
+        return
+      }
+
+      let url = parent_recipe.getAttribute("recipe_edit_url")
+
+      fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'
+        }
+      })
+        .then(response => {
+          if (response.ok) {
+            return response.text();
+          } else {
+            throw new Error("Request failed with status " + response.status);
+          }
+        })
+        .then(data => {
+          $('body').append(data);
+          $(`#edit-recipe-modal-${id}`).modal("show");
+        })
+        .catch(error => console.log(error))
+    }
+
+    // Add info functionality
+    function load_recipe_info_modal(event) {
+
+      // Stop if action button was clicked
+      if (event.target.onclick || event.target.closest('.actions') || event.target.closest('.errors')) {
+        return;
+      }
+
+      let parent_recipe = event.target.closest('.recipe')
+      let id = parent_recipe.getAttribute("recipe_id")
+      let modal = $(`#info-recipe-modal-${id}`)
+
+      if (modal.length != 0) {
+        modal.modal('show')
+        return
+      }
+
+      let url = parent_recipe.getAttribute("recipe_info_url")
+
+      fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'
+        }
+      })
+        .then(response => {
+          if (response.ok) {
+            return response.text();
+          } else {
+            throw new Error("Request failed with status " + response.status);
+          }
+        })
+        .then(data => {
+          $('body').append(data);
+          $(`#info-recipe-modal-${id}`).modal("show");
+        })
+    }
+
+  </script>
+</div>

@@ -10,14 +10,15 @@ urlpatterns = [
     ### RECIPES ###
     # RENDER
     path('recipes/', views.render_recipes, name='render_recipes'), 
-    path('recipe/<recipe_id>', views.recipe_info, name='recipe_info'), 
+    path('recipe/info/<recipe_id>/', views.recipe_info_widget, name='recipe_info_widget'), 
+    path('recipe/edit/<recipe_id>/', views.recipe_edit_widget, name='recipe_edit_widget'), 
+    path('recipes/load_more/', views.load_more_recipes, name='load_more_recipes'),
     # ADD
     path('recipe/add/', views.add_recipe, name='add_recipe'),
     path('recipe/add/<predecessor_id>/', views.add_recipe_descendant, name='add_recipe_descendant'),
     path('recipe/add/<recipe_id>/steps/', views.add_recipe_steps, name='add_recipe_steps'),
     path('recipe/add/<recipe_id>/ingredients/', views.add_recipe_ingredients, name='add_recipe_ingredients'),
     # EDIT
-    path('recipes/<editing_recipe_id>', views.render_editing_recipe, name='render_editing_recipe'), # get
     path('recipe/edit/<recipe_id>/general/', views.edit_recipe_general, name='edit_recipe_general'), # post
     path('recipe/edit/<recipe_id>/steps/', views.edit_recipe_steps, name='edit_recipe_steps'), # post
     path('recipe/edit/<recipe_id>/ingredients/', views.edit_recipe_ingredients, name='edit_recipe_ingredients'), # post

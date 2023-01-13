@@ -66,8 +66,8 @@
     </div>
 
     <!-- Recipes -->
-    <div class="accordion" id="accordionPanelsStayOpenExample">
-      <div class="accordion-item">
+    <div class="accordion custom-accordion" id="recipes-accordion">
+      <div id="Preparation-recipes-accordion-item" class="accordion-item">
         <h2 class="accordion-header" id="panelsStayOpen-headingOne">
           <button class="accordion-button" type="button" data-bs-toggle="collapse"
             data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
@@ -79,17 +79,21 @@
         <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
           aria-labelledby="panelsStayOpen-headingOne">
           <div class="accordion-body">
-            <div class="list">
-              <hr width="90%" style="margin: 0 auto;">
-              {% for recipe in recipes.Preparation %}
-              {% include 'recipes/recipes/list_widget.html' with recipe=recipe only %}
-              <hr width="90%" style="margin: 0 auto;">
-              {% endfor %}
+          {% if recipes.Preparation %}
+            {% include 'recipes/recipes/list_recipes.html' with recipes=recipes.Preparation only %}
+            <div style="display:flex; justify-content:center;">
+              <button type="button" class="btn dark-light-button" onclick="load_more_recipes(event)"
+                url="{% url 'recipes:load_more_recipes' %}" status="Preparation">
+                Načítať ďalšie recepty
+              </button>
             </div>
+          {% else %}
+            No Recipes
+          {% endif %}
           </div>
         </div>
       </div>
-      <div class="accordion-item">
+      <div id="Active-recipes-accordion-item" class="accordion-item">
         <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
           <button class="accordion-button" type="button" data-bs-toggle="collapse"
             data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true"
@@ -101,17 +105,21 @@
         <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show"
           aria-labelledby="panelsStayOpen-headingTwo">
           <div class="accordion-body">
-            <div class="list">
-              <hr width="90%" style="margin: 0 auto;">
-              {% for recipe in recipes.Active %}
-              {% include 'recipes/recipes/list_widget.html' with recipe=recipe only %}
-              <hr width="90%" style="margin: 0 auto;">
-              {% endfor %}
-            </div>
+            {% if recipes.Active %}
+              {% include 'recipes/recipes/list_recipes.html' with recipes=recipes.Active only %}
+              <div style="display:flex; justify-content:center;">
+                <button type="button" class="btn dark-light-button" onclick="load_more_recipes(event)"
+                  url="{% url 'recipes:load_more_recipes' %}" status="Active">
+                  Načítať ďalšie recepty
+                </button>
+              </div>
+            {% else %}
+              No Recipes
+            {% endif %}
           </div>
         </div>
       </div>
-      <div class="accordion-item">
+      <div id="Retired-recipes-accordion-item" class="accordion-item">
         <h2 class="accordion-header" id="panelsStayOpen-headingThree">
           <button class="accordion-button" type="button" data-bs-toggle="collapse"
             data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="true"
@@ -123,13 +131,17 @@
         <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show"
           aria-labelledby="panelsStayOpen-headingThree">
           <div class="accordion-body">
-            <div class="list">
-              <hr width="90%" style="margin: 0 auto;">
-              {% for recipe in recipes.Retired %}
-              {% include 'recipes/recipes/list_widget.html' with recipe=recipe only %}
-              <hr width="90%" style="margin: 0 auto;">
-              {% endfor %}
-            </div>
+            {% if recipes.Retired %}
+              {% include 'recipes/recipes/list_recipes.html' with recipes=recipes.Retired only %}
+              <div style="display:flex; justify-content:center;">
+                <button type="button" class="btn dark-light-button" onclick="load_more_recipes(event)"
+                  url="{% url 'recipes:load_more_recipes' %}" status="Retired">
+                  Načítať ďalšie recepty
+                </button>
+              </div>
+            {% else %}
+              No Recipes
+            {% endif %}
           </div>
         </div>
       </div>
@@ -137,67 +149,56 @@
 
   </div>
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // Remove first and last separator form the lists
-      document.querySelectorAll(".list").forEach(list => {
-        list.removeChild(list.firstElementChild);
-        try {
-          list.removeChild(list.lastElementChild);
-        } catch (e) {
-        }
-      });
+    // Add load more recipes functionality
+    function load_more_recipes(event) {
+      const ask_num = 10;
 
-      // Add info functionality
+      let btn = event.target;
+      let org_btn_text = btn.innerHTML;
+      btn.innerHTML = "Načítavam ďalšie recepty...";
 
-      function load_recipe_info_widget(event) {
-        let id = this.getAttribute("recipe_id")
+      let status = btn.getAttribute("status");
 
-        // Stop if action button was clicked
-        if (event.target.closest('.actions')) {
-          console.log('Bola stlačená nejaká akcia');
-          return;
-        }
+      let params = new URLSearchParams();
+      params.append('status', status);
+      params.append('from', $(`#${status}-recipes-accordion-item .list`).children().length);
+      params.append('count', ask_num);
 
-        let url = this.getAttribute("recipe_info_url")
+      let url = btn.getAttribute("url")+'?'+params.toString();
 
-        console.log(`Loading recipe ${id}, from: ${url}`)
-
-        fetch(url, {
+      fetch(url, {
           method:'GET',
           headers: {
             'Content-Type': 'application/json',
             'X-CSRFToken': '{{ csrf_token }}'
           }
         })
-        .then(response => response.text())
+        .then(response => {
+          if (response.ok) {
+            return response.text();
+          } else {
+            throw new Error("Request failed with status " + response.status);
+          }
+        })
         .then(data => {
-          console.log(`Data loaded: ${data}`)
-          $(`#${id}-modal .modal-body`).html(data);
-        })      
-        $(`#${id}-modal`).modal("show");
+          let temp = document.createElement("div")
+          temp.innerHTML = data;
+          $(`#${status}-recipes-accordion-item .list`).append(temp.firstElementChild.innerHTML)
+          if (temp.firstElementChild.childElementCount < ask_num) {
+            btn.innerHTML = "Všetky recepty načítané"
+            btn.disabled = true
+          } else {
+            btn.innerHTML = org_btn_text
+            btn.disabled = false
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          btn.innerHTML = "Chyba pri načítavaní"
+          btn.disabled = true
+        })
       }
-
-      document.querySelectorAll(".recipe").forEach(recipe_list_widget => {
-        recipe_list_widget.addEventListener("click", load_recipe_info_widget);
-      })
-
-    })
   </script>
-
-  {% if editing_recipe_id %}
-  <!-- Scroll to the editing_recipe if provided and open its modal -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-
-      let editing_recipe_widget = document.getElementById('recipe_{{ editing_recipe_id }}')
-      console.log(editing_recipe_widget)
-      editing_recipe_widget.scrollIntoView({behavior: "smooth", block: "center", inline: "center"})
-      try {
-        editing_recipe_widget.querySelector("button.edit-button").click()
-      } catch {}
-    })
-  </script>
-  {% endif %}
 
 </section>
 {% endblock %}

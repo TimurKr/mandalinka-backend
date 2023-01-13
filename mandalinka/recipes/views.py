@@ -38,29 +38,20 @@ def recipes_management_view(request):
 # RENDER 
 @permission_required('recipes.view_recipe')
 def render_recipes(request, 
-    editing_recipe_id = None,
     messages=[],
     warnings=[], 
     new_recipe_form = None, 
     new_ingredients_formset = None, 
-    new_steps_formset = None,
-    editing_recipe_forms = None):
+    new_steps_formset = None):
     """
-    Main page for rendering the recipe tab in management page
+    Main page for rendering the recipe tab in management page, only works with GET methods
+    """
 
-    editing_recipe_id: id of the recipe to show when page is loaded
-    editing_recipe_forms: dictionary of optional forms to render with the editing_recipe_id
-    """
+    if request.method != 'GET':
+        return HttpResponseBadRequest()
 
     messages=[]
     warnings=[]
-    # Check if the provided editing_recipe_id is valid
-    if editing_recipe_id:
-        try: 
-            Recipe.objects.get(id=editing_recipe_id)
-        except:
-            warnings.append("Hladaný recept neexistuje")
-            editing_recipe_id = None
 
     # Generate restriction warning if it has been redirected
     redirected_from = request.GET.get('next', None)
@@ -87,24 +78,16 @@ def render_recipes(request,
 
     # Query all recipes to render
     recipes = {
-        Recipe.Statuses.PREPARATION: Recipe.objects.filter(status=Recipe.Statuses.PREPARATION).order_by('date_created'),
-        Recipe.Statuses.ACTIVE: Recipe.objects.filter(status=Recipe.Statuses.ACTIVE).order_by('date_created'),
-        Recipe.Statuses.RETIRED: Recipe.objects.filter(status=Recipe.Statuses.RETIRED).order_by('date_created'),
+        Recipe.Statuses.PREPARATION: Recipe.objects.filter(status=Recipe.Statuses.PREPARATION).order_by('-last_status_change')[:10],
+        Recipe.Statuses.ACTIVE: Recipe.objects.filter(status=Recipe.Statuses.ACTIVE).order_by('-last_status_change')[:10],
+        Recipe.Statuses.RETIRED: Recipe.objects.filter(status=Recipe.Statuses.RETIRED).order_by('-last_status_change')[:10],
     }
 
     # Add the editinig forms to all recipes
     for recipe in recipes[Recipe.Statuses.PREPARATION]:
-        if editing_recipe_id and editing_recipe_id == recipe.id:
-            # If editing recipe has been provided and it has id, which is equal to the current recipe
-            recipe.edit_general_form = editing_recipe_forms.get('edit_general_form', forms.EditRecipeForm(recipe.id, instance=recipe, prefix=str(recipe.id)))
-            recipe.edit_ingredients_formset = editing_recipe_forms.get('edit_ingredients_formset', forms.IngredientInstanceFormset(instance=recipe, prefix=str(recipe.id)))
-            recipe.edit_steps_formset = editing_recipe_forms.get('edit_steps_formset', forms.StepFormset(queryset=recipe.steps.order_by('number'), prefix=str(recipe.id)))
-
-        else:
-            # If the current recipe is not the editigng recipe provided
-            recipe.edit_general_form = forms.EditRecipeForm(recipe.id, instance=recipe, prefix=str(recipe.id))
-            recipe.edit_ingredients_formset = forms.IngredientInstanceFormset(instance=recipe, prefix=str(recipe.id))
-            recipe.edit_steps_formset = forms.StepFormset(queryset=recipe.steps.order_by('number'), prefix=str(recipe.id))
+        recipe.edit_general_form = forms.EditRecipeForm(recipe.id, instance=recipe, prefix=str(recipe.id))
+        recipe.edit_ingredients_formset = forms.IngredientInstanceFormset(instance=recipe, prefix=str(recipe.id))
+        recipe.edit_steps_formset = forms.StepFormset(queryset=recipe.steps.order_by('number'), prefix=str(recipe.id))
         
         if not recipe.unique_consecutive_step_numbers() and recipe.edit_steps_formset._non_form_errors == None:
             recipe.edit_steps_formset.full_clean()
@@ -128,11 +111,10 @@ def render_recipes(request,
         'new_ingredients_formset': new_ingredients_formset,
         'new_steps_formset': new_steps_formset,
         'is_new_recipe_modal_active': is_new_recipe_modal_active,
-        'editing_recipe_id': editing_recipe_id,
     })
 
 @permission_required('recipes.view_recipe')
-def recipe_info(request, recipe_id):
+def recipe_info_widget(request, recipe_id):
     # Redirect if not GET
     if request.method != 'GET':
         return HttpResponseRedirect(reverse('recipes:render_editing_recipe', args=(recipe_id,)))
@@ -143,9 +125,65 @@ def recipe_info(request, recipe_id):
     except:
         return HttpResponseRedirect(reverse('recipes:render_recipes'))
 
-    return render(request, 'recipes/recipes/info_widget.html', {'recipe': recipe})
-    
+    return render(request, 'recipes/recipes/info_modal.html', {'recipe': recipe})
 
+@permission_required('recipes.change_recipe')
+def recipe_edit_widget(request, recipe_id):
+    # Redirect if not GET
+    if request.method != 'GET':
+        return HttpResponseRedirect(reverse('recipes:render_editing_recipe', args=(recipe_id,)))
+
+    # Redirect if recipe doesn't exist
+    try: 
+        recipe = Recipe.objects.get(id=recipe_id)
+        recipe.edit_general_form = forms.EditRecipeForm(recipe.id, instance=recipe, prefix=str(recipe.id))
+        recipe.edit_ingredients_formset = forms.IngredientInstanceFormset(instance=recipe, prefix=str(recipe.id))
+        recipe.edit_steps_formset = forms.StepFormset(queryset=recipe.steps.order_by('number'), prefix=str(recipe.id))
+    except:
+        return HttpResponseRedirect(reverse('recipes:render_recipes'))
+
+    return render(request, 'recipes/recipes/edit_modal.html', {'recipe': recipe})
+    
+@permission_required('recipes.view_recipe')
+def load_more_recipes(request):
+    """
+    Returns rendered list of recipes
+    GET arguments: 
+        'status'
+        'from'
+        'to' or 'count' 
+    """
+    # If not GET request
+    if request.method != 'GET':
+        return HttpResponseBadRequest()
+    
+    # If status not specified or invalid
+    status = request.GET.get('status', None)
+    if not status or (status, status) not in Recipe.Statuses.options:
+        return HttpResponseBadRequest()
+
+    from_index = int(request.GET.get('from', None)) 
+
+    # If 'from' and 'to' specified
+    if from_index and request.GET.get('to', None):
+        to_index = int(request.GET.get('to'))
+
+    # If 'from' and 'count' specified
+    elif from_index and request.GET.get('count', None):
+        to_index = from_index + int(request.GET.get('count'))
+
+    else:
+        return HttpResponseBadRequest()
+
+    recipes = Recipe.objects.filter(status=status).order_by('-last_status_change')[from_index:to_index]
+
+    if status is Recipe.Statuses.PREPARATION:
+        for recipe in recipes:
+            recipe.edit_general_form = forms.EditRecipeForm(recipe.id, instance=recipe, prefix=str(recipe.id))
+            recipe.edit_ingredients_formset = forms.IngredientInstanceFormset(instance=recipe, prefix=str(recipe.id))
+            recipe.edit_steps_formset = forms.StepFormset(queryset=recipe.steps.order_by('number'), prefix=str(recipe.id))
+
+    return render(request, 'recipes/recipes/list_recipes.html', {'recipes':recipes})
 
 
 # ADD
@@ -254,16 +292,6 @@ def add_recipe_steps(request, recipe_id):
  
 
 # EDIT
-@permission_required('recipes.change_recipe')
-def render_editing_recipe(request, editing_recipe_id):
-    """
-    View for GET request of an editing view of a particular recipe
-    """
-    if request.method == 'GET':
-        return render_recipes(request, editing_recipe_id=editing_recipe_id)
-    else:
-        return HttpResponseBadRequest()
-
 @permission_required('recipes.change_recipe', login_url='recipes:render_recipes')
 def edit_recipe_general(request, recipe_id):
     """
@@ -280,15 +308,20 @@ def edit_recipe_general(request, recipe_id):
         return HttpResponseRedirect(reverse('recipes:render_recipes'))
 
     # Process the form data
-    general_form = forms.EditRecipeForm(recipe_id, request.POST, request.FILES, instance=recipe)
+    form = forms.EditRecipeForm(recipe_id, request.POST, request.FILES, instance=recipe, prefix=str(recipe.id))
     try:
-        general_form.save()
+        form.save()
     except:
         # Form didn't validate
-        return render_recipes(request, editing_recipe_id=recipe_id, editing_recipe_forms={'edit_general_form': general_form})
+        pass
     else:
         # Success
-        return render_recipes(request, editing_recipe_id=recipe_id)
+        form = forms.EditRecipeForm(recipe_id, instance=recipe, prefix=str(recipe.id))
+
+    return render(request, 'recipes/recipes/forms/general_form.html', {
+        'form': form,
+        'recipe': recipe,
+        })
 
 @permission_required('recipes.change_recipe', login_url='recipes:render_recipes')
 def edit_recipe_steps(request, recipe_id):
@@ -315,20 +348,25 @@ def edit_recipe_steps(request, recipe_id):
 
         if recipe.unique_consecutive_step_numbers():
             # Success
-            return render_recipes(request, editing_recipe_id=recipe_id)
+            formset = forms.StepFormset(queryset=recipe.steps.order_by('number'), prefix=str(recipe.id))
+            if not recipe.unique_consecutive_step_numbers() and recipe.edit_steps_formset._non_form_errors == None:
+                recipe.edit_steps_formset.full_clean()
+                recipe.edit_steps_formset._non_form_errors.append(ValidationError('Nesprávne číslovanie.'))
         else:
             # Steps aren't consecutive
             formset._non_form_errors.append(ValidationError('Nesprávne číslovanie.'))
             recipe.steps_finished = False
             recipe.save()
 
-    return render_recipes(request, editing_recipe_id=recipe_id, editing_recipe_forms={'edit_steps_form': formset})
+    return render(request, 'recipes/recipes/forms/steps_formset.html', {
+        'formset': formset,
+        'recipe': recipe,
+        })
     
-
 @permission_required('recipes.change_recipe', login_url='recipes:render_recipes')
 def edit_recipe_ingredients(request, recipe_id):
     """
-    View serving only for POSTing recipe ingredients formset data
+    View serving only for POSTing recipe ingredients formset data, return new generated form
     """
     # Redirect if not POST
     if request.method != 'POST':
@@ -345,9 +383,13 @@ def edit_recipe_ingredients(request, recipe_id):
     if formset.is_valid():
         # Success
         formset.save()
-        return render_recipes(request, editing_recipe_id=recipe_id)
-    else:
-        return render_recipes(request, editing_recipe_id=recipe_id, editing_recipe_forms={'edit_ingredients_form': formset})
+        formset = forms.IngredientInstanceFormset(instance=recipe, prefix=str(recipe.id))
+
+
+    return render(request, 'recipes/recipes/forms/ingredients_formset.html', {
+        'formset': formset,
+        'recipe': recipe,
+        })
 
 
 

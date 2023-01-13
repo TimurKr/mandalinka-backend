@@ -103,7 +103,7 @@ class EditRecipeForm(RecipeForm):
 
         self.fields['created_by'].disabled = True
 
-        self.helper.form_action = reverse_lazy('recipes:render_editing_recipe', args=(recipe_id, ))
+        self.helper.form_tag = False
         self.helper.layout = Layout(
             'name',
             'predecessor',
@@ -117,7 +117,10 @@ class EditRecipeForm(RecipeForm):
             'attributes',
             'diet',
             'todo',
-            SubmitButton('submit', 'Uložiť všeobecné informácie'),
+            Div(
+                Div(SubmitButton('submit', 'Uložiť všeobecné informácie'), css_class='col-auto ms-auto'),
+                css_class='row g-2'
+            )
         )
 
     class Media:
@@ -133,11 +136,6 @@ class IngredientInstanceForm(forms.ModelForm):
             'ingredient': forms.Select(),
         }
     
-    class Media:
-        js = ("recipes/js/ingredients_formset.js",)
-
-
-
 IngredientInstanceFormset = forms.inlineformset_factory(Recipe, IngredientInstance, 
     form=IngredientInstanceForm, 
     extra=2,
@@ -158,11 +156,6 @@ class StepForm(forms.ModelForm):
                 'unique_together': "%(field_labels)s: Krok pre daný recept s týmto číslom už existuje.",
             }
         }
-    
-    class Media:
-        js = ("recipes/js/steps_formset.js",)
-
-
 
 StepFormset = forms.modelformset_factory(Step, 
     form=StepForm,

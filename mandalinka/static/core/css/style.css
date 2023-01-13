@@ -11085,6 +11085,476 @@ ul.errorlist {
   margin-bottom: 0;
 }
 
+.list {
+  margin: 0.5em 0;
+  width: 100%;
+}
+.list .list-item {
+  width: 100%;
+  margin: 0.5em 0;
+  border: 1px solid lightgrey;
+  border-radius: 1em;
+  transition: all 0.3s;
+  -webkit-animation: show 0.5s;
+          animation: show 0.5s;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+.list .list-item:hover {
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+}
+.list .list-item:nth-child(1) {
+  -webkit-animation-delay: 0s;
+          animation-delay: 0s;
+}
+.list .list-item:nth-child(2) {
+  -webkit-animation-delay: 0.1s;
+          animation-delay: 0.1s;
+}
+.list .list-item:nth-child(3) {
+  -webkit-animation-delay: 0.2s;
+          animation-delay: 0.2s;
+}
+.list .list-item:nth-child(4) {
+  -webkit-animation-delay: 0.3s;
+          animation-delay: 0.3s;
+}
+.list .list-item:nth-child(5) {
+  -webkit-animation-delay: 0.4s;
+          animation-delay: 0.4s;
+}
+.list .list-item:nth-child(6) {
+  -webkit-animation-delay: 0.5s;
+          animation-delay: 0.5s;
+}
+.list .list-item:nth-child(7) {
+  -webkit-animation-delay: 0.6s;
+          animation-delay: 0.6s;
+}
+.list .list-item:nth-child(8) {
+  -webkit-animation-delay: 0.7s;
+          animation-delay: 0.7s;
+}
+.list .list-item:nth-child(9) {
+  -webkit-animation-delay: 0.8s;
+          animation-delay: 0.8s;
+}
+.list .list-item:nth-child(10) {
+  -webkit-animation-delay: 0.9s;
+          animation-delay: 0.9s;
+}
+.list .list-item:nth-child(11) {
+  -webkit-animation-delay: 1s;
+          animation-delay: 1s;
+}
+.list .list-item:nth-child(12) {
+  -webkit-animation-delay: 1.1s;
+          animation-delay: 1.1s;
+}
+.list .list-item:nth-child(13) {
+  -webkit-animation-delay: 1.2s;
+          animation-delay: 1.2s;
+}
+.list .list-item:nth-child(14) {
+  -webkit-animation-delay: 1.3s;
+          animation-delay: 1.3s;
+}
+.list .list-item:nth-child(15) {
+  -webkit-animation-delay: 1.4s;
+          animation-delay: 1.4s;
+}
+.list .list-item:nth-child(16) {
+  -webkit-animation-delay: 1.5s;
+          animation-delay: 1.5s;
+}
+.list .list-item:nth-child(17) {
+  -webkit-animation-delay: 1.6s;
+          animation-delay: 1.6s;
+}
+.list .list-item:nth-child(18) {
+  -webkit-animation-delay: 1.7s;
+          animation-delay: 1.7s;
+}
+.list .list-item:nth-child(19) {
+  -webkit-animation-delay: 1.8s;
+          animation-delay: 1.8s;
+}
+.list .list-item:nth-child(20) {
+  -webkit-animation-delay: 1.9s;
+          animation-delay: 1.9s;
+}
+.list .list-item:nth-child(21) {
+  -webkit-animation-delay: 2s;
+          animation-delay: 2s;
+}
+.list .list-item:nth-child(22) {
+  -webkit-animation-delay: 2.1s;
+          animation-delay: 2.1s;
+}
+.list .list-item:nth-child(23) {
+  -webkit-animation-delay: 2.2s;
+          animation-delay: 2.2s;
+}
+.list .list-item:nth-child(24) {
+  -webkit-animation-delay: 2.3s;
+          animation-delay: 2.3s;
+}
+.list .list-item:nth-child(25) {
+  -webkit-animation-delay: 2.4s;
+          animation-delay: 2.4s;
+}
+.list .list-item:nth-child(26) {
+  -webkit-animation-delay: 2.5s;
+          animation-delay: 2.5s;
+}
+.list .list-item:nth-child(27) {
+  -webkit-animation-delay: 2.6s;
+          animation-delay: 2.6s;
+}
+.list .list-item:nth-child(28) {
+  -webkit-animation-delay: 2.7s;
+          animation-delay: 2.7s;
+}
+.list .list-item:nth-child(29) {
+  -webkit-animation-delay: 2.8s;
+          animation-delay: 2.8s;
+}
+.list .list-item:nth-child(30) {
+  -webkit-animation-delay: 2.9s;
+          animation-delay: 2.9s;
+}
+.list .list-item:nth-child(31) {
+  -webkit-animation-delay: 3s;
+          animation-delay: 3s;
+}
+.list .list-item:nth-child(32) {
+  -webkit-animation-delay: 3.1s;
+          animation-delay: 3.1s;
+}
+.list .list-item:nth-child(33) {
+  -webkit-animation-delay: 3.2s;
+          animation-delay: 3.2s;
+}
+.list .list-item:nth-child(34) {
+  -webkit-animation-delay: 3.3s;
+          animation-delay: 3.3s;
+}
+.list .list-item:nth-child(35) {
+  -webkit-animation-delay: 3.4s;
+          animation-delay: 3.4s;
+}
+.list .list-item:nth-child(36) {
+  -webkit-animation-delay: 3.5s;
+          animation-delay: 3.5s;
+}
+.list .list-item:nth-child(37) {
+  -webkit-animation-delay: 3.6s;
+          animation-delay: 3.6s;
+}
+.list .list-item:nth-child(38) {
+  -webkit-animation-delay: 3.7s;
+          animation-delay: 3.7s;
+}
+.list .list-item:nth-child(39) {
+  -webkit-animation-delay: 3.8s;
+          animation-delay: 3.8s;
+}
+.list .list-item:nth-child(40) {
+  -webkit-animation-delay: 3.9s;
+          animation-delay: 3.9s;
+}
+.list .list-item:nth-child(41) {
+  -webkit-animation-delay: 4s;
+          animation-delay: 4s;
+}
+.list .list-item:nth-child(42) {
+  -webkit-animation-delay: 4.1s;
+          animation-delay: 4.1s;
+}
+.list .list-item:nth-child(43) {
+  -webkit-animation-delay: 4.2s;
+          animation-delay: 4.2s;
+}
+.list .list-item:nth-child(44) {
+  -webkit-animation-delay: 4.3s;
+          animation-delay: 4.3s;
+}
+.list .list-item:nth-child(45) {
+  -webkit-animation-delay: 4.4s;
+          animation-delay: 4.4s;
+}
+.list .list-item:nth-child(46) {
+  -webkit-animation-delay: 4.5s;
+          animation-delay: 4.5s;
+}
+.list .list-item:nth-child(47) {
+  -webkit-animation-delay: 4.6s;
+          animation-delay: 4.6s;
+}
+.list .list-item:nth-child(48) {
+  -webkit-animation-delay: 4.7s;
+          animation-delay: 4.7s;
+}
+.list .list-item:nth-child(49) {
+  -webkit-animation-delay: 4.8s;
+          animation-delay: 4.8s;
+}
+.list .list-item:nth-child(50) {
+  -webkit-animation-delay: 4.9s;
+          animation-delay: 4.9s;
+}
+.list .list-item:nth-child(51) {
+  -webkit-animation-delay: 5s;
+          animation-delay: 5s;
+}
+.list .list-item:nth-child(52) {
+  -webkit-animation-delay: 5.1s;
+          animation-delay: 5.1s;
+}
+.list .list-item:nth-child(53) {
+  -webkit-animation-delay: 5.2s;
+          animation-delay: 5.2s;
+}
+.list .list-item:nth-child(54) {
+  -webkit-animation-delay: 5.3s;
+          animation-delay: 5.3s;
+}
+.list .list-item:nth-child(55) {
+  -webkit-animation-delay: 5.4s;
+          animation-delay: 5.4s;
+}
+.list .list-item:nth-child(56) {
+  -webkit-animation-delay: 5.5s;
+          animation-delay: 5.5s;
+}
+.list .list-item:nth-child(57) {
+  -webkit-animation-delay: 5.6s;
+          animation-delay: 5.6s;
+}
+.list .list-item:nth-child(58) {
+  -webkit-animation-delay: 5.7s;
+          animation-delay: 5.7s;
+}
+.list .list-item:nth-child(59) {
+  -webkit-animation-delay: 5.8s;
+          animation-delay: 5.8s;
+}
+.list .list-item:nth-child(60) {
+  -webkit-animation-delay: 5.9s;
+          animation-delay: 5.9s;
+}
+.list .list-item:nth-child(61) {
+  -webkit-animation-delay: 6s;
+          animation-delay: 6s;
+}
+.list .list-item:nth-child(62) {
+  -webkit-animation-delay: 6.1s;
+          animation-delay: 6.1s;
+}
+.list .list-item:nth-child(63) {
+  -webkit-animation-delay: 6.2s;
+          animation-delay: 6.2s;
+}
+.list .list-item:nth-child(64) {
+  -webkit-animation-delay: 6.3s;
+          animation-delay: 6.3s;
+}
+.list .list-item:nth-child(65) {
+  -webkit-animation-delay: 6.4s;
+          animation-delay: 6.4s;
+}
+.list .list-item:nth-child(66) {
+  -webkit-animation-delay: 6.5s;
+          animation-delay: 6.5s;
+}
+.list .list-item:nth-child(67) {
+  -webkit-animation-delay: 6.6s;
+          animation-delay: 6.6s;
+}
+.list .list-item:nth-child(68) {
+  -webkit-animation-delay: 6.7s;
+          animation-delay: 6.7s;
+}
+.list .list-item:nth-child(69) {
+  -webkit-animation-delay: 6.8s;
+          animation-delay: 6.8s;
+}
+.list .list-item:nth-child(70) {
+  -webkit-animation-delay: 6.9s;
+          animation-delay: 6.9s;
+}
+.list .list-item:nth-child(71) {
+  -webkit-animation-delay: 7s;
+          animation-delay: 7s;
+}
+.list .list-item:nth-child(72) {
+  -webkit-animation-delay: 7.1s;
+          animation-delay: 7.1s;
+}
+.list .list-item:nth-child(73) {
+  -webkit-animation-delay: 7.2s;
+          animation-delay: 7.2s;
+}
+.list .list-item:nth-child(74) {
+  -webkit-animation-delay: 7.3s;
+          animation-delay: 7.3s;
+}
+.list .list-item:nth-child(75) {
+  -webkit-animation-delay: 7.4s;
+          animation-delay: 7.4s;
+}
+.list .list-item:nth-child(76) {
+  -webkit-animation-delay: 7.5s;
+          animation-delay: 7.5s;
+}
+.list .list-item:nth-child(77) {
+  -webkit-animation-delay: 7.6s;
+          animation-delay: 7.6s;
+}
+.list .list-item:nth-child(78) {
+  -webkit-animation-delay: 7.7s;
+          animation-delay: 7.7s;
+}
+.list .list-item:nth-child(79) {
+  -webkit-animation-delay: 7.8s;
+          animation-delay: 7.8s;
+}
+.list .list-item:nth-child(80) {
+  -webkit-animation-delay: 7.9s;
+          animation-delay: 7.9s;
+}
+.list .list-item:nth-child(81) {
+  -webkit-animation-delay: 8s;
+          animation-delay: 8s;
+}
+.list .list-item:nth-child(82) {
+  -webkit-animation-delay: 8.1s;
+          animation-delay: 8.1s;
+}
+.list .list-item:nth-child(83) {
+  -webkit-animation-delay: 8.2s;
+          animation-delay: 8.2s;
+}
+.list .list-item:nth-child(84) {
+  -webkit-animation-delay: 8.3s;
+          animation-delay: 8.3s;
+}
+.list .list-item:nth-child(85) {
+  -webkit-animation-delay: 8.4s;
+          animation-delay: 8.4s;
+}
+.list .list-item:nth-child(86) {
+  -webkit-animation-delay: 8.5s;
+          animation-delay: 8.5s;
+}
+.list .list-item:nth-child(87) {
+  -webkit-animation-delay: 8.6s;
+          animation-delay: 8.6s;
+}
+.list .list-item:nth-child(88) {
+  -webkit-animation-delay: 8.7s;
+          animation-delay: 8.7s;
+}
+.list .list-item:nth-child(89) {
+  -webkit-animation-delay: 8.8s;
+          animation-delay: 8.8s;
+}
+.list .list-item:nth-child(90) {
+  -webkit-animation-delay: 8.9s;
+          animation-delay: 8.9s;
+}
+.list .list-item:nth-child(91) {
+  -webkit-animation-delay: 9s;
+          animation-delay: 9s;
+}
+.list .list-item:nth-child(92) {
+  -webkit-animation-delay: 9.1s;
+          animation-delay: 9.1s;
+}
+.list .list-item:nth-child(93) {
+  -webkit-animation-delay: 9.2s;
+          animation-delay: 9.2s;
+}
+.list .list-item:nth-child(94) {
+  -webkit-animation-delay: 9.3s;
+          animation-delay: 9.3s;
+}
+.list .list-item:nth-child(95) {
+  -webkit-animation-delay: 9.4s;
+          animation-delay: 9.4s;
+}
+.list .list-item:nth-child(96) {
+  -webkit-animation-delay: 9.5s;
+          animation-delay: 9.5s;
+}
+.list .list-item:nth-child(97) {
+  -webkit-animation-delay: 9.6s;
+          animation-delay: 9.6s;
+}
+.list .list-item:nth-child(98) {
+  -webkit-animation-delay: 9.7s;
+          animation-delay: 9.7s;
+}
+.list .list-item:nth-child(99) {
+  -webkit-animation-delay: 9.8s;
+          animation-delay: 9.8s;
+}
+.list .list-item:nth-child(100) {
+  -webkit-animation-delay: 9.9s;
+          animation-delay: 9.9s;
+}
+
+@-webkit-keyframes show {
+  0% {
+    opacity: 0;
+    margin: 0;
+  }
+  100% {
+    opacity: 1;
+    margin: 0.5em 0;
+  }
+}
+
+@keyframes show {
+  0% {
+    opacity: 0;
+    margin: 0;
+  }
+  100% {
+    opacity: 1;
+    margin: 0.5em 0;
+  }
+}
+.compact-list .list-item {
+  border-radius: 0;
+  margin: 0;
+  border-bottom: none;
+}
+.compact-list .list-item:last-child {
+  border-bottom: 1px solid lightgrey;
+}
+.compact-list > :first-child {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+.compact-list > :last-child {
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.accordion {
+  background-color: transparent;
+}
+.accordion .accordion-header button {
+  font-size: 75%;
+}
+.accordion .accordion-header button span {
+  margin-right: 0.5em;
+}
+.accordion .accordion-body {
+  background-color: transparent;
+}
+
 .address-selection {
   width: 100%;
   margin: 0;

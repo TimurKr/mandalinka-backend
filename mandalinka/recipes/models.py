@@ -2,6 +2,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
+import datetime
 
 ################################# Validators ###################################
 
@@ -253,6 +254,7 @@ class Recipe(models.Model):
     )
 
     status = models.CharField(max_length=20, choices=Statuses.options, default=Statuses.ACTIVE)
+    last_status_change = models.DateTimeField(editable=False)
 
     class RecipeError:
         def __init__(self, code, text):
@@ -306,14 +308,17 @@ class Recipe(models.Model):
         self.status = self.Statuses.ACTIVE
         if self.exclusive_predecessor and self.predecessor:
             self.predecessor.retire()
+        self.last_status_change = datetime.datetime.now()
         self.save()
     
     def retire(self):
         self.status = self.Statuses.RETIRED
+        self.last_status_change = datetime.datetime.now()
         self.save()
 
     def deactivate(self):
         self.status = self.Statuses.PREPARATION
+        self.last_status_change = datetime.datetime.now()
         self.save()
 
     def is_active(self) -> bool:
@@ -421,6 +426,7 @@ class Recipe(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         self._update_errors()
+        self.date_modified = datetime.datetime.now()
         super().save(*args, **kwargs)
         
 

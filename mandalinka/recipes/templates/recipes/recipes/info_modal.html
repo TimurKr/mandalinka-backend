@@ -1,0 +1,29 @@
+<!-- Info Modal -->
+<div class="modal fade" id="info-recipe-modal-{{recipe.id}}" tabindex="-1" aria-labelledby="info-recipe-modal-title"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xl p-5 rounded-4">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="info-recipe-modal-title">
+          <span class="material-symbols-rounded">
+            lunch_dining
+          </span>
+          <p>
+            <strong>{{ recipe }}</strong>
+          </p>
+        </h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <p>
+            Tu raz budú všetky informácie o recepte <strong>{{ recipe }}</strong>
+          </p>
+          <p>
+            treba upraviť subor recipes/recipes/info_widget.html
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
