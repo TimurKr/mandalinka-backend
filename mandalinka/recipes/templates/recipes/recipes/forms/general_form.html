@@ -10,6 +10,7 @@
 <!-- Submition -->
 <script>
   function submit_form(event) {
+    console.log('gen')
     event.preventDefault(); // prevent the form from submitting the normal way
     var form = event.target;
     
@@ -36,7 +37,6 @@
       })
       .then(html => {
         form.parentNode.innerHTML = html;
-        submit_button.innerHTML = submit_button_org
       })
       .catch(error => {
         console.error(error);

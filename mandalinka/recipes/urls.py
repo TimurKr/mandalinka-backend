@@ -16,8 +16,6 @@ urlpatterns = [
     # ADD
     path('recipe/add/', views.add_recipe, name='add_recipe'),
     path('recipe/add/<predecessor_id>/', views.add_recipe_descendant, name='add_recipe_descendant'),
-    path('recipe/add/<recipe_id>/steps/', views.add_recipe_steps, name='add_recipe_steps'),
-    path('recipe/add/<recipe_id>/ingredients/', views.add_recipe_ingredients, name='add_recipe_ingredients'),
     # EDIT
     path('recipe/edit/<recipe_id>/general/', views.edit_recipe_general, name='edit_recipe_general'), # post
     path('recipe/edit/<recipe_id>/steps/', views.edit_recipe_steps, name='edit_recipe_steps'), # post

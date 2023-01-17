@@ -4,7 +4,8 @@
 
 <form id="ingredients-formset-{{ formset.prefix }}" method="post" 
   action="{% url 'recipes:edit_recipe_ingredients' recipe_id=recipe.id %}" 
-  class="row g-4" prefix="{{ formset.prefix }}" onsubmit="submit_form(event)">
+  class="row g-4" prefix="{{ formset.prefix }}" recipe_id="{{ recipe.id }}"
+  onsubmit="submit_form(event)">
   {% csrf_token %}
   <div id="management_form">
     {{ formset.management_form }}
@@ -19,7 +20,8 @@
 
   <div class="col-12">
     <div id="div_id_ingredients_finished" class="mb-3">
-      <input type="checkbox" name="ingredients_finished" class="checkboxinput form-check-input" id="id_ingredients_finished">
+      <input type="checkbox" name="ingredients_finished" class="checkboxinput form-check-input" id="id_ingredients_finished"
+      {% if recipe.ingredients_finished %}checked{% endif %}>
       <label for="id_ingredients_finished" class="form-check-label"> Ingrediencie finálne hotové </label>
       <small id="hint_id_ingredients_finished" class="form-text text-muted"> 
         Označte, ak sú ingrediencie pripravené na publikáciu. 
@@ -41,6 +43,7 @@
 <!-- Submition script -->
 <script>
     function submit_form(event) {
+      console.log('ing');
       event.preventDefault(); // prevent the form from submitting the normal way
       var form = event.target;
       
@@ -48,6 +51,8 @@
       const submit_button_org = submit_button.value
       submit_button.value = "Odosielam..."
       submit_button.disabled = true
+      
+      console.log('bout to fetch');
       
       fetch(form.action, {
         method: form.method,
@@ -58,6 +63,8 @@
         credentials: "same-origin"
       })
         .then(response => {
+          console.log('got it back');
+
           if (response.ok) {
             return response.text();
           } else {
@@ -65,8 +72,9 @@
           }
         })
         .then(html => {
+          console.log('appending');
+
           form.parentNode.innerHTML = html;
-          submit_button.innerHTML = submit_button_org
         })
         .catch(error => {
           console.error(error);

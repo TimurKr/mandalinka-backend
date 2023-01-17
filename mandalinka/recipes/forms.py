@@ -49,16 +49,18 @@ class RecipeForm(forms.ModelForm):
             'description_finished',
             'thumbnail',
             'difficulty',
-            'StF_cooking_time', 
+            'cooking_time', 
             'active_cooking_time',
             'attributes',
             'diet',
+            'required_accessories',
             'todo',
             'created_by',
         )
         widgets = {
             'diet': forms.CheckboxSelectMultiple(),
             'attributes': forms.CheckboxSelectMultiple(),
+            'required_accessories': forms.CheckboxSelectMultiple(),
             'todo': forms.Textarea(attrs={'rows': '3'}),
             'description': forms.Textarea(attrs={'rows': '3'}),
             'steps': forms.Textarea(attrs={'rows': '5'}),
@@ -71,6 +73,13 @@ class RecipeForm(forms.ModelForm):
         self.helper.form_id = 'general_info'
         self.helper.form_class = 'needs-validation'
         self.helper.attrs = {'novalidate': ''}
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        if cleaned_data.get("cooking_time") < cleaned_data.get("active_cooking_time"):
+            self.add_error('cooking_time', "Čas varenia musí byť väčší alebo rovný aktívnemu času varenia")
+            self.add_error('active_cooking_time', "Čas varenia musí byť väčší alebo rovný aktívnemu času varenia")
 
 
 class NewRecipeForm(RecipeForm):
@@ -85,10 +94,11 @@ class NewRecipeForm(RecipeForm):
             'description_finished',
             'thumbnail',
             'difficulty',
-            'StF_cooking_time', 
+            'cooking_time', 
             'active_cooking_time',
             'attributes',
             'diet',
+            'required_accessories',
             'todo',
             'created_by',
             SubmitButton('Submit', 'Vytvoriť nový recept'),
@@ -112,10 +122,11 @@ class EditRecipeForm(RecipeForm):
             'description_finished',
             'thumbnail',
             'difficulty',
-            'StF_cooking_time', 
+            'cooking_time', 
             'active_cooking_time',
             'attributes',
             'diet',
+            'required_accessories',
             'todo',
             Div(
                 Div(SubmitButton('submit', 'Uložiť všeobecné informácie'), css_class='col-auto ms-auto'),

@@ -1,4 +1,4 @@
-{% extends 'recipes/layout.html' %}
+{% extends 'recipes/admin_page_layout.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
 
@@ -19,15 +19,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          {% if new_recipe_form %}
           {% crispy new_recipe_form %}
-          {% elif new_ingredients_formset %}
-          {% url 'recipes:add_recipe_ingredients' recipe_id=new_ingredients_formset.instance.id as action %}
-          {% include 'recipes/recipes/forms/ingredients_formset.html' with formset=new_ingredients_formset action=action %}
-          {% elif new_steps_formset %}
-          {% url 'recipes:add_recipe_steps' recipe_id=new_steps_formset.instance.id as action %}
-          {% include 'recipes/recipes/forms/steps_formset.html' with formset=new_steps_formset action=action %}
-          {% endif %}
         </div>
       </div>
     </div>
@@ -88,7 +80,7 @@
               </button>
             </div>
           {% else %}
-            No Recipes
+            Žiadne recepty
           {% endif %}
           </div>
         </div>
@@ -114,7 +106,7 @@
                 </button>
               </div>
             {% else %}
-              No Recipes
+              Žiadne recepty
             {% endif %}
           </div>
         </div>
@@ -140,7 +132,7 @@
                 </button>
               </div>
             {% else %}
-              No Recipes
+              Žiadne recepty
             {% endif %}
           </div>
         </div>

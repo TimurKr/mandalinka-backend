@@ -49,7 +49,7 @@
   vertical-align: super;
   color: black;
 }
-.manage-list > div .recipe .info .inheritence, .manage-list > div .ingredient .info .inheritence {
+.manage-list > div .recipe .info .inheritance, .manage-list > div .ingredient .info .inheritance {
   margin: 0;
 }
 .manage-list > div .recipe .info .description, .manage-list > div .ingredient .info .description {

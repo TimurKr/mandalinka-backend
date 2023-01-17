@@ -1,9 +1,9 @@
 {% load crispy_forms_tags %}
 
 <div class="row recipe" id="recipe_{{recipe.id}}" recipe_id="{{recipe.id}}"
-  recipe_info_url="{% url 'recipes:recipe_info_widget' recipe_id=recipe.id %}"
+  recipe_info_url="{% url 'recipes:recipe_info_widget' recipe_id=recipe.id %}" 
   {% if recipe.status == "Preparation" %}
-  recipe_edit_url="{% url 'recipes:recipe_edit_widget' recipe_id=recipe.id %}"
+  recipe_edit_url="{% url 'recipes:recipe_edit_widget' recipe_id=recipe.id %}" 
   {% endif %}
   onclick="load_recipe_info_modal(event)">
   <!-- IMG -->
@@ -21,36 +21,39 @@
     </h5>
     <div class="errors">
       {% if recipe.automatic_errors %}
-      <a href="#" data-bs-toggle="tooltip" data-bs-title="{{ recipe.ERRORS }}">
+      <a class="automatic-errors" href="#" data-bs-toggle="tooltip" data-bs-title="{{ recipe.ERRORS }}">
         <span class="badge rounded-pill text-bg-warning" onclick="load_recipe_edit_modal(event)">
           {{ recipe.automatic_errors }}
         </span>
       </a>
       {% endif %}
       {% if not recipe.description_finished %}
-      <a href="#" data-bs-toggle="tooltip" data-bs-title="Opis nie je označený za dokončený">
-        <span class="badge rounded-pill text-bg-danger" onclick="load_recipe_edit_modal(event)">
+      <a class="description-error" href="#" data-bs-toggle="tooltip" data-bs-title="Opis nie je označený za dokončený"
+        onclick="load_recipe_edit_modal(event)">
+        <span class="badge rounded-pill text-bg-danger">
           OPIS
         </span>
       </a>
       {% endif %}
       {% if not recipe.steps_finished %}
-      <a href="#" data-bs-toggle="tooltip" data-bs-title="Postup nie je označený za dokončený">
-        <span class="badge rounded-pill text-bg-danger" onclick="load_recipe_edit_modal(event)">
+      <a class="steps-errors" href="#" data-bs-toggle="tooltip" data-bs-title="Postup nie je označený za dokončený"
+        onclick="load_recipe_edit_modal(event)">
+        <span class="badge rounded-pill text-bg-danger">
           POSTUP
         </span>
       </a>
       {% endif %}
       {% if not recipe.ingredients_finished %}
-      <a href="#" data-bs-toggle="tooltip" data-bs-title="Ingrediencie nie sú označené za dokončené">
-        <span class="badge rounded-pill text-bg-danger" onclick="load_recipe_edit_modal(event)">
+      <a class="ingredients-errors" href="#" data-bs-toggle="tooltip" data-bs-title="Ingrediencie nie sú označené za dokončené"
+        onclick="load_recipe_edit_modal(event)">
+        <span class="badge rounded-pill text-bg-danger">
           INGREDIENCIE
         </span>
       </a>
       {% endif %}
     </div>
     {% if recipe.predecessor %}
-    <p class="inheritence">
+    <p class="inheritance">
       - zdedné z
       <a href="#recipe_{{ recipe.predecessor.id }}" style="color:black;" {% if recipe.exclusive_predecessor %}
         data-bs-toggle="tooltip" data-bs-title="Exklusívne dedenie - pri aktivácií dediča sa deaktivuje predchodca"
@@ -61,39 +64,42 @@
     {% endif %}
     <p class="description">{{ recipe.description }}</p>
     <p class="edited">Posledná zmena status: {{ recipe.last_status_change }}</p>
-    <p class="edited">Posledná úprava: {{ recipe.date_created }}</p>
+    <p class="edited">Posledná úprava: {{ recipe.date_modified }}</p>
     <p class="created">Vytvorené: {{ recipe.date_created }}, {{ recipe.created_by }}</p>
   </div>
   <!-- ACTIONS -->
   <div class="col-auto ms-auto actions">
     <div class="btn-group-vertical" role="group">
       {% if recipe.status == 'Preparation' %}
-      <button type="button" class="btn dark-light-button edit-button"
-        onclick="load_recipe_edit_modal(event)">
+      <button type="button" class="btn dark-light-button edit-button" onclick="load_recipe_edit_modal(event)">
         Upraviť
       </button>
-      {% endif %}
-      {% if recipe.status == "Preparation" %}
-      <a role="button" class="btn success-light-button" href="{% url 'recipes:activate_recipe' recipe_id=recipe.id %}">
+      <button type="button" class="btn success-light-button activate-button"
+        onclick="confirm_status_change(event, `{% url 'recipes:activate_recipe' recipe_id=recipe.id %}`, `{{ recipe }}`)">
         Aktivovať
-      </a>
+      </button>
       {% elif recipe.status == "Active" %}
-      <a role="button" class="btn danger-light-button" href="{% url 'recipes:deactivate_recipe' recipe_id=recipe.id %}">
+      <a role="button" class="btn danger-light-button deactivate-button"
+        onclick="confirm_status_change(event, `{% url 'recipes:deactivate_recipe' recipe_id=recipe.id %}`, `{{ recipe }}`)">
         Vrátiť na úpravu
       </a>
-      <a role="button" class="btn danger-light-button" href="{% url 'recipes:retire_recipe' recipe_id=recipe.id %}">
+      <a role="button" class="btn danger-light-button retire-button"
+        onclick="confirm_status_change(event, `{% url 'recipes:retire_recipe' recipe_id=recipe.id %}`, `{{ recipe }}`)">
         Prestať používať
       </a>
       {% elif recipe.status == "Retired" %}
-      <a role="button" class="btn danger-light-button" href="{% url 'recipes:deactivate_recipe' recipe_id=recipe.id %}">
+      <a role="button" class="btn danger-light-button deactivate-button"
+        onclick="confirm_status_change(event, `{% url 'recipes:deactivate_recipe' recipe_id=recipe.id %}`, `{{ recipe }}`)">
         Vrátiť na úpravu
       </a>
-      <a role="button" class="btn success-light-button" href="{% url 'recipes:activate_recipe' recipe_id=recipe.id %}">
+      <a role="button" class="btn success-light-button activate-button"
+        onclick="confirm_status_change(event, `{% url 'recipes:activate_recipe' recipe_id=recipe.id %}`, `{{ recipe }}`)">
         Aktivovať
       </a>
       {% endif %}
     </div>
   </div>
+
   <script>
     // Add edit functionality
     function load_recipe_edit_modal(event) {
@@ -104,8 +110,13 @@
 
       if (modal.length != 0) {
         modal.modal('show')
+
         return
       }
+
+      let org_button_text = event.target.innerHTML;
+      event.target.innerHTML = "Načítavam...";
+      event.target.disabled = true;
 
       let url = parent_recipe.getAttribute("recipe_edit_url")
 
@@ -126,6 +137,8 @@
         .then(data => {
           $('body').append(data);
           $(`#edit-recipe-modal-${id}`).modal("show");
+          event.target.innerHTML = org_button_text;
+          event.target.disabled = false;
         })
         .catch(error => console.log(error))
     }
@@ -134,19 +147,20 @@
     function load_recipe_info_modal(event) {
 
       // Stop if action button was clicked
-      if (event.target.onclick || event.target.closest('.actions') || event.target.closest('.errors')) {
+      if (event.target.onclick || event.target.closest('.actions') || event.target.closest('.errors') || event.target.closest('.inheritance')) {
         return;
       }
 
+      
       let parent_recipe = event.target.closest('.recipe')
       let id = parent_recipe.getAttribute("recipe_id")
       let modal = $(`#info-recipe-modal-${id}`)
-
+      
       if (modal.length != 0) {
         modal.modal('show')
         return
       }
-
+      
       let url = parent_recipe.getAttribute("recipe_info_url")
 
       fetch(url, {
@@ -167,6 +181,50 @@
           $('body').append(data);
           $(`#info-recipe-modal-${id}`).modal("show");
         })
+    }
+    
+    // Add status change functionality
+    function confirm_status_change(event, url, recipe_name) {
+
+      let confirmation_modal = $('#confirmation-modal');
+
+      // If the modal doesn't exist yet
+      if (confirmation_modal.length == 0) {
+        $('body').append(
+          ' <!-- Confrimation modal --> \
+          <div class="modal fade" id="confirmation-modal" tabindex="-1" role="dialog" aria-labelledby="confirm-modal-label" \
+            data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"> \
+            <div class="modal-dialog modal-dialog-centered" role="document">  \
+              <div class="modal-content"> \
+                <div class="modal-header">  \
+                  <h5 class="modal-title" id="confirm-modal-label"></h5> \
+                </div>  \
+                <div class="modal-footer">  \
+                  <button type="button" class="btn dark-light-button" data-bs-dismiss="modal" aria-label="Close">Zrušiť</button> \
+                  <a href="#" class="btn danger-light-button confirm-button-url"></a>  \
+                </div>  \
+              </div>  \
+            </div>  \
+          </div>');
+        confirmation_modal = $('#confirmation-modal');
+      }
+
+      if (event.target.classList.contains('activate-button')) {
+        confirmation_modal.find('.modal-title').html(`Potvrďte aktiváciu <strong>${recipe_name}</strong>`);
+        confirmation_modal.find('.confirm-button-url').html('Aktivovať')
+        confirmation_modal.find('.confirm-button-url').removeClass('danger-light-button').addClass('success-light-button');
+      } else if (event.target.classList.contains('deactivate-button')) {
+        confirmation_modal.find('.modal-title').html(`Naozaj chcete recept <strong>${recipe_name}</strong> vrátiť na úpravu?`);
+        confirmation_modal.find('.confirm-button-url').html('Vrátiť na úpravu')
+        confirmation_modal.find('.confirm-button-url').removeClass('success-light-button').addClass('danger-light-button');
+      } else if (event.target.classList.contains('retire-button')) {
+        confirmation_modal.find('.modal-title').html(`Naozaj chcete prestať používať <strong>${recipe_name}</strong>?`);
+        confirmation_modal.find('.confirm-button-url').html('Prestať používať')
+        confirmation_modal.find('.confirm-button-url').removeClass('success-light-button').addClass('danger-light-button');
+      }
+      confirmation_modal.find('.confirm-button-url').attr('href', url)
+      confirmation_modal.modal('show');
+
     }
 
   </script>

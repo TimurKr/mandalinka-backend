@@ -38,9 +38,17 @@ class Alergen(models.Model):
 
 class Attribute(models.Model):
     name = models.CharField(
-        max_length=255, 
+        max_length=64, 
         unique=True,
-        verbose_name="Atribút",
+    )
+
+    def icon_upload_to(instance, filename):
+        return f'custom_icons/attributes/{slugify(instance.__str__())}_icon.{filename.split(".")[1]}'
+
+    icon = models.ImageField(
+        upload_to=icon_upload_to, 
+        help_text="Pridajte ikonku", 
+        blank=True, null=True
     )
 
     def __str__(self):
@@ -49,12 +57,38 @@ class Attribute(models.Model):
 class Diet(models.Model):
     name = models.CharField(
         unique=True,
-        max_length=32, 
+        max_length=64, 
+    )
+
+    def icon_upload_to(instance, filename):
+        return f'custom_icons/diets/{slugify(instance.__str__())}_icon.{filename.split(".")[1]}'
+
+    icon = models.ImageField(
+        upload_to=icon_upload_to, 
+        help_text="Pridajte ikonku", 
+        blank=True, null=True
     )
 
     def __str__(self):
         return self.name
 
+class KitchenAccesory(models.Model):
+    name = models.CharField(
+        unique=True,
+        max_length=64, 
+    )
+
+    def icon_upload_to(instance, filename):
+        return f'custom_icons/kitchen_accesories/{slugify(instance.__str__())}_icon.{filename.split(".")[1]}'
+
+    icon = models.ImageField(
+        upload_to=icon_upload_to, 
+        help_text="Pridajte ikonku", 
+        blank=True, null=True
+    )
+
+    def __str__(self):
+        return self.name
 
 class IngredientInstance(models.Model):
     ingredient = models.ForeignKey("recipes.Ingredient", related_name="instances", 
@@ -109,6 +143,19 @@ class Ingredient(models.Model):
         blank=True, default=None,
         verbose_name="Alergény", help_text="Zvolte všetky alergény"
     )
+
+    class Statuses:
+        PREPARATION = "Preparation"
+        ACTIVE = "Active"
+        RETIRED = "Retired"
+        options = (
+            (PREPARATION, PREPARATION),
+            (ACTIVE, ACTIVE),
+            (RETIRED, RETIRED)
+        )
+
+    status = models.CharField(max_length=20, choices=Statuses.options, default=Statuses.PREPARATION)
+    last_status_change = models.DateTimeField(editable=False, auto_now_add=True)
 
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="Čas vzniku")
     date_modified = models.DateTimeField(auto_now=True, verbose_name="Naposledy upravené")
@@ -176,7 +223,7 @@ class Recipe(models.Model):
     )
 
     # Relation to previous
-    predecessor = models.ForeignKey('recipes.Recipe', related_name='successor', 
+    predecessor = models.ForeignKey('self', related_name='successor', 
         on_delete=models.PROTECT, 
         verbose_name='Predchodca', 
         help_text='V prípade, že je tento recept iba pozmenený predchádzajúci, zvolte ktorý mu predchádzal',
@@ -205,13 +252,13 @@ class Recipe(models.Model):
         ],
         verbose_name="Náročnosť", help_text="Zadajte náročnosť"
     )
-    StF_cooking_time = models.IntegerField(
+    cooking_time = models.IntegerField(
         validators=[validate_cooking_time_range],
         verbose_name="Čas varenia", help_text="Zadajte dĺžku varenia od začiatku do hotového jedla v minútach"
     )
     active_cooking_time = models.IntegerField(
         validators=[validate_cooking_time_range],
-        verbose_name="Čas prípravy", help_text="Zadajte dĺžku aktívneho času varenia v minútach"
+        verbose_name="Aktívny čas varenia", help_text="Zadajte čas, ktorý je potrebné venovať sa vareniu"
     )
 
     attributes = models.ManyToManyField('recipes.Attribute', related_name="recipes", 
@@ -223,6 +270,11 @@ class Recipe(models.Model):
         blank=True,
         verbose_name="Dieta", help_text="Spadá tento recept do nejakých diet?"
     )
+
+    required_accessories = models.ManyToManyField('recipes.KitchenAccesory', related_name='recipes',
+        blank=True,
+        verbose_name="Potrebné kuchynské náradie", help_text="Zadajte všetky potrebné kuchynské pomôcky", 
+        )
 
     description_finished = models.BooleanField(
         default=False,
@@ -248,13 +300,13 @@ class Recipe(models.Model):
         ACTIVE = "Active"
         RETIRED = "Retired"
         options = (
-        (PREPARATION, PREPARATION),
-        (ACTIVE, ACTIVE),
-        (RETIRED, RETIRED)
-    )
+            (PREPARATION, PREPARATION),
+            (ACTIVE, ACTIVE),
+            (RETIRED, RETIRED)
+        )
 
-    status = models.CharField(max_length=20, choices=Statuses.options, default=Statuses.ACTIVE)
-    last_status_change = models.DateTimeField(editable=False)
+    status = models.CharField(max_length=20, choices=Statuses.options, default=Statuses.PREPARATION)
+    last_status_change = models.DateTimeField(editable=False, auto_now_add=True)
 
     class RecipeError:
         def __init__(self, code, text):
@@ -292,6 +344,14 @@ class Recipe(models.Model):
         permissions = [
             ('toggle_recipe_status', 'Can change recipe status'),
         ]
+
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(cooking_time__gte=models.F('active_cooking_time')), 
+                name='cooking_time_gte_active_cooking_time',
+                violation_error_message="Čas varenia musí byť väčší alebo rovný aktívnemu času varenia")
+        ]
+
 
     def __str__(self):
         result = f"{self.name}"
@@ -422,6 +482,27 @@ class Recipe(models.Model):
                 else:
                     return False
             i += 1
+
+    def clean(self) -> None:
+
+        # Check if the name is unique
+        same_name = Recipe.objects.filter(name=self.name).exclude(pk=self.pk)
+        if same_name.count() != 0:
+            fam_tree = []
+            recipe = self
+            while recipe.predecessor:
+                fam_tree.append(recipe.predecessor)
+            recipe = self
+            while recipe.successor:
+                fam_tree.append(recipe.successor)
+
+            for recipe in same_name:
+                if recipe not in fam_tree:
+                    raise ValidationError({'name': 'Meno je už používané receptom, ktorý nieje predchodca ani dedič tohto receptu'})
+
+        # Check if the cooking times are 
+
+        return super().clean()
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

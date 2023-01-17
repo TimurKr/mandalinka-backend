@@ -11097,6 +11097,7 @@ ul.errorlist {
   transition: all 0.3s;
   -webkit-animation: show 0.5s;
           animation: show 0.5s;
+  opacity: 0;
   -webkit-animation-fill-mode: forwards;
           animation-fill-mode: forwards;
 }
@@ -11506,23 +11507,19 @@ ul.errorlist {
 
 @-webkit-keyframes show {
   0% {
-    opacity: 0;
     margin: 0;
   }
   100% {
     opacity: 1;
-    margin: 0.5em 0;
   }
 }
 
 @keyframes show {
   0% {
-    opacity: 0;
     margin: 0;
   }
   100% {
     opacity: 1;
-    margin: 0.5em 0;
   }
 }
 .compact-list .list-item {

@@ -44,14 +44,14 @@
 
 <section id="landing-view">
 
-  <!-- Account Icons -->
+  <!-- NAvigation -->
   <div id="account-menu" 
     is_authenticated="{{ request.user.is_authenticated }}"
     is_staff="{{ request.user.is_staff }}"
     my_account_link="{% url 'accounts:my_account' %}"
     log_out_link="{% url 'accounts:logout' %}"
     new_user_link="{% url 'accounts:new_user' %}"
-    recipes_link="{% url 'recipes:manage' %}">
+    recipes_link="{% url 'recipes:render_recipes' %}">
   </div>
   <script type="module" src="{% static 'customers/js/landing_view_navigation.js' %}"></script>
 

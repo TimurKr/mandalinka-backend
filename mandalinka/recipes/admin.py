@@ -34,5 +34,6 @@ class DeliveryDayAdmin(admin.ModelAdmin):
 admin.site.register(Alergen)
 admin.site.register(Attribute)
 admin.site.register(Diet)
+admin.site.register(KitchenAccesory)
 admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Recipe, RecipeAdmin)

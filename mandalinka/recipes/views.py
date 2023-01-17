@@ -40,11 +40,10 @@ def recipes_management_view(request):
 def render_recipes(request, 
     messages=[],
     warnings=[], 
-    new_recipe_form = None, 
-    new_ingredients_formset = None, 
-    new_steps_formset = None):
+    new_recipe_form = None,):
     """
-    Main page for rendering the recipe tab in management page, only works with GET methods
+    Main page for rendering the recipe tab in management page
+    Only works with GET methods
     """
 
     if request.method != 'GET':
@@ -95,10 +94,10 @@ def render_recipes(request,
 
 
     # Fill new_recipe_modal if unspecified
-    if new_recipe_form or new_ingredients_formset or new_steps_formset:
+    if new_recipe_form:
         is_new_recipe_modal_active = True
     else:
-        new_recipe_form = new_recipe_form = forms.NewRecipeForm(initial={'created_by': request.user})
+        new_recipe_form = forms.NewRecipeForm(initial={'created_by': request.user})
         is_new_recipe_modal_active = False
 
     return render(request, 'recipes/recipes/main.html', {
@@ -108,8 +107,6 @@ def render_recipes(request,
         'name': request.user.first_name,
         'active_tab': 'recipes',
         'new_recipe_form': new_recipe_form,
-        'new_ingredients_formset': new_ingredients_formset,
-        'new_steps_formset': new_steps_formset,
         'is_new_recipe_modal_active': is_new_recipe_modal_active,
     })
 
@@ -189,23 +186,33 @@ def load_more_recipes(request):
 # ADD
 @permission_required('recipes.add_recipe', login_url='recipes:render_recipes')
 def add_recipe(request):
+    """
+    View for displaying a new_recipe_form and posting its data
+    """
     if request.method == 'POST':
         form = forms.NewRecipeForm(request.POST)
         try:
-            new_recipe = form.save()
+            new_recipe = form.save(commit=False)
             if new_recipe.created_by.id != request.user.id and not request.user.is_superuser:
                 form.add_error('created_by', ValidationError(f'Nemáte povolenie pridávať recepty pod iným menom. Momentálne ste prihlásený ako {request.user.get_full_name()}', 'insufficient_permissions'))
                 raise ValueError('Nemáte povolenie pridávať recepty pod iným ako vlastným menom.', 'insufficient_permissions')
-        except Exception as e:
-            print(e)
+        except:
+            pass
         else:
-            return HttpResponseRedirect(reverse('recipes:add_recipe_ingredients', args=(new_recipe.id,)))
+            new_recipe.save()
+            return HttpResponseRedirect(reverse('recipes:render_recipes'))
     else:
         form = forms.NewRecipeForm(initial={'created_by': request.user})
+
+    request.method = 'GET'
     return render_recipes(request, new_recipe_form = form)
 
 @permission_required('recipes.add_recipe', login_url='recipes:render_recipes')
 def add_recipe_descendant(request, predecessor_id):
+    """
+    View for GETting new_recipe_form as descendant
+    For POST use add_recipe
+    """
     if request.method != 'GET':
         return HttpResponseBadRequest(request)
 
@@ -222,74 +229,6 @@ def add_recipe_descendant(request, predecessor_id):
         instance = predecessor)
 
     return render_recipes(request, new_recipe_form = form)
-
-@permission_required('recipes.add_recipe', login_url='recipes:render_recipes')
-def add_recipe_ingredients(request, recipe_id):
-    try:
-        recipe = Recipe.objects.get(id=recipe_id)
-    except:
-        return HttpResponseRedirect(reverse('recipes:render_recipes'))
-
-    if request.method == 'POST': 
-        formset = forms.IngredientInstanceFormset(request.POST, request.FILES, recipe, prefix=str(recipe.id))
-
-        if formset.is_valid():
-            formset.save()
-            if request.POST.get('ingredients_finished', False):
-                recipe.ingredients_finished = True
-                recipe.save()
-            else:
-                recipe.ingredients_finished = False
-                recipe.save()
-            return HttpResponseRedirect(reverse('recipes:add_recipe_steps', args=(recipe.id,)))
-
-    else:
-        formset = forms.IngredientInstanceFormset(instance=recipe, prefix=str(recipe.id))
-    return render_recipes(request, new_ingredients_formset = formset)
-
-@permission_required('recipes.add_recipe', login_url='recipes:render_recipes')
-def add_recipe_steps(request, recipe_id):
-    try:
-        recipe = Recipe.objects.get(id=recipe_id)
-    except:
-        return HttpResponseRedirect(reverse('recipes:render_recipes'))
-
-    if request.method == 'POST': 
-        formset = forms.StepFormset(request.POST, request.FILES, queryset=recipe.steps.order_by('number'), prefix=str(recipe.id))
-
-        if formset.is_valid():
-            steps = formset.save(commit=False)         
-            for step in steps:
-                step.recipe = recipe
-                step.save()
-
-            print(recipe.steps.count())
-
-            # Success - New recipe done
-            if recipe.unique_consecutive_step_numbers():
-                if request.POST.get('steps_finished', False):
-                    recipe.steps_finished = True
-                    recipe.save()
-                else:
-                    recipe.steps_finished = False
-                    recipe.save()
-
-                return redirect(reverse('recipes:render_recipes') + 
-                    '?' + urlencode({'message': f"Nový recept {recipe.name} úspešne vytvorený"}))              
-            
-            recipe.steps.all().delete()
-            formset._non_form_errors.append(ValidationError('Nesprávne číslovanie.'))
-            recipe.steps_finished = False
-            recipe.save()
-
-    else:
-        formset = forms.StepFormset(queryset=recipe.steps.order_by('number'), prefix=str(recipe.id))
-        if not recipe.unique_consecutive_step_numbers():
-            formset._non_form_errors.append(ValidationError('Nesprávne číslovanie.'))
-
-    # Formset is invalid
-    return render_recipes(request, new_steps_formset=formset)
- 
 
 # EDIT
 @permission_required('recipes.change_recipe', login_url='recipes:render_recipes')
@@ -348,10 +287,13 @@ def edit_recipe_steps(request, recipe_id):
 
         if recipe.unique_consecutive_step_numbers():
             # Success
+            if request.POST.get('steps_finished'):
+                recipe.steps_finished = True
+            else:
+                recipe.steps_finished = False
+            recipe.save()
+
             formset = forms.StepFormset(queryset=recipe.steps.order_by('number'), prefix=str(recipe.id))
-            if not recipe.unique_consecutive_step_numbers() and recipe.edit_steps_formset._non_form_errors == None:
-                recipe.edit_steps_formset.full_clean()
-                recipe.edit_steps_formset._non_form_errors.append(ValidationError('Nesprávne číslovanie.'))
         else:
             # Steps aren't consecutive
             formset._non_form_errors.append(ValidationError('Nesprávne číslovanie.'))
@@ -383,6 +325,11 @@ def edit_recipe_ingredients(request, recipe_id):
     if formset.is_valid():
         # Success
         formset.save()
+        if request.POST.get('ingredients_finished'):
+            recipe.ingredients_finished = True
+        else:
+            recipe.ingredients_finished = False
+        recipe.save()
         formset = forms.IngredientInstanceFormset(instance=recipe, prefix=str(recipe.id))
 
 

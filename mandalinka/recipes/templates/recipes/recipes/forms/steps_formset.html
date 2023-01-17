@@ -19,7 +19,8 @@
 
   <div class="col-12">
     <div id="div_id_steps_finished" class="mb-3">
-      <input type="checkbox" name="steps_finished" class="checkboxinput form-check-input" id="id_steps_finished">
+      <input type="checkbox" name="steps_finished" class="checkboxinput form-check-input" id="id_steps_finished"
+      {% if recipe.steps_finished %}checked{% endif %}>
       <label for="id_steps_finished" class="form-check-label"> Postup je finálne hotový </label>
       <small id="hint_id_steps_finished" class="form-text text-muted">
         Označte, ak je postup pripravený na publikáciu.
@@ -41,6 +42,7 @@
 <!-- Submition -->
 <script>
     function submit_form(event) {
+      console.log('steps');
       event.preventDefault(); // prevent the form from submitting the normal way
       var form = event.target;
       
@@ -67,7 +69,6 @@
         })
         .then(html => {
           form.parentNode.innerHTML = html;
-          submit_button.innerHTML = submit_button_org
         })
         .catch(error => {
           console.error(error);
