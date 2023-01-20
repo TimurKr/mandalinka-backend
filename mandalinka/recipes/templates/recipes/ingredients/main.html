@@ -1,0 +1,196 @@
+{% extends 'recipes/admin_page_layout.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block page %}
+<section id="ingredients-list" class="manage-list">
+
+  <!-- New ingredient modal -->
+  <div class="modal fade modal-dialog-scrollable" id="new-ingredient-modal" data-bs-backdrop="static"
+    data-bs-keyboard="false" tabindex="-1" aria-labelledby="new-ingredient-modal-title" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="new-ingredient-modal-title">
+            <span class="material-symbols-rounded">ramen_dining</span>
+            Nová ingrediencia
+          </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          {% crispy new_ingredient_form %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% if is_new_ingredient_modal_active %}
+  <script>
+    $(document).ready(function () {
+      $('#new-ingredient-modal').removeClass('fade');
+      $('#new-ingredient-modal').modal('show');
+      $('#new-ingredient-modal').addClass('fade');
+    });
+  </script>
+  {% endif %}
+
+  <div>
+
+    <!-- HEADER -->
+    {% for message in messages %}
+    {% include 'core/html/message_warning.html' with message=message only %}
+    {% endfor %}
+    {% for warning in warnings %}
+    {% include 'core/html/message_warning.html' with warning=warning only %}
+    {% endfor %}
+    <div class="row heading">
+      <div class="col-auto title">
+        <h2 id="title">
+          Zoznam ingrediencií
+        </h2>
+      </div>
+      <div class="col-auto ms-auto">
+        <button type="button" class="btn success-light-button" data-bs-toggle="modal"
+          data-bs-target="#new-ingredient-modal">
+          Pridať novú inrgedienciu
+        </button>
+      </div>
+    </div>
+
+    <!-- Ingredients -->
+    <div class="accordion custom-accordion" id="ingredients-accordion">
+      <div id="Preparation-ingredients-accordion-item" class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse"
+            data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
+            aria-controls="panelsStayOpen-collapseOne">
+            <span class="material-symbols-rounded">construction</span>
+            Pripravované recepty
+          </button>
+        </h2>
+        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
+          aria-labelledby="panelsStayOpen-headingOne">
+          <div class="accordion-body">
+          {% if ingredients.Preparation %}
+            {% include 'recipes/ingredients/list_ingredients.html' with ingredients=ingredients.Preparation only %}
+            <div style="display:flex; justify-content:center;">
+              <button type="button" class="btn dark-light-button" onclick="load_more_ingredients(event)"
+                url="{% url 'recipes:load_more_ingredients' %}" status="Preparation">
+                Načítať ďalšie recepty
+              </button>
+            </div>
+          {% else %}
+            Žiadne recepty
+          {% endif %}
+          </div>
+        </div>
+      </div>
+      <div id="Active-ingredients-accordion-item" class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse"
+            data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true"
+            aria-controls="panelsStayOpen-collapseTwo">
+            <span class="material-symbols-rounded">ramen_dining</span>
+            Aktívne recepty
+          </button>
+        </h2>
+        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show"
+          aria-labelledby="panelsStayOpen-headingTwo">
+          <div class="accordion-body">
+            {% if ingredients.Active %}
+              {% include 'recipes/ingredients/list_ingredients.html' with ingredients=ingredients.Active only %}
+              <div style="display:flex; justify-content:center;">
+                <button type="button" class="btn dark-light-button" onclick="load_more_ingredients(event)"
+                  url="{% url 'recipes:load_more_ingredients' %}" status="Active">
+                  Načítať ďalšie recepty
+                </button>
+              </div>
+            {% else %}
+              Žiadne recepty
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div id="Retired-ingredients-accordion-item" class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse"
+            data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="true"
+            aria-controls="panelsStayOpen-collapseThree">
+            <span class="material-symbols-rounded" style="color:red;">block</span>
+            Deaktivované recepty
+          </button>
+        </h2>
+        <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show"
+          aria-labelledby="panelsStayOpen-headingThree">
+          <div class="accordion-body">
+            {% if ingredients.Retired %}
+              {% include 'recipes/ingredients/list_ingredients.html' with ingredients=ingredients.Retired only %}
+              <div style="display:flex; justify-content:center;">
+                <button type="button" class="btn dark-light-button" onclick="load_more_ingredients(event)"
+                  url="{% url 'recipes:load_more_ingredients' %}" status="Retired">
+                  Načítať ďalšie recepty
+                </button>
+              </div>
+            {% else %}
+              Žiadne recepty
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script>
+    // Add load more ingredients functionality
+    function load_more_ingredients(event) {
+      const ask_num = 10;
+
+      let btn = event.target;
+      let org_btn_text = btn.innerHTML;
+      btn.innerHTML = "Načítavam ďalšie recepty...";
+
+      let status = btn.getAttribute("status");
+
+      let params = new URLSearchParams();
+      params.append('status', status);
+      params.append('from', $(`#${status}-ingredients-accordion-item .list`).children().length);
+      params.append('count', ask_num);
+
+      let url = btn.getAttribute("url")+'?'+params.toString();
+
+      fetch(url, {
+          method:'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+          }
+        })
+        .then(response => {
+          if (response.ok) {
+            return response.text();
+          } else {
+            throw new Error("Request failed with status " + response.status);
+          }
+        })
+        .then(data => {
+          let temp = document.createElement("div")
+          temp.innerHTML = data;
+          $(`#${status}-ingredients-accordion-item .list`).append(temp.firstElementChild.innerHTML)
+          if (temp.firstElementChild.childElementCount < ask_num) {
+            btn.innerHTML = "Všetky recepty načítané"
+            btn.disabled = true
+          } else {
+            btn.innerHTML = org_btn_text
+            btn.disabled = false
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          btn.innerHTML = "Chyba pri načítavaní"
+          btn.disabled = true
+        })
+      }
+  </script>
+
+</section>
+{% endblock %}

@@ -1,0 +1,197 @@
+{% load crispy_forms_tags %}
+
+<div class="row ingredient" id="ingredient_{{ingredient.id}}" ingredient_id="{{ingredient.id}}"
+  ingredient_info_url="{% url 'recipes:ingredient_info_widget' ingredient_id=ingredient.id %}" 
+  {% if ingredient.status == "Preparation" %}
+  ingredient_edit_url="{% url 'recipes:ingredient_edit_widget' ingredient_id=ingredient.id %}" 
+  {% endif %}
+  onclick="load_ingredient_info_modal(event)">
+  <!-- IMG -->
+  <div class="col-auto img">
+    {% if ingredient.thumbnail %}
+    <img src="{{ ingredient.thumbnail.url }}" alt='thumbnail'>
+    {% else %}
+    <img src="https://storage.cloud.google.com/mandalinka/ingredients/template.jpeg" alt='thumbnail'>
+    {% endif %}
+  </div>
+  <!-- INFO -->
+  <div class="col info">
+    <h5 class="name">
+      {{ ingredient }}
+    </h5>
+    <div class="errors">
+      {% if ingredient.automatic_errors %}
+      <a class="automatic-errors" href="#" data-bs-toggle="tooltip" data-bs-title="{{ ingredient.ERRORS }}">
+        <span class="badge rounded-pill text-bg-warning" onclick="load_ingredient_edit_modal(event)">
+          {{ ingredient.automatic_errors }}
+        </span>
+      </a>
+      {% endif %}
+    </div>
+    {% endif %}
+    <p class="edited">Posledná zmena status: {{ ingredient.last_status_change }}</p>
+    <p class="edited">Posledná úprava: {{ ingredient.date_modified }}</p>
+    <p class="created">Vytvorené: {{ ingredient.date_created }}, {{ ingredient.created_by }}</p>
+  </div>
+  <!-- ACTIONS -->
+  <div class="col-auto ms-auto actions">
+    <div class="btn-group-vertical" role="group">
+      {% if ingredient.status == 'Preparation' %}
+      <button type="button" class="btn dark-light-button edit-button" onclick="load_ingredient_edit_modal(event)">
+        Upraviť
+      </button>
+      <button type="button" class="btn success-light-button activate-button"
+        onclick="confirm_status_change(event, `{% url 'recipes:activate_ingredient' ingredient_id=ingredient.id %}`, `{{ ingredient }}`)">
+        Aktivovať
+      </button>
+      {% elif ingredient.status == "Active" %}
+      <a role="button" class="btn danger-light-button deactivate-button"
+        onclick="confirm_status_change(event, `{% url 'recipes:deactivate_ingredient' ingredient_id=ingredient.id %}`, `{{ ingredient }}`)">
+        Vrátiť na úpravu
+      </a>
+      <a role="button" class="btn danger-light-button retire-button"
+        onclick="confirm_status_change(event, `{% url 'recipes:retire_ingredient' ingredient_id=ingredient.id %}`, `{{ ingredient }}`)">
+        Prestať používať
+      </a>
+      {% elif ingredient.status == "Retired" %}
+      <a role="button" class="btn danger-light-button deactivate-button"
+        onclick="confirm_status_change(event, `{% url 'recipes:deactivate_ingredient' ingredient_id=ingredient.id %}`, `{{ ingredient }}`)">
+        Vrátiť na úpravu
+      </a>
+      <a role="button" class="btn success-light-button activate-button"
+        onclick="confirm_status_change(event, `{% url 'recipes:activate_ingredient' ingredient_id=ingredient.id %}`, `{{ ingredient }}`)">
+        Aktivovať
+      </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <script>
+    // Add edit functionality
+    function load_ingredient_edit_modal(event) {
+
+      let parent_ingredient = event.target.closest('.ingredient')
+      let id = parent_ingredient.getAttribute("ingredient_id")
+      let modal = $(`#edit-ingredient-modal-${id}`)
+
+      if (modal.length != 0) {
+        modal.modal('show')
+
+        return
+      }
+
+      let org_button_text = event.target.innerHTML;
+      event.target.innerHTML = "Načítavam...";
+      event.target.disabled = true;
+
+      let url = parent_ingredient.getAttribute("ingredient_edit_url")
+
+      fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'
+        }
+      })
+        .then(response => {
+          if (response.ok) {
+            return response.text();
+          } else {
+            throw new Error("Request failed with status " + response.status);
+          }
+        })
+        .then(data => {
+          $('body').append(data);
+          $(`#edit-ingredient-modal-${id}`).modal("show");
+          event.target.innerHTML = org_button_text;
+          event.target.disabled = false;
+        })
+        .catch(error => console.log(error))
+    }
+
+    // Add info functionality
+    function load_ingredient_info_modal(event) {
+
+      // Stop if action button was clicked
+      if (event.target.onclick || event.target.closest('.actions') || event.target.closest('.errors') || event.target.closest('.inheritance')) {
+        return;
+      }
+
+      
+      let parent_ingredient = event.target.closest('.ingredient')
+      let id = parent_ingredient.getAttribute("ingredient_id")
+      let modal = $(`#info-ingredient-modal-${id}`)
+      
+      if (modal.length != 0) {
+        modal.modal('show')
+        return
+      }
+      
+      let url = parent_ingredient.getAttribute("ingredient_info_url")
+
+      fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'
+        }
+      })
+        .then(response => {
+          if (response.ok) {
+            return response.text();
+          } else {
+            throw new Error("Request failed with status " + response.status);
+          }
+        })
+        .then(data => {
+          $('body').append(data);
+          $(`#info-ingredient-modal-${id}`).modal("show");
+        })
+    }
+    
+    // Add status change functionality
+    function confirm_status_change(event, url, ingredient_name) {
+
+      let confirmation_modal = $('#confirmation-modal');
+
+      // If the modal doesn't exist yet
+      if (confirmation_modal.length == 0) {
+        $('body').append(
+          ' <!-- Confrimation modal --> \
+          <div class="modal fade" id="confirmation-modal" tabindex="-1" role="dialog" aria-labelledby="confirm-modal-label" \
+            data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"> \
+            <div class="modal-dialog modal-dialog-centered" role="document">  \
+              <div class="modal-content"> \
+                <div class="modal-header">  \
+                  <h5 class="modal-title" id="confirm-modal-label"></h5> \
+                </div>  \
+                <div class="modal-footer">  \
+                  <button type="button" class="btn dark-light-button" data-bs-dismiss="modal" aria-label="Close">Zrušiť</button> \
+                  <a href="#" class="btn danger-light-button confirm-button-url"></a>  \
+                </div>  \
+              </div>  \
+            </div>  \
+          </div>');
+        confirmation_modal = $('#confirmation-modal');
+      }
+
+      if (event.target.classList.contains('activate-button')) {
+        confirmation_modal.find('.modal-title').html(`Potvrďte aktiváciu <strong>${ingredient_name}</strong>`);
+        confirmation_modal.find('.confirm-button-url').html('Aktivovať')
+        confirmation_modal.find('.confirm-button-url').removeClass('danger-light-button').addClass('success-light-button');
+      } else if (event.target.classList.contains('deactivate-button')) {
+        confirmation_modal.find('.modal-title').html(`Naozaj chcete ingredienciu <strong>${ingredient_name}</strong> vrátiť na úpravu?`);
+        confirmation_modal.find('.confirm-button-url').html('Vrátiť na úpravu')
+        confirmation_modal.find('.confirm-button-url').removeClass('success-light-button').addClass('danger-light-button');
+      } else if (event.target.classList.contains('retire-button')) {
+        confirmation_modal.find('.modal-title').html(`Naozaj chcete prestať používať <strong>${ingredient_name}</strong>?`);
+        confirmation_modal.find('.confirm-button-url').html('Prestať používať')
+        confirmation_modal.find('.confirm-button-url').removeClass('success-light-button').addClass('danger-light-button');
+      }
+      confirmation_modal.find('.confirm-button-url').attr('href', url)
+      confirmation_modal.modal('show');
+
+    }
+
+  </script>
+</div>

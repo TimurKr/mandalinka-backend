@@ -52,9 +52,13 @@
 .manage-list > div .recipe .info .inheritance, .manage-list > div .ingredient .info .inheritance {
   margin: 0;
 }
-.manage-list > div .recipe .info .description, .manage-list > div .ingredient .info .description {
-  font-size: 85%;
+.manage-list > div .recipe .info .description, .manage-list > div .recipe .info .cost, .manage-list > div .recipe .info .price, .manage-list > div .ingredient .info .description, .manage-list > div .ingredient .info .cost, .manage-list > div .ingredient .info .price {
+  font-size: 90%;
   white-space: normal;
+}
+.manage-list > div .recipe .info .cost, .manage-list > div .recipe .info .price, .manage-list > div .ingredient .info .cost, .manage-list > div .ingredient .info .price {
+  font-size: 85%;
+  margin-bottom: 0;
 }
 .manage-list > div .recipe .info .created, .manage-list > div .recipe .info .edited, .manage-list > div .ingredient .info .created, .manage-list > div .ingredient .info .edited {
   font-size: 75%;

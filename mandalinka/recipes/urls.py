@@ -25,6 +25,7 @@ urlpatterns = [
     path('recipe/deactivate/<recipe_id>/', views.deactivate_recipe, name='deactivate_recipe'),
     path('recipe/retire/<recipe_id>/', views.retire_recipe, name='retire_recipe'),
 
+
     ### INGREDIENTS ###
     path('ingredients/list/', views.list_ingredients, name='list_ingredients'),
     path('ingredient/add/', views.add_ingredient, name='add_ingredient'),

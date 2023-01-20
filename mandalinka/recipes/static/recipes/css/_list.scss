@@ -57,9 +57,13 @@
             .inheritance {
                 margin: 0;
             }
-            .description {
-                font-size: 85%;
+            .description, .cost, .price {
+                font-size: 90%;
                 white-space: normal;
+            }
+            .cost, .price {
+                font-size: 85%;
+                margin-bottom: 0;
             }
             .created, .edited {
                 font-size: 75%;

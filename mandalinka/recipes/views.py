@@ -85,7 +85,7 @@ def render_recipes(request,
     # Add the editinig forms to all recipes
     for recipe in recipes[Recipe.Statuses.PREPARATION]:
         recipe.edit_general_form = forms.EditRecipeForm(recipe.id, instance=recipe, prefix=str(recipe.id))
-        recipe.edit_ingredients_formset = forms.IngredientInstanceFormset(instance=recipe, prefix=str(recipe.id))
+        recipe.edit_ingredients_formset = forms.IngredientInRecipeFormset(instance=recipe, prefix=str(recipe.id))
         recipe.edit_steps_formset = forms.StepFormset(queryset=recipe.steps.order_by('number'), prefix=str(recipe.id))
         
         if not recipe.unique_consecutive_step_numbers() and recipe.edit_steps_formset._non_form_errors == None:
@@ -134,7 +134,7 @@ def recipe_edit_widget(request, recipe_id):
     try: 
         recipe = Recipe.objects.get(id=recipe_id)
         recipe.edit_general_form = forms.EditRecipeForm(recipe.id, instance=recipe, prefix=str(recipe.id))
-        recipe.edit_ingredients_formset = forms.IngredientInstanceFormset(instance=recipe, prefix=str(recipe.id))
+        recipe.edit_ingredients_formset = forms.IngredientInRecipeFormset(instance=recipe, prefix=str(recipe.id))
         recipe.edit_steps_formset = forms.StepFormset(queryset=recipe.steps.order_by('number'), prefix=str(recipe.id))
     except:
         return HttpResponseRedirect(reverse('recipes:render_recipes'))
@@ -177,7 +177,7 @@ def load_more_recipes(request):
     if status is Recipe.Statuses.PREPARATION:
         for recipe in recipes:
             recipe.edit_general_form = forms.EditRecipeForm(recipe.id, instance=recipe, prefix=str(recipe.id))
-            recipe.edit_ingredients_formset = forms.IngredientInstanceFormset(instance=recipe, prefix=str(recipe.id))
+            recipe.edit_ingredients_formset = forms.IngredientInRecipeFormset(instance=recipe, prefix=str(recipe.id))
             recipe.edit_steps_formset = forms.StepFormset(queryset=recipe.steps.order_by('number'), prefix=str(recipe.id))
 
     return render(request, 'recipes/recipes/list_recipes.html', {'recipes':recipes})
@@ -320,7 +320,7 @@ def edit_recipe_ingredients(request, recipe_id):
     except:
         return HttpResponseRedirect(reverse('recipes:render_recipes'))
 
-    formset = forms.IngredientInstanceFormset(request.POST, request.FILES, recipe, prefix=str(recipe.id))
+    formset = forms.IngredientInRecipeFormset(request.POST, request.FILES, recipe, prefix=str(recipe.id))
 
     if formset.is_valid():
         # Success
@@ -330,7 +330,7 @@ def edit_recipe_ingredients(request, recipe_id):
         else:
             recipe.ingredients_finished = False
         recipe.save()
-        formset = forms.IngredientInstanceFormset(instance=recipe, prefix=str(recipe.id))
+        formset = forms.IngredientInRecipeFormset(instance=recipe, prefix=str(recipe.id))
 
 
     return render(request, 'recipes/recipes/forms/ingredients_formset.html', {

@@ -11,7 +11,7 @@
     {% if recipe.thumbnail %}
     <img src="{{ recipe.thumbnail.url }}" alt='thumbnail'>
     {% else %}
-    <img src="https://storage.cloud.google.com/mandalinka/recipes/template/IMG_4581.JPG" alt='thumbnail'>
+    <img src="https://storage.cloud.google.com/mandalinka/recipes/template/thumbnail.JPG" alt='thumbnail'>
     {% endif %}
   </div>
   <!-- INFO -->
@@ -63,6 +63,8 @@
     </p>
     {% endif %}
     <p class="description">{{ recipe.description }}</p>
+    <p class="cost">Náklady: {{ recipe.cost }} €</p>
+    <p class="price">Predajná cena: {{ recipe.price }} €</p>
     <p class="edited">Posledná zmena status: {{ recipe.last_status_change }}</p>
     <p class="edited">Posledná úprava: {{ recipe.date_modified }}</p>
     <p class="created">Vytvorené: {{ recipe.date_created }}, {{ recipe.created_by }}</p>
@@ -140,7 +142,10 @@
           event.target.innerHTML = org_button_text;
           event.target.disabled = false;
         })
-        .catch(error => console.log(error))
+        .catch(error => {
+          event.target.innerHTML = 'Chyba serveru';
+          console.log(error)
+        })
     }
 
     // Add info functionality
@@ -180,6 +185,10 @@
         .then(data => {
           $('body').append(data);
           $(`#info-recipe-modal-${id}`).modal("show");
+        })
+        .catch(error => {
+          event.target.innerHTML = 'Chyba serveru';
+          console.log(error)
         })
     }
     

@@ -2,7 +2,11 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
+
 import datetime
+
+
 
 ################################# Validators ###################################
 
@@ -90,53 +94,78 @@ class KitchenAccesory(models.Model):
     def __str__(self):
         return self.name
 
-class IngredientInstance(models.Model):
-    ingredient = models.ForeignKey("recipes.Ingredient", related_name="instances", 
-        on_delete=models.PROTECT
-    )
-    recipe = models.ForeignKey("recipes.Recipe", related_name="ingredients_mid",
-        on_delete=models.CASCADE
-    )
-    amount = models.IntegerField(
-        verbose_name="Množstvo", help_text="Zadajte množstvo danej potraviny na dve porcie",
-        validators=(validate_positivity,)
+
+class Unit(models.Model):
+    name = models.CharField(
+        unique=True,
+        max_length=64, 
     )
 
-    def __str__(self):
-        return f"{self.amount} {self.ingredient.unit} {self.ingredient.name}"
+    sign = models.CharField(
+        unique=True,
+        max_length=6, 
+    )
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        self.recipe.save()
+    base_unit = models.ForeignKey('self', 
+        blank=True, null=True,
+        on_delete=models.RESTRICT,
+        related_name='sub_units'
+    )
+
+    conversion_rate = models.DecimalField(
+        max_digits=13, decimal_places=6,
+        verbose_name="Konštanta na premenu na base_unit"
+    )
+
+    class Systems:
+        METRIC = 'METRIC'
+        IMPERIAL = 'IMPERIAL'
+        options = (
+            (METRIC, METRIC),
+            (IMPERIAL, IMPERIAL)
+        )
+
+    system = models.CharField(
+        max_length=8, 
+        choices=Systems.options, default=Systems.METRIC
+    )
+
+    def __str__(self) -> str:
+        return f'{self.sign}'
+
+    def in_base(self, amount: float, as_string: bool = False):
+        value = amount * float(self.conversion_rate)
+        if as_string:
+            return f'{value} {self.base}'
+        else:
+            return value
+    
+    def from_base(self, amount: float, as_string: bool = False):
+        value = amount / float(self.conversion_rate)
+        if as_string:
+            return f'{value} {self.base}'
+        else:
+            return value
 
 
 class Ingredient(models.Model):
+    """
+    Base class for ingredient, whenever we are choosing an ingredient, we are choosing form this model.
+    Each Ingredient can have multiple IngredientVersions, but only one active one.
+    """
     name = models.CharField(
         max_length=31, 
-        unique=True,
+        unique=True, 
         verbose_name="Názov", help_text="Názov ingrediencie"
     )
-    img = models.ImageField(
-        upload_to="ingredients", 
-        verbose_name="Obrázok", help_text="Pridajte obrazok ku kroku",
-        blank=True, null=True, default=None
-    )
-    is_active = models.BooleanField(
-        default=False, editable=False,
-        verbose_name="Aktívny", help_text="Používa sa táto ingrediencia ešte?"
-    )
 
-    UNITS_TO_SELECT = [
-        (None, "Zvolte jednotku"),
-        ("g", "Gram"),
-        ("ml", "Mililiter"),
-        ("ks", "Kus"), 
-        ]
-    unit = models.CharField(
-        max_length=3, choices=UNITS_TO_SELECT, 
-        verbose_name="Jednotka", help_text="Zvolte jednotku")
-    price_per_unit = models.FloatField(
-        verbose_name="Cena na jednotku", help_text="Zadajte cenu na zvolenú jednotku"
+    def img_upload_to(instance, filename):
+        return f'ingredients/{slugify(instance.__str__())}.{filename.split(".")[1]}'
+
+    img = models.ImageField(
+        upload_to=img_upload_to, 
+        verbose_name="Obrázok", help_text="Pridajte obrazok ku ingrediencií",
+        blank=True, null=True, default=None
     )
 
     alergens = models.ManyToManyField('recipes.Alergen', related_name="ingredients",
@@ -144,9 +173,40 @@ class Ingredient(models.Model):
         verbose_name="Alergény", help_text="Zvolte všetky alergény"
     )
 
+    unit = models.ForeignKey('Unit', related_name='uses',
+        on_delete=models.PROTECT, default=1
+    )
+
+    date_created = models.DateTimeField(auto_now_add=True, verbose_name="Čas vzniku")
+    date_modified = models.DateTimeField(auto_now=True, verbose_name="Naposledy upravené")
+
+    def __str__(self):
+        return self.name
+
+    def active_version(self):
+        return self.versions.filter(is_active=True).first()
+        
+    def is_active(self) -> bool:
+        if self.versions.filter(is_active=True).exists():
+            return True
+        return False
+
+
+class IngredientVersion(models.Model):
+    """
+    Model for a version of an object. After activation should't be changed 
+    and a new version should be created.
+    """
+
+    parent = models.ForeignKey('Ingredient', related_name='versions',
+        on_delete=models.RESTRICT
+    )
+
+    # Status manipulation
     class Statuses:
-        PREPARATION = "Preparation"
+        """Class containing all possible statuses"""
         ACTIVE = "Active"
+        PREPARATION = "Preparation"
         RETIRED = "Retired"
         options = (
             (PREPARATION, PREPARATION),
@@ -154,8 +214,47 @@ class Ingredient(models.Model):
             (RETIRED, RETIRED)
         )
 
-    status = models.CharField(max_length=20, choices=Statuses.options, default=Statuses.PREPARATION)
+    status = models.CharField(
+        max_length=20, 
+        choices=Statuses.options, default=Statuses.PREPARATION,
+        editable=False
+    )
     last_status_change = models.DateTimeField(editable=False, auto_now_add=True)
+
+    def is_active(self):
+        return self.status == self.Statuses.ACTIVE
+
+    def activate(self):
+        """
+        Activate this version and deactivate all other ones
+        Always use this method to change the status to active!!!
+        Warning, changes all IngredientInRecipe to use the new active instead of the old one
+        """
+        for v in self.parent.versions.filter(status=self.Statuses.ACTIVE):
+            v.retire()
+            for i in v.instances:
+                if i.recipe.is_active():
+                    i.ingredient = self
+                    i.save()
+
+        self.status = self.Statuses.ACTIVE
+        self.last_status_change = timezone.now()
+        self.save()
+
+    def retire(self):
+        self.status = self.Statuses.RETIRED
+        self.last_status_change = timezone.now()
+        self.save()
+
+    
+    cost = models.FloatField(
+        verbose_name="Cena na jednotku", help_text="Zadajte cenu na zvolenú jednotku"
+    )
+
+    def print_cost(self):
+        return f'{round(self.cost,2)} €'
+
+    source = models.CharField(max_length=64, help_text="Toto ešte bude raz foreign key na dodávatela")
 
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="Čas vzniku")
     date_modified = models.DateTimeField(auto_now=True, verbose_name="Naposledy upravené")
@@ -165,16 +264,48 @@ class Ingredient(models.Model):
             ('toggle_is_active_ingredient', 'Can activate or deactivate any ingredient'),
         ]
 
-    def __str__(self):
-        return f"{self.name} [{self.unit}]"
+    def unit(self):
+        return self.parent.unit
 
-    def activate(self):
-        self.is_active = True
-        self.save()
+    def version_number(self):
+        return self.parent.versions.filter(date_created__lt=self.date_created).count()
+
+    def save(self, *args, **kwargs):
+        if self.is_active() and self.parent.versions.filter(status=self.Statuses.ACTIVE).exclude(pk=self.pk).exists():
+            raise ValueError(f'There already is an active version of the ingredient "{self.parent}"')
+        return super().save(*args, **kwargs)
     
-    def deactivate(self):
-        self.is_active = False
-        self.save()
+    def __str__(self):
+        return f'{self.parent} v.{self.version_number()} - {self.status}'
+
+class IngredientInRecipe(models.Model):
+    ingredient = models.ForeignKey(IngredientVersion, related_name="recipes_mid", 
+        on_delete=models.CASCADE
+    )
+    recipe = models.ForeignKey("recipes.Recipe", related_name="ingredients_mid",
+        on_delete=models.CASCADE
+    )
+    amount = models.FloatField(
+        verbose_name="Množstvo", help_text="Zadajte množstvo danej potraviny na dve porcie",
+        validators=(validate_positivity,)
+    )
+
+    def unit(self):
+        return self.ingredient.unit
+
+    def cost(self):
+        return self.amount * self.ingredient.cost
+
+    def print_cost(self):
+        return f'{round(self.cost(), 2)} €'
+    
+    def __str__(self):
+        return f"{self.amount} {self.unit()} {self.ingredient} in {self.recipe}"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.recipe.save()
+
 
 class Step(models.Model):
 
@@ -200,7 +331,6 @@ class Step(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         self.recipe.save()
-
 
 class Recipe(models.Model):
     # General
@@ -237,7 +367,7 @@ class Recipe(models.Model):
     )
 
     # Preparation
-    ingredients = models.ManyToManyField('recipes.Ingredient', through='recipes.IngredientInstance', related_name="recipes",
+    ingredients = models.ManyToManyField(IngredientVersion, through=IngredientInRecipe, related_name="recipes",
         verbose_name='Ingrediencie',
         help_text="Zvolte všetky ingrediencie",
         blank=True,
@@ -289,6 +419,23 @@ class Recipe(models.Model):
         verbose_name='Ingrediencie finálne hotové', help_text='Odznačte, ak ešte treba ingrediencie prerobiť/opraviť'
     )
 
+    def cost(self):
+        cost = 0
+        for ingredient in self.ingredients_mid.all():
+            cost += ingredient.cost()
+        return cost
+
+    def print_cost(self):
+        return f'{round(self.cost(),2)} €'
+
+    price = models.FloatField(
+        verbose_name='Predajná cena', help_text=cost, 
+        default=None, blank=True, null=True
+    )
+
+    def print_price(self):
+        return f'{round(self.price,2)} €'
+
     todo = models.TextField(
         blank=True, 
         verbose_name='ToDo poznámka', 
@@ -296,6 +443,7 @@ class Recipe(models.Model):
     )
 
     class Statuses:
+        """Class containing all possible statuses"""
         PREPARATION = "Preparation"
         ACTIVE = "Active"
         RETIRED = "Retired"
@@ -305,7 +453,10 @@ class Recipe(models.Model):
             (RETIRED, RETIRED)
         )
 
-    status = models.CharField(max_length=20, choices=Statuses.options, default=Statuses.PREPARATION)
+    status = models.CharField(choices=Statuses.options, default=Statuses.PREPARATION,
+        max_length=20,
+        editable=False
+    )
     last_status_change = models.DateTimeField(editable=False, auto_now_add=True)
 
     class RecipeError:
@@ -351,7 +502,7 @@ class Recipe(models.Model):
                 name='cooking_time_gte_active_cooking_time',
                 violation_error_message="Čas varenia musí byť väčší alebo rovný aktívnemu času varenia")
         ]
-
+    
 
     def __str__(self):
         result = f"{self.name}"
@@ -368,17 +519,17 @@ class Recipe(models.Model):
         self.status = self.Statuses.ACTIVE
         if self.exclusive_predecessor and self.predecessor:
             self.predecessor.retire()
-        self.last_status_change = datetime.datetime.now()
+        self.last_status_change = timezone.now()
         self.save()
     
     def retire(self):
         self.status = self.Statuses.RETIRED
-        self.last_status_change = datetime.datetime.now()
+        self.last_status_change = timezone.now()
         self.save()
 
     def deactivate(self):
         self.status = self.Statuses.PREPARATION
-        self.last_status_change = datetime.datetime.now()
+        self.last_status_change = timezone.now()
         self.save()
 
     def is_active(self) -> bool:
@@ -507,7 +658,7 @@ class Recipe(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         self._update_errors()
-        self.date_modified = datetime.datetime.now()
+        self.date_modified = timezone.now()
         super().save(*args, **kwargs)
         
 

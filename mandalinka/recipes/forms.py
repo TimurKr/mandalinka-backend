@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Recipe, Ingredient, IngredientInstance, Step
+from .models import Recipe, IngredientInRecipe, IngredientVersion, Step
 
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 
@@ -9,6 +9,8 @@ from django.urls.exceptions import NoReverseMatch
 from django.utils.translation import gettext_lazy as _
 
 from django.contrib.admin.forms import *
+
+from django.db.models import Case, When
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, HTML, BaseInput, Field
@@ -139,16 +141,24 @@ class EditRecipeForm(RecipeForm):
 
 
 
-class IngredientInstanceForm(forms.ModelForm):
+class IngredientInRecipeForm(forms.ModelForm):
     class Meta:
-        model = IngredientInstance
+        model = IngredientInRecipe
         fields = ('ingredient', 'amount')
         widgets = {
             'ingredient': forms.Select(),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        queryset = IngredientVersion.objects.filter(status=IngredientVersion.Statuses.ACTIVE)
+        if self.instance.pk:
+            queryset = queryset | IngredientVersion.objects.filter(pk=self.instance.ingredient.pk)
+        self.fields['ingredient'].queryset = queryset
     
-IngredientInstanceFormset = forms.inlineformset_factory(Recipe, IngredientInstance, 
-    form=IngredientInstanceForm, 
+IngredientInRecipeFormset = forms.inlineformset_factory(Recipe, IngredientInRecipe, 
+    form=IngredientInRecipeForm, 
     extra=2,
     max_num=16,
     validate_max=True,
@@ -180,45 +190,45 @@ StepFormset = forms.modelformset_factory(Step,
 
 # INGREDIENTS #######################################################################
 
-class IngredientForm(forms.ModelForm):
+# class IngredientForm(forms.ModelForm):
 
-    class Meta:
-        model = Ingredient
-        fields = (
-            'name', 
-            'img', 
-            'unit',
-            'price_per_unit',
-            'alergens',
-        )
-        widgets = {
-            'alergens': forms.CheckboxSelectMultiple(),
-        }
+#     class Meta:
+#         model = Ingredient
+#         fields = (
+#             'name', 
+#             'img', 
+#             'unit',
+#             'price_per_unit',
+#             'alergens',
+#         )
+#         widgets = {
+#             'alergens': forms.CheckboxSelectMultiple(),
+#         }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper(self)
-        self.helper.form_class = 'needs-validation'
-        self.helper.attrs = {'novalidate': ''}
-        self.helper.layout = Layout(
-            'name', 
-            'img', 
-            'unit',
-            'price_per_unit',
-            'alergens',
-            Div(
-                Div(SecondarySubmitButton('submit', 'Uložiť a vrátiť'), css_class='col-sm-6'),
-                Div(SubmitButton('submit', 'Uložiť a upravi'), css_class='col-sm-6'),
-                css_class='row g-2'
-            )
-        )
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.helper = FormHelper(self)
+#         self.helper.form_class = 'needs-validation'
+#         self.helper.attrs = {'novalidate': ''}
+#         self.helper.layout = Layout(
+#             'name', 
+#             'img', 
+#             'unit',
+#             'price_per_unit',
+#             'alergens',
+#             Div(
+#                 Div(SecondarySubmitButton('submit', 'Uložiť a vrátiť'), css_class='col-sm-6'),
+#                 Div(SubmitButton('submit', 'Uložiť a upravi'), css_class='col-sm-6'),
+#                 css_class='row g-2'
+#             )
+#         )
 
-class NewIngredientForm(IngredientForm):
-    def __init__(self,*args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper.form_action = reverse_lazy('recipes:add_ingredient')
+# class NewIngredientForm(IngredientForm):
+#     def __init__(self,*args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.helper.form_action = reverse_lazy('recipes:add_ingredient')
 
-class EditIngredientForm(NewIngredientForm):
-    def __init__(self, ingredient_id, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper.form_action = reverse_lazy('recipes:edit_ingredient', args=(ingredient_id, ))
+# class EditIngredientForm(NewIngredientForm):
+#     def __init__(self, ingredient_id, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.helper.form_action = reverse_lazy('recipes:edit_ingredient', args=(ingredient_id, ))
