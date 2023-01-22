@@ -61,7 +61,7 @@ class Ingredient(TimeStampedMixin, models.Model):
     @property
     def active(self):
         """Returns either the active IngredientVersion or None"""
-        return self.versions.filter(active=True).first()
+        return self.versions.filter(_status=IngredientVersion.Statuses.ACTIVE).first() or False
 
     @property
     def cost(self):
@@ -69,6 +69,14 @@ class Ingredient(TimeStampedMixin, models.Model):
         if self.active:
             return self.active.cost
         return None
+    
+    @property
+    def usage_last_month(self):
+        """Returns the sum of of times any of its IngredientVersions was used last month"""
+        result = 0
+        for version in self.versions.all():
+            result += 1 # TODO when DeliveryDays are done
+        return result
 
     def __str__(self):
         return self.name
@@ -121,8 +129,7 @@ class IngredientVersion(TimeStampedMixin, StatusMixin, models.Model):
     
     class Meta:
         permissions = [
-            ('change_ingredient_status',
-             'Can activate or deactivate any ingredient'),
+            ('change_ingredient_status', 'Can change ingredient status'),
         ]
         ordering = ('created',)
 

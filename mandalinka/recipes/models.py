@@ -8,6 +8,9 @@ from utils.validators import validate_positivity
 
 from ingredients.models import Ingredient, IngredientVersion
 from utils.models import StatusMixin, Unit, TimeStampedMixin
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 ################################# Validators ###################################
 
 def validate_cooking_time_range(value):
@@ -159,6 +162,9 @@ class RecipeError(models.Model):
     def __str__(self):
         return f"{self.code}: {self.message}"
 
+    class Meta:
+        ordering = ['code']
+
 class Recipe(TimeStampedMixin, StatusMixin, models.Model):
     """
     Model for recipes. Recipes allow for inheritance, so that a recipe can be 
@@ -299,115 +305,102 @@ class Recipe(TimeStampedMixin, StatusMixin, models.Model):
     
     # Errors
 
-    automatic_errors = models.ManyToManyField('recipes.RecipeError', related_name='recipes',
+    _automatic_errors = models.ManyToManyField('recipes.RecipeError', related_name='recipes',
         blank=True,
         verbose_name="Chyby"
     )
 
-    # ERRORS = (
-    #     RecipeError("0", "Missing thumbnail"),
-    #     RecipeError("1", "Missing steps"),
-    #     RecipeError("2", "Missing ingredients"),
-    #     RecipeError("3", "Missing attributes"),
-    #     RecipeError("4", "Missing diet"),
-    #     RecipeError("5", "ToDo list not empty"),
-    # )
+    def has_error(self, error=None, code=None) -> bool:
+        """Check if given error or code is valid and 
+        returns True or False if given error is in this recipe's errors"""
+        if not error and not code:
+            raise ValueError("Either error or code must be provided")
+        if not error:
+            try:
+                error = RecipeError.objects.get(code=code)
+            except RecipeError.DoesNotExist:
+                raise ValueError("Code does not exist")
 
-    # automatic_errors = models.CharField(max_length=64, default="",
-    #     verbose_name="Errors", help_text="String of IDs representing errors separated by commas " + " | ".join([e.__str__() for e in ERRORS]))
+        return self._automatic_errors.filter(code=code).exists()
 
-    def get_error(self, error_code: str) -> RecipeError:
-        """
-        Returns a RecipeError object with the corresponding code.
-        Raises Exception if code is invalid
-        """
-        for error in self.ERRORS:
-            if error.code is error_code:
-                return error
-        raise Exception("Invalid error code: %s" % error_code)
 
-    def add_error(self, error_code: str, save=True) -> None:
-        error = self.get_error(error_code)
-        temp = self.automatic_errors.split(',')
-        try:
-            temp.remove('')
-        except ValueError:
-            pass
-        temp.append(error.code)
-        temp = list(set(temp))
-        temp.sort(key=int)
-        self.automatic_errors = ",".join(temp)
-        if save:
-            self.save()
-
-    def remove_error(self, error_code: str, save=True) -> None:
-        error = self.get_error(error_code)
-
-        temp = self.automatic_errors.split(',')
-        try:
-            temp.remove(error.code)
-        except ValueError:
+    def add_error(self, error=None, code=None, save=True) -> None:
+        if self.has_error(error, code):
             return
-        self.automatic_errors = ",".join(temp)
+        error = error or RecipeError.objects.get(code=code)
+        self.automatic_errors.add(error)
         if save:
             self.save()
 
-    def check_error(self, error_code: str) -> bool:
-        """Return True if error is present, False otherwise"""
-        error = self.get_error(error_code)
+    def remove_error(self, error=None, code=None, save=True) -> None:
+        if not self.has_error(error, code):
+            return
+        error = error or RecipeError.objects.get(code=code)
+        self.automatic_errors.remove(error)
+        if save:
+            self.save()
 
-        if error.code in self.automatic_errors.split(','):
-            return True
-        return False
+    def _update_auto_errors(self):
+        thumbnail_error = RecipeError.objects.get_or_create(
+            code='0', message='Chýba thumbnail')
+        steps_error = RecipeError.objects.get_or_create(
+            code='1', message='Chýba postup')
+        ingredients_error = RecipeError.objects.get_or_create(
+            code='2', message='Chýbajú ingrediencie')
+        attributes_error = RecipeError.objects.get_or_create(
+            code='3', message='Chýbajú atribúty')
+        diet_error = RecipeError.objects.get_or_create(
+            code='4', message='Chýbajú diety')
+        todo_error = RecipeError.objects.get_or_create(
+            code='5', message='Zostáva ToDo list')
 
-    def _update_errors(self):
         if not self.thumbnail:
-            self.add_error("0", save=False)
+            self.add_error(thumbnail_error)
         else:
-            self.remove_error("0", save=False)
-
+            self.remove_error(thumbnail_error)
+        
         if self.steps.count() == 0:
-            self.add_error("1", save=False)
+            self.add_error(steps_error)
         else:
-            self.remove_error("1", save=False)
+            self.remove_error(steps_error)
         
         if self.ingredients.count() == 0:
-            self.add_error("2", save=False)
+            self.add_error(ingredients_error)
         else:
-            self.remove_error("2", save=False)
-        
+            self.remove_error(ingredients_error)
+
         if self.attributes.count() == 0:
-            self.add_error("3", save=False)
+            self.add_error(attributes_error)
         else:
-            self.remove_error("3", save=False)
+            self.remove_error(attributes_error)
         
         if self.diet.count() == 0:
-            self.add_error("4", save=False)
+            self.add_error(diet_error)
         else:
-            self.remove_error("4", save=False)
+            self.remove_error(diet_error)
 
         if self.todo != "":
-            self.add_error("5", save=False)
+            self.add_error(todo_error)
         else:
-            self.remove_error("5", save=False)
+            self.remove_error(todo_error)
+
+    @property
+    def errors_str(self):
+        result = ""
+
+        for error in RecipeError.objects.all():
+            if self.has_error(error):
+                result += f'{error.message}, '
+
+        if result:
+            result = result[:-2]
+
+        return result
+
     created_by = models.ForeignKey('accounts.User', related_name="created_recipes", 
         on_delete=models.PROTECT,
         verbose_name="Created by", help_text="Zvolte seba",
     )
-
-    class Meta:
-        permissions = [
-            ('toggle_recipe_status', 'Can change recipe status'),
-        ]
-
-        constraints = [
-            # Create a check constraint to ensure that cooking_time is greater than 
-            # or equal to active_cooking_time
-            models.CheckConstraint(
-                check=models.Q(cooking_time__gte=models.F('active_cooking_time')), 
-                name='cooking_time_gte_active_cooking_time',
-                violation_error_message="Čas varenia musí byť väčší alebo rovný aktívnemu času varenia")
-        ]
 
     @property
     def version(self):
@@ -418,14 +411,9 @@ class Recipe(TimeStampedMixin, StatusMixin, models.Model):
             predecessor = predecessor.predecessor
         return version or None
 
-    def __str__(self):
-        result = self.name
-        if Recipe.objects.filter(name=self.name).count() > 1:
-            result += f" v.{str(self.version)}"
-        return result
 
     def activate(self):
-        if self.exclusive_predecessor and self.predecessor:
+        if self.exclusive_inheritance and self.predecessor:
             self.predecessor.soft_delete()
         super().activate()
     
@@ -452,32 +440,56 @@ class Recipe(TimeStampedMixin, StatusMixin, models.Model):
                     return False
             i += 1
 
+
+    class Meta:
+        permissions = [
+            ('change_recipe_status', 'Can change recipe status'),
+        ]
+
+        constraints = [
+            # Create a check constraint to ensure that cooking_time is greater than 
+            # or equal to active_cooking_time
+            models.CheckConstraint(
+                check=models.Q(cooking_time__gte=models.F('active_cooking_time')), 
+                name='cooking_time_gte_active_cooking_time',
+                violation_error_message="Čas varenia musí byť väčší alebo rovný aktívnemu času varenia")
+        ]
+
+        ordering = ['-status_changed', '-created']
+
+
+    def __str__(self):
+        result = self.name
+        version = self.version
+        if version:
+            result += f" v.{str(self.version)}"
+        return result
+
     def clean(self) -> None:
 
-        # Check if the name is unique
+        # Check if the name is unique, except if it is inherited
         same_name = Recipe.objects.filter(name=self.name).exclude(pk=self.pk)
         if same_name.count() != 0:
             fam_tree = []
             recipe = self
+
+            # Collect all predecessors and successors
             while recipe.predecessor:
                 fam_tree.append(recipe.predecessor)
             recipe = self
             while recipe.successor:
                 fam_tree.append(recipe.successor)
 
+            # Check if the name is used by a recipe that is not a predecessor or successor
             for recipe in same_name:
                 if recipe not in fam_tree:
                     raise ValidationError({'name': 'Meno je už používané receptom, ktorý nieje predchodca ani dedič tohto receptu'})
 
-        # Check if the cooking times are 
-
         return super().clean()
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        self._update_errors()
-        self.date_modified = timezone.now()
-        super().save(*args, **kwargs)
+@receiver(post_save, sender=Recipe)
+def update_recipe_errors(sender, instance, created, **kwargs):
+    instance._update_errors()
         
 
 class RecipeDeliveryInstance(models.Model):

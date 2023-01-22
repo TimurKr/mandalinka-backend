@@ -1,0 +1,7 @@
+{% if ingredients %}
+<div id="ingredients-result">
+  {% for ingredient in ingredients %}
+    <p>{{ ingredient }} {{ ingredient.active }} {{ ingredient.usage_last_month }}</p>
+  {% endfor %}
+</div>
+{% endif %}

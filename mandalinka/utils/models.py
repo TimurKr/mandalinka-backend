@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 
@@ -208,3 +209,8 @@ class Unit(models.Model):
         else:
             return value
 
+    def save(self, *args, **kwargs):
+        """Overides the save method to ensure the property is same as base_unit's property"""
+        if self.base_unit and self.property != self.base_unit.property:
+            raise ValidationError(f'Property must be the same as base_unit\'s property [{self.base_unit.property}]')
+        super().save(*args, **kwargs)
