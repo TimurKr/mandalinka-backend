@@ -120,7 +120,7 @@ class User(AbstractUser):
         blank=True, 
         verbose_name='Preferencie', help_text='Pri zvolení automatického objednávania vám vyberieme jedlá, ktoré budú zdielať najviac atríbutov s vašimi preferenciami.',
     )
-    alergies = models.ManyToManyField('recipes.Alergen', related_name="users", 
+    alergies = models.ManyToManyField('ingredients.Alergen', related_name="users", 
         blank=True, default=None,
         verbose_name='Alergie', help_text="Máte nejaké alergie? Povedzte nám o nich teraz a my vám nikdy automaticky neobjednáme recept obsahujúci daný alergén."
     )

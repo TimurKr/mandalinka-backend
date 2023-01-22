@@ -3,8 +3,7 @@ from django.utils import timezone
 
 # Create your models here.
 
-
-class TimeStampedModel(models.Model):
+class TimeStampedMixin(models.Model):
     """
     An abstract base class model that provides self-updating
     ``created`` and ``modified`` fields.
@@ -22,7 +21,7 @@ class TimeStampedModel(models.Model):
         abstract = True
 
 
-class StatusModel(models.Model):
+class StatusMixin(models.Model):
     """
     An abstract base class model that provides a ``status`` field.
     TimeStamps the time of last status change. 
@@ -31,6 +30,8 @@ class StatusModel(models.Model):
     The 'inactive' option is the default.
     Also provides methods to check and change the status.
     """
+
+    status_id = models.AutoField(primary_key=True)
 
     class Statuses:
         """Internal for a status representation"""
@@ -43,17 +44,22 @@ class StatusModel(models.Model):
             (DELETED, DELETED)
         )
 
-    status = models.CharField(
+    _status = models.CharField(
         max_length=8,
-        choices=Statuses.options, default=Statuses.INACTIVE
+        choices=Statuses.options, default=Statuses.INACTIVE,
+        editable=False
     )
 
     status_changed = models.DateTimeField(
-        verbose_name="Zmena statusu"
+        verbose_name="Zmena statusu", editable=False
     )
 
     class Meta:
         abstract = True
+
+    @property
+    def status(self) -> str:
+        return self._status
 
     @property
     def active(self) -> bool:
@@ -75,6 +81,8 @@ class StatusModel(models.Model):
         Sets the status to 'active'
         Overwrite this method and call it at the end for custom activation logic.
         """
+        if self.active:
+            return
         self.status_changed = timezone.now()
         self.status = self.Statuses.ACTIVE
         self.save()
@@ -84,6 +92,8 @@ class StatusModel(models.Model):
         Sets the status to 'inactive'
         Overwrite this method and call it at the end for custom deactivation logic.
         """
+        if self.inactive:
+            return
         self.status_changed = timezone.now()
         self.status = self.Statuses.INACTIVE
         self.save()
@@ -93,6 +103,8 @@ class StatusModel(models.Model):
         Sets the status to 'deleted'
         Overwrite this method and call it at the end for custom soft-deletion logic.
         """
+        if self.deleted:
+            return
         self.status_changed = timezone.now()
         self.status = self.Statuses.DELETED
         self.save()
@@ -135,10 +147,26 @@ class Unit(models.Model):
             (IMPERIAL, IMPERIAL)
         )
 
-
     system = models.CharField(
         max_length=8,
         choices=Systems.options, default=Systems.METRIC
+    )
+
+
+    class Proprties:
+        """Internal for a property representation"""
+        LENGTH = 'LENGTH'
+        MASS = 'MASS'
+        VOLUME = 'VOLUME'
+        options = (
+            (LENGTH, LENGTH),
+            (MASS, MASS),
+            (VOLUME, VOLUME)
+        )
+    
+    property = models.CharField(
+        max_length=8,
+        choices=Proprties.options, default=Proprties.MASS
     )
 
 

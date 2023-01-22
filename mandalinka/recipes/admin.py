@@ -11,10 +11,10 @@ class IngredientAdmin(admin.ModelAdmin):
     filter_horizontal = ("alergens",)
 
 class IngredientVersionAdmin(admin.ModelAdmin):
-    list_display = ("__str__", "parent", "unit", "print_cost",)
+    list_display = ("__str__", "parent", "unit", "cost_str",)
 
 class IngredientInRecipeAdmin(admin.ModelAdmin):
-    list_display = ("recipe", "ingredient", "amount", "print_cost")
+    list_display = ("recipe", "ingredient", "amount", "cost_str")
     
 class DeliveryDayAdmin(admin.ModelAdmin):
     filter_horizontal = ("recipes",)
@@ -29,7 +29,7 @@ class StepsInline(admin.TabularInline):
     extra = 1
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ("name", "print_cost",) # "get_cost", "get_price", "get_profit",)
+    list_display = ("name", "cost_str",)
 
     readonly_fields = ['automatic_errors']
     filter_horizontal = ("attributes", "diet", "required_accessories")
@@ -37,12 +37,8 @@ class RecipeAdmin(admin.ModelAdmin):
     
 
 # Register your models here.
-admin.site.register(Alergen)
 admin.site.register(Attribute)
 admin.site.register(Diet)
-admin.site.register(Unit)
 admin.site.register(KitchenAccesory)
-admin.site.register(Ingredient, IngredientAdmin)
-admin.site.register(IngredientVersion, IngredientVersionAdmin)
 admin.site.register(IngredientInRecipe, IngredientInRecipeAdmin)
 admin.site.register(Recipe, RecipeAdmin)

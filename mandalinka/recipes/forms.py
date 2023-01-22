@@ -45,7 +45,7 @@ class RecipeForm(forms.ModelForm):
         model = Recipe
         fields = (
             'predecessor',
-            'exclusive_predecessor',
+            'exclusive_inheritance',
             'name',
             'description',
             'description_finished',
