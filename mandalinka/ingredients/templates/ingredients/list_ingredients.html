@@ -1,7 +1,0 @@
-<div id="list-{{ ingredients.first.status }}" class="list">
-  {% for ingredient in ingredients %}
-  <div class="list-item">
-    {% include 'recipes/ingredients/list_item.html' with ingredient=ingredient only %}
-  </div>
-  {% endfor %}
-</div>

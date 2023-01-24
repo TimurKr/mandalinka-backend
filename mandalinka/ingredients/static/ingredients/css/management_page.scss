@@ -2,7 +2,7 @@
 
 .page {
 
-  margin: 0 2em ;
+  margin: 0 2em;
 
   .search__container {
     margin-top: 15vh;
@@ -53,5 +53,124 @@
     -moz-column-gap: 10px;
     /* Firefox */
     column-gap: 10px;
+
+    /* Add line between the columns */
+    -webkit-column-rule: 1px solid grey;
+    /* Chrome, Safari, Opera */
+    -moz-column-rule: 1px solid grey;
+    /* Firefox */
+    column-rule: 1px solid grey;
+
+
+    margin-top: 1em;
+
+    .ingredient-button {
+      padding: 0.25em 1em;
+      margin: 0.25em 0;
+      width:fit-content;
+      font-weight: bold;
+      border-radius: 0.5em;
+      cursor: pointer;
+      transition: box-shadow 250ms ease-in-out;
+
+      &.active {
+        color: green;
+      }
+
+      &.inactive {
+        color: black;
+      }
+
+      &.deleted {
+        color: red;
+      }
+
+      &:hover,
+      &:focus,
+      &.selected {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+}
+
+.ingredient-modal {
+  .modal-body {
+    overflow: hidden;
+    max-height: 75vh;
+
+    // Scrollbars
+    .versions,
+    .info {
+      &::-webkit-scrollbar {
+        width: 0.5em;
+        background-color: transparent;
+        padding: 0.2em 0.2em;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 0.25em;
+        background-color: lightgrey;
+      }
+    }
+
+    .versions {
+      overflow-y: scroll;
+      max-height: 75vh;
+
+      border-right: 1px solid gray;
+
+      .versions-title {
+        margin: 0 0 0 1em;
+        color: grey;
+      }
+
+      hr {
+        margin: 0.5em;
+      }
+      
+      .version-buttons {
+
+        .version-button {
+          padding: 0.25em 1em;
+          margin: 0.25em 0;
+          font-weight: bold;
+          border-radius: 0.5em;
+          cursor: pointer;
+          transition: box-shadow 250ms ease-in-out;
+          
+          &.active {
+            color: green;
+          }
+          
+          &.inactive {
+            color: black;
+          }
+          
+          &.deleted {
+            color: red;
+          }
+          
+          &:hover,
+          &:focus,
+          &.selected {
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+          }
+          
+          &:last-child {
+            margin-bottom: 1em;
+          }
+        }
+      }
+      .add-version-button {
+        margin: 0.5em 0 0.5em 0;
+      }
+    }
+
+    .info {
+      overflow-y: scroll;
+      max-height: 75vh;
+      padding: 0.5em 0.5em 2em 1em;
+    }
   }
 }

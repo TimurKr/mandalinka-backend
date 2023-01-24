@@ -47,4 +47,92 @@
   -moz-column-gap: 10px;
   /* Firefox */
   column-gap: 10px;
+  /* Add line between the columns */
+  /* Chrome, Safari, Opera */
+  -moz-column-rule: 1px solid grey;
+  /* Firefox */
+  column-rule: 1px solid grey;
+  margin-top: 1em;
+}
+.page #ingredients-result .ingredient-button {
+  padding: 0.25em 1em;
+  margin: 0.25em 0;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  font-weight: bold;
+  border-radius: 0.5em;
+  cursor: pointer;
+  transition: box-shadow 250ms ease-in-out;
+}
+.page #ingredients-result .ingredient-button.active {
+  color: green;
+}
+.page #ingredients-result .ingredient-button.inactive {
+  color: black;
+}
+.page #ingredients-result .ingredient-button.deleted {
+  color: red;
+}
+.page #ingredients-result .ingredient-button:hover, .page #ingredients-result .ingredient-button:focus, .page #ingredients-result .ingredient-button.selected {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.ingredient-modal .modal-body {
+  overflow: hidden;
+  max-height: 75vh;
+}
+.ingredient-modal .modal-body .versions::-webkit-scrollbar,
+.ingredient-modal .modal-body .info::-webkit-scrollbar {
+  width: 0.5em;
+  background-color: transparent;
+  padding: 0.2em 0.2em;
+}
+.ingredient-modal .modal-body .versions::-webkit-scrollbar-thumb,
+.ingredient-modal .modal-body .info::-webkit-scrollbar-thumb {
+  border-radius: 0.25em;
+  background-color: lightgrey;
+}
+.ingredient-modal .modal-body .versions {
+  overflow-y: scroll;
+  max-height: 75vh;
+  border-right: 1px solid gray;
+}
+.ingredient-modal .modal-body .versions .versions-title {
+  margin: 0 0 0 1em;
+  color: grey;
+}
+.ingredient-modal .modal-body .versions hr {
+  margin: 0.5em;
+}
+.ingredient-modal .modal-body .versions .version-buttons .version-button {
+  padding: 0.25em 1em;
+  margin: 0.25em 0;
+  font-weight: bold;
+  border-radius: 0.5em;
+  cursor: pointer;
+  transition: box-shadow 250ms ease-in-out;
+}
+.ingredient-modal .modal-body .versions .version-buttons .version-button.active {
+  color: green;
+}
+.ingredient-modal .modal-body .versions .version-buttons .version-button.inactive {
+  color: black;
+}
+.ingredient-modal .modal-body .versions .version-buttons .version-button.deleted {
+  color: red;
+}
+.ingredient-modal .modal-body .versions .version-buttons .version-button:hover, .ingredient-modal .modal-body .versions .version-buttons .version-button:focus, .ingredient-modal .modal-body .versions .version-buttons .version-button.selected {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+.ingredient-modal .modal-body .versions .version-buttons .version-button:last-child {
+  margin-bottom: 1em;
+}
+.ingredient-modal .modal-body .versions .add-version-button {
+  margin: 0.5em 0 0.5em 0;
+}
+.ingredient-modal .modal-body .info {
+  overflow-y: scroll;
+  max-height: 75vh;
+  padding: 0.5em 0.5em 2em 1em;
 }

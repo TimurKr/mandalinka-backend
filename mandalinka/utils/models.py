@@ -32,8 +32,6 @@ class StatusMixin(models.Model):
     Also provides methods to check and change the status.
     """
 
-    status_id = models.AutoField(primary_key=True)
-
     class Statuses:
         """Internal for a status representation"""
         ACTIVE = 'active'
@@ -52,7 +50,8 @@ class StatusMixin(models.Model):
     )
 
     status_changed = models.DateTimeField(
-        verbose_name="Zmena statusu", editable=False
+        verbose_name="Zmena statusu", editable=False,
+        default=timezone.now
     )
 
     class Meta:
@@ -85,7 +84,7 @@ class StatusMixin(models.Model):
         if self.active:
             return
         self.status_changed = timezone.now()
-        self.status = self.Statuses.ACTIVE
+        self._status = self.Statuses.ACTIVE
         self.save()
     
     def deactivate(self) -> None:
@@ -96,7 +95,7 @@ class StatusMixin(models.Model):
         if self.inactive:
             return
         self.status_changed = timezone.now()
-        self.status = self.Statuses.INACTIVE
+        self._status = self.Statuses.INACTIVE
         self.save()
     
     def soft_delete(self) -> None:
@@ -107,7 +106,7 @@ class StatusMixin(models.Model):
         if self.deleted:
             return
         self.status_changed = timezone.now()
-        self.status = self.Statuses.DELETED
+        self._status = self.Statuses.DELETED
         self.save()
         
 
@@ -159,10 +158,12 @@ class Unit(models.Model):
         LENGTH = 'LENGTH'
         MASS = 'MASS'
         VOLUME = 'VOLUME'
+        NUMBER = 'NUMBER'
         options = (
             (LENGTH, LENGTH),
             (MASS, MASS),
-            (VOLUME, VOLUME)
+            (VOLUME, VOLUME),
+            (NUMBER, NUMBER)
         )
     
     property = models.CharField(
@@ -176,15 +177,11 @@ class Unit(models.Model):
         return self.sign
 
 
-    def in_base(self, amount: float, as_string: bool = False):
+    def to_base(self, amount: float, as_string: bool = False):
         """Converts given amount to base unit
         
         :param amount: Amount to convert
-        :type amount: float
         :param as_string: If True, returns the value as a string, else returns the value as a float
-        :type as_string: bool
-        :return: Converted value
-        :rtype: float or str
         """
         value = amount * float(self.conversion_rate)
         if as_string:
@@ -197,11 +194,7 @@ class Unit(models.Model):
         """Converts given amount from base unit to this unit
         
         :param amount: Amount to convert
-        :type amount: float
         :param as_string: If True, returns the value as a string, else returns the value as a float
-        :type as_string: bool
-        :return: Converted value
-        :rtype: float or str
         """
         value = amount / float(self.conversion_rate)
         if as_string:
