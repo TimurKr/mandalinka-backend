@@ -72,7 +72,7 @@
   color: black;
 }
 .page #ingredients-result .ingredient-button.deleted {
-  color: red;
+  color: grey;
 }
 .page #ingredients-result .ingredient-button:hover, .page #ingredients-result .ingredient-button:focus, .page #ingredients-result .ingredient-button.selected {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
@@ -98,34 +98,47 @@
   max-height: 75vh;
   border-right: 1px solid gray;
 }
+.ingredient-modal .modal-body .versions .ingredient-title {
+  margin: 0 0 1em 1rem;
+  font-weight: bold;
+}
 .ingredient-modal .modal-body .versions .versions-title {
-  margin: 0 0 0 1em;
+  margin: 0 0 0 1rem;
   color: grey;
 }
 .ingredient-modal .modal-body .versions hr {
   margin: 0.5em;
 }
-.ingredient-modal .modal-body .versions .version-buttons .version-button {
-  padding: 0.25em 1em;
-  margin: 0.25em 0;
+.ingredient-modal .modal-body .versions .version-buttons .version-button,
+.ingredient-modal .modal-body .versions .ingredient-title {
+  padding: 0.25em 1rem;
+  margin: 0.5em 0;
   font-weight: bold;
-  border-radius: 0.5em;
+  border-radius: 0.5rem;
   cursor: pointer;
   transition: box-shadow 250ms ease-in-out;
 }
-.ingredient-modal .modal-body .versions .version-buttons .version-button.active {
+.ingredient-modal .modal-body .versions .version-buttons .version-button.active,
+.ingredient-modal .modal-body .versions .ingredient-title.active {
   color: green;
 }
-.ingredient-modal .modal-body .versions .version-buttons .version-button.inactive {
+.ingredient-modal .modal-body .versions .version-buttons .version-button.inactive,
+.ingredient-modal .modal-body .versions .ingredient-title.inactive {
   color: black;
 }
-.ingredient-modal .modal-body .versions .version-buttons .version-button.deleted {
-  color: red;
+.ingredient-modal .modal-body .versions .version-buttons .version-button.deleted,
+.ingredient-modal .modal-body .versions .ingredient-title.deleted {
+  color: grey;
+  font-weight: normal;
 }
-.ingredient-modal .modal-body .versions .version-buttons .version-button:hover, .ingredient-modal .modal-body .versions .version-buttons .version-button:focus, .ingredient-modal .modal-body .versions .version-buttons .version-button.selected {
+.ingredient-modal .modal-body .versions .version-buttons .version-button:hover, .ingredient-modal .modal-body .versions .version-buttons .version-button:focus, .ingredient-modal .modal-body .versions .version-buttons .version-button.selected,
+.ingredient-modal .modal-body .versions .ingredient-title:hover,
+.ingredient-modal .modal-body .versions .ingredient-title:focus,
+.ingredient-modal .modal-body .versions .ingredient-title.selected {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
-.ingredient-modal .modal-body .versions .version-buttons .version-button:last-child {
+.ingredient-modal .modal-body .versions .version-buttons .version-button:last-child,
+.ingredient-modal .modal-body .versions .ingredient-title:last-child {
   margin-bottom: 1em;
 }
 .ingredient-modal .modal-body .versions .add-version-button {

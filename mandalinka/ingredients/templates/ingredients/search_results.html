@@ -39,13 +39,7 @@
       })
       .then(data => {
         $('body').append(data);
-        // Click on the active ingredient version button
-        try {
-          let active = $(`#modal-${ingredient_id} .version-button.active`).first();
-          active.click();
-        } catch {}
         $(`#modal-${ingredient_id}`).modal("show");
-        
       })
       .catch(error => {
         event.target.innerHTML = 'Chyba serveru';
