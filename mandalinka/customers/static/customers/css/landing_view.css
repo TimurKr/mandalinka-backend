@@ -1,0 +1,140 @@
+#landing-view {
+  background-color: #f6b68e;
+  min-height: 100vh;
+}
+#landing-view #account-icons {
+  padding: 10px;
+}
+#landing-view #account-icons a {
+  position: relative;
+  display: inline-block;
+}
+#landing-view #account-icons a:hover .option {
+  color: grey;
+}
+#landing-view #account-icons a:hover .custom-tooltip {
+  opacity: 1;
+}
+#landing-view #account-icons .material-symbols-rounded {
+  transition: 0.3s;
+  font-variation-settings: "FILL" 0, "wght" 500, "GRAD" 0, "opsz" 40;
+  font-size: 200% !important;
+}
+#landing-view #account-icons .menu {
+  color: black;
+}
+#landing-view #account-icons:hover .custom-tooltip {
+  opacity: 0;
+  width: 120px;
+  color: black;
+  font-size: 75%;
+  text-align: right;
+  padding: 5px;
+  transition: 0.3s;
+  /* Position the custom-tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+  transform: translate(-110%, -50%);
+  top: 50%;
+  left: 0%;
+  margin-right: 10px;
+}
+#landing-view #account-icons:hover .custom-tooltip::after {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent #F28500;
+}
+#landing-view #account-icons:hover .menu {
+  color: #F28500;
+}
+#landing-view #account-icons:hover a:nth-child(2) > .option {
+  -webkit-animation-delay: 0s;
+          animation-delay: 0s;
+}
+#landing-view #account-icons:hover a:nth-child(3) > .option {
+  -webkit-animation-delay: 0.1s;
+          animation-delay: 0.1s;
+}
+#landing-view #account-icons:hover a:nth-child(4) > .option {
+  -webkit-animation-delay: 0.2s;
+          animation-delay: 0.2s;
+}
+#landing-view #account-icons:hover .option {
+  color: black;
+  -webkit-animation: show 0.5s;
+          animation: show 0.5s;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+  opacity: 0;
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+#landing-view #title {
+  font-weight: bold;
+  font-stretch: expanded;
+}
+#landing-view #arrow-down {
+  -webkit-animation: move ease-in-out;
+          animation: move ease-in-out;
+  -webkit-animation-duration: 1s;
+          animation-duration: 1s;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+          animation-direction: alternate;
+}
+#landing-view #arrow-down span {
+  font-size: 200% !important;
+  color: black;
+}
+#landing-view #arrow-down:hover > span {
+  font-variation-settings: "wght" 500;
+  cursor: pointer;
+}
+
+@-webkit-keyframes show {
+  0% {
+    opacity: 0;
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+  100% {
+    opacity: 1;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+}
+
+@keyframes show {
+  0% {
+    opacity: 0;
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+  100% {
+    opacity: 1;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+}
+@-webkit-keyframes move {
+  from {
+    padding-bottom: 5px;
+  }
+  to {
+    padding-bottom: 15px;
+  }
+}
+@keyframes move {
+  from {
+    padding-bottom: 5px;
+  }
+  to {
+    padding-bottom: 15px;
+  }
+}

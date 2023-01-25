@@ -1,0 +1,28 @@
+{% extends "core/html/mid_page_body.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block page_name %}
+  Platby
+{% endblock %}
+
+{% block extra_head %}
+<script src="{% static 'core/js/form_validation.js' %}"></script>  
+{% endblock %}
+
+{% block title %}
+  <span class="material-symbols-rounded">payments</span>
+  Nastavte si platbu
+{% endblock %}
+
+{% block body %}
+  <p>Tu sa bude zapínať pravidelné predplatné jedného dňa</p>
+  <div class="row">
+    <div class="col-auto ms-auto">
+      <a href="{% url 'customers:home_page' %}" class="btn secondary-button">
+        Pokračovať bez pravidelného doručovania
+      </a>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,12 @@
+.accordion {
+    background-color: transparent;
+    .accordion-header button {
+        font-size: 75%;
+        span {
+            margin-right: 0.5em;
+        }
+    }
+    .accordion-body {
+        background-color: transparent;
+    }
+}

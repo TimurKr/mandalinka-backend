@@ -1,0 +1,52 @@
+.list {
+    margin: 0.5em 0;
+    width: 100%;
+    
+    
+    .list-item {
+        width: 100%;
+        margin: 0.5em 0;
+        border: 1px solid lightgrey;
+        border-radius: 1em;
+        transition: all 0.3s;
+        &:hover {
+            box-shadow: 0px 0px 20px rgba(0,0,0, 0.2);
+        }
+        animation: show 0.5s;
+        opacity: 0; // This is overwritten by the animation
+        animation-fill-mode: forwards;
+        @for $i from 1 through 100 {
+            &:nth-child(#{$i}) {
+                animation-delay: #{($i - 1) * 0.1}s;
+            }
+        }
+    }
+}
+
+@keyframes show {
+    0% { 
+        margin: 0;
+    }
+    100% { 
+        opacity: 1;
+    }
+}
+
+.compact-list {
+    .list-item {
+        border-radius: 0;
+        margin: 0;
+        border-bottom: none;
+        &:last-child {
+            border-bottom: 1px solid lightgrey;;
+        }
+    }
+    &>:first-child {
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+    &>:last-child {
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
+}

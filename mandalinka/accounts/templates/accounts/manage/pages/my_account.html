@@ -1,0 +1,60 @@
+{% extends "accounts/manage/pages/my_account_layout.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block general %}
+{% crispy general_form %}
+{% endblock %}
+
+{% block addresses %}
+<table class="table">
+  <!-- <thead>
+    <tr>
+      <td>Názov</td>
+      <td>Adresa</td>
+    </tr>
+  </thead> -->
+  <tbody>
+    {% for address in addresses %}
+    <tr class="{% if address.primary %}primary{% endif %}">
+      <td class="name">{{ address.name }}</td>
+      <td class="address">{{ address.address }}</td>
+      <td class="edit">
+        <a href="{% url 'accounts:edit_address' address_id=address.id %}" role="button">
+          <span class="material-symbols-rounded">
+            edit
+          </span>
+        </a>
+      </td>
+      <td class="delete">
+        <a href="{% url 'accounts:delete_address' address_id=address.id %}" role="button">
+          <span class="material-symbols-rounded" style="color: red">
+            delete
+          </span>
+        </a>
+      </td>
+      <td class="make-primary">
+        <a href="{% url 'accounts:set_primary_address' address_id=address.id %}" role="button">
+          <span class="material-symbols-rounded">
+            star
+          </span>
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<div class="row">
+  <div class="col-auto ms-auto">
+    <a href="{% url 'accounts:add_address' %}" class="btn secondary-button" role="button">
+      Pridajte novú adresu
+    </a>
+  </div>
+</div>
+<link rel="stylesheet" href="{% static 'accounts/css/addresses.css' %}"/>
+{% endblock %}
+
+{% block preferences %}
+  {% crispy preferences_form %}
+{% endblock %}

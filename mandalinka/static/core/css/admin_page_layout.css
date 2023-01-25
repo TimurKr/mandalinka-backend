@@ -1,0 +1,28 @@
+body {
+  background-color: #f6b68e;
+}
+
+#account a {
+  color: black;
+  text-decoration: none;
+}
+#account a span {
+  font-size: 125% !important;
+  vertical-align: sub;
+}
+#account a:hover {
+  font-weight: bold;
+}
+#account a:hover span {
+  font-variation-settings: "wght" 600;
+}
+
+#tabs a {
+  color: black;
+  display: inline-block;
+  margin: 0.5em;
+  margin-top: 0;
+}
+#tabs a > .material-symbols-rounded {
+  font-size: 30px !important;
+}

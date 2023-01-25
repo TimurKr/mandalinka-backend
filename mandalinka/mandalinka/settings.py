@@ -10,28 +10,20 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
-from pathlib import Path
 import os
+from pathlib import Path
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_FROM = 'mandalinkatest@gmail.com'
-EMAIL_HOST_USER = 'mandalinkatest@gmail.com'
-EMAIL_HOST_PASSWORD = 'affaxdalowtrsyxe'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-
 PASSWORD_RESET_TIMEOUT = 14400
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0yqqr8f-#5o75p$a@-(o)v$$cz&ymx19wx=dba*(8d5&8fv@r2'
+SECRET_KEY = 'django-insecure-9li5q($ap3goxzqn#i0@f=6%d3a5tu--w(^ic8p8jr9512i*i8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,16 +34,22 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'crispy_forms',
-    'crispy_bootstrap5',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'recepty',
-    'home',
+    'django.contrib.postgres',
+    'storages',
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'utils',
+    'accounts',
+    'customers',
+    'ingredients',
+    'recipes',
+    'deliveries',
 ]
 
 MIDDLEWARE = [
@@ -90,8 +88,12 @@ WSGI_APPLICATION = 'mandalinka.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': 'db',
+        'PORT': 5432,
     }
 }
 
@@ -115,6 +117,11 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# User Verification
+
+AUTHENTICATION_BACKENDS = ('accounts.models.EmailVerification',)
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -132,22 +139,49 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-# Media files
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static/'),
+    os.path.join(BASE_DIR, 'node_modules/'),
+]
 
-MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+# Media files
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+# STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+
+GS_PROJECT_ID = 'brave-server-365708'
+GS_BUCKET_NAME = 'mandalinka'
+# GS_CREDENTIALS = 'secrets/storage_credentials.json'
+
+MEDIA_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Google API KEY
+
 GOOGLE_API_KEY = 'AIzaSyCEZTFyo0Kf5YL5SWe6vmmfEMmF5QxSTbU'
-AUTHENTICATION_BACKENDS = ('home.models.EmailVerification',)
-
-AUTH_USER_MODEL = 'home.User'
 
 
-LOGIN_URL = '/'
+# Custom user representation model
+
+AUTH_USER_MODEL = 'accounts.User'
+
+
+# EMAILING INFO 
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_FROM = 'mandalinkatest@gmail.com'
+EMAIL_HOST_USER = 'mandalinkatest@gmail.com'
+EMAIL_HOST_PASSWORD = 'affaxdalowtrsyxe'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+
+# Templates for CRISPY forms
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = ("bootstrap5", "uni_form")
 

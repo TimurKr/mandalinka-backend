@@ -1,26 +1,23 @@
 {
-    "liveSassCompile.settings.formats":[
-       {
-           "format": "expanded",
-           "extensionName": ".css",
-       },
-   ],
-   "liveSassCompile.settings.excludeList": [
-      "/**/node_modules/**",
-      "/.vscode/**",
-   ],
-   "liveSassCompile.settings.partialsList": [
-      "/**/styles/js-elements/**",
-      "/**/styles/fonts.scss",
-      "/**/styles/custom_variables.scss",
-      "/**/styles/maps.scss",
-      "/**/styles/input_fields.scss",
-      "/**/styles/new_user.scss",
-
-   ],
-   "liveSassCompile.settings.generateMap": true,
-   "liveSassCompile.settings.autoprefix": [
-       "defaults"
-   ],
-   "liveSassCompile.settings.showOutputWindowOn": "Warning",
+    "liveSassCompile.settings.formats": [
+        {
+            "format": "expanded",
+            "extensionName": ".css"
+        }
+    ],
+    "liveSassCompile.settings.excludeList": [
+        "/**/node_modules/**",
+        "/.vscode/**"
+    ],
+    "liveSassCompile.settings.partialsList": [
+        "/**/css/_index.scss",
+        "/**/partials/*.scss",
+        "/**/*partials*/*.scss",
+        "/**/_*.scss",
+    ],
+    "liveSassCompile.settings.generateMap": false,
+    "liveSassCompile.settings.autoprefix": [
+        "defaults"
+    ],
+    "liveSassCompile.settings.showOutputWindowOn": "Warning"
 }
