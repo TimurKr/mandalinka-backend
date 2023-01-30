@@ -147,5 +147,8 @@
 .ingredient-modal .modal-body .info {
   overflow-y: scroll;
   max-height: 75vh;
-  padding: 0.5em 0.5em 2em 1em;
+  padding: 0.5em 1em 2em 1em;
+}
+.ingredient-modal .modal-body .info .actions > button {
+  margin: 0.5em;
 }

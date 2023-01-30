@@ -4,7 +4,8 @@ from django.http import *
 from django.urls import reverse, reverse_lazy
 from django.core.exceptions import ValidationError
 
-from .models import Recipe, Ingredient
+from .models import RecipeDesign
+from ingredients.models import Ingredient, IngredientVersion
 from . import forms
 
 
@@ -53,15 +54,15 @@ def management_view(request,
 
     # Query all recipes to render
     recipes = {
-        Recipe.Statuses.INACTIVE: Recipe.objects.filter(_status=Recipe.Statuses.INACTIVE)[:10],
-        Recipe.Statuses.ACTIVE: Recipe.objects.filter(_status=Recipe.Statuses.ACTIVE)[:10],
-        Recipe.Statuses.DELETED: Recipe.objects.filter(_status=Recipe.Statuses.DELETED)[:10],
+        RecipeDesign.Statuses.INACTIVE: RecipeDesign.objects.filter(_status=RecipeDesign.Statuses.INACTIVE)[:10],
+        RecipeDesign.Statuses.ACTIVE: RecipeDesign.objects.filter(_status=RecipeDesign.Statuses.ACTIVE)[:10],
+        RecipeDesign.Statuses.DELETED: RecipeDesign.objects.filter(_status=RecipeDesign.Statuses.DELETED)[:10],
     }
 
     # Add the editinig forms to all recipes
-    for recipe in recipes[Recipe.Statuses.INACTIVE]:
-        recipe.edit_general_form = forms.EditRecipeForm(recipe.id, instance=recipe, prefix=str(recipe.id))
-        recipe.edit_ingredients_formset = forms.IngredientInRecipeFormset(instance=recipe, prefix=str(recipe.id))
+    for recipe in recipes[RecipeDesign.Statuses.INACTIVE]:
+        recipe.edit_general_form = forms.EditRecipeDesignForm(recipe.id, instance=recipe, prefix=str(recipe.id))
+        recipe.edit_ingredients_formset = forms.RecipeDesignIngredientFormset(instance=recipe, prefix=str(recipe.id))
         recipe.edit_steps_formset = forms.StepFormset(queryset=recipe.steps.order_by('number'), prefix=str(recipe.id))
         
         # If steps aren't consecutive, add error to the edit_steps_formset
@@ -74,7 +75,7 @@ def management_view(request,
     if new_recipe_form:
         is_new_recipe_modal_active = True
     else:
-        new_recipe_form = forms.NewRecipeForm(initial={'created_by': request.user})
+        new_recipe_form = forms.NewRecipeDesignForm(initial={'created_by': request.user})
         is_new_recipe_modal_active = False
 
     return render(request, 'recipes/management.html', {
@@ -95,7 +96,7 @@ def info_widget(request, recipe_id):
 
     # Redirect if recipe doesn't exist
     try: 
-        recipe = Recipe.objects.get(id=recipe_id)
+        recipe = RecipeDesign.objects.get(id=recipe_id)
     except:
         return HttpResponseRedirect(reverse('recipes:management_page'))
 
@@ -109,9 +110,9 @@ def edit_widget(request, recipe_id):
 
     # Redirect if recipe doesn't exist
     try: 
-        recipe = Recipe.objects.get(id=recipe_id)
-        recipe.edit_general_form = forms.EditRecipeForm(recipe.id, instance=recipe, prefix=str(recipe.id))
-        recipe.edit_ingredients_formset = forms.IngredientInRecipeFormset(instance=recipe, prefix=str(recipe.id))
+        recipe = RecipeDesign.objects.get(id=recipe_id)
+        recipe.edit_general_form = forms.EditRecipeDesignForm(recipe.id, instance=recipe, prefix=str(recipe.id))
+        recipe.edit_ingredients_formset = forms.RecipeDesignIngredientFormset(instance=recipe, prefix=str(recipe.id))
         recipe.edit_steps_formset = forms.StepFormset(queryset=recipe.steps.order_by('number'), prefix=str(recipe.id))
     except:
         return HttpResponseRedirect(reverse('recipes:management_page'))
@@ -133,7 +134,7 @@ def load_more(request):
     
     # If status not specified or invalid
     status = request.GET.get('status', None)
-    if not status or (status, status) not in Recipe.Statuses.options:
+    if not status or (status, status) not in RecipeDesign.Statuses.options:
         return HttpResponseBadRequest()
 
     from_index = int(request.GET.get('from', None)) 
@@ -149,12 +150,12 @@ def load_more(request):
     else:
         return HttpResponseBadRequest()
 
-    recipes = Recipe.objects.filter(status=status).order_by('-last_status_change')[from_index:to_index]
+    recipes = RecipeDesign.objects.filter(status=status).order_by('-last_status_change')[from_index:to_index]
 
-    if status is Recipe.Statuses.INACTIVE:
+    if status is RecipeDesign.Statuses.INACTIVE:
         for recipe in recipes:
-            recipe.edit_general_form = forms.EditRecipeForm(recipe.id, instance=recipe, prefix=str(recipe.id))
-            recipe.edit_ingredients_formset = forms.IngredientInRecipeFormset(instance=recipe, prefix=str(recipe.id))
+            recipe.edit_general_form = forms.EditRecipeDesignForm(recipe.id, instance=recipe, prefix=str(recipe.id))
+            recipe.edit_ingredients_formset = forms.RecipeDesignIngredientFormset(instance=recipe, prefix=str(recipe.id))
             recipe.edit_steps_formset = forms.StepFormset(queryset=recipe.steps.order_by('number'), prefix=str(recipe.id))
 
     return render(request, 'recipes/list_recipes.html', {'recipes':recipes})
@@ -167,7 +168,7 @@ def add(request):
     View for displaying a new_recipe_form and posting its data
     """
     if request.method == 'POST':
-        form = forms.NewRecipeForm(request.POST)
+        form = forms.NewRecipeDesignForm(request.POST)
         try:
             new_recipe = form.save(commit=False)
             if new_recipe.created_by.id != request.user.id and not request.user.is_superuser:
@@ -179,7 +180,7 @@ def add(request):
             new_recipe.save()
             return HttpResponseRedirect(reverse('recipes:management_page'))
     else:
-        form = forms.NewRecipeForm(initial={'created_by': request.user})
+        form = forms.NewRecipeDesignForm(initial={'created_by': request.user})
 
     request.method = 'GET'
     return management_view(request, new_recipe_form = form)
@@ -194,11 +195,11 @@ def add_descendant(request, predecessor_id):
         return HttpResponseBadRequest(request)
 
     try:
-        predecessor = Recipe.objects.get(id=predecessor_id)
+        predecessor = RecipeDesign.objects.get(id=predecessor_id)
     except:
         return HttpResponseBadRequest(request)
 
-    form = forms.NewRecipeForm(
+    form = forms.NewRecipeDesignForm(
         initial = {
             'predecessor': predecessor,
             'created_by': request.user,
@@ -219,12 +220,12 @@ def edit_general(request, recipe_id):
 
     # Redirect if recipe doesn't exist
     try: 
-        recipe = Recipe.objects.get(id=recipe_id)
+        recipe = RecipeDesign.objects.get(id=recipe_id)
     except:
         return HttpResponseRedirect(reverse('recipes:management_page'))
 
     # Process the form data
-    form = forms.EditRecipeForm(recipe_id, request.POST, request.FILES, instance=recipe, prefix=str(recipe.id))
+    form = forms.EditRecipeDesignForm(recipe_id, request.POST, request.FILES, instance=recipe, prefix=str(recipe.id))
     try:
         form.save()
     except:
@@ -232,7 +233,7 @@ def edit_general(request, recipe_id):
         pass
     else:
         # Success
-        form = forms.EditRecipeForm(recipe_id, instance=recipe, prefix=str(recipe.id))
+        form = forms.EditRecipeDesignForm(recipe_id, instance=recipe, prefix=str(recipe.id))
 
     return render(request, 'recipes/forms/general_form.html', {
         'form': form,
@@ -250,7 +251,7 @@ def edit_steps(request, recipe_id):
 
     # Redirect if recipe doesn't exist
     try: 
-        recipe = Recipe.objects.get(id=recipe_id)
+        recipe = RecipeDesign.objects.get(id=recipe_id)
     except:
         return HttpResponseRedirect(reverse('recipes:management_page'))
 
@@ -293,11 +294,11 @@ def edit_ingredients(request, recipe_id):
 
     # Redirect if recipe doesn't exist
     try: 
-        recipe = Recipe.objects.get(id=recipe_id)
+        recipe = RecipeDesign.objects.get(id=recipe_id)
     except:
         return HttpResponseRedirect(reverse('recipes:management_page'))
 
-    formset = forms.IngredientInRecipeFormset(request.POST, request.FILES, recipe, prefix=str(recipe.id))
+    formset = forms.RecipeDesignIngredientFormset(request.POST, request.FILES, recipe, prefix=str(recipe.id))
 
     if formset.is_valid():
         # Success
@@ -307,7 +308,7 @@ def edit_ingredients(request, recipe_id):
         else:
             recipe.ingredients_finished = False
         recipe.save()
-        formset = forms.IngredientInRecipeFormset(instance=recipe, prefix=str(recipe.id))
+        formset = forms.RecipeDesignIngredientFormset(instance=recipe, prefix=str(recipe.id))
 
 
     return render(request, 'recipes/forms/ingredients_formset.html', {
@@ -320,19 +321,19 @@ def edit_ingredients(request, recipe_id):
 # ACTIVATE
 @permission_required('recipes.change_recipe_status', login_url='recipes:management_page')
 def activate(request, recipe_id):
-    Recipe.objects.get(id=recipe_id).activate()
+    RecipeDesign.objects.get(id=recipe_id).activate()
     return HttpResponseRedirect(reverse('recipes:management_page'))
 
 # DEACTIVATE
 @permission_required('recipes.change_recipe_status', login_url='recipes:management_page')
 def deactivate(request, recipe_id):
-    Recipe.objects.get(id=recipe_id).deactivate()
+    RecipeDesign.objects.get(id=recipe_id).deactivate()
     return HttpResponseRedirect(reverse('recipes:management_page'))
 
 # RETIRE
 @permission_required('recipes.change_recipe_status', login_url='recipes:management_page')
 def retire(request, recipe_id):
-    Recipe.objects.get(id=recipe_id).retire()
+    RecipeDesign.objects.get(id=recipe_id).retire()
     return HttpResponseRedirect(reverse('recipes:management_page'))
 
 

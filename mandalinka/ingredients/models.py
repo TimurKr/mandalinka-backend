@@ -6,8 +6,6 @@ from django.core.exceptions import ValidationError
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 
-from utils.models import TimeStampedMixin
-
 class Alergen(models.Model):
     """Model for representing alergens."""
     name = models.CharField(
@@ -59,12 +57,12 @@ class Ingredient(TimeStampedMixin, models.Model):
     )
 
     @property
-    def is_active(self):
+    def is_active(self) -> bool:
         return self.active is not None
 
     @property
     def active(self):
-        """Returns either the active IngredientVersion or None"""
+        """Returns either the active IngredientVersion or False"""
         return self.versions.filter(_status=IngredientVersion.Statuses.ACTIVE).first() or False
 
     @property
@@ -83,12 +81,14 @@ class Ingredient(TimeStampedMixin, models.Model):
     @property
     def cost(self):
         """Returns the cost of the active IngredientVersion or None"""
-        if self.active:
-            return self.active.cost
-        return None
+        active = self.active
+        if active:
+            return active.cost
+        raise ValueError(f"There is no active IngredientVersion for {self}")
+        
     
     @property
-    def usage_last_month(self):
+    def usage_last_month(self) -> int:
         """Returns the sum of of times any of its IngredientVersions was used last month"""
         result = 0
         for version in self.versions.all():
@@ -111,31 +111,36 @@ class IngredientVersion(TimeStampedMixin, StatusMixin, models.Model):
     """
 
     ingredient = models.ForeignKey(Ingredient, related_name='versions',
+        verbose_name="Ingrediencia",
         on_delete=models.RESTRICT
-    )
-
-
-    # These are only used for forms, to calculate the cost of the ingredient
-    # TODO: Delete these and do this within the form save method
-    _temporary_amount = models.FloatField(
-        verbose_name="Množstvo", help_text="Zadajte množstvo"
-    )
-    _temporary_unit = models.ForeignKey(Unit, 
-        on_delete=models.PROTECT,
-        verbose_name="Jednotka", help_text="Zadajte jednotku"
     )
 
     cost = models.FloatField(
         verbose_name="Cena na jednotku", help_text="Zadajte cenu na zvolené množstvo zvolenej jednotky"
     )
 
-    source = models.CharField(
-        max_length=64, help_text="Toto ešte bude raz foreign key na dodávatela")
+    @property
+    def cost_str(self) -> str:
+        return f'{round(self.cost,2)} €'
 
+    source = models.CharField(
+        max_length=64, 
+        verbose_name="Dodávateľ",
+        help_text="Toto ešte bude raz foreign key na dodávatela"
+    )
+
+    _in_stock_amount = models.FloatField(
+        verbose_name="Množstvo na sklade", help_text="Množstvo na sklade môže byť špecifikované iba výrobou objektu IngredientStockChange",
+        editable=False, default=0
+    )
 
     @property
-    def cost_str(self):
-        return f'{round(self.cost,2)} €'
+    def in_stock(self) -> float:
+        return self._in_stock_amount 
+
+    @property
+    def in_stock_str(self) -> str:
+        return f'{round(self._in_stock_amount,3)} {self.unit}'
 
     @property
     def unit(self) -> Unit:
@@ -168,15 +173,21 @@ class IngredientVersion(TimeStampedMixin, StatusMixin, models.Model):
         self.ingredient.deactivate()
         super().activate()
 
-    def __str__(self):
-        return f'{self.ingredient} v.{self.version_number} - {self.status}'
+    def recalculate_in_stock_amount(self):
+        self._in_stock_amount = 0
+        for stock_change in self.stock_changes:
+            self._in_stock_amount += self.unit.from_base(
+                stock_change.unit.to_base(stock_change.amount)
+            )
+        self.save()
+
+    def __str__(self) -> str:
+        return f'{self.ingredient} v.{self.version_number}'
 
     def save(self, *args, **kwargs):
         """Saves the IngredientVersion and recalculates the cost"""
         self.calculate_cost()
         super().save(*args, **kwargs)
-
-
 
 @receiver(pre_save, sender=IngredientVersion)
 def validate_unit(sender, instance, **kwargs):
@@ -201,3 +212,36 @@ def deactivate_previous_version(sender: IngredientVersion, instance: IngredientV
     if instance.active:
         for version in instance.ingredient.versions.filter(_status=sender.Statuses.ACTIVE):
             version.soft_delete()
+
+
+class IngredientStockChange(TimeStampedMixin, models.Model):
+    """
+    Model for changing the _in_stock_amount of an IngredientVersion
+    """
+    ingredient_version = models.ForeignKey(IngredientVersion, related_name='stock_changes',
+        on_delete=models.PROTECT
+    )
+    amount = models.FloatField(
+        verbose_name="Množstvo", help_text="Kladné číslo znamená pridanie, záporné odobranie"
+    )
+    unit = models.ForeignKey(Unit, 
+        on_delete=models.PROTECT, blank=True,
+        verbose_name="Jednotka", help_text="Zadajte jednotku"
+    )
+
+    _applied = models.BooleanField(
+        default=False, editable=False,
+        verbose_name="Aplikované"
+    )
+
+    @property
+    def amount_str(self) -> str:
+        return f'{round(self.in_stock_amount,2)} {self.unit}'
+
+    def save(self, *args, **kwargs):
+        self.unit = self.unit or self.ingredient_version.unit
+        super().save(*args, **kwargs)
+        self.ingredient_version.recalculate_in_stock_amount()
+
+    def __str__(self):
+        return f'{self.ingredient_version}: {self.amount_str}'

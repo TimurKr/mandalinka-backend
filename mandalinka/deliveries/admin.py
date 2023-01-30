@@ -6,10 +6,10 @@ from recipes.models import RecipeDeliveryInstance
 
 class RecipeDeliveryInstanceInline(admin.TabularInline):
     model = RecipeDeliveryInstance
+    fk_name = 'delivery_day'
     extra =1
 
 class DeliveryDayAdmin(admin.ModelAdmin):
-    filter_horizontal = ('recipes', )
     inlines=(RecipeDeliveryInstanceInline, )
 
 admin.site.register(DeliveryDay, DeliveryDayAdmin)

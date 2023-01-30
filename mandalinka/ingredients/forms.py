@@ -43,10 +43,6 @@ class NewIngredientForm(IngredientForm):
         super().__init__(*args, **kwargs)
         self.helper.form_action = reverse_lazy('ingredients:add')
 
-# class EditIngredientForm(NewIngredientForm):
-#     def __init__(self, ingredient_id, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.helper.form_action = reverse_lazy('recipes:edit_ingredient', args=(ingredient_id, ))
 
 class NewIngredientVersionForm(forms.ModelForm):
 
@@ -65,19 +61,24 @@ class NewIngredientVersionForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         self.fields['ingredient'].initial = ingredient
-        self.fields['ingredient'].hidden = True
+        self.fields['ingredient'].disabled = True
+        self.fields['ingredient'].queryset = Ingredient.objects.filter(pk=ingredient.pk)
 
         self.fields['unit'].initial = ingredient.unit
         self.fields['unit'].queryset = Unit.objects.filter(property=ingredient.unit.property)
 
+        self.fields['cost'].help_text = 'Zadajte cenu pre zvolené množstvo zvolenej jednotky'
+
         self.helper = FormHelper(self)
         self.helper.form_class = 'needs-validation'
+        self.helper.form_tag = False
         self.helper.attrs = {'novalidate': ''}
         self.helper.layout = Layout(
             'ingredient',
             Div(
-                Div('amount', css_class='col-sm-8'),
+                Div('amount', css_class='col-sm-8 mb-2'),
                 Div('unit', css_class='col-sm-4'),
+                css_class='row g-2'
             ),
             'cost', 
             'source', 
