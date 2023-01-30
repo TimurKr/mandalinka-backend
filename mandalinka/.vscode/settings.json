@@ -19,5 +19,9 @@
     "liveSassCompile.settings.autoprefix": [
         "defaults"
     ],
-    "liveSassCompile.settings.showOutputWindowOn": "Warning"
+    "liveSassCompile.settings.showOutputWindowOn": "Warning",
+    "[javascript, JSX]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "typescript.tsdk": "node_modules/typescript/lib"
 }

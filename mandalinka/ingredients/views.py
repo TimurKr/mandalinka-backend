@@ -3,7 +3,8 @@ from django.shortcuts import render, redirect
 # from django.urls import reverse
 from django.contrib.auth.decorators import permission_required
 from django.urls import reverse_lazy
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, JsonResponse
+from django.core import serializers
 
 from .models import Ingredient, IngredientVersion
 from .forms import NewIngredientForm, NewIngredientVersionForm
@@ -58,15 +59,17 @@ def add_ingredient(request):
 @permission_required('ingredients.view_ingredient', login_url=reverse_lazy('recipes:management_page'))
 def search_ingredients(request):
     """
-    View serving GET requests, returns a html div with the search result list of ingredients.
+    View serving GET requests, returns serialized ingredients matching the query.
 
     Allows for GET arguments:
     - 'q': the search query
     - 'n': the max number of results to return (default 20)
     """
-    return render(request, 'ingredients/search_results.html', {
-        'ingredients': query_ingredients(request.GET.get('q', ''), request.GET.get('n', 20))
-        })
+    query = request.GET.get('q')
+    max_results = request.GET.get('n', 20)
+    ingredients = query_ingredients(query, max_results)
+    data = serializers.serialize('json', ingredients)
+    return JsonResponse(data, safe=False)
 
 @permission_required('ingredients.view_ingredient', login_url=reverse_lazy('recipes:management_page'))
 def ingredient_modal(request, ingredient_id):

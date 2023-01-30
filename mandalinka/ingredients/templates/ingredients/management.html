@@ -46,24 +46,17 @@
   </script>
   {% endif %}
 
+  
+  <!-- HEADER -->
+  {% for message in messages %}
+  {% include 'core/html/message_warning.html' with message=message only %}
+  {% endfor %}
+  {% for warning in warnings %}
+  {% include 'core/html/message_warning.html' with warning=warning only %}
+  {% endfor %}
+  
+  
   <div class="page">
-
-    <!-- HEADER -->
-    {% for message in messages %}
-    {% include 'core/html/message_warning.html' with message=message only %}
-    {% endfor %}
-    {% for warning in warnings %}
-    {% include 'core/html/message_warning.html' with warning=warning only %}
-    {% endfor %}
-
-    <div class="row search justify-content-center">
-      <div class="col-auto search__container">
-        <form onsubmit="load_ingredients(event)">
-          <input type="text" class="search__input" maxlength="32" placeholder="Hladaj ingredienciu">
-          <button type="submit" hidden></button>
-        </form>
-      </div>
-    </div>
 
     {% include 'ingredients/search_results.html' with ingredients=ingredients only %}
 
@@ -84,5 +77,9 @@
       console.log(event.target[0].value)
     }
   </script>
+
+  <div id="ingredient-management-page"></div>
+
+  <script type="module" src="{% static 'ingredients/js/render_management_page.js' %}"></script>
 </section>
 {% endblock %}

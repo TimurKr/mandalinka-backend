@@ -62,7 +62,6 @@ class Migration(migrations.Migration):
                 ('created', models.DateTimeField(auto_now_add=True, verbose_name='Vytvorené')),
                 ('modified', models.DateTimeField(auto_now=True, verbose_name='Upravené')),
                 ('amount', models.FloatField(help_text='Kladné číslo znamená pridanie, záporné odobranie', verbose_name='Množstvo')),
-                ('_applied', models.BooleanField(default=False, editable=False, verbose_name='Aplikované')),
                 ('ingredient_version', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='stock_changes', to='ingredients.ingredientversion')),
                 ('unit', models.ForeignKey(blank=True, help_text='Zadajte jednotku', on_delete=django.db.models.deletion.PROTECT, to='utils.unit', verbose_name='Jednotka')),
             ],
