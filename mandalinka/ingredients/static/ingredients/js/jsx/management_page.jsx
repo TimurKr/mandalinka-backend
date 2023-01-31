@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useImmer } from "use-immer";
+
 import IngredientWidget from "./ingredient_widget.js";
 import getCookie from "./get_cookie.js";
 
@@ -28,7 +29,7 @@ export default class IngredientManagementPage extends React.Component {
     super(props);
 
     const [ingredients, setIngredients] = useImmer({});
-    const [error, setError] = useState(false);
+    const [error, setError] = React.useState(false);
   }
 
   componentDidMount() {

@@ -8,7 +8,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import { useState } from "react";
+import { useImmer } from "use-immer";
+
 import IngredientWidget from "./ingredient_widget.js";
 import getCookie from "./get_cookie.js";
 
@@ -54,10 +55,10 @@ var IngredientManagementPage = function (_React$Component) {
         ingredients = _useImmer2[0],
         setIngredients = _useImmer2[1];
 
-    var _useState = useState(false),
-        _useState2 = _slicedToArray(_useState, 2),
-        error = _useState2[0],
-        setError = _useState2[1];
+    var _React$useState = React.useState(false),
+        _React$useState2 = _slicedToArray(_React$useState, 2),
+        error = _React$useState2[0],
+        setError = _React$useState2[1];
 
     return _this;
   }
