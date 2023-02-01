@@ -59,7 +59,7 @@ class Ingredient(TimeStampedMixin, models.Model):
 
     @property
     def is_active(self) -> bool:
-        return self.active is not None
+        return self.active is not False
 
     @property
     def active(self):
@@ -85,7 +85,7 @@ class Ingredient(TimeStampedMixin, models.Model):
         active = self.active
         if active:
             return active.cost
-        raise ValueError(f"There is no active IngredientVersion for {self}")
+        return None
 
     @property
     def usage_last_month(self) -> int:
@@ -156,17 +156,6 @@ class IngredientVersion(TimeStampedMixin, StatusMixin, models.Model):
         ]
         ordering = ('created',)
 
-    def calculate_cost(self):
-        """
-        Recalculates the cost per 1 ingredient unit
-        TODO: Delete this and do this within the form save method
-        """
-        self.cost = self.cost / \
-            self.unit.from_base(
-                (self._temporary_unit.to_base(self._temporary_amount)))
-        self._temporary_amount = 1
-        self._temporary_unit = self.unit
-
     def activate(self):
         """Activates the IngredientVersion and deactivates all the others"""
         if self.active:
@@ -209,7 +198,6 @@ class IngredientVersion(TimeStampedMixin, StatusMixin, models.Model):
             for version in self.ingredient.versions.all():
                 version.soft_delete()
 
-        self.calculate_cost()
         super().save(*args, **kwargs)
 
 

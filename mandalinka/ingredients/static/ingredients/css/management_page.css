@@ -26,6 +26,9 @@
   transform-style: preserve-3d;
   outline: 0;
 }
+#ingredient-management-page .search__container .search__input.error {
+  border-bottom: 2px solid red !important;
+}
 #ingredient-management-page .search__container .search__input::-moz-placeholder {
   color: #575756;
 }
@@ -37,6 +40,11 @@
 }
 #ingredient-management-page .search__container .search__input:hover, #ingredient-management-page .search__container .search__input:focus {
   border-bottom: 1.5px solid black;
+}
+#ingredient-management-page #no-results-error {
+  text-align: center;
+  margin-top: 1em;
+  color: red;
 }
 #ingredient-management-page #ingredients-result {
   /* Chrome, Safari, Opera */
@@ -147,7 +155,7 @@
 .ingredient-modal .modal-body .info {
   overflow-y: scroll;
   max-height: 75vh;
-  padding: 0.5em 1em 2em 1em;
+  padding: 0.5em 1em 1em 1em;
 }
 .ingredient-modal .modal-body .info .actions > button {
   margin: 0.5em;

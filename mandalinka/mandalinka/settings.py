@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'storages',
     'crispy_forms',
     'crispy_bootstrap5',
+    'webpack_loader',
+    'rest_framework',
     'utils',
     'accounts',
     'customers',
@@ -146,6 +148,16 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'node_modules/'),
 ]
 
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': 'bundles/',
+        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+        'CACHE': not DEBUG,
+        'POLL_INTERVAL': 0.1,
+        'IGNORE': [r'.+\.hot-update.js', r'.+\.map'],
+    }
+}
+
 
 # Media files
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
@@ -189,3 +201,8 @@ EMAIL_USE_TLS = True
 CRISPY_ALLOWED_TEMPLATE_PACKS = ("bootstrap5", "uni_form")
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+REST_FRAMEWORK = {
+    'DATETIME_FORMAT': "%d %B, %H:%M:%S",
+    'DATE_FORMAT': "%d %b, %Y",
+}
