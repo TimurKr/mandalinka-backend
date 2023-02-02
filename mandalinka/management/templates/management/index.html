@@ -1,0 +1,14 @@
+{% extends 'core/html/basev2' %}
+
+{% load static %}
+{% load render_bundle from webpack_loader %}
+
+{% block page_name %}
+Ingredience
+{% endblock %}
+
+
+{% block body %}
+<div id="management-page"></div>
+{% render_bundle 'ingredient_website' %}
+{% endblock %}

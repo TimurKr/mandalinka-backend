@@ -1,0 +1,27 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="sk">
+
+<head>
+  <title>
+    {% block page_name %}
+    {% endblock %}
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Favicon -->
+  <link href="{% static 'core/images/favicon.ico' %}" rel="shortcut icon" type="image/png">
+
+  {% block extra_head %}
+  {% endblock %}
+</head>
+
+<body>
+
+    {% block body %}
+    {% endblock %}
+    
+</body>
+
+</html>
