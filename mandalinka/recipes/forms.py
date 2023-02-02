@@ -1,6 +1,7 @@
 from django import forms
 
-from .models import Recipe, IngredientInRecipe, IngredientVersion, Step
+from .models import RecipeDesign, RecipeDesignIngredient, Step
+from ingredients.models import IngredientVersion
 
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 
@@ -16,10 +17,10 @@ from crispy_forms.layout import Layout, Div
 
 # RECIPES #######################################################################
 
-class RecipeForm(forms.ModelForm):
+class RecipeDesignForm(forms.ModelForm):
 
     class Meta:
-        model = Recipe
+        model = RecipeDesign
         fields = (
             'predecessor',
             'exclusive_inheritance',
@@ -61,7 +62,7 @@ class RecipeForm(forms.ModelForm):
             self.add_error('active_cooking_time', "Čas varenia musí byť väčší alebo rovný aktívnemu času varenia")
 
 
-class NewRecipeForm(RecipeForm):
+class NewRecipeDesignForm(RecipeDesignForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper.form_action = reverse_lazy('recipes:add')
@@ -86,7 +87,7 @@ class NewRecipeForm(RecipeForm):
     class Media:
         js = ("recipes/js/add.js",)
 
-class EditRecipeForm(RecipeForm):
+class EditRecipeDesignForm(RecipeDesignForm):
     def __init__(self, recipe_id, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -117,9 +118,9 @@ class EditRecipeForm(RecipeForm):
         js = ("recipes/js/edit_recipe.js",)
 
 
-class IngredientInRecipeForm(forms.ModelForm):
+class RecipeDesignIngredientForm(forms.ModelForm):
     class Meta:
-        model = IngredientInRecipe
+        model = RecipeDesignIngredient
         fields = ('ingredient', 'amount')
         widgets = {
             'ingredient': forms.Select(),
@@ -133,8 +134,8 @@ class IngredientInRecipeForm(forms.ModelForm):
             queryset = queryset | IngredientVersion.objects.filter(pk=self.instance.ingredient.pk)
         self.fields['ingredient'].queryset = queryset
     
-IngredientInRecipeFormset = forms.inlineformset_factory(Recipe, IngredientInRecipe, 
-    form=IngredientInRecipeForm, 
+RecipeDesignIngredientFormset = forms.inlineformset_factory(RecipeDesign, RecipeDesignIngredient, 
+    form=RecipeDesignIngredientForm, 
     extra=2,
     max_num=16,
     validate_max=True,

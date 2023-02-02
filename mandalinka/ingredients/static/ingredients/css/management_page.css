@@ -1,10 +1,10 @@
-.page {
+#ingredient-management-page {
   margin: 0 2em;
 }
-.page .search__container {
+#ingredient-management-page .search__container {
   margin-top: 15vh;
 }
-.page .search__container .search__input {
+#ingredient-management-page .search__container .search__input {
   width: 100%;
   padding: 12px 0;
   background-color: transparent;
@@ -26,19 +26,27 @@
   transform-style: preserve-3d;
   outline: 0;
 }
-.page .search__container .search__input::-moz-placeholder {
+#ingredient-management-page .search__container .search__input.error {
+  border-bottom: 2px solid red !important;
+}
+#ingredient-management-page .search__container .search__input::-moz-placeholder {
   color: #575756;
 }
-.page .search__container .search__input:-ms-input-placeholder {
+#ingredient-management-page .search__container .search__input:-ms-input-placeholder {
   color: #575756;
 }
-.page .search__container .search__input::placeholder {
+#ingredient-management-page .search__container .search__input::placeholder {
   color: #575756;
 }
-.page .search__container .search__input:hover, .page .search__container .search__input:focus {
+#ingredient-management-page .search__container .search__input:hover, #ingredient-management-page .search__container .search__input:focus {
   border-bottom: 1.5px solid black;
 }
-.page #ingredients-result {
+#ingredient-management-page #no-results-error {
+  text-align: center;
+  margin-top: 1em;
+  color: red;
+}
+#ingredient-management-page #ingredients-result {
   /* Chrome, Safari, Opera */
   -moz-column-count: 3;
   /* Firefox */
@@ -54,7 +62,7 @@
   column-rule: 1px solid grey;
   margin-top: 1em;
 }
-.page #ingredients-result .ingredient-button {
+#ingredient-management-page #ingredients-result .ingredient-button {
   padding: 0.25em 1em;
   margin: 0.25em 0;
   width: -webkit-fit-content;
@@ -65,16 +73,16 @@
   cursor: pointer;
   transition: box-shadow 250ms ease-in-out;
 }
-.page #ingredients-result .ingredient-button.active {
+#ingredient-management-page #ingredients-result .ingredient-button.active {
   color: green;
 }
-.page #ingredients-result .ingredient-button.inactive {
+#ingredient-management-page #ingredients-result .ingredient-button.inactive {
   color: black;
 }
-.page #ingredients-result .ingredient-button.deleted {
+#ingredient-management-page #ingredients-result .ingredient-button.deleted {
   color: grey;
 }
-.page #ingredients-result .ingredient-button:hover, .page #ingredients-result .ingredient-button:focus, .page #ingredients-result .ingredient-button.selected {
+#ingredient-management-page #ingredients-result .ingredient-button:hover, #ingredient-management-page #ingredients-result .ingredient-button:focus, #ingredient-management-page #ingredients-result .ingredient-button.selected {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
@@ -147,5 +155,8 @@
 .ingredient-modal .modal-body .info {
   overflow-y: scroll;
   max-height: 75vh;
-  padding: 0.5em 0.5em 2em 1em;
+  padding: 0.5em 1em 1em 1em;
+}
+.ingredient-modal .modal-body .info .actions > button {
+  margin: 0.5em;
 }

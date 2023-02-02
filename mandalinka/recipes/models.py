@@ -86,20 +86,23 @@ class KitchenAccesory(models.Model):
         return self.name
 
 
-class IngredientInRecipe(models.Model):
+class RecipeDesignIngredient(TimeStampedMixin, models.Model):
     """
-    Many to many relationship between recipes and ingredients.
-    The relationship is to Ingredient, rather than IngredientVersion, because
-    versions may go obsolete, but the relationship should remain. 
-    When a delivery containg a given recipe is finalized, a copy of this is 
-    created in an archive but with the exact IngredientVersion used on that day.
+    Model for ingredient use in RecipeDesign.
+    `alternative_for` is used to represent alternative ingredients. The default 
+    ingredient is the one with alternative_for set to None.
     """
-    ingredient = models.ForeignKey(IngredientVersion, related_name="recipes_mid", 
+
+    # Fields to overwrite
+    ingredient = models.ForeignKey(Ingredient, related_name="recipe_designs", 
         on_delete=models.CASCADE
     )
-    recipe = models.ForeignKey('recipes.Recipe', related_name="ingredients_mid",
+    recipe_design = models.ForeignKey('recipes.RecipeDesign', related_name="ingredients",
         on_delete=models.CASCADE
     )
+
+    alternative_for = models.ForeignKey('self', related_name="alternatives",
+        on_delete=models.CASCADE, blank=True, null=True)
 
     amount = models.FloatField(
         verbose_name="Množstvo", help_text="Zadajte množstvo danej potraviny na dve porcie",
@@ -107,19 +110,22 @@ class IngredientInRecipe(models.Model):
     )
 
     @property
-    def unit(self):
+    def unit(self) -> Unit:
         return self.ingredient.unit
 
     @property
-    def cost(self):
+    def cost(self) -> float:
         return self.amount * self.ingredient.cost
 
     @property
-    def cost_str(self):
-        return f'{round(self.cost(), 2)} €'
+    def cost_str(self) -> str:
+        return f'{round(self.cost, 2)} €'
     
     def __str__(self):
         return f"{self.amount} {self.unit()} {self.ingredient} in {self.recipe}"
+
+    class Meta:
+        unique_together = ('ingredient', 'recipe_design')
 
 
 class Step(TimeStampedMixin, models.Model):
@@ -143,14 +149,14 @@ class Step(TimeStampedMixin, models.Model):
         blank=True, null=True
     )
 
-    recipe = models.ForeignKey('Recipe', 
+    recipe = models.ForeignKey('RecipeDesign', 
         on_delete=models.CASCADE, related_name="steps"
     )
 
     def __str__(self):
         return f'{self.recipe} step n. {self.number}: {self.text}'
 
-class RecipeError(models.Model):
+class RecipeDesignError(models.Model):
     """
     Model for errors in recipes.
     - code: code of the error
@@ -165,16 +171,16 @@ class RecipeError(models.Model):
     class Meta:
         ordering = ['code']
 
-class Recipe(TimeStampedMixin, StatusMixin, models.Model):
+class RecipeDesign(TimeStampedMixin, StatusMixin, models.Model):
     """
-    Model for recipes. Recipes allow for inheritance, so that a recipe can be 
+    Model for Recipe Designs. Recipes allow for inheritance, so that a recipe can be 
     just a slight change of a previous one. Inheritance can be:
     - exclusive: when the successor is activates, predecessor is deactivated (not vice versa)
     - non-exclusive: when the successor is activated, predecessor is not deactivated
     Both allow for simultaneous activation of multiple inherited recipes, 
     but exclusive advises agains it.
 
-    Inherits StatusModel
+    Inherits TimeStampedModel and StatusMixin
 
     - name: name of the recipe
     - description: description of the recipe
@@ -222,12 +228,6 @@ class Recipe(TimeStampedMixin, StatusMixin, models.Model):
     )
 
     # Preparation
-    
-    ingredients = models.ManyToManyField(IngredientVersion, through=IngredientInRecipe, related_name="recipes",
-        verbose_name='Ingrediencie',
-        help_text="Zvolte všetky ingrediencie",
-        blank=True,
-    )
 
     difficulty = models.IntegerField(
         choices=[
@@ -247,15 +247,15 @@ class Recipe(TimeStampedMixin, StatusMixin, models.Model):
         verbose_name="Aktívny čas varenia", help_text="Zadajte čas, ktorý je potrebné venovať sa vareniu"
     )
 
-    attributes = models.ManyToManyField('recipes.Attribute', related_name="recipes", 
+    attributes = models.ManyToManyField(Attribute, related_name="recipes", 
         blank=True,
         verbose_name="Attribúty", help_text="Zadajte všetky atribúty jedla", 
     )
-    diet = models.ManyToManyField('recipes.Diet', related_name='recipes',
+    diet = models.ManyToManyField(Diet, related_name='recipes',
         blank=True,
         verbose_name="Dieta", help_text="Spadá tento recept do nejakých diet?"
     )
-    required_accessories = models.ManyToManyField('recipes.KitchenAccesory', related_name='recipes',
+    required_accessories = models.ManyToManyField(KitchenAccesory, related_name='recipes',
         blank=True,
         verbose_name="Potrebné kuchynské náradie", help_text="Zadajte všetky potrebné kuchynské pomôcky", 
         )
@@ -284,28 +284,28 @@ class Recipe(TimeStampedMixin, StatusMixin, models.Model):
     # Cost
 
     @property
-    def cost(self):
+    def cost(self) -> float:
         cost = 0
-        for ingredient in self.ingredients_mid.all():
-            cost += ingredient.cost()
+        for ingredient in self.ingredients.all():
+            cost += ingredient.ingredient.cost
         return cost
 
     @property
-    def cost_str(self):
+    def cost_str(self) -> str:
         return f'{round(self.cost,2)} €'
 
     price = models.FloatField(
-        verbose_name='Predajná cena', help_text=cost, 
+        verbose_name='Predajná cena', 
         default=None, blank=True, null=True
     )
 
     @property
-    def price_str(self):
+    def price_str(self) -> str:
         return f'{round(self.price,2)} €'
     
     # Errors
 
-    _automatic_errors = models.ManyToManyField('recipes.RecipeError', related_name='recipes',
+    _automatic_errors = models.ManyToManyField('recipes.RecipeDesignError', related_name='recipes',
         blank=True,
         verbose_name="Chyby"
     )
@@ -317,8 +317,8 @@ class Recipe(TimeStampedMixin, StatusMixin, models.Model):
             raise ValueError("Either error or code must be provided")
         if not error:
             try:
-                error = RecipeError.objects.get(code=code)
-            except RecipeError.DoesNotExist:
+                error = RecipeDesignError.objects.get(code=code)
+            except RecipeDesignError.DoesNotExist:
                 raise ValueError("Code does not exist")
 
         return self._automatic_errors.filter(code=code).exists()
@@ -327,7 +327,7 @@ class Recipe(TimeStampedMixin, StatusMixin, models.Model):
     def add_error(self, error=None, code=None, save=True) -> None:
         if self.has_error(error, code):
             return
-        error = error or RecipeError.objects.get(code=code)
+        error = error or RecipeDesignError.objects.get(code=code)
         self.automatic_errors.add(error)
         if save:
             self.save()
@@ -335,23 +335,23 @@ class Recipe(TimeStampedMixin, StatusMixin, models.Model):
     def remove_error(self, error=None, code=None, save=True) -> None:
         if not self.has_error(error, code):
             return
-        error = error or RecipeError.objects.get(code=code)
+        error = error or RecipeDesignError.objects.get(code=code)
         self.automatic_errors.remove(error)
         if save:
             self.save()
 
     def _update_auto_errors(self):
-        thumbnail_error = RecipeError.objects.get_or_create(
+        thumbnail_error = RecipeDesignError.objects.get_or_create(
             code='0', message='Chýba thumbnail')
-        steps_error = RecipeError.objects.get_or_create(
+        steps_error = RecipeDesignError.objects.get_or_create(
             code='1', message='Chýba postup')
-        ingredients_error = RecipeError.objects.get_or_create(
+        ingredients_error = RecipeDesignError.objects.get_or_create(
             code='2', message='Chýbajú ingrediencie')
-        attributes_error = RecipeError.objects.get_or_create(
+        attributes_error = RecipeDesignError.objects.get_or_create(
             code='3', message='Chýbajú atribúty')
-        diet_error = RecipeError.objects.get_or_create(
+        diet_error = RecipeDesignError.objects.get_or_create(
             code='4', message='Chýbajú diety')
-        todo_error = RecipeError.objects.get_or_create(
+        todo_error = RecipeDesignError.objects.get_or_create(
             code='5', message='Zostáva ToDo list')
 
         if not self.thumbnail:
@@ -385,10 +385,10 @@ class Recipe(TimeStampedMixin, StatusMixin, models.Model):
             self.remove_error(todo_error)
 
     @property
-    def errors_str(self):
+    def errors_str(self) -> str:
         result = ""
 
-        for error in RecipeError.objects.all():
+        for error in RecipeDesignError.objects.all():
             if self.has_error(error):
                 result += f'{error.message}, '
 
@@ -403,7 +403,7 @@ class Recipe(TimeStampedMixin, StatusMixin, models.Model):
     )
 
     @property
-    def version(self):
+    def version(self) -> int:
         version = 0
         predecessor = self.predecessor
         while predecessor:
@@ -468,7 +468,7 @@ class Recipe(TimeStampedMixin, StatusMixin, models.Model):
     def clean(self) -> None:
 
         # Check if the name is unique, except if it is inherited
-        same_name = Recipe.objects.filter(name=self.name).exclude(pk=self.pk)
+        same_name = RecipeDesign.objects.filter(name=self.name).exclude(pk=self.pk)
         if same_name.count() != 0:
             fam_tree = []
             recipe = self
@@ -487,16 +487,27 @@ class Recipe(TimeStampedMixin, StatusMixin, models.Model):
 
         return super().clean()
 
-@receiver(post_save, sender=Recipe)
+@receiver(post_save, sender=RecipeDesign)
 def update_recipe_errors(sender, instance, created, **kwargs):
     instance._update_errors()
         
 
+class RecipeIngredient(TimeStampedMixin, models.Model):
+    """
+    Model for archiving ingredient uses in recipes (for history).
+    """
+    ingredient = models.ForeignKey(IngredientVersion, related_name="recipes", 
+        on_delete=models.CASCADE
+    )
+    recipe = models.ForeignKey('recipes.RecipeDeliveryInstance', related_name="ingredients",
+        on_delete=models.CASCADE
+    )
+
 class RecipeDeliveryInstance(models.Model):
-    recipe = models.ForeignKey('recipes.Recipe', related_name="delivery_days_mid",
+    recipe_design = models.ForeignKey(RecipeDesign, related_name="delivery_days",
         on_delete=models.PROTECT
     )
-    delivery_day = models.ForeignKey('deliveries.DeliveryDay', related_name='recipes_mid', 
+    delivery_day = models.ForeignKey('deliveries.DeliveryDay', related_name='recipes', 
         on_delete=models.PROTECT
     )
     
@@ -508,3 +519,6 @@ class RecipeDeliveryInstance(models.Model):
         verbose_name='Predajná cena',
         blank=True, null=True, default=None,
     )
+
+    class Meta:
+        unique_together = ('recipe_design', 'delivery_day')

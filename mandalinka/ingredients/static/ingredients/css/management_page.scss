@@ -1,6 +1,6 @@
 @import '../../../../static/core/css/partials/variables';
 
-.page {
+#ingredient-management-page {
 
   margin: 0 2em;
 
@@ -25,6 +25,7 @@
       background-position: 100% center;
       border: 1px solid transparent;
       border-bottom: 1px solid lightslategrey;
+      &.error { border-bottom: 2px solid red !important; }
       border-radius: 0;
       transition: all 250ms ease-in-out;
       backface-visibility: hidden;
@@ -40,6 +41,12 @@
         border-bottom: 1.5px solid black;
       }
     }
+  }
+
+  #no-results-error {
+    text-align: center;
+    margin-top: 1em;
+    color: red;
   }
 
   #ingredients-result {
@@ -174,7 +181,10 @@
     .info {
       overflow-y: scroll;
       max-height: 75vh;
-      padding: 0.5em 0.5em 2em 1em;
+      padding: 0.5em 1em 1em 1em;
+      .actions > button {
+        margin: 0.5em;
+      }
     }
   }
 }

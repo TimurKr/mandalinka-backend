@@ -1,15 +1,12 @@
 from django.db import models
 
+from utils.models import TimeStampedMixin
+
 # Create your models here.
 
-
-class DeliveryDay(models.Model):
+class DeliveryDay(TimeStampedMixin, models.Model):
     date = models.DateField(verbose_name='Dátum', 
         blank=False, unique=True
-    )
-    recipes = models.ManyToManyField('recipes.Recipe', through='recipes.RecipeDeliveryInstance' ,related_name='delivery_days',
-        verbose_name='Recepty', help_text="Zvolte, ktoré recepty budú v daný deň na výber",
-        blank=True
     )
 
     public= models.BooleanField(default=False,
@@ -18,8 +15,6 @@ class DeliveryDay(models.Model):
         editable=False,
     )
 
-    date_created = models.DateTimeField(auto_now_add=True, verbose_name="Čas vzniku")
-    date_modified = models.DateTimeField(auto_now=True, verbose_name="Naposledy upravené")
 
     class Meta:
         pass

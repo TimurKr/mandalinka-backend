@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'storages',
     'crispy_forms',
     'crispy_bootstrap5',
+    'webpack_loader',
+    'rest_framework',
     'utils',
     'accounts',
     'customers',
@@ -139,10 +141,23 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static/'),
     os.path.join(BASE_DIR, 'node_modules/'),
 ]
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': 'bundles/',
+        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+        'CACHE': not DEBUG,
+        'POLL_INTERVAL': 0.1,
+        'IGNORE': [r'.+\.hot-update.js', r'.+\.map'],
+    }
+}
+
 
 # Media files
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
@@ -170,7 +185,7 @@ GOOGLE_API_KEY = 'AIzaSyCEZTFyo0Kf5YL5SWe6vmmfEMmF5QxSTbU'
 AUTH_USER_MODEL = 'accounts.User'
 
 
-# EMAILING INFO 
+# EMAILING INFO
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -186,3 +201,9 @@ EMAIL_USE_TLS = True
 CRISPY_ALLOWED_TEMPLATE_PACKS = ("bootstrap5", "uni_form")
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+REST_FRAMEWORK = {
+    'DATETIME_FORMAT': "%d %b. %Y, %H:%M:%S",
+    'DATE_FORMAT': "%d %b, %Y",
+    'TIME_FORMAT': "%H:%M:%S",
+}

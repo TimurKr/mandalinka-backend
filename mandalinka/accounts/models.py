@@ -128,6 +128,10 @@ class User(AbstractUser):
         blank=True, default=None,
         verbose_name='Diety', help_text='Máte nejaké diety? Pri automatickom objednávanií vám budeme vyberať iba z jednál, ktoré spadajú do vašej diety.',
     )
+    kitchen_accesories = models.ManyToManyField('recipes.KitchenAccesory', related_name='users',
+        blank=True, default=None,
+        verbose_name='Kuchynské náradie', help_text='Zvolte všetko kuchynské náradie, ktoré máte doma. Pri automatickom objednávanií vám budeme vyberať jedlá, ktoré sa dajú pripraviť s vašim kuchynským náradím.',
+    )
 
 
     class Meta(AbstractUser.Meta):

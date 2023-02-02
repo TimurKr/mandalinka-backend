@@ -17,7 +17,7 @@ def validate_portions(value):
 
 
 class RecipeOrderInstance(models.Model):
-    recipe = models.ForeignKey('recipes.Recipe', related_name='ratings',
+    recipe = models.ForeignKey('recipes.RecipeDesign', related_name='ratings',
         on_delete=models.PROTECT
     )
     order = models.ForeignKey('customers.Order', related_name='recipes_mid',
@@ -69,7 +69,7 @@ class Order(models.Model):
         on_delete=models.PROTECT
     )
 
-    recipes = models.ManyToManyField('recipes.Recipe', through='customers.RecipeOrderInstance', related_name='orders',
+    recipes = models.ManyToManyField('recipes.RecipeDesign', through='customers.RecipeOrderInstance', related_name='orders',
         blank=True
     )
 
@@ -115,7 +115,7 @@ class Order(models.Model):
 
 
 
-@receiver(models.signals.pre_save, sender=Order)
-def create_user_profile(sender, instance, created=False, **kwargs):
-    if created:
-        instance.pickup = instance.user.default_pickup
+# @receiver(models.signals.pre_save, sender=Order)
+# def create_user_profile(sender, instance, created=False, **kwargs):
+#     if created:
+#         instance.pickup = instance.user.default_pickup

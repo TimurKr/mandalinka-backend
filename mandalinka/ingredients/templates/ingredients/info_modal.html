@@ -81,12 +81,16 @@
     let ingredient_id = event.target.getAttribute('ingredient-id');
     let version_id = event.target.getAttribute('version-id');
 
+    
+
     if (ingredient_id){
         var show_info_div = info_div.querySelector(`.ingredient-info-${ingredient_id}`)
     } else if (version_id 
       && info_div.querySelector(`.ingredient-version-info-${version_id}`)){
         var show_info_div = info_div.querySelector(`.ingredient-version-info-${version_id}`)
-    } 
+    } else if ($(event.target).hasClass('add-version-button')){
+      $(info_div).find('.form').remove()
+    }
     
     if (show_info_div) {
       info_div.childNodes.forEach(child => child.hidden = true);
