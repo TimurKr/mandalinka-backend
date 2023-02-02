@@ -48,10 +48,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'utils',
     'accounts',
+    'management',
     'customers',
-    'ingredients',
-    'recipes',
-    'deliveries',
 ]
 
 MIDDLEWARE = [
@@ -121,7 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # User Verification
 
-AUTHENTICATION_BACKENDS = ('accounts.models.EmailVerification',)
+AUTHENTICATION_BACKENDS = ('accounts.verification.EmailVerification',)
 
 
 # Internationalization

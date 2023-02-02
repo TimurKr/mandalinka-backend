@@ -19,10 +19,11 @@ class SubmitButton(BaseInput):
     input_type = 'submit'
     field_classes = 'btn primary-button'
 
+
 class SecondaryButton(StrictButton):
     field_classes = 'btn secondary-button'
 
-    def __init__(self, content, onclick = None, *args, **kwargs):
+    def __init__(self, content, onclick=None, *args, **kwargs):
         if onclick:
             onclick = f'location.href="{reverse(onclick)}"'
             super().__init__(content, onclick=onclick, *args, **kwargs)
@@ -31,41 +32,44 @@ class SecondaryButton(StrictButton):
 
 # BASICS ########################################################################
 
+
 class LoginForm(auth_forms.AuthenticationForm):
 
     error_messages = {
         "invalid_login": _("Zadajte valídny email a heslo."),
         "inactive": _("Tento účet je deaktivovaný. Kontaktujte nás."),
     }
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_action = reverse('accounts:login')
         self.helper.form_id = 'LoginForm'
         self.helper.form_class = 'needs-validation'
-        self.helper.attrs = {'novalidate':''}
+        self.helper.attrs = {'novalidate': ''}
         self.helper.layout = Layout(
-                FloatingField('username', 'password'),
-                HTML("<p> \
+            FloatingField('username', 'password'),
+            HTML("<p> \
                     Zabudli ste heslo? Kliknite \
                     <a class='link-primary' href='{% url 'accounts:password_reset' %}'> \
                     sem</a>!</p>"
+                 ),
+            Div(
+                Div(
+                    SecondaryButton('Zaregistrovať sa',
+                                    onclick='accounts:new_user'),
+                    css_class='col-sm-6'
                 ),
                 Div(
-                    Div(
-                        SecondaryButton('Zaregistrovať sa', onclick='accounts:new_user'),
-                        css_class='col-sm-6'
-                    ),
-                    Div(
-                        SubmitButton('submit', 'Prihlásiť sa'),
-                        css_class='col-sm-6'
-                    ),
-                    css_class='row g-3'
-                )
+                    SubmitButton('submit', 'Prihlásiť sa'),
+                    css_class='col-sm-6'
+                ),
+                css_class='row g-3'
             )
+        )
 
 # GENERAL ######################################################################
+
 
 class NewUserForm(auth_forms.UserCreationForm):
     class Meta:
@@ -73,20 +77,20 @@ class NewUserForm(auth_forms.UserCreationForm):
         fields = (
             "first_name",
             "pronoun",
-            "last_name", 
+            "last_name",
             "email",
             "phone",
             "newsletter",
             "terms_conditions",
             "password1",
             "password2",
-            )
+        )
         labels = {
             'newsletter': 'Súhlasíte so zasielaním reklamných emailov?',
             'terms_conditions': 'Súhlasíte s obchodnými podmienkami?',
         }
         help_texts = {
-            'password1': None, 
+            'password1': None,
             'password2': None,
         }
 
@@ -98,7 +102,7 @@ class NewUserForm(auth_forms.UserCreationForm):
         self.fields['password1'].help_text = ''
         self.fields['password2'].help_text = ''
         self.fields['terms_conditions'].required = True
-        
+
         self.helper = FormHelper(self)
         self.helper.form_action = reverse('accounts:new_user')
         self.helper.form_id = 'NewUserForm'
@@ -106,16 +110,20 @@ class NewUserForm(auth_forms.UserCreationForm):
         self.helper.attrs = {'novalidate': ''}
         self.helper.layout = Layout(
             Div(
-                Div(FloatingField('first_name', autofocus=True), css_class='col-sm-4 col-6'),
+                Div(FloatingField('first_name', autofocus=True),
+                    css_class='col-sm-4 col-6'),
                 Div(FloatingField('pronoun'), css_class='col-sm-4 col-6'),
                 Div(FloatingField('last_name'), css_class='col-sm-4'),
                 Div(FloatingField('email'), css_class='col-12'),
                 Div(FloatingField('phone'), css_class='col-12'),
                 Div(FloatingField('password1'), css_class='col-12'),
                 Div(FloatingField('password2'), css_class='col-12'),
-                Div(Field('newsletter'), css_class='col-12 form-check form-switch ms-2 pe-2'),
-                Div(Field('terms_conditions'), css_class='col-12 form-check form-switch ms-2 pe-2'),
-                Div(SecondaryButton('Naspäť', onclick='customers:home_page'), css_class='col-sm-6'),
+                Div(Field('newsletter'),
+                    css_class='col-12 form-check form-switch ms-2 pe-2'),
+                Div(Field('terms_conditions'),
+                    css_class='col-12 form-check form-switch ms-2 pe-2'),
+                Div(SecondaryButton('Naspäť', onclick='customers:home_page'),
+                    css_class='col-sm-6'),
                 Div(SubmitButton('submit', 'Vytvoriť účet'), css_class='col-sm-6'),
                 css_class='row g-2'
             )
@@ -123,9 +131,11 @@ class NewUserForm(auth_forms.UserCreationForm):
 
     def save(self, commit=True):
         instance = super().save(commit=commit)
-        instance.username = instance.first_name + '.' + instance.last_name + '.' + instance.email.split('@')[0]
+        instance.username = instance.first_name + '.' + \
+            instance.last_name + '.' + instance.email.split('@')[0]
         instance.save()
         return instance
+
 
 class GeneralUserInfoForm(forms.ModelForm):
     class Meta:
@@ -133,7 +143,7 @@ class GeneralUserInfoForm(forms.ModelForm):
         fields = (
             "first_name",
             "pronoun",
-            "last_name", 
+            "last_name",
             "phone",
             "newsletter",
             "terms_conditions",
@@ -156,18 +166,24 @@ class GeneralUserInfoForm(forms.ModelForm):
                 Div(FloatingField('pronoun'), css_class='col-4'),
                 Div(FloatingField('last_name'), css_class='col-12'),
                 Div(FloatingField('phone'), css_class='col-12'),
-                Div(Field('newsletter'), css_class='col-12 form-check form-switch ms-2 pe-2'),
-                Div(Field('terms_conditions'), css_class='col-12 form-check form-switch ms-2 pe-2'),
-                Div(SecondaryButton('Zmeniť heslo', onclick="accounts:password_change"), css_class='col-sm-4 col-6'),
-                Div(SecondaryButton('Zmeniť email', onclick="accounts:email_change"), css_class='col-sm-4 col-6'),
-                Div(SubmitButton('submit', 'Uložiť'), 
+                Div(Field('newsletter'),
+                    css_class='col-12 form-check form-switch ms-2 pe-2'),
+                Div(Field('terms_conditions'),
+                    css_class='col-12 form-check form-switch ms-2 pe-2'),
+                Div(SecondaryButton(
+                    'Zmeniť heslo', onclick="accounts:password_change"), css_class='col-sm-4 col-6'),
+                Div(SecondaryButton(
+                    'Zmeniť email', onclick="accounts:email_change"), css_class='col-sm-4 col-6'),
+                Div(SubmitButton('submit', 'Uložiť'),
                     css_class='col-sm-4'),
-                Div(SecondaryButton('Deaktivovať účet', onclick="accounts:deactivate", css_class='danger-button'), css_class='col-auto ms-auto'),
+                Div(SecondaryButton('Deaktivovať účet', onclick="accounts:deactivate",
+                    css_class='danger-button'), css_class='col-auto ms-auto'),
                 css_class='row g-2'
             )
         )
 
 # ADDRESS #######################################################################
+
 
 class BaseAddressForm(forms.ModelForm):
     secondary_button_action = None
@@ -181,12 +197,12 @@ class BaseAddressForm(forms.ModelForm):
             'note',
             'city',
             'district',
-            'postal', 
-            'country', 
+            'postal',
+            'country',
             'coordinates',
         )
 
-    def __init__(self,*args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['coordinates'].widget = forms.HiddenInput()
 
@@ -197,7 +213,7 @@ class BaseAddressForm(forms.ModelForm):
         except:
             self.helper.form_id = None
         try:
-            self.helper.form_action = self.form_action 
+            self.helper.form_action = self.form_action
         except:
             self.helper.form_action = None
 
@@ -206,15 +222,16 @@ class BaseAddressForm(forms.ModelForm):
 
         if self.secondary_button_action and self.secondary_button_title:
             secondary_button = Div(
-                SecondaryButton(self.secondary_button_title, onclick=self.secondary_button_action), 
+                SecondaryButton(self.secondary_button_title,
+                                onclick=self.secondary_button_action),
                 css_class='col-sm-6')
-        else: 
+        else:
             secondary_button = None
 
         self.helper.layout = Layout(
             Div(
                 Div(
-                    FloatingField('name'), 
+                    FloatingField('name'),
                     FloatingField('address'),
                     FloatingField('note'),
                     FloatingField('city'),
@@ -226,7 +243,8 @@ class BaseAddressForm(forms.ModelForm):
                 ),
                 Div(css_class='map col-md-6 col-12', css_id='gmp-map'),
                 secondary_button,
-                Div(SubmitButton('submit', 'Uložiť'), css_class='col-sm-6 ms-auto'),
+                Div(SubmitButton('submit', 'Uložiť'),
+                    css_class='col-sm-6 ms-auto'),
                 css_class='address-selection row g-3'
             ),
             HTML('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEZTFyo0Kf5YL5SWe6vmmfEMmF5QxSTbU&libraries=places&callback=initMap&solution_channel=GMP_QB_addressselection_v1_cABC" async defer></script>'),
@@ -237,12 +255,15 @@ class BaseAddressForm(forms.ModelForm):
             return super().save(commit=commit)
         except ValueError:
             if self.errors.get('coordinates', None):
-                self.add_error('address',ValidationError('Pri zadávaní adresy zvolte z ponúkaného výberu. Uistite sa, že sa na mape zobrazuje správna adresa.', 'no_coordinates'))
+                self.add_error('address', ValidationError(
+                    'Pri zadávaní adresy zvolte z ponúkaného výberu. Uistite sa, že sa na mape zobrazuje správna adresa.', 'no_coordinates'))
             return super().save(commit=commit)
+
 
 class FirstAddressForm(BaseAddressForm):
     form_action = reverse_lazy('accounts:add_first_address')
     form_id = 'first-address'
+
 
 class AddAddressForm(BaseAddressForm):
     form_action = reverse_lazy('accounts:add_address')
@@ -250,15 +271,19 @@ class AddAddressForm(BaseAddressForm):
     secondary_button_action = 'accounts:my_account'
     secondary_button_title = 'Naspäť'
 
+
 class EditAddressForm(BaseAddressForm):
     form_id = 'edit-address'
     secondary_button_action = 'accounts:my_account'
     secondary_button_title = 'Naspäť'
+
     def __init__(self, address_id, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.helper.form_action = reverse('accounts:edit_address', args=(address_id,))
+        self.helper.form_action = reverse(
+            'accounts:edit_address', args=(address_id,))
 
 # PREFERENCES ##################################################################
+
 
 class PreferencesForm(forms.ModelForm):
     class Meta:
@@ -277,10 +302,9 @@ class PreferencesForm(forms.ModelForm):
             'diet': forms.CheckboxSelectMultiple(),
         }
 
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        
+
         self.helper = FormHelper(self)
         self.helper.form_action = reverse('accounts:edit_preferences')
         self.helper.form_id = 'edit-preferences'
@@ -292,8 +316,10 @@ class PreferencesForm(forms.ModelForm):
             'diet',
             'alergies',
             Div(Field('default_pickup'), css_class='form-check form-switch'),
-            Div(Div(SubmitButton('submit', 'Uložiť'),css_class='col-6 ms-auto mt-3'),css_class='row')
+            Div(Div(SubmitButton('submit', 'Uložiť'),
+                css_class='col-6 ms-auto mt-3'), css_class='row')
         )
+
 
 class SetPreferencesForm(PreferencesForm):
     def __init__(self, *args, **kwargs):
@@ -301,6 +327,7 @@ class SetPreferencesForm(PreferencesForm):
         self.helper.form_action = reverse('accounts:set_preferences')
 
 # PASSWORD MANIPULATION ###############################################################
+
 
 class PasswordChangeForm(auth_forms.PasswordChangeForm):
     def __init__(self, *args, **kwargs):
@@ -322,11 +349,14 @@ class PasswordChangeForm(auth_forms.PasswordChangeForm):
                 Div(FloatingField('old_password'), css_class='col-12, pb-3'),
                 Div(FloatingField('new_password1'), css_class='col-12'),
                 Div(FloatingField('new_password2'), css_class='col-12'),
-                Div(SecondaryButton('Naspäť', 'accounts:my_account'), css_class="col-auto ms-sm-auto"),
-                Div(SubmitButton('submit', 'Nastaviť nové heslo'), css_class="col-auto"),
+                Div(SecondaryButton('Naspäť', 'accounts:my_account'),
+                    css_class="col-auto ms-sm-auto"),
+                Div(SubmitButton('submit', 'Nastaviť nové heslo'),
+                    css_class="col-auto"),
                 css_class='row g-2'
             )
         )
+
 
 class PasswordResetForm(auth_forms.PasswordResetForm):
     def __init__(self, *args, **kwargs):
@@ -339,11 +369,13 @@ class PasswordResetForm(auth_forms.PasswordResetForm):
         self.helper.layout = Layout(
             Div(
                 Div(FloatingField('email'), css_class='col-12'),
-                Div(SecondaryButton('Naspäť', 'accounts:login'), css_class="col-auto ms-auto"),
+                Div(SecondaryButton('Naspäť', 'accounts:login'),
+                    css_class="col-auto ms-auto"),
                 Div(SubmitButton('submit', 'Odoslať'), css_class="col-auto"),
                 css_class='row g-2'
             )
         )
+
 
 class SetPasswordForm(auth_forms.SetPasswordForm):
     def __init__(self, user, *args, **kwargs):
@@ -362,7 +394,8 @@ class SetPasswordForm(auth_forms.SetPasswordForm):
             Div(
                 Div(FloatingField('new_password1'), css_class='col-12'),
                 Div(FloatingField('new_password2'), css_class='col-12'),
-                Div(SubmitButton('submit', 'Nastaviť nové heslo'), css_class="col-auto ms-auto"),
+                Div(SubmitButton('submit', 'Nastaviť nové heslo'),
+                    css_class="col-auto ms-auto"),
                 css_class='row g-2'
             )
         )
