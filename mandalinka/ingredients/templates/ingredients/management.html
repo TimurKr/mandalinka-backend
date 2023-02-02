@@ -57,23 +57,19 @@
   {% endfor %}
   
   
-  <div class="page">
-
-    <div class="new-ingredient row justify-content-right">
-      <div class="col-auto ms-auto new-ingredient">
-        <button type="button" class="btn success-light-button" data-bs-toggle="modal"
-          data-bs-target="#new-ingredient-modal">
-          Nová inrgediencia
-        </button>
-      </div>
-    </div>
-  </div>
-
   <div id="ingredient-management-page"
     search-url="{% url 'ingredients:search_ingredients' %}"
     ingredient-url="{% url 'ingredients:serialized_ingredient_versions' %}"></div>
 
   {% render_bundle 'ingredient_website' %}
-  <!-- <script type="module" src="{% static 'ingredients/js/render_management_page.js' %}"></script> -->
+
+  <div class="new-ingredient row justify-content-right">
+    <div class="col-auto ms-auto new-ingredient">
+      <button type="button" class="btn success-light-button" data-bs-toggle="modal"
+        data-bs-target="#new-ingredient-modal">
+        Nová inrgediencia
+      </button>
+    </div>
+  </div>
 </section>
 {% endblock %}

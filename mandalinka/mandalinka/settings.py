@@ -203,6 +203,7 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = ("bootstrap5", "uni_form")
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 REST_FRAMEWORK = {
-    'DATETIME_FORMAT': "%d %B, %H:%M:%S",
+    'DATETIME_FORMAT': "%d %b. %Y, %H:%M:%S",
     'DATE_FORMAT': "%d %b, %Y",
+    'TIME_FORMAT': "%H:%M:%S",
 }

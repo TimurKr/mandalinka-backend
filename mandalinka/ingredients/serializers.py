@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from .models import Ingredient, IngredientVersion
+from .forms import IngredientVersionForm
 from utils.serializers import UnitSerializer, StatusSerializer
+from django.template.loader import render_to_string
 
 
 class BasicIngredientVersionSerializer(serializers.ModelSerializer):
@@ -20,10 +22,18 @@ class IngredientSerializer(serializers.ModelSerializer):
     unit = UnitSerializer(read_only=True)
     versions = BasicIngredientVersionSerializer(many=True, read_only=True)
 
+    new_version_form = serializers.SerializerMethodField()
+
     class Meta:
         model = Ingredient
         fields = '__all__'
         depth = 1
+
+    def get_new_version_form(self, obj):
+        new_version_form = render_to_string(
+            "ingredients/forms/form.html", {'form': IngredientVersionForm(obj)}, request=self.context.get('request')
+        )
+        return new_version_form
 
 
 class IngredientVersionSerializer(serializers.ModelSerializer):
@@ -35,10 +45,17 @@ class IngredientVersionSerializer(serializers.ModelSerializer):
     active = serializers.BooleanField(read_only=True)
     inactive = serializers.BooleanField(read_only=True)
     deleted = serializers.BooleanField(read_only=True)
-    # status_changed = serializers.DateTimeField(
-    #     format="%d %B, %H:%M:%S", read_only=True)
+
+    edit_form = serializers.SerializerMethodField()
 
     class Meta:
         model = IngredientVersion
         fields = '__all__'
         depth = 1
+        extra_kwargs = {'edit_ingredient_form': {'read_only': True}}
+
+    def get_edit_form(self, obj):
+        edit_form = render_to_string(
+            "ingredients/forms/form.html", {'form': IngredientVersionForm(obj)}, request=self.context.get('request')
+        )
+        return edit_form

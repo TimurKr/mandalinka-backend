@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useImmer } from "use-immer";
+import parse from "html-react-parser";
 import getCookie from "./get_cookie.jsx";
 
 function IngredietInfoPanel({ data }) {
@@ -71,7 +72,20 @@ function VersionInfoPanel({ data }) {
   );
 }
 
-function VersionsPanel({ versions, showVersionInfo }) {
+function NewVersionFormPanel({ children, on_submit, hidden = false }) {
+  return (
+    <form
+      id="new-ingredient-version-form-"
+      method="POST"
+      onSubmit={on_submit}
+      hidden={hidden}
+    >
+      {children}
+    </form>
+  );
+}
+
+function VersionsPanel({ versions, showVersionInfo, showNewVersionForm }) {
   return (
     <div>
       <p className="versions-title">Verzie</p>
@@ -92,7 +106,10 @@ function VersionsPanel({ versions, showVersionInfo }) {
           </p>
         </div>
       ))}
-      <button className="btn success-light-button add-version-button">
+      <button
+        className="btn success-light-button add-version-button"
+        onClick={showNewVersionForm}
+      >
         Pridať verziu
       </button>
     </div>
@@ -117,6 +134,10 @@ export default function IngredientWidget({ ingredient, url }) {
   }
 
   function showVersionInfo(version_id) {
+    if (!loaded) {
+      console.log("Versions not loaded yet");
+      return;
+    }
     setVersions((draft) => {
       draft.forEach((version) => {
         if (version.id == version_id) {
@@ -132,6 +153,15 @@ export default function IngredientWidget({ ingredient, url }) {
         return;
       }
     });
+  }
+
+  function showNewVersionForm(event) {
+    setVersions((draft) => {
+      draft.forEach((version) => {
+        version.selected = false;
+      });
+    });
+    setInfoPanel(null);
   }
 
   function loadVersions() {
@@ -152,6 +182,11 @@ export default function IngredientWidget({ ingredient, url }) {
       .catch((error) => {
         console.log("Couldnt fetch: ", error);
       });
+  }
+
+  function submitNewVersion(e) {
+    e.preventDefault();
+    console.log("New version form submitting.");
   }
 
   useEffect(() => {
@@ -209,9 +244,18 @@ export default function IngredientWidget({ ingredient, url }) {
                 <VersionsPanel
                   versions={versions}
                   showVersionInfo={showVersionInfo}
+                  showNewVersionForm={showNewVersionForm}
                 />
               </div>
-              <div className="col info">{infoPanel}</div>
+              <div className="col info">
+                {infoPanel}
+                <NewVersionFormPanel
+                  on_submit={submitNewVersion}
+                  hidden={infoPanel ? true : false}
+                >
+                  {parse(ingredient.new_version_form)}
+                </NewVersionFormPanel>
+              </div>
             </div>
           </div>
         </div>

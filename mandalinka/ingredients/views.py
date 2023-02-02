@@ -10,9 +10,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .models import Ingredient, IngredientVersion
-from .forms import NewIngredientForm, NewIngredientVersionForm
+from .forms import NewIngredientForm, IngredientVersionForm
 from .serializers import IngredientSerializer, IngredientVersionSerializer
-# Helping functions
 
 
 def query_ingredients(query, max_results=20):
@@ -63,7 +62,7 @@ def add_ingredient(request):
 # APIs
 
 
-# @api_view(['GET'])
+@api_view(['GET'])
 @permission_required('ingredients.view_ingredient', login_url=reverse_lazy('recipes:management_page'))
 def search_ingredients(request):
     """
@@ -73,13 +72,16 @@ def search_ingredients(request):
     - 'q': the search query
     - 'n': the max number of results to return (default 20)
     """
+
     query = request.GET.get('q')
     max_results = request.GET.get('n', 20)
     ingredients = query_ingredients(query, max_results)
-    serializer = IngredientSerializer(ingredients, many=True)
-    return JsonResponse(serializer.data, safe=False, content_type='application/json')
+    serializer = IngredientSerializer(
+        ingredients, many=True, context={'request': request})
+    return Response(serializer.data, status=200, content_type='application/json')
 
 
+@api_view(['GET'])
 @permission_required('ingredients.view_ingredient', login_url=reverse_lazy('recipes:management_page'))
 def get_ingredient_versions(request):
     """
@@ -94,9 +96,9 @@ def get_ingredient_versions(request):
         return HttpResponseBadRequest('Ingredient not found')
 
     ingredient_versions = ingredient.versions.all()
-    serializer = IngredientVersionSerializer(ingredient_versions, many=True)
-    print(serializer)
-    return JsonResponse(serializer.data, safe=False, content_type='application/json')
+    serializer = IngredientVersionSerializer(
+        ingredient_versions, many=True, context={'request': request})
+    return Response(serializer.data, status=200, content_type='application/json')
 
 
 @permission_required('ingredients.view_ingredient', login_url=reverse_lazy('recipes:management_page'))
@@ -150,7 +152,7 @@ def new_ingredient_version(request, ingredient_id):
         return HttpResponseBadRequest('Ingredient version not found')
 
     if request.method == 'POST':
-        form = NewIngredientVersionForm(
+        form = IngredientVersionForm(
             ingredient, request.POST, request.FILES)
         if form.is_valid():
             new_ingredient = form.save()
@@ -162,7 +164,7 @@ def new_ingredient_version(request, ingredient_id):
                 'form': form
             }, status=406)
     else:
-        form = NewIngredientVersionForm(ingredient)
+        form = IngredientVersionForm(ingredient)
         return render(request, 'ingredients/forms/new_ingredient_version.html', {
             'form': form
         })

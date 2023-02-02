@@ -171,6 +171,10 @@ class IngredientVersion(TimeStampedMixin, StatusMixin, models.Model):
             )
         self.save()
 
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('ingredient-detail', kwargs={'pk': self.pk})
+
     def __str__(self) -> str:
         return f'{self.ingredient} v.{self.version_number}'
 
