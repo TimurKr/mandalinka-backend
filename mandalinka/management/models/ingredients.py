@@ -189,3 +189,59 @@ class Ingredient(TimeStampedMixin, models.Model):
         """Deactivates the active IngredientVersion"""
         if self.active:
             self.active.deactivate()
+
+
+class IngredientStockChange(TimeStampedMixin, models.Model):
+    """
+    Model representing a change in the stock amount of a paprticular IngredientVersion
+    """
+    ingredient_version = models.ForeignKey(IngredientVersion, related_name='stock_changes',
+                                           on_delete=models.PROTECT
+                                           )
+    amount = models.FloatField(
+        verbose_name=_("Množstvo"), help_text=_("Kladné číslo znamená pridanie, záporné odobranie")
+    )
+    unit = models.ForeignKey(Unit,
+                             on_delete=models.PROTECT, blank=True,
+                             verbose_name=_("Jednotka"), help_text=_("Zadajte jednotku")
+                             )
+
+    @property
+    def amount_str(self) -> str:
+        return f'{round(self.in_stock_amount,3)} {self.unit}'
+
+    def _apply(self):
+        """
+        Applies the change to the IngredientVersion
+        Warning: This method does not check if the change has been applied before
+        """
+        self.ingredient_version._in_stock_amount += self.ingredient_version.unit.from_base(
+            self.unit.to_base(self.amount))
+        self.ingredient_version.save()
+
+    def _unapply(self):
+        """
+        Unapplies the change to the IngredientVersion
+        WARNING: This method does not check if the change has been applied
+        """
+        self.ingredient_version._in_stock_amount -= self.ingredient_version.unit.from_base(
+            self.unit.to_base(self.amount))
+        self.ingredient_version.save()
+
+    def save(self, *args, **kwargs):
+        original = IngredientStockChange.objects.filter(pk=self.pk).first()
+
+        if not self.unit:
+            self.unit = self.ingredient_version.unit
+        elif self.unit.property != self.ingredient_version.unit.property:
+            raise ValueError(
+                "Unit must be of the same property as the ingredient")
+
+        if original:
+            original._unapply()
+            self._apply()
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.ingredient_version}: {self.amount_str}'
