@@ -64,13 +64,6 @@ class IngredientVersion(TimeStampedMixin, StatusMixin, models.Model):
         ]
         ordering = ('created',)
 
-    def activate(self):
-        """Activates the IngredientVersion and deactivates all the others"""
-        if self.active:
-            return
-        self.ingredient.deactivate()
-        super().activate()
-
     def recalculate_in_stock_amount(self):
         self._in_stock_amount = 0
         for stock_change in self.stock_changes:
@@ -86,29 +79,33 @@ class IngredientVersion(TimeStampedMixin, StatusMixin, models.Model):
     def __str__(self) -> str:
         return f'{self.ingredient} v.{self.version_number}'
 
+    def activate(self) -> None:
+        """Activates the IngredientVersion and deactivates all the others"""
+        if self.is_active:
+            return
+        self.ingredient.soft_delete()
+        return super().activate()
+
     def save(self, *args, **kwargs):
         """Saves the IngredientVersion and recalculates the cost"""
 
         # Validate the ingredient version is editable
         original = self.__class__.objects.filter(pk=self.pk).first()
-        if original and original.active and self.active:
-            raise ValueError(
-                _("Can't change the active version of an ingredient. Deactivate or create a new version."))
+
+        if original:
+            if self.is_active and original.is_active:
+                raise ValueError(
+                    _("Can't change the active version of an ingredient. Deactivate or create a new version."))
+
+        else:
+            if self.is_active:
+                raise ValueError(
+                    _("Can't create an active IngredientVersion. Create a new version and activate it."))
 
         # Validate the unit is the same property as the ingredient unit
         if self.unit.property != self.ingredient.unit.property:
             raise ValueError(
                 _("Unit must be of the same property as the ingredient"))
-
-        # If creating and already active, raise an error
-        if not original and self.active:
-            raise ValueError(
-                _("Can't create an active IngredientVersion. Create a new version and activate it."))
-
-        # If activating, deactivate the previous versions
-        if self.active and not original.active:
-            for version in self.ingredient.versions.all():
-                version.soft_delete()
 
         super().save(*args, **kwargs)
 
@@ -119,6 +116,7 @@ class Ingredient(TimeStampedMixin, models.Model):
     Each Ingredient can only have one IngredientVersion active at a time.
     This Model only represents the part of the Ingredient that does not change.
     """
+
     name = models.CharField(
         max_length=31,
         unique=True,
@@ -145,10 +143,10 @@ class Ingredient(TimeStampedMixin, models.Model):
 
     @property
     def is_active(self) -> bool:
-        return self.active is not None
+        return self.active_version is not None
 
     @property
-    def active(self) -> IngredientVersion | None:
+    def active_version(self) -> IngredientVersion | None:
         """Returns either the active IngredientVersion or False"""
         return self.versions.filter(_status=IngredientVersion.Statuses.ACTIVE).first()
 
@@ -160,8 +158,8 @@ class Ingredient(TimeStampedMixin, models.Model):
         2. inactive IngredientVersion
         3. deleted IngredientVersion
         """
-        if self.active:
-            return self.active.status
+        if self.is_active:
+            return self.active_version.status
         elif self.versions.filter(_status=IngredientVersion.Statuses.INACTIVE).first():
             return IngredientVersion.Statuses.INACTIVE
         return IngredientVersion.Statuses.DELETED
@@ -169,9 +167,8 @@ class Ingredient(TimeStampedMixin, models.Model):
     @property
     def cost(self):
         """Returns the cost of the active IngredientVersion or None"""
-        active = self.active
-        if active:
-            return active.cost
+        if self.is_active:
+            return self.active_version.cost
         return None
 
     @property
@@ -187,8 +184,13 @@ class Ingredient(TimeStampedMixin, models.Model):
 
     def deactivate(self):
         """Deactivates the active IngredientVersion"""
-        if self.active:
-            self.active.deactivate()
+        if self.is_active:
+            self.active_version.deactivate()
+
+    def soft_delete(self):
+        """Deletes the active IngredientVersion"""
+        if self.is_active:
+            self.active_version.soft_delete()
 
 
 class IngredientStockChange(TimeStampedMixin, models.Model):

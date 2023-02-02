@@ -95,7 +95,7 @@ class StatusMixin(models.Model):
         Sets the status to 'active'
         Overwrite this method and call it at the end for custom activation logic.
         """
-        if self.active:
+        if self.is_active:
             return
         self.status_changed = timezone.now()
         self._status = self.Statuses.ACTIVE
@@ -106,7 +106,7 @@ class StatusMixin(models.Model):
         Sets the status to 'inactive'
         Overwrite this method and call it at the end for custom deactivation logic.
         """
-        if self.inactive:
+        if self.is_inactive:
             return
         self.status_changed = timezone.now()
         self._status = self.Statuses.INACTIVE
@@ -117,7 +117,7 @@ class StatusMixin(models.Model):
         Sets the status to 'deleted'
         Overwrite this method and call it at the end for custom soft-deletion logic.
         """
-        if self.deleted:
+        if self.is_deleted:
             return
         self.status_changed = timezone.now()
         self._status = self.Statuses.DELETED
