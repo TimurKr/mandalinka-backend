@@ -142,5 +142,6 @@ GitHub.sublime-settings
 !.vscode/extensions.json 
 .history
 
-
+# Node automaticaly generated files #
 webpack-stats.json
+mandalinka/static/bundles/
