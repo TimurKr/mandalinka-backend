@@ -1,5 +1,5 @@
 {
-  "status": "done",
+  "status": "error",
   "assets": {
     "0ab669b7a0d19b178f57.woff": {
       "name": "0ab669b7a0d19b178f57.woff",
@@ -140,5 +140,5 @@
     ]
   },
   "error": "ModuleNotFoundError",
-  "message": "Module not found: Error: Can't resolve 'style-loader' in '/Users/timurkramar/Library/CloudStorage/OneDrive-Personal/mandalinka/mandalinka/mandalinka'"
+  "message": "Module not found: Error: Can't resolve 'babel-loader' in '/Users/timurkramar/Library/CloudStorage/OneDrive-Personal/mandalinka/mandalinka/mandalinka'"
 }
