@@ -5,6 +5,15 @@ from rest_framework.permissions import AllowAny
 from management.models.ingredients import Ingredient
 from management.serializers.ingredients import ListIngredientSerializer, DetailIngredientSerializer
 
+from django.shortcuts import render
+
+
+def management_page_ingredients(request):
+    """
+    View for management page for ingredients
+    """
+    return render(request, 'management/index.html', {'active_page': 'ingredients'})
+
 
 class IngredientListCreate(generics.ListCreateAPIView):
     """

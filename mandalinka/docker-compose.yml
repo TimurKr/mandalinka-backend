@@ -1,3 +1,5 @@
+version: '3.4'
+
 services:
   db:
     image: postgres
@@ -7,14 +9,16 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-  web: 
-    build: .
+  mandalinka: 
+    image: mandalinka
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/usr/src/mandalinka/web
     ports:
       - "8000:8000"
-      - "3000:3000"
     environment:
       - POSTGRES_NAME=postgres
       - POSTGRES_USER=postgres
