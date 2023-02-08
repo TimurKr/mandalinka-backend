@@ -145,3 +145,4 @@ GitHub.sublime-settings
 # Node automaticaly generated files #
 webpack-stats.json
 back-end/static/bundles/
+web-front-end/.next/

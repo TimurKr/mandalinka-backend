@@ -3,9 +3,9 @@ FROM python:3
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-WORKDIR /usr/src/mandalinka/web 
+WORKDIR /usr/src/mandalinka/back-end
 
-COPY requirements.txt /usr/src/mandalinka/web
+COPY requirements.txt ./
 RUN pip install -r requirements.txt
 
-COPY . /usr/src/mandalinka/web
+COPY . .

@@ -13,10 +13,10 @@ services:
     image: mandalinka
     build:
       context: ./back-end
-      dockerfile: ./back-end/Dockerfile
+      dockerfile: ./Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./back-end:/usr/src/mandalinka/web
+      - .:/usr/src/mandalinka/web
     ports:
       - "8000:8000"
     environment:
