@@ -1,0 +1,50 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="sk">
+
+<head>
+  <title>
+    {% block page_name %}
+    {% endblock %}
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Favicon -->
+  <link href="{% static 'core/images/favicon.ico' %}" rel="shortcut icon" type="image/png">
+
+  <!-- Custom css -->
+  <link href="{% static 'core/css/style.css' %}" rel="stylesheet">
+  
+  <!-- Google symbols -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  
+  <!-- Bootstrap javascript -->
+  <script src="{% static 'bootstrap/dist/js/bootstrap.bundle.min.js' %}" type="text/javascript"></script>
+
+  <!-- JQuery library -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <!-- React  -->
+  <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+  <!-- <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script> -->
+  
+  <script src="{% static 'core/js/form_validation.js' %}"></script>
+  {% block extra_head %}
+  {% endblock %}
+</head>
+
+<body>
+
+    <!-- Favicon -->
+    <a href="{% url 'customers:home_page' %}" class="position-absolute start-0 top-0 p-3">
+        <img class="img-fluid" width=35rem src="{% static 'core/images/favicon.ico' %}" alt="icon">
+    </a>
+
+    {% block core %}
+    {% endblock %}
+    
+</body>
+
+</html>

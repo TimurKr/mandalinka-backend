@@ -1,0 +1,28 @@
+version: '3.4'
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./back-end/data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  mandalinka: 
+    image: mandalinka
+    build:
+      context: ./back-end
+      dockerfile: ./back-end/Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./back-end:/usr/src/mandalinka/web
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - GOOGLE_APPLICATION_CREDENTIALS=/usr/src/mandalinka/web/secrets/storage_credentials.json
+    depends_on:
+      - db

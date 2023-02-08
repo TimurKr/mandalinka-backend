@@ -144,4 +144,4 @@ GitHub.sublime-settings
 
 # Node automaticaly generated files #
 webpack-stats.json
-mandalinka/static/bundles/
+back-end/static/bundles/

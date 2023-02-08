@@ -1,0 +1,85 @@
+{% load static %}
+
+
+<!-- Login Modal -->
+
+{% load crispy_forms_tags %}
+
+{% if loginform and not request.user.is_authenticated %}
+<div class="modal fade{% if focus == 'LoginModal' %} active{% endif %}" id="LoginModal" tabindex="-1"
+  data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="LoginModalLabel" aria-hidden="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="LoginModalLabel">
+          <span class="material-symbols-rounded">login</span>
+          Prihláste sa
+        </h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {% crispy loginform %}
+      </div>
+    </div>
+  </div>
+</div>
+<script src="{% static 'core/js/form_validation.js' %}"></script>
+<script>
+  const LoginModal = document.getElementById('LoginModal')
+  if (LoginModal != null) {
+    // Autofocus email field in modal
+    LoginModal.addEventListener('shown.bs.modal', () => {
+      document.getElementById('id_username').focus()
+    })
+    // Show on load if active
+    if (LoginModal.classList.contains('active')) {
+      new bootstrap.Modal('#LoginModal').show()
+    }
+  }
+
+</script>
+
+{% endif %}
+
+
+<section id="landing-view">
+
+  <!-- NAvigation -->
+  <div id="account-menu" 
+    is_authenticated="{{ request.user.is_authenticated }}"
+    is_staff="{{ request.user.is_staff }}"
+    my_account_link="{% url 'accounts:my_account' %}"
+    log_out_link="{% url 'accounts:logout' %}"
+    new_user_link="{% url 'accounts:new_user' %}"
+    recipes_link="{% url 'recipes:management_page' %}">
+  </div>
+  <script type="module" src="{% static 'customers/js/landing_view_navigation.js' %}"></script>
+
+  <!-- Titles -->
+  <div class="position-absolute top-50 start-50 translate-middle text-center">
+    <h1 id="title">Mandalinka</h1>
+    <hr />
+    <h4 id="subtitle">Varenie bez starostí</h4>
+  </div>
+
+  <!-- Arrow downwards -->
+  <a id="arrow-down" class="position-absolute bottom-0 start-50 translete-middle-x">
+    <span class="material-symbols-rounded">
+      keyboard_double_arrow_down
+    </span>
+  </a>
+  <script>
+    document.getElementById('arrow-down').addEventListener('click', () => {
+      document.getElementById('landing-view').nextElementSibling.scrollIntoView();
+    })
+  </script>
+  
+
+  <!-- CSS -->
+  
+  <link href="{% static 'customers/css/landing_view.css' %}" rel="stylesheet">
+
+</section>
+
+
+

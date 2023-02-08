@@ -1,0 +1,22 @@
+{% extends 'core/html/base.html' %}
+{% load static %}
+
+{% block page_name %}
+    Mandalinka
+{% endblock %}
+
+{% block extra_head %}
+{% endblock %}
+
+{% block core %}
+    {% include 'customers/pages/includes/landing_view.html' %}
+    {% if user.is_authenticated %}
+        {% include 'customers/pages/includes/order_editing.html' %}
+        {% include 'customers/pages/includes/how_it_works.html' %}
+    {% else %}
+        {% include 'customers/pages/includes/how_it_works.html' %}
+        {% include 'customers/pages/includes/why_us.html' %}
+    {% endif %}
+
+
+{% endblock %}

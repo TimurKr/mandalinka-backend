@@ -1,0 +1,190 @@
+@import '../../../../static/core/css/partials/variables';
+
+#ingredient-management-page {
+
+  margin: 0 2em;
+
+  .search__container {
+    margin-top: 15vh;
+
+    .search__input {
+      width: 100%;
+      padding: 12px 0;
+
+      background-color: transparent;
+      transition: transform 250ms ease-in-out;
+      line-height: 22px;
+      font-size: 20px;
+
+      color: black;
+      background-color: transparent;
+
+      background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-size: 18px 18px;
+      background-position: 100% center;
+      border: 1px solid transparent;
+      border-bottom: 1px solid lightslategrey;
+      &.error { border-bottom: 2px solid red !important; }
+      border-radius: 0;
+      transition: all 250ms ease-in-out;
+      backface-visibility: hidden;
+      transform-style: preserve-3d;
+      outline: 0;
+
+      &::placeholder {
+        color: #575756;
+      }
+
+      &:hover,
+      &:focus {
+        border-bottom: 1.5px solid black;
+      }
+    }
+  }
+
+  #no-results-error {
+    text-align: center;
+    margin-top: 1em;
+    color: red;
+  }
+
+  #ingredients-result {
+    -webkit-column-count: 3;
+    /* Chrome, Safari, Opera */
+    -moz-column-count: 3;
+    /* Firefox */
+    column-count: 3;
+    -webkit-column-gap: 10px;
+    /* Chrome, Safari, Opera */
+    -moz-column-gap: 10px;
+    /* Firefox */
+    column-gap: 10px;
+
+    /* Add line between the columns */
+    -webkit-column-rule: 1px solid grey;
+    /* Chrome, Safari, Opera */
+    -moz-column-rule: 1px solid grey;
+    /* Firefox */
+    column-rule: 1px solid grey;
+
+
+    margin-top: 1em;
+
+    .ingredient-button {
+      padding: 0.25em 1em;
+      margin: 0.25em 0;
+      width:fit-content;
+      font-weight: bold;
+      border-radius: 0.5em;
+      cursor: pointer;
+      transition: box-shadow 250ms ease-in-out;
+
+      &.active {
+        color: green;
+      }
+
+      &.inactive {
+        color: black;
+      }
+
+      &.deleted {
+        color: grey;
+      }
+
+      &:hover,
+      &:focus,
+      &.selected {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+}
+
+.ingredient-modal {
+  .modal-body {
+    overflow: hidden;
+    max-height: 75vh;
+
+    // Scrollbars
+    .versions,
+    .info {
+      &::-webkit-scrollbar {
+        width: 0.5em;
+        background-color: transparent;
+        padding: 0.2em 0.2em;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 0.25em;
+        background-color: lightgrey;
+      }
+    }
+
+    .versions {
+      overflow-y: scroll;
+      max-height: 75vh;
+
+      border-right: 1px solid gray;
+
+      .ingredient-title {
+        margin: 0 0 1em 1rem;
+        font-weight: bold;
+      }
+      .versions-title {
+        margin: 0 0 0 1rem;
+        color: grey;
+      }
+
+      hr {
+        margin: 0.5em;
+      }
+      
+      .version-buttons .version-button,
+      .ingredient-title {
+        padding: 0.25em 1rem;
+        margin: 0.5em 0;
+        font-weight: bold;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: box-shadow 250ms ease-in-out;
+        
+        &.active {
+          color: green;
+        }
+        
+        &.inactive {
+          color: black;
+        }
+        
+        &.deleted {
+          color: grey;
+          font-weight: normal;
+        }
+        
+        &:hover,
+        &:focus,
+        &.selected {
+          box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        &:last-child {
+          margin-bottom: 1em;
+        }
+        
+      }
+      .add-version-button {
+        margin: 0.5em 0 0.5em 0;
+      }
+    }
+
+    .info {
+      overflow-y: scroll;
+      max-height: 75vh;
+      padding: 0.5em 1em 1em 1em;
+      .actions > button {
+        margin: 0.5em;
+      }
+    }
+  }
+}
