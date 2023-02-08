@@ -9,14 +9,14 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-  mandalinka: 
-    image: mandalinka
+  back-end: 
+    image: mandalinka-back-end
     build:
       context: ./back-end
       dockerfile: ./Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - .:/usr/src/mandalinka/web
+      - ./back-end:/usr/src/mandalinka/back-end
     ports:
       - "8000:8000"
     environment:
@@ -26,3 +26,14 @@ services:
       - GOOGLE_APPLICATION_CREDENTIALS=/usr/src/mandalinka/web/secrets/storage_credentials.json
     depends_on:
       - db
+  web-front-end:
+    image: mandalinka-front-end-web
+    build:
+      context: ./front-end-web
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./front-end-web:/usr/src/mandalinka/front-end-web
+    ports:
+      - "3000:3000"
+    depends_on:
+      - back-end
