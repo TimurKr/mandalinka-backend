@@ -4,7 +4,7 @@ const BundleTracker = require("webpack-bundle-tracker");
 module.exports = {
   mode: "development",
   entry: {
-    ingredient_website: "./ingredients/static/ingredients/js/index.jsx",
+    management_website: "./management/static/management/react/index.jsx",
   },
   output: {
     path: path.resolve(__dirname, "static/bundles/"),
@@ -22,12 +22,11 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
     ],
   },
   plugins: [new BundleTracker({ filename: "./webpack-stats.json" })],
-  resolve: {
-    alias: {
-      react: path.resolve("./node_modules/react"),
-    },
-  },
 };

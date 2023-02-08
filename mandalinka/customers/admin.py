@@ -1,17 +1,17 @@
 from django.contrib import admin
 
-from .models import *
+# from .models import *
 
-# Register your models here.
+# # Register your models here.
 
-class RecipeOrderInstanceInline(admin.TabularInline):
-    model = RecipeOrderInstance
-    fk_name = 'order'
-    extra = 1
+# class RecipeOrderInstanceInline(admin.TabularInline):
+#     model = RecipeOrderInstance
+#     fk_name = 'order'
+#     extra = 1
 
 
-class OrderAdmin(admin.ModelAdmin):
-    inlines = (RecipeOrderInstanceInline, )
-    pass
+# class OrderAdmin(admin.ModelAdmin):
+#     inlines = (RecipeOrderInstanceInline, )
+#     pass
 
-admin.site.register(Order, OrderAdmin)
+# admin.site.register(Order, OrderAdmin)
