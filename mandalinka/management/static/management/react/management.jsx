@@ -1,15 +1,20 @@
 import React from "react";
 import { useState } from "react";
 
-import PageDrawer from "./page_drawer.jsx";
-import IngredientsPage from "./ingredients/ingredient_page.jsx";
+import IngredientsRouter from "./ingredients/ingredients_page.jsx";
 
+import VerticalPanel from "./custom_elements/VerticalPanel.jsx";
+
+import Grid2 from "@mui/material/Unstable_Grid2";
 import Box from "@mui/material/Box";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
 
 import EggAltOutlinedIcon from "@mui/icons-material/EggAltOutlined";
 import FastfoodOutlinedIcon from "@mui/icons-material/FastfoodOutlined";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import DeliveryDiningOutlinedIcon from "@mui/icons-material/DeliveryDiningOutlined";
+import { RouterProvider } from "react-router-dom";
 
 export default function ManagementPage({ active_path, url }) {
   const PAGES = {
@@ -34,12 +39,7 @@ export default function ManagementPage({ active_path, url }) {
       title: "Recepty",
     },
     ingredients: {
-      element: (
-        <IngredientsPage
-          active_path={active_path.split("/").slice(1).join("/") || null}
-          url="Heel"
-        />
-      ),
+      element: <RouterProvider router={IngredientsRouter} />,
       icon: <EggAltOutlinedIcon />,
       title: "Suroviny",
     },
@@ -70,18 +70,34 @@ export default function ManagementPage({ active_path, url }) {
   }
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <PageDrawer
-        active_page={page}
-        handlePageChange={handlePageChange}
-        pages={Object.entries(PAGES).map(([key, value]) => ({
-          id: key,
-          title: value.title,
-          icon: value.icon,
-          active: page === key,
-        }))}
-      />
-      {PAGES[page].element}
-    </Box>
+    <Grid2 container sx={{ height: "100vh" }}>
+      <Grid2 xs="auto">
+        <VerticalPanel
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            padding: 1,
+          }}
+        >
+          {Object.entries(PAGES).map(([key, data]) => {
+            if (data.icon === undefined) return null;
+            return (
+              <Tooltip key={key} title={data.title} placement="right" arrow>
+                {/* Icon to change the page. If active, use "selected" variant */}
+                <IconButton
+                  sx={{ marginY: 0.5 }}
+                  onClick={() => handlePageChange(key)}
+                  variant={key == page ? "selected" : null}
+                >
+                  {data.icon}
+                </IconButton>
+              </Tooltip>
+            );
+          })}
+        </VerticalPanel>
+      </Grid2>
+      <Grid2 xs>{PAGES[page].element}</Grid2>
+    </Grid2>
   );
 }

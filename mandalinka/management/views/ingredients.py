@@ -8,14 +8,7 @@ from management.serializers.ingredients import ListIngredientSerializer, DetailI
 from django.shortcuts import render
 
 
-def management_page_ingredients(request):
-    """
-    View for management page for ingredients
-    """
-    return render(request, 'management/index.html', {'active_page': 'ingredients'})
-
-
-class IngredientListCreate(generics.ListCreateAPIView):
+class IngredientListCreateAPI(generics.ListCreateAPIView):
     """
     Class based view for Ingredient API
     Provides the following methods:
@@ -26,7 +19,7 @@ class IngredientListCreate(generics.ListCreateAPIView):
     serializer_class = ListIngredientSerializer
 
 
-class IngredientDetail(generics.RetrieveUpdateAPIView):
+class IngredientDetailAPI(generics.RetrieveUpdateAPIView):
     """
     Class based view for Ingredient API
     Provides the following methods:
