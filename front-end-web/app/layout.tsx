@@ -2,6 +2,9 @@ import "./globals.css";
 
 import { Noto_Serif_Display } from "@next/font/google";
 
+import "material-symbols/outlined.css";
+import "material-symbols/rounded.css";
+
 const font = Noto_Serif_Display({
   subsets: ["latin-ext"],
   display: "swap",
