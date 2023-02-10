@@ -6,64 +6,90 @@
   vertical-align: middle;
   align-items: center;
 }
-.manage-list > div .recipe, .manage-list > div .ingredient {
+.manage-list > div .recipe,
+.manage-list > div .ingredient {
   padding: 0 0em;
   margin: 0 auto;
 }
-.manage-list > div .recipe .img, .manage-list > div .recipe .info, .manage-list > div .recipe .actions, .manage-list > div .ingredient .img, .manage-list > div .ingredient .info, .manage-list > div .ingredient .actions {
+.manage-list > div .recipe .img,
+.manage-list > div .recipe .info,
+.manage-list > div .recipe .actions,
+.manage-list > div .ingredient .img,
+.manage-list > div .ingredient .info,
+.manage-list > div .ingredient .actions {
   height: 100%;
   margin: auto 0;
 }
-.manage-list > div .recipe .img, .manage-list > div .ingredient .img {
+.manage-list > div .recipe .img,
+.manage-list > div .ingredient .img {
   height: 10em;
   width: 10em;
   padding: 0;
   margin: 0;
 }
-.manage-list > div .recipe .img img, .manage-list > div .ingredient .img img {
+.manage-list > div .recipe .img img,
+.manage-list > div .ingredient .img img {
   width: 100%;
   height: 100%;
   padding: 10px;
   border-radius: 1em;
   -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
-.manage-list > div .recipe .info, .manage-list > div .ingredient .info {
+.manage-list > div .recipe .info,
+.manage-list > div .ingredient .info {
   padding: 10px 0;
   display: inline;
 }
-.manage-list > div .recipe .info .name, .manage-list > div .ingredient .info .name {
+.manage-list > div .recipe .info .name,
+.manage-list > div .ingredient .info .name {
   margin: 0;
   font-weight: bold;
   display: inline;
 }
-.manage-list > div .recipe .info .errors, .manage-list > div .ingredient .info .errors {
+.manage-list > div .recipe .info .errors,
+.manage-list > div .ingredient .info .errors {
   display: inline;
 }
-.manage-list > div .recipe .info .errors a, .manage-list > div .ingredient .info .errors a {
+.manage-list > div .recipe .info .errors a,
+.manage-list > div .ingredient .info .errors a {
   text-decoration: none;
 }
-.manage-list > div .recipe .info .errors span, .manage-list > div .ingredient .info .errors span {
+.manage-list > div .recipe .info .errors span,
+.manage-list > div .ingredient .info .errors span {
   font-size: 70%;
   vertical-align: super;
   color: black;
 }
-.manage-list > div .recipe .info .inheritance, .manage-list > div .ingredient .info .inheritance {
+.manage-list > div .recipe .info .inheritance,
+.manage-list > div .ingredient .info .inheritance {
   margin: 0;
 }
-.manage-list > div .recipe .info .description, .manage-list > div .recipe .info .cost, .manage-list > div .recipe .info .price, .manage-list > div .ingredient .info .description, .manage-list > div .ingredient .info .cost, .manage-list > div .ingredient .info .price {
+.manage-list > div .recipe .info .description,
+.manage-list > div .recipe .info .cost,
+.manage-list > div .recipe .info .price,
+.manage-list > div .ingredient .info .description,
+.manage-list > div .ingredient .info .cost,
+.manage-list > div .ingredient .info .price {
   font-size: 90%;
   white-space: normal;
 }
-.manage-list > div .recipe .info .cost, .manage-list > div .recipe .info .price, .manage-list > div .ingredient .info .cost, .manage-list > div .ingredient .info .price {
+.manage-list > div .recipe .info .cost,
+.manage-list > div .recipe .info .price,
+.manage-list > div .ingredient .info .cost,
+.manage-list > div .ingredient .info .price {
   font-size: 85%;
   margin-bottom: 0;
 }
-.manage-list > div .recipe .info .created, .manage-list > div .recipe .info .edited, .manage-list > div .ingredient .info .created, .manage-list > div .ingredient .info .edited {
+.manage-list > div .recipe .info .created,
+.manage-list > div .recipe .info .edited,
+.manage-list > div .ingredient .info .created,
+.manage-list > div .ingredient .info .edited {
   font-size: 75%;
   color: grey;
   margin: 0;
 }
-.manage-list > div .recipe .actions, .manage-list > div .ingredient .actions {
+.manage-list > div .recipe .actions,
+.manage-list > div .ingredient .actions {
   margin-left: auto !important;
 }

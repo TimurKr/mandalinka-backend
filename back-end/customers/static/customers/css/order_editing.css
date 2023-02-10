@@ -15,7 +15,7 @@ div.cart > a.cart {
   height: 100%;
   margin: 0px 0px;
   padding: 5px 15px;
-  border: 1px solid #F28500;
+  border: 1px solid #f28500;
   border-radius: 10px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
   text-decoration: none;
@@ -42,12 +42,12 @@ div.cart > a.cart:hover {
   padding: 0px 15px;
 }
 .delivery-type > .active {
-  color: #F28500;
+  color: #f28500;
   font-size: 100%;
 }
 .delivery-type > .active > span {
   -webkit-animation: selected 0.3s ease;
-          animation: selected 0.3s ease;
+  animation: selected 0.3s ease;
   font-variation-settings: "FILL" 0, "wght" 500, "GRAD" 0, "opsz" 40;
   font-size: 100%;
 }
@@ -57,13 +57,13 @@ div.cart > a.cart:hover {
 }
 .delivery-type > .inactive > span {
   -webkit-animation: unselected 0.3s ease;
-          animation: unselected 0.3s ease;
+  animation: unselected 0.3s ease;
   font-variation-settings: "FILL" 0, "wght" 200, "GRAD" 0, "opsz" 40;
   font-size: 100%;
 }
 .delivery-type > .inactive:hover > span {
   -webkit-animation: hover 0.2s ease;
-          animation: hover 0.2s ease;
+  animation: hover 0.2s ease;
   font-variation-settings: "wght" 500;
   font-size: 100%;
 }
@@ -73,7 +73,7 @@ div.cart > a.cart:hover {
     color: grey;
   }
   100% {
-    color: #F28500;
+    color: #f28500;
   }
 }
 
@@ -82,7 +82,7 @@ div.cart > a.cart:hover {
     color: grey;
   }
   100% {
-    color: #F28500;
+    color: #f28500;
   }
 }
 @-webkit-keyframes hover {
@@ -103,7 +103,7 @@ div.cart > a.cart:hover {
 }
 @-webkit-keyframes unselected {
   0% {
-    color: #F28500;
+    color: #f28500;
     font-variation-settings: "wght" 500;
   }
   50% {
@@ -115,7 +115,7 @@ div.cart > a.cart:hover {
 }
 @keyframes unselected {
   0% {
-    color: #F28500;
+    color: #f28500;
     font-variation-settings: "wght" 500;
   }
   50% {
@@ -128,12 +128,12 @@ div.cart > a.cart:hover {
 .order-interface {
   font-size: 1.5em;
   background-color: #fdf3ec;
-  border: 1px solid #F28500;
+  border: 1px solid #f28500;
   border-radius: 10px;
   height: 1.5em;
 }
 .order-interface.active {
-  color: #F28500;
+  color: #f28500;
   box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);
 }
 .order-interface.active h3 {
@@ -144,7 +144,7 @@ div.cart > a.cart:hover {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2) inset;
 }
 .order-interface a:hover {
-  background-color: #F28500;
+  background-color: #f28500;
   border-radius: 10px;
 }
 .order-interface a:hover i {
@@ -154,12 +154,13 @@ div.cart > a.cart:hover {
   padding: 0px 5px;
 }
 .order-interface i .enabled {
-  color: #F28500;
+  color: #f28500;
 }
 .order-interface i .disabled {
   color: grey;
 }
-.order-interface .spinner, .order-interface h3 {
+.order-interface .spinner,
+.order-interface h3 {
   margin: 0px 5px;
 }
 
@@ -167,19 +168,19 @@ div.cart > a.cart:hover {
   border-radius: 10px;
 }
 .recipe-widget.vegan {
-  background: #6D8B74;
+  background: #6d8b74;
   box-shadow: 0 0 10px 0 grey;
 }
 .recipe-widget.vegetarian {
-  background: #C4DFAA;
+  background: #c4dfaa;
   box-shadow: 0 0 10px 0 grey;
 }
 .recipe-widget.pescetarian {
-  background: #C1EFFF;
+  background: #c1efff;
   box-shadow: 0 0 10px 0 grey;
 }
 .recipe-widget.meat {
-  background: #FFB3B3;
+  background: #ffb3b3;
   box-shadow: 0 0 10px 0 grey;
 }
 .recipe-widget .price-tag {
@@ -190,17 +191,17 @@ div.cart > a.cart:hover {
   font-weight: bold;
 }
 .recipe-widget .price-tag.vegan {
-  background-color: #6D8B74;
+  background-color: #6d8b74;
   color: white;
 }
 .recipe-widget .price-tag.vegetarian {
-  background-color: #C4DFAA;
+  background-color: #c4dfaa;
 }
 .recipe-widget .price-tag.pescetarian {
-  background-color: #C1EFFF;
+  background-color: #c1efff;
 }
 .recipe-widget .price-tag.meat {
-  background-color: #FFB3B3;
+  background-color: #ffb3b3;
 }
 .recipe-widget .price-tag p {
   margin-bottom: 0;

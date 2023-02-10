@@ -1,34 +1,44 @@
 <div class="ingredient-version-info-{{ ingredient_version.id }}">
-    <h3>{{ ingredient_version }}</h3>
-    {% if ingredient_version.active %}
-    <p>Aktívne od {{ ingredient_version.status_changed }}</p>
-    {% elif ingredient_version.inactive %}
-    <p>V príprave od {{ ingredient_version.status_changed }}</p>
-    {% elif ingredient_version.deleted %}
-    <p>Odstránené {{ ingredient_version.status_changed }}</p>
-    {% endif %}
-    <p></p>
-    <p>Cena: <strong>{{ ingredient_version.cost_str }} / {{ ingredient_version.unit }}</strong></p>
-    <p>Dodávateľ: <strong>{{ ingredient_version.source }}</strong></p>
+  <h3>{{ ingredient_version }}</h3>
+  {% if ingredient_version.active %}
+  <p>Aktívne od {{ ingredient_version.status_changed }}</p>
+  {% elif ingredient_version.inactive %}
+  <p>V príprave od {{ ingredient_version.status_changed }}</p>
+  {% elif ingredient_version.deleted %}
+  <p>Odstránené {{ ingredient_version.status_changed }}</p>
+  {% endif %}
+  <p></p>
+  <p>
+    Cena:
+    <strong
+      >{{ ingredient_version.cost_str }} / {{ ingredient_version.unit }}</strong
+    >
+  </p>
+  <p>Dodávateľ: <strong>{{ ingredient_version.source }}</strong></p>
 
-    <p>Na sklade: <strong>{{ ingredient_version.in_stock_str }} Ešte nemame funkcionalitu za týmto</strong></p>
-    <!-- TODO: graph in_stock over time -->
-    <!-- Actions (aktivate, deactivate, delete, in_stock_change... -->
- 
-    <div class="actions row justify-content-end">
-        {% if ingredient_version.active %}
-            <button class="btn success-light-button col-auto">Objednať</button>
-            <button class="btn dark-light-button col-auto">Odpísať</button>
-            <button class="btn danger-light-button col-auto">Deaktivavať</button>
-            <button class="btn danger-button col-auto">Vymazať</button>
-        {% elif ingredient_version.inactive %}
-            {% if ingredient_version.in_stock %}
-                <button class="btn dark-light-button col-auto">Odpísať</button>
-            {% endif %}
-            <button class="btn success-light-button col-auto ms-auto">Aktivovať</button>
-            <button class="btn danger-button col-auto">Vymazať</button>
-        {% elif ingredient_version.deleted %}
-            <button class="btn success-light-button col-auto ms-auto">Obnoviť</button>
-        {% endif %}
-    </div>
+  <p>
+    Na sklade:
+    <strong
+      >{{ ingredient_version.in_stock_str }} Ešte nemame funkcionalitu za
+      týmto</strong
+    >
+  </p>
+  <!-- TODO: graph in_stock over time -->
+  <!-- Actions (aktivate, deactivate, delete, in_stock_change... -->
+
+  <div class="actions row justify-content-end">
+    {% if ingredient_version.active %}
+    <button class="btn success-light-button col-auto">Objednať</button>
+    <button class="btn dark-light-button col-auto">Odpísať</button>
+    <button class="btn danger-light-button col-auto">Deaktivavať</button>
+    <button class="btn danger-button col-auto">Vymazať</button>
+    {% elif ingredient_version.inactive %} {% if ingredient_version.in_stock %}
+    <button class="btn dark-light-button col-auto">Odpísať</button>
+    {% endif %}
+    <button class="btn success-light-button ms-auto col-auto">Aktivovať</button>
+    <button class="btn danger-button col-auto">Vymazať</button>
+    {% elif ingredient_version.deleted %}
+    <button class="btn success-light-button ms-auto col-auto">Obnoviť</button>
+    {% endif %}
+  </div>
 </div>

@@ -1,12 +1,12 @@
-@import '../../../../../static/core/css/partials/variables';
+@import "../../../../../static/core/css/partials/variables";
 
 .attributes > .attr {
-    margin: 2px 3px;
-    padding: 2px 8px;
-    border-radius: 15px;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2) inset;
+  margin: 2px 3px;
+  padding: 2px 8px;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2) inset;
 
-    &:hover {
-        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
-    }
+  &:hover {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  }
 }

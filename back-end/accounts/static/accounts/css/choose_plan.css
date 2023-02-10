@@ -3,7 +3,7 @@
   width: 100%;
 }
 #options > div > a#subsribe {
-  border: 2px solid #F28500;
+  border: 2px solid #f28500;
   transition: all 0.3s;
 }
 #options > div > a#subsribe:hover {

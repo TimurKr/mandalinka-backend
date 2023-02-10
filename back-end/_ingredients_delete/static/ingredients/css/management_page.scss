@@ -1,7 +1,6 @@
-@import '../../../../static/core/css/partials/variables';
+@import "../../../../static/core/css/partials/variables";
 
 #ingredient-management-page {
-
   margin: 0 2em;
 
   .search__container {
@@ -25,7 +24,9 @@
       background-position: 100% center;
       border: 1px solid transparent;
       border-bottom: 1px solid lightslategrey;
-      &.error { border-bottom: 2px solid red !important; }
+      &.error {
+        border-bottom: 2px solid red !important;
+      }
       border-radius: 0;
       transition: all 250ms ease-in-out;
       backface-visibility: hidden;
@@ -68,13 +69,12 @@
     /* Firefox */
     column-rule: 1px solid grey;
 
-
     margin-top: 1em;
 
     .ingredient-button {
       padding: 0.25em 1em;
       margin: 0.25em 0;
-      width:fit-content;
+      width: fit-content;
       font-weight: bold;
       border-radius: 0.5em;
       cursor: pointer;
@@ -139,7 +139,7 @@
       hr {
         margin: 0.5em;
       }
-      
+
       .version-buttons .version-button,
       .ingredient-title {
         padding: 0.25em 1rem;
@@ -148,30 +148,29 @@
         border-radius: 0.5rem;
         cursor: pointer;
         transition: box-shadow 250ms ease-in-out;
-        
+
         &.active {
           color: green;
         }
-        
+
         &.inactive {
           color: black;
         }
-        
+
         &.deleted {
           color: grey;
           font-weight: normal;
         }
-        
+
         &:hover,
         &:focus,
         &.selected {
           box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
         }
-        
+
         &:last-child {
           margin-bottom: 1em;
         }
-        
       }
       .add-version-button {
         margin: 0.5em 0 0.5em 0;

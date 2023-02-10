@@ -22,23 +22,28 @@
   border-radius: 0;
   transition: all 250ms ease-in-out;
   -webkit-backface-visibility: hidden;
-          backface-visibility: hidden;
+  backface-visibility: hidden;
   transform-style: preserve-3d;
   outline: 0;
 }
 #ingredient-management-page .search__container .search__input.error {
   border-bottom: 2px solid red !important;
 }
-#ingredient-management-page .search__container .search__input::-moz-placeholder {
+#ingredient-management-page
+  .search__container
+  .search__input::-moz-placeholder {
   color: #575756;
 }
-#ingredient-management-page .search__container .search__input:-ms-input-placeholder {
+#ingredient-management-page
+  .search__container
+  .search__input:-ms-input-placeholder {
   color: #575756;
 }
 #ingredient-management-page .search__container .search__input::placeholder {
   color: #575756;
 }
-#ingredient-management-page .search__container .search__input:hover, #ingredient-management-page .search__container .search__input:focus {
+#ingredient-management-page .search__container .search__input:hover,
+#ingredient-management-page .search__container .search__input:focus {
   border-bottom: 1.5px solid black;
 }
 #ingredient-management-page #no-results-error {
@@ -82,7 +87,9 @@
 #ingredient-management-page #ingredients-result .ingredient-button.deleted {
   color: grey;
 }
-#ingredient-management-page #ingredients-result .ingredient-button:hover, #ingredient-management-page #ingredients-result .ingredient-button:focus, #ingredient-management-page #ingredients-result .ingredient-button.selected {
+#ingredient-management-page #ingredients-result .ingredient-button:hover,
+#ingredient-management-page #ingredients-result .ingredient-button:focus,
+#ingredient-management-page #ingredients-result .ingredient-button.selected {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
@@ -130,22 +137,40 @@
 .ingredient-modal .modal-body .versions .ingredient-title.active {
   color: green;
 }
-.ingredient-modal .modal-body .versions .version-buttons .version-button.inactive,
+.ingredient-modal
+  .modal-body
+  .versions
+  .version-buttons
+  .version-button.inactive,
 .ingredient-modal .modal-body .versions .ingredient-title.inactive {
   color: black;
 }
-.ingredient-modal .modal-body .versions .version-buttons .version-button.deleted,
+.ingredient-modal
+  .modal-body
+  .versions
+  .version-buttons
+  .version-button.deleted,
 .ingredient-modal .modal-body .versions .ingredient-title.deleted {
   color: grey;
   font-weight: normal;
 }
-.ingredient-modal .modal-body .versions .version-buttons .version-button:hover, .ingredient-modal .modal-body .versions .version-buttons .version-button:focus, .ingredient-modal .modal-body .versions .version-buttons .version-button.selected,
+.ingredient-modal .modal-body .versions .version-buttons .version-button:hover,
+.ingredient-modal .modal-body .versions .version-buttons .version-button:focus,
+.ingredient-modal
+  .modal-body
+  .versions
+  .version-buttons
+  .version-button.selected,
 .ingredient-modal .modal-body .versions .ingredient-title:hover,
 .ingredient-modal .modal-body .versions .ingredient-title:focus,
 .ingredient-modal .modal-body .versions .ingredient-title.selected {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
-.ingredient-modal .modal-body .versions .version-buttons .version-button:last-child,
+.ingredient-modal
+  .modal-body
+  .versions
+  .version-buttons
+  .version-button:last-child,
 .ingredient-modal .modal-body .versions .ingredient-title:last-child {
   margin-bottom: 1em;
 }

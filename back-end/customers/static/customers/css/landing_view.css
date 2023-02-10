@@ -47,29 +47,29 @@
   margin-top: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent transparent transparent #F28500;
+  border-color: transparent transparent transparent #f28500;
 }
 #landing-view #account-icons:hover .menu {
-  color: #F28500;
+  color: #f28500;
 }
 #landing-view #account-icons:hover a:nth-child(2) > .option {
   -webkit-animation-delay: 0s;
-          animation-delay: 0s;
+  animation-delay: 0s;
 }
 #landing-view #account-icons:hover a:nth-child(3) > .option {
   -webkit-animation-delay: 0.1s;
-          animation-delay: 0.1s;
+  animation-delay: 0.1s;
 }
 #landing-view #account-icons:hover a:nth-child(4) > .option {
   -webkit-animation-delay: 0.2s;
-          animation-delay: 0.2s;
+  animation-delay: 0.2s;
 }
 #landing-view #account-icons:hover .option {
   color: black;
   -webkit-animation: show 0.5s;
-          animation: show 0.5s;
+  animation: show 0.5s;
   -webkit-animation-fill-mode: forwards;
-          animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
   opacity: 0;
   padding-bottom: 5px;
   padding-top: 5px;
@@ -80,13 +80,13 @@
 }
 #landing-view #arrow-down {
   -webkit-animation: move ease-in-out;
-          animation: move ease-in-out;
+  animation: move ease-in-out;
   -webkit-animation-duration: 1s;
-          animation-duration: 1s;
+  animation-duration: 1s;
   -webkit-animation-iteration-count: infinite;
-          animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
   -webkit-animation-direction: alternate;
-          animation-direction: alternate;
+  animation-direction: alternate;
 }
 #landing-view #arrow-down span {
   font-size: 200% !important;

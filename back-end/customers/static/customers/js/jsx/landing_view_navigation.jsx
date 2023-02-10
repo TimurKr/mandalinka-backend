@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-
   class AccountIcon extends React.PureComponent {
     constructor(props) {
       super(props);
@@ -14,9 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
       this.recipesLink = root_div.getAttribute("recipes_link");
 
       this.handleMouseOver = this.handleMouseOver.bind(this);
-      this.handleMouseOut = this.handleMouseOut.bind(this)
+      this.handleMouseOut = this.handleMouseOut.bind(this);
     }
-
 
     handleMouseOver(e) {
       this.setState({ isHovering: true });
@@ -26,41 +24,52 @@ document.addEventListener("DOMContentLoaded", () => {
       this.setState({ isHovering: false });
     }
     render() {
-
       if (this.isAuthenticated === "True") {
         return (
-          <div id="account-icons" className="position-absolute top-0 end-0" onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}>
-            {
-              this.state.isHovering
-            ?
+          <div
+            id="account-icons"
+            className="position-absolute end-0 top-0"
+            onMouseOver={this.handleMouseOver}
+            onMouseOut={this.handleMouseOut}
+          >
+            {this.state.isHovering ? (
               <div className="btn-group-vertical">
                 <a>
                   <span id="person" className="material-symbols-rounded menu">
                     person
                   </span>
                 </a>
-                <a href={this.myAccountLink} >
-                  <span id="manage-accounts" className="material-symbols-rounded option">
+                <a href={this.myAccountLink}>
+                  <span
+                    id="manage-accounts"
+                    className="material-symbols-rounded option"
+                  >
                     manage_accounts
                   </span>
                   <span className="custom-tooltip">Upravte si profil</span>
                 </a>
-                { this.isStaff === "True" &&
+                {this.isStaff === "True" && (
                   <a href={this.recipesLink}>
-                    <span id="recipes" className="material-symbols-rounded option">
+                    <span
+                      id="recipes"
+                      className="material-symbols-rounded option"
+                    >
                       restaurant
                     </span>
                     <span className="custom-tooltip">Recepty</span>
                   </a>
-                }
+                )}
                 <a href={this.logOutLink}>
-                  <span id="log-out" className="material-symbols-rounded option">
+                  <span
+                    id="log-out"
+                    className="material-symbols-rounded option"
+                  >
                     logout
                   </span>
                   <span className="custom-tooltip">Odhláste sa</span>
                 </a>
               </div>
-            :
+            ) : (
               <div className="btn-group-vertical">
                 <a>
                   <span id="person" className="material-symbols-rounded menu">
@@ -68,15 +77,18 @@ document.addEventListener("DOMContentLoaded", () => {
                   </span>
                 </a>
               </div>
-            }
+            )}
           </div>
-        )
+        );
       } else {
         return (
-          <div id="account-icons" className="position-absolute top-0 end-0" onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}>
-            {
-              this.state.isHovering
-            ?
+          <div
+            id="account-icons"
+            className="position-absolute end-0 top-0"
+            onMouseOver={this.handleMouseOver}
+            onMouseOut={this.handleMouseOut}
+          >
+            {this.state.isHovering ? (
               <div className="btn-group-vertical">
                 <a>
                   <span id="person" className="material-symbols-rounded menu">
@@ -84,20 +96,25 @@ document.addEventListener("DOMContentLoaded", () => {
                   </span>
                 </a>
                 <a href="#" data-bs-toggle="modal" data-bs-target="#LoginModal">
-                  <span id="login-model-button" className="material-symbols-rounded option">
+                  <span
+                    id="login-model-button"
+                    className="material-symbols-rounded option"
+                  >
                     login
                   </span>
                   <span className="custom-tooltip">Prihláste sa</span>
-
                 </a>
                 <a href={this.newUserLink}>
-                  <span id="sign-up" className="material-symbols-rounded option">
+                  <span
+                    id="sign-up"
+                    className="material-symbols-rounded option"
+                  >
                     person_add
                   </span>
                   <span className="custom-tooltip">Vytvorte si účet</span>
                 </a>
               </div>
-            :
+            ) : (
               <div className="btn-group-vertical">
                 <a>
                   <span id="person" className="material-symbols-rounded menu">
@@ -105,14 +122,14 @@ document.addEventListener("DOMContentLoaded", () => {
                   </span>
                 </a>
               </div>
-            }
+            )}
           </div>
-        )
+        );
       }
     }
   }
 
-  const root_div = document.getElementById('account-menu');
+  const root_div = document.getElementById("account-menu");
   const root = ReactDOM.createRoot(root_div);
-  root.render(<AccountIcon />)
-})
+  root.render(<AccountIcon />);
+});

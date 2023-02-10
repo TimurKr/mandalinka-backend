@@ -1,56 +1,55 @@
-@import '../../../../../static/core/css/partials/variables';
+@import "../../../../../static/core/css/partials/variables";
 
+.recipe-widget {
+  border-radius: 10px;
 
-.recipe-widget{
-    border-radius: 10px;
+  &.vegan {
+    background: $vegan-color;
+    // box-shadow: 0 0 10px 0 $vegan-color;
+    box-shadow: 0 0 10px 0 grey;
+  }
+
+  &.vegetarian {
+    background: $vegetarian-color;
+    // box-shadow: 0 0 10px 0 $vegetarian-color;
+    box-shadow: 0 0 10px 0 grey;
+  }
+
+  &.pescetarian {
+    background: $pescetarian-color;
+    // box-shadow: 0 0 10px 0 $pescetarian-color;
+    box-shadow: 0 0 10px 0 grey;
+  }
+
+  &.meat {
+    background: $meat-color;
+    // box-shadow: 0 0 10px 0 $meat-color;
+    box-shadow: 0 0 10px 0 grey;
+  }
+
+  .price-tag {
+    background: $off-white;
+    margin: 5px 5px;
+    padding: 2px 10px;
+    border-radius: 15px;
+    font-weight: bold;
+    // box-shadow: 0 1px 8px 0 $vegan-color inset;
 
     &.vegan {
-        background: $vegan-color;
-        // box-shadow: 0 0 10px 0 $vegan-color;
-        box-shadow: 0 0 10px 0 grey;
+      background-color: $vegan-color;
+      color: white;
     }
-
     &.vegetarian {
-        background: $vegetarian-color;
-        // box-shadow: 0 0 10px 0 $vegetarian-color;
-        box-shadow: 0 0 10px 0 grey;
+      background-color: $vegetarian-color;
     }
-
     &.pescetarian {
-        background: $pescetarian-color;
-        // box-shadow: 0 0 10px 0 $pescetarian-color;
-        box-shadow: 0 0 10px 0 grey;
+      background-color: $pescetarian-color;
     }
-
     &.meat {
-        background: $meat-color;
-        // box-shadow: 0 0 10px 0 $meat-color;
-        box-shadow: 0 0 10px 0 grey;
+      background-color: $meat-color;
     }
-    
-    .price-tag {
-        background: $off-white;
-        margin: 5px 5px;
-        padding: 2px 10px;
-        border-radius: 15px;
-        font-weight: bold;
-        // box-shadow: 0 1px 8px 0 $vegan-color inset;
-
-        &.vegan{
-            background-color: $vegan-color;
-            color: white;
-        }
-        &.vegetarian{
-            background-color: $vegetarian-color;
-        }
-        &.pescetarian{
-            background-color: $pescetarian-color;
-        }
-        &.meat{
-            background-color: $meat-color;
-        }
-        p {
-            margin-bottom: 0;
-        }
+    p {
+      margin-bottom: 0;
     }
+  }
 }

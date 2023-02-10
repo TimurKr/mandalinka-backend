@@ -1,45 +1,48 @@
 {% load crispy_forms_tags %}
 
-<form id="general-form-{{ form.prefix }}" method="post" 
-  action="{% url 'recipes:edit_general' recipe_id=recipe.id %}" 
-  class="row g-4" prefix="{{ form.prefix }}" onsubmit="submit_form(event)">
-
+<form
+  id="general-form-{{ form.prefix }}"
+  method="post"
+  action="{% url 'recipes:edit_general' recipe_id=recipe.id %}"
+  class="row g-4"
+  prefix="{{ form.prefix }}"
+  onsubmit="submit_form(event)"
+>
   {% crispy form %}
-  
 </form>
 <!-- Submition -->
 <script>
   function submit_form(event) {
-    console.log('gen')
+    console.log("gen");
     event.preventDefault(); // prevent the form from submitting the normal way
     var form = event.target;
-    
-    const submit_button = form.querySelector("input[type='submit']")
-    console.log(submit_button)
-    const submit_button_org = submit_button.value
-    submit_button.value = "Odosielam..."
-    submit_button.disabled = true
-    
+
+    const submit_button = form.querySelector("input[type='submit']");
+    console.log(submit_button);
+    const submit_button_org = submit_button.value;
+    submit_button.value = "Odosielam...";
+    submit_button.disabled = true;
+
     fetch(form.action, {
       method: form.method,
       body: new FormData(form),
       headers: {
-        'X-CSRFToken': '{{ csrf_token }}'
+        "X-CSRFToken": "{{ csrf_token }}",
       },
-      credentials: "same-origin"
+      credentials: "same-origin",
     })
-      .then(response => {
+      .then((response) => {
         if (response.ok) {
           return response.text();
         } else {
           throw new Error("Request failed with status " + response.status);
         }
       })
-      .then(html => {
+      .then((html) => {
         form.parentNode.innerHTML = html;
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
-      })
-  };
+      });
+  }
 </script>

@@ -1,56 +1,57 @@
-{% extends "core/html/base.html" %}
-{% load static %}
-
-{% block page_name %}
-Management page
-{% endblock %}
-
-{% block extra_head %}
-<link href="{% static 'core/css/admin_page_layout.css' %}" rel="stylesheet">
-{% block head %}
-{% endblock %}
-{% endblock %}
-
-{% block core %}
+{% extends "core/html/base.html" %} {% load static %} {% block page_name %}
+Management page {% endblock %} {% block extra_head %}
+<link href="{% static 'core/css/admin_page_layout.css' %}" rel="stylesheet" />
+{% block head %} {% endblock %} {% endblock %} {% block core %}
 
 <!-- Account Icon -->
 <p id="account" class="position-absolute end-0 top-0 p-3">
   Ahoj
   <a href="{% url 'customers:home_page' %}">
     {{ name }}
-    <span class="material-symbols-rounded">
-      account_circle
-    </span>
+    <span class="material-symbols-rounded"> account_circle </span>
   </a>
 </p>
 
-<div id="tabs" class="text-center position-absolute start-50 top-0 translate-middle-x pt-3 ">
-  <a id="events-tab" href="#" class=""
-    data-bs-toggle="tooltip" data-bs-title="Menu" data-bs-placement="bottom">
-    <span class="material-symbols-rounded">
-      event
-    </span>
+<div
+  id="tabs"
+  class="position-absolute start-50 translate-middle-x top-0 pt-3 text-center"
+>
+  <a
+    id="events-tab"
+    href="#"
+    class=""
+    data-bs-toggle="tooltip"
+    data-bs-title="Menu"
+    data-bs-placement="bottom"
+  >
+    <span class="material-symbols-rounded"> event </span>
   </a>
-  <a id="recipes-tab" href="{% url 'recipes:management_page' %}" class=""
-    data-bs-toggle="tooltip" data-bs-title="Recepty" data-bs-placement="bottom">
-    <span class="material-symbols-rounded">
-      lunch_dining
-    </span>
+  <a
+    id="recipes-tab"
+    href="{% url 'recipes:management_page' %}"
+    class=""
+    data-bs-toggle="tooltip"
+    data-bs-title="Recepty"
+    data-bs-placement="bottom"
+  >
+    <span class="material-symbols-rounded"> lunch_dining </span>
   </a>
-  <a id="ingredients-tab" href="{% url 'ingredients:management_page' %}" class=""
-    data-bs-toggle="tooltip" data-bs-title="Ingrediencie" data-bs-placement="bottom">
-    <span class="material-symbols-rounded">
-      kitchen
-    </span>
+  <a
+    id="ingredients-tab"
+    href="{% url 'ingredients:management_page' %}"
+    class=""
+    data-bs-toggle="tooltip"
+    data-bs-title="Ingrediencie"
+    data-bs-placement="bottom"
+  >
+    <span class="material-symbols-rounded"> kitchen </span>
   </a>
 
   <script>
-    document.getElementById('{{ active_tab }}-tab').firstElementChild.style.fontVariationSettings = '"wght" 600';
+    document.getElementById(
+      "{{ active_tab }}-tab"
+    ).firstElementChild.style.fontVariationSettings = '"wght" 600';
   </script>
 </div>
 
-{% block page %}
-
-{% endblock %}
-
-{% endblock %}
+{% block page %} {% endblock %} {% endblock %}

@@ -8,7 +8,7 @@ function SearchBar(props) {
   return (
     <div>
       <div className="row search justify-content-center">
-        <div className="col-auto search__container">
+        <div className="search__container col-auto">
           <form onSubmit={props.handleSubmit} method="post">
             {}
             <input

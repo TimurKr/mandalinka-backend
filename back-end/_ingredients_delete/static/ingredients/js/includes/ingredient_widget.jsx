@@ -55,7 +55,7 @@ function VersionInfoPanel({ data }) {
           {data.in_stock != 0 ? (
             <button className="btn dark-light-button col-auto">Odpísať</button>
           ) : null}
-          <button className="btn success-light-button col-auto ms-auto">
+          <button className="btn success-light-button ms-auto col-auto">
             Aktivovať
           </button>
           <button className="btn danger-button col-auto">Vymazať</button>
@@ -63,7 +63,7 @@ function VersionInfoPanel({ data }) {
       ) : null}
       {data.deleted ? (
         <div className="actions row justify-content-end">
-          <button className="btn success-light-button col-auto ms-auto">
+          <button className="btn success-light-button ms-auto col-auto">
             Obnoviť
           </button>
         </div>
@@ -233,7 +233,7 @@ export default function IngredientWidget({ ingredient, url }) {
               ></button>
             </div>
             <div className="modal-body row">
-              <div className="col-auto versions">
+              <div className="versions col-auto">
                 <h2
                   id={"modal-" + ingredient.id + "-title"}
                   className="ingredient-title"
