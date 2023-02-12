@@ -17,7 +17,7 @@ export default function Navigation() {
       <Link href="/">tangerine</Link>
       <ol className="flex flex-col items-center sm:flex-row">
         {pages.map(([name, href]) => (
-          <li className="py-2 px-2">
+          <li className="py-2 px-2" key={name}>
             <Link
               href={href}
               className="rounded-xl bg-transparent p-2 hover:bg-white hover:bg-opacity-10 hover:shadow-md"

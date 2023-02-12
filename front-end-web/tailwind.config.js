@@ -33,6 +33,15 @@ module.exports = {
           900: "#26241a",
         },
       },
+      keyframes: {
+        "move-left-right": {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(10px)" },
+        },
+      },
+      animation: {
+        "move-left-right": "move-left-right 1s ease-in-out infinite alternate",
+      },
     },
   },
   plugins: [require("prettier-plugin-tailwindcss")],
