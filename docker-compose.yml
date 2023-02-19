@@ -37,3 +37,5 @@ services:
       - "3000:3000"
     depends_on:
       - back-end
+    links:
+      - back-end:mandalinka.api.com

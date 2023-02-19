@@ -72,9 +72,9 @@ class IngredientVersion(TimeStampedMixin, StatusMixin, models.Model):
             )
         self.save()
 
-    def get_absolute_url(self):
-        from django.urls import reverse
-        return reverse('management:ingredient-detail', kwargs={'pk': self.pk})
+    @property
+    def get_absolute_url(self) -> str:
+        return f'/management/ingredients/{self.ingredient.id}/{self.id}'
 
     def __str__(self) -> str:
         return f'{self.ingredient} v.{self.version_number}'
@@ -143,12 +143,23 @@ class Ingredient(TimeStampedMixin, models.Model):
 
     @property
     def is_active(self) -> bool:
+        """True if there is at least one active ingredient"""
         return self.active_version is not None
+
+    @property
+    def is_inactive(self) -> bool:
+        """True if there is not an active ingredient, but there is at least one inactive ingredient"""
+        return not self.is_active and self.versions.get_inactive().first()
+
+    @property
+    def is_deleted(self) -> bool:
+        """True if there is no active ingredient, no inactive ingredient and at least one deleted ingredient"""
+        return not self.is_active and not self.is_inactive and self.versions.get_deleted().first() is not None
 
     @property
     def active_version(self) -> IngredientVersion | None:
         """Returns either the active IngredientVersion or False"""
-        return self.versions.filter(_status=IngredientVersion.Statuses.ACTIVE).first()
+        return self.versions.get_active().first()
 
     @property
     def status(self):
@@ -178,6 +189,10 @@ class Ingredient(TimeStampedMixin, models.Model):
         for version in self.versions.all():
             result += 1  # TODO when DeliveryDays are done
         return result
+
+    @property
+    def get_absolute_url(self) -> str:
+        return f'/management/ingredients/{self.pk}/'
 
     def __str__(self):
         return self.name

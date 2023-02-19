@@ -15,6 +15,7 @@ class IngredientListCreateAPI(generics.ListCreateAPIView):
         GET - returns all ingredients
         POST - creates new ingredient
     """
+    permission_classes = [AllowAny]
     queryset = Ingredient.objects.all()
     serializer_class = ListIngredientSerializer
 
@@ -26,5 +27,6 @@ class IngredientDetailAPI(generics.RetrieveUpdateAPIView):
         GET - returns ingredient with given id
         PUT - updates ingredient with given id (only inactive ingredients can be updated)
     """
+    permission_classes = [AllowAny]
     queryset = Ingredient.objects.all()
     serializer_class = DetailIngredientSerializer

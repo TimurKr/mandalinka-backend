@@ -1,12 +1,20 @@
 import Search from "./search";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+import getData from "./fetch_ingredients";
+
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const ingredients = await getData();
+
   return (
     <div className="flex h-full w-full">
       <div className="flex-none border-r border-gray-300">
-        <Search />
+        <Search ingredients={ingredients} />
       </div>
-      <div className="flex-auto">{children}</div>
+      <div className="flex-auto p-2">{children}</div>
     </div>
   );
 }
