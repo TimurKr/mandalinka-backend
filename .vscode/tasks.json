@@ -6,12 +6,12 @@
       "label": "docker-build",
       "platform": "node",
       "dockerBuild": {
-        "dockerfile": "${workspaceFolder}/web-front-end/Dockerfile",
-        "context": "${workspaceFolder}/web-front-end",
+        "dockerfile": "${workspaceFolder}/front-end-web/Dockerfile",
+        "context": "${workspaceFolder}/front-end-web",
         "pull": true
       },
       "node": {
-        "package": "${workspaceFolder}/web-front-end/package.json"
+        "package": "${workspaceFolder}/front-end-web/package.json"
       }
     },
     {
@@ -20,7 +20,7 @@
       "dependsOn": ["docker-build"],
       "platform": "node",
       "node": {
-        "package": "${workspaceFolder}/web-front-end/package.json"
+        "package": "${workspaceFolder}/front-end-web/package.json"
       }
     },
     {
@@ -34,7 +34,7 @@
         }
       },
       "node": {
-        "package": "${workspaceFolder}/web-front-end/package.json",
+        "package": "${workspaceFolder}/front-end-web/package.json",
         "enableDebugging": true
       }
     }

@@ -1,3 +1,45 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .btn {
+    @apply block w-full rounded-full px-3 py-2 text-center shadow-md transition-all duration-300 focus:shadow-xl enabled:hover:shadow-xl disabled:opacity-50 disabled:shadow-none sm:text-sm;
+  }
+  .btn-primary {
+    @apply text-primary border-primary enabled:hover:bg-primary checked:bg-primary border transition-all duration-300 checked:text-black enabled:hover:text-black;
+  }
+  .btn-primary-dark {
+    @apply enabled:hover:text-primary checked:text-primary enabled:hover:border-primary checked:border-primary bg-primary text-black transition-all duration-300 checked:border enabled:hover:border enabled:hover:bg-transparent;
+  }
+  .btn-secondary {
+    @apply text-secondary border-secondary enabled:hover:bg-secondary checked:bg-secondary border transition-all duration-300 checked:text-black enabled:hover:text-black;
+  }
+  .btn-secondary-dark {
+    @apply enabled:hover:text-secondary checked:text-secondary enabled:hover:border-secondary checked:border-secondary bg-secondary text-black transition-all duration-300 checked:border enabled:hover:border enabled:hover:bg-transparent;
+  }
+  .btn-black {
+    @apply border border-black text-black transition-all duration-300 checked:bg-black checked:text-white enabled:hover:bg-black enabled:hover:text-white;
+  }
+  .btn-black-dark {
+    @apply bg-black text-white transition-all duration-300 checked:border checked:border-black checked:text-black enabled:hover:border enabled:hover:border-black enabled:hover:bg-transparent enabled:hover:text-black;
+  }
+  .btn-warning {
+    @apply border-warning text-warning checked:bg-warning enabled:hover:bg-warning border transition-all duration-300 checked:text-black enabled:hover:text-black;
+  }
+  .btn-warning-dark {
+    @apply enabled:hover:text-warning checked:text-warning enabled:hover:border-warning checked:border-warning bg-warning text-black transition-all duration-300 checked:border enabled:hover:border enabled:hover:bg-transparent;
+  }
+  .btn-success {
+    @apply border-success text-success checked:bg-success enabled:hover:bg-success border transition-all duration-300 checked:text-white enabled:hover:text-white;
+  }
+  .btn-success-dark {
+    @apply enabled:hover:text-success checked:text-success enabled:hover:border-success checked:border-success bg-success text-black transition-all duration-300 checked:border enabled:hover:border enabled:hover:bg-transparent;
+  }
+  .btn-danger {
+    @apply border-danger text-danger checked:bg-danger enabled:hover:bg-danger border transition-all duration-300 checked:text-white enabled:hover:text-white;
+  }
+  .btn-danger-dark {
+    @apply enabled:hover:text-danger checked:text-danger enabled:hover:border-danger checked:border-danger bg-danger text-white transition-all duration-300 checked:border enabled:hover:border enabled:hover:bg-transparent;
+  }
+}

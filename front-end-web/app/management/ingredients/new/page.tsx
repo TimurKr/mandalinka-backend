@@ -1,15 +1,22 @@
+import "server-only";
+
 import React from "react";
 
-import NewIngredientForm from "./form";
+import IngredientForm from "components/ingredients/forms/ingredient_form";
 
-export default function NewIngredient() {
-  function handleSubmit(event: React.ChangeEvent<HTMLFormElement>): void {
-    event.preventDefault();
-    console.log("Submitted");
-  }
+import getOptions from "components/ingredients/forms/fetch_options";
+
+export default async function NewIngredient() {
+  const options = await getOptions();
+
   return (
-    <div>
-      <NewIngredientForm />
+    <div className="grid h-full place-content-center">
+      <IngredientForm
+        title="Pridajte novú ingredienciu"
+        submit_url={`${process.env.CLIENT_API_URL}/management/ingredients/`}
+        method="POST"
+        options={options}
+      />
     </div>
   );
 }

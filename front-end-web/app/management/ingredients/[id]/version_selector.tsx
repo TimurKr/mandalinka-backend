@@ -5,9 +5,11 @@ import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
+
 import { usePathname } from "next/navigation";
 
-import { IngredientVersion } from "./fetch_ingredient_detail";
+import { IngredientVersion } from "../../../../components/ingredients/fetch_ingredient_detail";
 
 export default function VersionSelector({
   ingredient_id,
@@ -19,6 +21,7 @@ export default function VersionSelector({
   const pathname = usePathname();
 
   const currentVersion = versions.find((version) => version.url === pathname);
+  const isNewVersionPage = pathname.includes("/new");
 
   return (
     <div className="relative">
@@ -45,48 +48,73 @@ export default function VersionSelector({
           leaveTo="transform opacity-0 scale-95"
         >
           <Menu.Items className="absolute right-0 mt-2 max-w-2xl origin-top divide-y divide-gray-100 overflow-auto rounded-xl bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-            <div className="px-1 py-1">
+            <div className="p-1">
               <Menu.Item>
                 {({ active }) => (
-                  <button
+                  <Link
+                    href={`/management/ingredients/${ingredient_id}`}
                     className={`${
-                      active || !currentVersion ? "bg-primary" : ""
+                      active || (!currentVersion && !isNewVersionPage)
+                        ? "bg-primary"
+                        : ""
                     } group mb-1 flex w-full items-center justify-end rounded-lg px-2 py-2 text-right text-sm`}
                   >
                     Všeobecný prehľad
-                  </button>
+                  </Link>
                 )}
               </Menu.Item>
             </div>
-            <div className="px-1 py-1">
-              {versions.map((version) => (
-                <Menu.Item key={version.version_number}>
-                  {({ active }) => (
-                    <Link
-                      href={version.url}
-                      className={`${
-                        !active && currentVersion != version
-                          ? version.is_active
-                            ? "text-green-600"
+            <div className="p-1">
+              {versions.length > 0 ? (
+                versions.map((version) => (
+                  <Menu.Item key={version.version_number}>
+                    {({ active }) => (
+                      <Link
+                        href={version.url}
+                        className={`${
+                          !active && currentVersion != version
+                            ? version.is_active
+                              ? "text-green-600"
+                              : version.is_inactive
+                              ? "text-yellow-400"
+                              : version.is_deleted
+                              ? "text-red-600"
+                              : ""
+                            : version.is_active
+                            ? "bg-green-600 text-white"
                             : version.is_inactive
-                            ? "text-yellow-400"
+                            ? "bg-yellow-400 text-black"
                             : version.is_deleted
-                            ? "text-red-600"
+                            ? "bg-red-600 text-white"
                             : ""
-                          : version.is_active
-                          ? "bg-green-600 text-white"
-                          : version.is_inactive
-                          ? "bg-yellow-400 text-black"
-                          : version.is_deleted
-                          ? "bg-red-600 text-white"
-                          : ""
-                      } group mt-1 flex w-full items-center justify-end rounded-lg px-2 py-2 text-sm`}
-                    >
-                      Verzia - {version.version_number}
-                    </Link>
-                  )}
-                </Menu.Item>
-              ))}
+                        } group mt-1 flex w-full items-center justify-end rounded-lg px-2 py-2 text-sm`}
+                      >
+                        Verzia - {version.version_number}
+                      </Link>
+                    )}
+                  </Menu.Item>
+                ))
+              ) : (
+                <p className="p-1 pr-2 text-end text-xs text-gray-600">
+                  Žiadne verzie
+                </p>
+              )}
+            </div>
+            <div className="p-1">
+              <Menu.Item>
+                {({ active }) => (
+                  <Link
+                    href={`/management/ingredients/${ingredient_id}/new_version`}
+                    className={`my-1 flex w-full items-center justify-end px-2 text-right text-sm`}
+                  >
+                    <PlusCircleIcon
+                      className={`${
+                        active || isNewVersionPage ? "text-primary" : ""
+                      } h-6 w-6`}
+                    />
+                  </Link>
+                )}
+              </Menu.Item>
             </div>
           </Menu.Items>
         </Transition>

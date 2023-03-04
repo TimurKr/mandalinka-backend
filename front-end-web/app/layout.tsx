@@ -10,6 +10,17 @@ const font = Noto_Serif_Display({
   display: "swap",
 });
 
+export const metadata = {
+  title: {
+    default: "Mandalinka",
+    template: "%s | Mandalinka",
+  },
+  description: "Mandalinka webpage",
+  icons: {
+    icon: "/favicon.ico",
+  },
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -21,7 +32,7 @@ export default function RootLayout({
         <head /> will contain the components returned by the nearest parent
         head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
       */}
-      <head />
+      {/* <head /> */}
       <body>{children}</body>
     </html>
   );

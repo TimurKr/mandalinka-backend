@@ -12,7 +12,11 @@ class StatusSerializer(serializers.ModelSerializer):
 class BaseUnitSerializer(serializers.ModelSerializer):
     class Meta:
         model = Unit
-        fields = '__all__'
+        fields = [
+            'id',
+            'name',
+            'sign',
+        ]
 
 
 class UnitSerializer(serializers.ModelSerializer):

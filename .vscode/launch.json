@@ -7,9 +7,26 @@
       "preLaunchTask": "docker-run: debug",
       "platform": "node",
       "node": {
-        "package": "${workspaceFolder}/web-front-end/package.json",
-        "localRoot": "${workspaceFolder}/web-front-end"
+        "package": "${workspaceFolder}/front-end-web/package.json",
+        "localRoot": "${workspaceFolder}/front-end-web"
       }
+    },
+
+    {
+      "name": "Python: Remote Attach",
+      "type": "python",
+      "request": "attach",
+      "connect": {
+        "host": "localhost",
+        "port": 5678
+      },
+      "pathMappings": [
+        {
+          "localRoot": "${workspaceFolder}/back-end",
+          "remoteRoot": "/usr/src/mandalinka/back-end"
+        }
+      ],
+      "django": true
     }
   ]
 }

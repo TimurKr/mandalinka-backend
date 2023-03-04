@@ -5,13 +5,16 @@ from management.models.ingredients import Ingredient, IngredientVersion
 
 
 class ListIngredientSerializer(serializers.ModelSerializer):
-    url = serializers.URLField(source='get_absolute_url')
+    url = serializers.URLField(source='get_absolute_url', required=False)
 
     class Meta:
         model = Ingredient
         fields = (
             'id',
             'name',
+            'unit',
+            'alergens',
+            'img',
             'usage_last_month',
             'url',
             'is_active',
@@ -35,7 +38,7 @@ class IngredientVersionSerializer(serializers.ModelSerializer):
         )
 
 
-class DetailIngredientSerializer(serializers.ModelSerializer):
+class IngredientDetailSerializer(serializers.ModelSerializer):
     versions = IngredientVersionSerializer(many=True, read_only=True)
 
     class Meta:
@@ -44,6 +47,9 @@ class DetailIngredientSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'unit',
+            'alergens',
+            'img',
+            'status',
             'cost',
             'usage_last_month',
             'versions',

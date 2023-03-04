@@ -1,6 +1,6 @@
 import VersionSelector from "./version_selector";
 
-import getData from "./fetch_ingredient_detail";
+import getData from "../../../../components/ingredients/fetch_ingredient_detail";
 
 export default async function Layout({
   children,

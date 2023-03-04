@@ -53,22 +53,17 @@
   color: #f28500;
 }
 #landing-view #account-icons:hover a:nth-child(2) > .option {
-  -webkit-animation-delay: 0s;
   animation-delay: 0s;
 }
 #landing-view #account-icons:hover a:nth-child(3) > .option {
-  -webkit-animation-delay: 0.1s;
   animation-delay: 0.1s;
 }
 #landing-view #account-icons:hover a:nth-child(4) > .option {
-  -webkit-animation-delay: 0.2s;
   animation-delay: 0.2s;
 }
 #landing-view #account-icons:hover .option {
   color: black;
-  -webkit-animation: show 0.5s;
   animation: show 0.5s;
-  -webkit-animation-fill-mode: forwards;
   animation-fill-mode: forwards;
   opacity: 0;
   padding-bottom: 5px;
@@ -79,13 +74,9 @@
   font-stretch: expanded;
 }
 #landing-view #arrow-down {
-  -webkit-animation: move ease-in-out;
   animation: move ease-in-out;
-  -webkit-animation-duration: 1s;
   animation-duration: 1s;
-  -webkit-animation-iteration-count: infinite;
   animation-iteration-count: infinite;
-  -webkit-animation-direction: alternate;
   animation-direction: alternate;
 }
 #landing-view #arrow-down span {
@@ -95,19 +86,6 @@
 #landing-view #arrow-down:hover > span {
   font-variation-settings: "wght" 500;
   cursor: pointer;
-}
-
-@-webkit-keyframes show {
-  0% {
-    opacity: 0;
-    padding-top: 0px;
-    padding-bottom: 0px;
-  }
-  100% {
-    opacity: 1;
-    padding-top: 5px;
-    padding-bottom: 5px;
-  }
 }
 
 @keyframes show {
@@ -122,14 +100,6 @@
     padding-bottom: 5px;
   }
 }
-@-webkit-keyframes move {
-  from {
-    padding-bottom: 5px;
-  }
-  to {
-    padding-bottom: 15px;
-  }
-}
 @keyframes move {
   from {
     padding-bottom: 5px;
@@ -137,4 +107,4 @@
   to {
     padding-bottom: 15px;
   }
-}
+}/*# sourceMappingURL=landing_view.css.map */

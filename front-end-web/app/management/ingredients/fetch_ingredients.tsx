@@ -12,7 +12,8 @@ export interface Ingredient {
 
 export default async function getData(): Promise<Ingredient[]> {
   const res = await fetch(
-    "http://mandalinka.api.com:8000/management/api/ingredients/"
+    `${process.env.SERVER_API_URL}/management/ingredients/`,
+    { cache: "no-store" }
   );
 
   if (!res.ok) {

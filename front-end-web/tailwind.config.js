@@ -32,6 +32,9 @@ module.exports = {
           800: "#4d4833",
           900: "#26241a",
         },
+        warning: "#ffcc00",
+        success: "#339900",
+        danger: "#cc0000",
       },
       keyframes: {
         "move-left-right": {

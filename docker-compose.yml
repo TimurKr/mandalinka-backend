@@ -23,7 +23,7 @@ services:
       - POSTGRES_NAME=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - GOOGLE_APPLICATION_CREDENTIALS=/usr/src/mandalinka/web/secrets/storage_credentials.json
+      - GOOGLE_APPLICATION_CREDENTIALS=/usr/src/mandalinka/back-end/secrets/storage_credentials.json
     depends_on:
       - db
   front-end-web:
@@ -35,6 +35,10 @@ services:
       - ./front-end-web:/usr/src/mandalinka/front-end-web
     ports:
       - "3000:3000"
+    environment:
+      - SERVER_API_URL=http://mandalinka.api.com:8000
+      # CLIENT_API_URL is required while mandalinka.api.com is not public domain
+      - CLIENT_API_URL=http://localhost:8000
     depends_on:
       - back-end
     links:

@@ -11,6 +11,11 @@ db.sqlite3
 # secrets #
 secrets
 
+# Custom rules
+back-end/_ingredients_delete
+back-end/_recipes_delete
+back-end/_deliveries_delete
+
 # Backup files # 
 *.bak 
 
@@ -176,3 +181,8 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+
+# Custom rules
+back-end/_ingredients_delete
+back-end/_ingredients_delete
