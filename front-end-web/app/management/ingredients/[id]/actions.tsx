@@ -20,26 +20,26 @@ export default function ActionPanel({
 
   const isMutating = isFetching || isPending;
 
-  async function onDelete(event: React.MouseEvent<HTMLButtonElement>) {
-    console.log("Deleting ingredient");
+  // async function onDelete(event: React.MouseEvent<HTMLButtonElement>) {
+  //   console.log("Deleting ingredient");
 
-    setIsFetching(true);
-    const res = await fetch(delete_url, {
-      method: "DELETE",
-    });
-    setIsFetching(false);
+  //   setIsFetching(true);
+  //   const res = await fetch(delete_url, {
+  //     method: "DELETE",
+  //   });
+  //   setIsFetching(false);
 
-    if (res.ok) {
-      startTransition(() => {
-        // TODO: Refresh the search bar on the left of the page
-        router.push("/management/ingredients/deleted");
-      });
-    } else {
-      let res_json = await res.json();
+  //   if (res.ok) {
+  //     startTransition(() => {
+  //       // TODO: Refresh the search bar on the left of the page
+  //       router.push("/management/ingredients/deleted");
+  //     });
+  //   } else {
+  //     let res_json = await res.json();
 
-      setMessage(res_json.detail);
-    }
-  }
+  //     setMessage(res_json.detail);
+  //   }
+  // }
 
   return (
     <>
@@ -51,11 +51,11 @@ export default function ActionPanel({
             </Button>
           </div>
         )}
-        <div className="flex-none">
+        {/* <div className="flex-none">
           <Button style="danger" dark onClick={onDelete} disabled={isMutating}>
-            Odstrániť
+            Deaktivovať
           </Button>
-        </div>
+        </div> */}
       </div>
       {message && (
         <>

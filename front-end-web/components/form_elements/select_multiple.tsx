@@ -1,7 +1,7 @@
 import { useField, Field } from "formik";
 import ErrorMessage from "./error_message";
 
-export const MultiSelect = ({
+const MultiSelect = ({
   label,
   name,
   options,
@@ -56,3 +56,5 @@ export const MultiSelect = ({
     </div>
   );
 };
+
+export default MultiSelect;

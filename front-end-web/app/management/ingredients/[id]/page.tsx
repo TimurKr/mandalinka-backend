@@ -4,27 +4,28 @@ import React from "react";
 
 import ActionPanel from "./actions";
 
-import getData from "../../../../components/ingredients/fetch_ingredient_detail";
+import fetchIngredietDetail from "@/components/fetching/ingredient_detail";
+
+import IngredientVersionWidget from "./[version_id]/version_widget";
 
 export default async function Ingredient({
   params,
 }: {
   params: { id: string };
 }) {
-  const ingredient = await getData(params.id);
+  const ingredient = await fetchIngredietDetail(params.id);
 
-  const delete_url = `${process.env.CLIENT_API_URL}/management/ingredient/${params.id}`;
+  let current_version =
+    ingredient.versions.find((version) => version.is_active) ||
+    ingredient.versions.find((version) => version.is_inactive) ||
+    ingredient.versions.find((version) => version.is_deleted) ||
+    ingredient.versions[-1] ||
+    "new";
 
   return (
-    <div>
-      <div>
-        Tu bude detail o ingrediencií. Možno nejaký fancy graf, ešte uvidíme čo
-        bude treba.
-      </div>
-      <ActionPanel
-        edit_url={`/management/ingredients/${params.id}/edit`}
-        delete_url={delete_url}
-      />
-    </div>
+    <IngredientVersionWidget
+      ingredient={ingredient}
+      version_id={current_version?.id}
+    />
   );
 }

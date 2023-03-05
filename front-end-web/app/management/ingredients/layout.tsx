@@ -1,13 +1,13 @@
 import Search from "./search";
 
-import getData from "./fetch_ingredients";
+import fetchIngredientsList from "@/components/fetching/ingredients_list";
 
 export default async function Layout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const ingredients = await getData();
+  const ingredients = await fetchIngredientsList();
 
   return (
     <div className="flex h-full w-full">

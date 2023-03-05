@@ -2,12 +2,13 @@
 
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import { TextInput } from "@/components/form_elements/text";
-import { MultiSelect } from "@/components/form_elements/select_multiple";
-import { FileInput } from "@/components/form_elements/file";
-import { Select } from "@/components/form_elements/select";
+import TextInput from "@/components/form_elements/text";
+import MultiSelect from "@/components/form_elements/select_multiple";
+import FileInput from "@/components/form_elements/file";
+import Select from "@/components/form_elements/select";
 import Button from "@/components/button";
-import { Options } from "./fetch_options";
+import { Alergen } from "@/components/fetching/alergens";
+import { Unit } from "@/components/fetching/units";
 import { useRouter } from "next/navigation";
 
 interface IngredientValues {
@@ -26,8 +27,8 @@ export default function IngredientForm({
 }: {
   title?: string;
   submit_url: string;
-  method: "POST" | "PUT";
-  options: Options;
+  method: "POST" | "PATCH";
+  options: { alergens: Alergen[]; units: Unit[] };
   initial?: IngredientValues;
 }) {
   const Router = useRouter();
@@ -46,35 +47,34 @@ export default function IngredientForm({
     values: IngredientValues,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) {
-    console.log(values);
-    // const formData = new FormData();
-    // formData.append("name", values.name);
-    // formData.append("unit", values.unit.toString());
-    // values.alergens.forEach((alergen) => {
-    //   formData.append("alergens", alergen.toString());
-    // });
+    const formData = new FormData();
+    formData.append("name", values.name);
+    formData.append("unit", values.unit.toString());
+    values.alergens.forEach((alergen) => {
+      formData.append("alergens", alergen.toString());
+    });
 
-    // if (values.img) {
-    //   formData.append("img", values.img);
-    // }
+    if (values.img) {
+      formData.append("img", values.img);
+    }
 
-    // console.log(formData.get("img"));
+    const response = await fetch(submit_url, {
+      method: method,
+      body: formData,
+    });
 
-    // const response = await fetch(submit_url, {
-    //   method: method,
-    //   body: formData,
-    // });
+    if (!response.ok) {
+      let response_json = await response.json();
 
-    // if (!response.ok) {
-    //   console.log("Response: ", response);
-    //   throw new Error(`HTTP error! status: ${response.status}`);
-    // } else {
-    //   let response_json = await response.json();
-    //   // TODO: Force refresh the search bar, now when new ingredient is created, it doesn't refresh
-    //   Router.push(`/management/ingredients/${response_json.id}`);
-    // }
+      console.log("Response: ", response_json);
+      throw new Error(`HTTP error! status: ${response.status}`);
+    } else {
+      let response_json = await response.json();
+      // TODO: Force refresh fetches
+      Router.push(`/management/ingredients/${response_json.id}`);
+    }
 
-    // setSubmitting(false);
+    setSubmitting(false);
   }
 
   const initialValues: IngredientValues = {
@@ -84,13 +84,8 @@ export default function IngredientForm({
     unit: initial ? initial.unit : "",
   };
 
-  console.log(initialValues);
-
   return (
     <Formik
-      // If initial is defined, pass initial to initialValues, but without img
-      // because img is a File object, and we don't want to pass it to initialValues
-
       initialValues={initialValues}
       validationSchema={Yup.object({
         name: Yup.string().required("Zadajte názov"),
@@ -129,7 +124,7 @@ export default function IngredientForm({
         </div>
         <div className="col-span-2 grid place-content-center md:col-span-1">
           <Button style="primary" dark type="submit">
-            Pridať
+            {method === "POST" ? "Pridať" : method === "PATCH" ? "Uložiť" : ""}
           </Button>
         </div>
       </Form>

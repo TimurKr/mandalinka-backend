@@ -2,7 +2,7 @@ import { ReactComponentElement } from "react";
 
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
-export default function DangerAlert({
+export default function SuccessAlert({
   children,
   onClose,
 }: {
@@ -11,7 +11,7 @@ export default function DangerAlert({
 }): ReactComponentElement<any> {
   return (
     <div
-      className="m-2 flex justify-between rounded-xl border border-green-600 p-2 text-green-600 shadow-xl"
+      className="flex justify-between rounded-xl border border-green-600 p-2 text-green-600"
       role="alert"
     >
       <span className="font-medium">{children}</span>

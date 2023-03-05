@@ -2,7 +2,7 @@ import { useField, Field } from "formik";
 import { useEffect } from "react";
 import ErrorMessage from "./error_message";
 
-export const Select = ({
+const Select = ({
   label,
   name,
   options,
@@ -42,3 +42,5 @@ export const Select = ({
     </>
   );
 };
+
+export default Select;

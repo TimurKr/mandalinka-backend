@@ -102,11 +102,6 @@ class IngredientVersion(TimeStampedMixin, StatusMixin, models.Model):
                 raise ValueError(
                     _("Can't create an active IngredientVersion. Create a new version and activate it."))
 
-        # Validate the unit is the same property as the ingredient unit
-        if self.unit.property != self.ingredient.unit.property:
-            raise ValueError(
-                _("Unit must be of the same property as the ingredient"))
-
         super().save(*args, **kwargs)
 
 
@@ -149,7 +144,7 @@ class Ingredient(TimeStampedMixin, models.Model):
     @property
     def is_inactive(self) -> bool:
         """True if there is not an active ingredient, but there is at least one inactive ingredient"""
-        return not self.is_active and self.versions.get_inactive().first()
+        return not self.is_active and self.versions.get_inactive().first() is not None
 
     @property
     def is_deleted(self) -> bool:
@@ -176,11 +171,26 @@ class Ingredient(TimeStampedMixin, models.Model):
         return IngredientVersion.Statuses.DELETED
 
     @property
-    def cost(self):
+    def cost(self) -> float | None:
         """Returns the cost of the active IngredientVersion or None"""
         if self.is_active:
             return self.active_version.cost
         return None
+
+    @property
+    def cost_str(self) -> str | None:
+        """Returns the cost of the active IngredientVersion or None"""
+        if self.is_active:
+            return self.active_version.cost_str
+        return None
+
+    @property
+    def in_stock_amount(self) -> float | None:
+        """Returns the sum of in_stock_amount of all IngredientVersions"""
+        sum = 0
+        for version in self.versions.all():
+            sum += version.in_stock_amount
+        return sum
 
     @property
     def usage_last_month(self) -> int:

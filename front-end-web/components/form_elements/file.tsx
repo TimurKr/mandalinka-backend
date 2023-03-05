@@ -14,7 +14,7 @@ type FileInputProps = FieldHookConfig<File> & {
   initial_url?: string | null;
 };
 
-export const FileInput = ({ ...props }: FileInputProps) => {
+const FileInput = ({ ...props }: FileInputProps) => {
   const [field, meta] = useField(props.name);
 
   console.log(field.value);
@@ -79,3 +79,5 @@ export const FileInput = ({ ...props }: FileInputProps) => {
     </div>
   );
 };
+
+export default FileInput;

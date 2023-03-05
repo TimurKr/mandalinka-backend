@@ -10,15 +10,15 @@ export interface Ingredient {
   is_deleted: boolean;
 }
 
-export default async function getData(): Promise<Ingredient[]> {
-  const res = await fetch(
+export default async function fetchIngredientsList(): Promise<Ingredient[]> {
+  const ingredient = await fetch(
     `${process.env.SERVER_API_URL}/management/ingredients/`,
-    { cache: "no-store" }
+    { next: { revalidate: 5 } }
   );
 
-  if (!res.ok) {
+  if (!ingredient.ok) {
     throw new Error("Failed to fetch data");
   }
 
-  return res.json();
+  return ingredient.json();
 }

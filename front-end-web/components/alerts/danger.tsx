@@ -11,7 +11,7 @@ export default function DangerAlert({
 }): ReactComponentElement<any> {
   return (
     <div
-      className="m-2 flex justify-between rounded-xl border border-red-600 p-2 text-red-600 shadow-xl"
+      className="flex justify-between rounded-xl border border-red-600 p-2 text-red-600"
       role="alert"
     >
       <span className="font-medium">{children}</span>

@@ -9,14 +9,15 @@ import Fuse from "fuse.js";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { Ingredient } from "./fetch_ingredients";
+import { Ingredient } from "@/components/fetching/ingredients_list";
 import Button from "@/components/button";
+import { IncomingMessage } from "http";
 
 export default function Search({ ingredients }: { ingredients: Ingredient[] }) {
   // States for searching
   const [search, setSearch] = useState("");
-  const [matchingIngredients, setMatchingIngredients] = useState(
-    ingredients.slice().sort((a, b) => b.usage_last_month - a.usage_last_month)
+  const [matchingIngredients, setMatchingIngredients] = useState<Ingredient[]>(
+    []
   );
 
   // Fuse.js for searching
@@ -35,7 +36,36 @@ export default function Search({ ingredients }: { ingredients: Ingredient[] }) {
       "napr: " +
         ingredients[Math.floor(Math.random() * ingredients.length)].name
     );
+    setMatchingIngredients(
+      moveSelectedIngredientToTop(
+        ingredients
+          .slice()
+          .sort((a, b) => b.usage_last_month - a.usage_last_month)
+      )
+    );
   }, []);
+
+  function moveSelectedIngredientToTop(original: Ingredient[]): Ingredient[] {
+    // Move the ingredient that is currently selected to the top of the list
+    let id = -1;
+    ingredients.forEach((ingredient) => {
+      if (path?.includes(`/management/ingredients/${ingredient.id}`)) {
+        id = ingredient.id;
+      }
+    });
+    if (id === -1) {
+      router.refresh();
+    }
+
+    const index = original.findIndex((ingredient) => ingredient.id === id);
+    if (index !== -1) {
+      const ingredient = original[index];
+      original.splice(index, 1);
+      original.unshift(ingredient);
+    }
+
+    return original;
+  }
 
   function handleSearch(event: React.ChangeEvent<HTMLInputElement>): void {
     setSearch(event.target.value);
@@ -47,11 +77,14 @@ export default function Search({ ingredients }: { ingredients: Ingredient[] }) {
         .sort((a, b) => b.usage_last_month - a.usage_last_month);
     }
 
-    setMatchingIngredients(results);
+    setMatchingIngredients(moveSelectedIngredientToTop(results));
   }
 
   function handleSubmit(event: React.ChangeEvent<HTMLFormElement>): void {
     event.preventDefault();
+    if (matchingIngredients.length === 0) {
+      return;
+    }
     router.push(matchingIngredients[0].url);
   }
 
@@ -107,17 +140,24 @@ export default function Search({ ingredients }: { ingredients: Ingredient[] }) {
               >
                 <Link
                   href={ingredient.url}
-                  className={`whitespace-nowrap rounded-lg p-1 px-2 shadow hover:shadow-lg active:shadow-inner ${
-                    is_selected ? "ring-primary-400 text-black ring-2" : ""
-                  } ${
-                    ingredient.is_active
-                      ? "text-green-700"
-                      : ingredient.is_inactive
-                      ? "text-yellow-400"
-                      : ingredient.is_deleted
-                      ? "text-red-500"
-                      : "text-gray-500"
-                  }`}
+                  className={`focus:ring-primary focus:outline-primary focus:border-primary  whitespace-nowrap rounded-full p-1 px-2 shadow hover:shadow-lg active:shadow-inner 
+                   ${
+                     ingredient.is_active
+                       ? is_selected
+                         ? "bg-green-500"
+                         : "text-green-700"
+                       : ingredient.is_inactive
+                       ? is_selected
+                         ? "bg-yellow-400"
+                         : "text-yellow-600"
+                       : ingredient.is_deleted
+                       ? is_selected
+                         ? "bg-red-500"
+                         : "text-red-500"
+                       : is_selected
+                       ? "bg-gray-400 text-black"
+                       : "text-gray-500"
+                   }`}
                 >
                   {matchingIngredients[index].name} -{" "}
                   {matchingIngredients[index].usage_last_month}

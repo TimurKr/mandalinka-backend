@@ -2,26 +2,34 @@ import "server-only";
 
 import React from "react";
 
-import IngredientForm from "components/ingredients/forms/ingredient_form";
+import IngredientForm from "@/components/management/ingredients/forms/ingredient_form";
 
-import getOptions from "components/ingredients/forms/fetch_options";
-import getData from "components/ingredients/fetch_ingredient_detail";
+import fetchAlergens from "@/components/fetching/alergens";
+import fetchUnits from "@/components/fetching/units";
+import fetchIngredietDetail from "@/components/fetching/ingredient_detail";
 
 export default async function NewIngredient({
   params,
 }: {
   params: { id: string };
 }) {
-  const options = await getOptions();
-  const ingredient = await getData(params.id);
+  const alergensPromise = fetchAlergens();
+  const unitsPromise = fetchUnits();
+  const ingredientPromise = await fetchIngredietDetail(params.id);
+
+  const [alergens, units, ingredient] = await Promise.all([
+    alergensPromise,
+    unitsPromise,
+    ingredientPromise,
+  ]);
 
   return (
     <div>
       <IngredientForm
         title="Upravte ingredienciu"
-        submit_url={`${process.env.CLIENT_API_URL}/management/ingredients/`}
-        method="PUT"
-        options={options}
+        submit_url={`${process.env.CLIENT_API_URL}/management/ingredients/${params.id}/`}
+        method="PATCH"
+        options={{ alergens: alergens, units: units }}
         initial={ingredient}
       />
     </div>

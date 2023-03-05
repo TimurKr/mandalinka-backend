@@ -2,12 +2,16 @@ import "server-only";
 
 import React from "react";
 
-import IngredientForm from "components/ingredients/forms/ingredient_form";
+import IngredientForm from "@/components/management/ingredients/forms/ingredient_form";
 
-import getOptions from "components/ingredients/forms/fetch_options";
+import fetchAlergens from "@/components/fetching/alergens";
+import fetchUnits from "@/components/fetching/units";
 
 export default async function NewIngredient() {
-  const options = await getOptions();
+  const alergensPromise = fetchAlergens();
+  const unitsPromise = fetchUnits();
+
+  const [alergens, units] = await Promise.all([alergensPromise, unitsPromise]);
 
   return (
     <div className="grid h-full place-content-center">
@@ -15,7 +19,7 @@ export default async function NewIngredient() {
         title="Pridajte novú ingredienciu"
         submit_url={`${process.env.CLIENT_API_URL}/management/ingredients/`}
         method="POST"
-        options={options}
+        options={{ alergens: alergens, units: units }}
       />
     </div>
   );

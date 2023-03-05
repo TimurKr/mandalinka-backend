@@ -6,7 +6,7 @@ type TextInputProps = FieldHookConfig<string> & {
   label: string;
 };
 
-export const TextInput: React.FC<TextInputProps> = ({
+const TextInput: React.FC<TextInputProps> = ({
   label,
   placeholder,
   ...props
@@ -33,3 +33,5 @@ export const TextInput: React.FC<TextInputProps> = ({
     </>
   );
 };
+
+export default TextInput;

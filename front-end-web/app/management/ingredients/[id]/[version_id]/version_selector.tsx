@@ -7,21 +7,27 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
-import { usePathname } from "next/navigation";
+import { notFound } from "next/navigation";
 
-import { IngredientVersion } from "../../../../components/ingredients/fetch_ingredient_detail";
+import {
+  IngredientDetail,
+  IngredientVersion,
+} from "@/components/fetching/ingredient_detail";
 
 export default function VersionSelector({
-  ingredient_id,
-  versions,
+  ingredient,
+  current,
 }: {
-  ingredient_id: string;
-  versions: IngredientVersion[];
+  ingredient: IngredientDetail;
+  current: number | "new";
 }) {
-  const pathname = usePathname();
+  const currentVersion = ingredient.versions.find(
+    (version) => version.version_number === current
+  );
 
-  const currentVersion = versions.find((version) => version.url === pathname);
-  const isNewVersionPage = pathname.includes("/new");
+  if (!currentVersion && current !== "new") {
+    notFound();
+  }
 
   return (
     <div className="relative">
@@ -31,7 +37,7 @@ export default function VersionSelector({
             {/* Write the version number, which have the same url as the pathname */}
             {currentVersion
               ? "Verzia " + currentVersion.version_number
-              : "Všeobecný prehľad"}
+              : "Nová verzia"}
             <ChevronDownIcon
               className="ml-2 -mr-1 h-5 w-5 text-violet-200 hover:text-violet-100"
               aria-hidden="true"
@@ -49,24 +55,8 @@ export default function VersionSelector({
         >
           <Menu.Items className="absolute right-0 mt-2 max-w-2xl origin-top divide-y divide-gray-100 overflow-auto rounded-xl bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
             <div className="p-1">
-              <Menu.Item>
-                {({ active }) => (
-                  <Link
-                    href={`/management/ingredients/${ingredient_id}`}
-                    className={`${
-                      active || (!currentVersion && !isNewVersionPage)
-                        ? "bg-primary"
-                        : ""
-                    } group mb-1 flex w-full items-center justify-end rounded-lg px-2 py-2 text-right text-sm`}
-                  >
-                    Všeobecný prehľad
-                  </Link>
-                )}
-              </Menu.Item>
-            </div>
-            <div className="p-1">
-              {versions.length > 0 ? (
-                versions.map((version) => (
+              {ingredient.versions.length > 0 ? (
+                ingredient.versions.map((version) => (
                   <Menu.Item key={version.version_number}>
                     {({ active }) => (
                       <Link
@@ -104,12 +94,12 @@ export default function VersionSelector({
               <Menu.Item>
                 {({ active }) => (
                   <Link
-                    href={`/management/ingredients/${ingredient_id}/new_version`}
+                    href={`/management/ingredients/${ingredient.id}/new_version`}
                     className={`my-1 flex w-full items-center justify-end px-2 text-right text-sm`}
                   >
                     <PlusCircleIcon
                       className={`${
-                        active || isNewVersionPage ? "text-primary" : ""
+                        active || current === "new" ? "text-primary" : ""
                       } h-6 w-6`}
                     />
                   </Link>
