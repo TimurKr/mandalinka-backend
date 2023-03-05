@@ -65,9 +65,8 @@ export default function IngredientVersionForm({
       body: formData,
     });
 
+    let response_json = await response.json();
     if (!response.ok) {
-      let response_json = await response.json();
-
       Object.keys(response_json).forEach((key: string) => {
         if (key === "non_field_errors") {
           setFormError(response_json[key]);
@@ -77,10 +76,11 @@ export default function IngredientVersionForm({
       });
       console.log("Response: ", response_json);
     } else {
-      let response_json = await response.json();
-      console.log("Response: ", response_json);
+      console.log("Response ok: ", response_json);
       // TODO: Force refresh fetches
-      // Router.push(`/management/ingredients/${response_json.id}`);
+      Router.push(
+        `/management/ingredients/${response_json.ingredient}/${response_json.id}`
+      );
     }
   }
 
@@ -102,7 +102,7 @@ export default function IngredientVersionForm({
       })}
       onSubmit={handleSubmit}
     >
-      <Form className="grid grid-cols-1 items-center gap-y-2">
+      <Form className="grid grid-cols-1 items-center gap-y-2 ">
         {title && (
           <div className="col-span-2 pb-3">
             <h1 className="text-primary text-center text-2xl font-bold">
@@ -115,12 +115,12 @@ export default function IngredientVersionForm({
             <DangerAlert>{formError}</DangerAlert>
           </div>
         )}
-        <div className="col-span-2 flex gap-2">
-          <div className="shrink">
+        <div className="col-span-2 flex items-center justify-between gap-2">
+          <div className="flex-auto">
             <NumberInput label="Cena" name="cost" />
           </div>
           <p className="shrink-0 self-center">€ na</p>
-          <div>
+          <div className="flex-auto">
             <NumberInput label="Množstvo" name="amount" />
           </div>
           <div className="flex-none">

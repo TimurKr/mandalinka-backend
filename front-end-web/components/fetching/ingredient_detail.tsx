@@ -34,6 +34,8 @@ export interface IngredientDetail {
 export default async function fetchIngredientDetail(
   id: string
 ): Promise<IngredientDetail> {
+  console.log("fetchIngredientDetail", id);
+
   const ingredient = await fetch(
     `${process.env.SERVER_API_URL}/management/ingredients/${id}/`,
     { next: { revalidate: 5 } }

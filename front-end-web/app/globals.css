@@ -4,42 +4,42 @@
 
 @layer components {
   .btn {
-    @apply block w-full rounded-full px-3 py-2 text-center shadow-md transition-all duration-300 focus:shadow-xl enabled:hover:shadow-xl disabled:opacity-50 disabled:shadow-none sm:text-sm;
+    @apply block w-full rounded-full px-3 py-2 text-center shadow-md transition-all duration-300 hover:shadow-xl focus:shadow-xl disabled:opacity-50 disabled:shadow-none sm:text-sm;
   }
   .btn-primary {
-    @apply text-primary border-primary enabled:hover:bg-primary checked:bg-primary border transition-all duration-300 checked:text-black enabled:hover:text-black;
+    @apply text-primary border-primary hover:bg-primary checked:bg-primary disabled:hover:text-primary border transition-all duration-300 checked:text-black hover:text-black disabled:hover:bg-inherit;
   }
   .btn-primary-dark {
-    @apply enabled:hover:text-primary checked:text-primary enabled:hover:border-primary checked:border-primary bg-primary text-black transition-all duration-300 checked:border enabled:hover:border enabled:hover:bg-transparent;
+    @apply hover:text-primary checked:text-primary hover:border-primary checked:border-primary bg-primary disabled:hover:bg-primary text-black transition-all duration-300 checked:border hover:border hover:bg-transparent disabled:hover:border-none disabled:hover:text-black;
   }
   .btn-secondary {
-    @apply text-secondary border-secondary enabled:hover:bg-secondary checked:bg-secondary border transition-all duration-300 checked:text-black enabled:hover:text-black;
+    @apply text-secondary border-secondary hover:bg-secondary checked:bg-secondary disabled:hover:text-secondary border transition-all duration-300 checked:text-black hover:text-black disabled:hover:bg-inherit;
   }
   .btn-secondary-dark {
-    @apply enabled:hover:text-secondary checked:text-secondary enabled:hover:border-secondary checked:border-secondary bg-secondary text-black transition-all duration-300 checked:border enabled:hover:border enabled:hover:bg-transparent;
+    @apply hover:text-secondary checked:text-secondary hover:border-secondary checked:border-secondary bg-secondary disabled:hover:bg-secondary text-black transition-all duration-300 checked:border hover:border hover:bg-transparent disabled:hover:border-none disabled:hover:text-black;
   }
   .btn-black {
-    @apply border border-black text-black transition-all duration-300 checked:bg-black checked:text-white enabled:hover:bg-black enabled:hover:text-white;
+    @apply border border-black text-black transition-all duration-300 checked:bg-black checked:text-white hover:bg-black hover:text-white disabled:hover:bg-inherit disabled:hover:text-black;
   }
   .btn-black-dark {
-    @apply bg-black text-white transition-all duration-300 checked:border checked:border-black checked:text-black enabled:hover:border enabled:hover:border-black enabled:hover:bg-transparent enabled:hover:text-black;
+    @apply bg-black text-white transition-all duration-300 checked:border checked:border-black checked:text-black hover:border hover:border-black hover:bg-transparent hover:text-black disabled:hover:border-none disabled:hover:bg-black disabled:hover:text-white;
   }
   .btn-warning {
-    @apply border-warning text-warning checked:bg-warning enabled:hover:bg-warning border transition-all duration-300 checked:text-black enabled:hover:text-black;
+    @apply border-warning text-warning checked:bg-warning hover:bg-warning disabled:hover:text-warning border transition-all duration-300 checked:text-black hover:text-black disabled:hover:bg-inherit;
   }
   .btn-warning-dark {
-    @apply enabled:hover:text-warning checked:text-warning enabled:hover:border-warning checked:border-warning bg-warning text-black transition-all duration-300 checked:border enabled:hover:border enabled:hover:bg-transparent;
+    @apply hover:text-warning-600 checked:text-warning hover:border-warning checked:border-warning bg-warning disabled:hover:bg-warning text-black transition-all duration-300 checked:border hover:border hover:bg-transparent disabled:hover:border-none disabled:hover:text-black;
   }
   .btn-success {
-    @apply border-success text-success checked:bg-success enabled:hover:bg-success border transition-all duration-300 checked:text-white enabled:hover:text-white;
+    @apply border-success text-success checked:bg-success hover:bg-success disabled:hover:text-success border transition-all duration-300 checked:text-white hover:text-white disabled:hover:bg-inherit;
   }
   .btn-success-dark {
-    @apply enabled:hover:text-success checked:text-success enabled:hover:border-success checked:border-success bg-success text-black transition-all duration-300 checked:border enabled:hover:border enabled:hover:bg-transparent;
+    @apply hover:text-success checked:text-success hover:border-success checked:border-success bg-success disabled:hover:bg-success text-black transition-all duration-300 checked:border hover:border hover:bg-transparent disabled:hover:border-none disabled:hover:text-black;
   }
   .btn-danger {
-    @apply border-danger text-danger checked:bg-danger enabled:hover:bg-danger border transition-all duration-300 checked:text-white enabled:hover:text-white;
+    @apply border-danger text-danger checked:bg-danger hover:bg-danger disabled:hover:text-danger border transition-all duration-300 checked:text-white hover:text-white disabled:hover:bg-inherit;
   }
   .btn-danger-dark {
-    @apply enabled:hover:text-danger checked:text-danger enabled:hover:border-danger checked:border-danger bg-danger text-white transition-all duration-300 checked:border enabled:hover:border enabled:hover:bg-transparent;
+    @apply hover:text-danger checked:text-danger hover:border-danger checked:border-danger bg-danger disabled:hover:bg-danger text-white transition-all duration-300 checked:border hover:border hover:bg-transparent disabled:hover:border-none disabled:hover:text-white;
   }
 }

@@ -6,7 +6,7 @@ import ActionPanel from "./actions";
 
 import fetchIngredietDetail from "@/components/fetching/ingredient_detail";
 
-import IngredientVersionWidget from "./[version_id]/version_widget";
+import IngredientVersionWidget from "./version_widget";
 
 export default async function Ingredient({
   params,
@@ -20,12 +20,15 @@ export default async function Ingredient({
     ingredient.versions.find((version) => version.is_inactive) ||
     ingredient.versions.find((version) => version.is_deleted) ||
     ingredient.versions[-1] ||
-    "new";
+    undefined;
 
   return (
-    <IngredientVersionWidget
-      ingredient={ingredient}
-      version_id={current_version?.id}
-    />
+    <>
+      {/* @ts-expect-error Async Server Component */}
+      <IngredientVersionWidget
+        ingredient={ingredient}
+        version_id={current_version?.id}
+      />
+    </>
   );
 }

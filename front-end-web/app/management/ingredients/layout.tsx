@@ -14,7 +14,7 @@ export default async function Layout({
       <div className="flex-none border-r border-gray-300">
         <Search ingredients={ingredients} />
       </div>
-      <div className="flex-auto p-2">{children}</div>
+      <div className="grid flex-auto place-content-center p-2">{children}</div>
     </div>
   );
 }

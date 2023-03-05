@@ -1,32 +1,22 @@
 import "server-only";
 
-import IngredientVersionForm from "@/components/management/ingredients/forms/ingredient_version_form";
+import React from "react";
 
-import fetchIngredientDetail from "@/components/fetching/ingredient_detail";
-import fetchUnits from "@/components/fetching/units";
+import fetchIngredietDetail from "@/components/fetching/ingredient_detail";
 
-export default async function NewVersion({
+import IngredientVersionWidget from "../version_widget";
+
+export default async function Ingredient({
   params,
 }: {
-  params: { id: string };
+  params: { id: string; version_id: string };
 }) {
-  const unitsPromise = await fetchUnits();
-  const ingredientPromise = await fetchIngredientDetail(params.id);
-
-  const [units, ingredient] = await Promise.all([
-    unitsPromise,
-    ingredientPromise,
-  ]);
+  const ingredient = await fetchIngredietDetail(params.id);
 
   return (
-    <div>
-      <IngredientVersionForm
-        title={`Nová verzia ingrediencie: ${ingredient.name}`}
-        submit_url={`${process.env.CLIENT_API_URL}/management/ingredients/${params.id}/new_version/`}
-        method="POST"
-        unit_options={units}
-        ingredient={ingredient}
-      />
-    </div>
+    <>
+      {/* @ts-expect-error Async Server Component */}
+      <IngredientVersionWidget ingredient={ingredient} />
+    </>
   );
 }

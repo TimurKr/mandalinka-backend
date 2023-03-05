@@ -14,7 +14,7 @@ export default function ActionPanel({
 }: {
   api_host?: string;
   ingredient: IngredientDetail;
-  version_id: string;
+  version_id: number;
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();

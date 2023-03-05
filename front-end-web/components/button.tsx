@@ -46,7 +46,7 @@ const Button = (props: Props) => {
       : ""
   }`;
 
-  if (props.href) {
+  if (props.href && !props.disabled) {
     return (
       <Link href={props.href} className={className}>
         {props.children}
@@ -58,7 +58,7 @@ const Button = (props: Props) => {
         type={props.type}
         className={className}
         onClick={props.onClick}
-        disabled={props.disabled}
+        disabled={props.disabled ? props.disabled : false}
       >
         {props.children}
       </button>

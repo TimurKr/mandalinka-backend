@@ -42,10 +42,10 @@ export default async function Layout({
   ]);
 
   return (
-    <div className="flex w-full flex-row flex-wrap content-center">
-      <div className="w-full flex-shrink-0">
+    <div className="flex h-full w-full max-w-4xl flex-row flex-wrap">
+      <div className="w-full flex-shrink-0 p-2">
         <h3
-          className={`text-2xl ${
+          className={`text-4xl ${
             ingredient.is_active
               ? "text-green-500"
               : ingredient.is_deleted
@@ -87,37 +87,37 @@ export default async function Layout({
       <div className="flex-1 shrink-0 basis-1/4 p-2">
         <BorderedElement>
           <h4>Alergény:</h4>
-          <p className="text-gray-400">
+          <p className="text-sm text-gray-400">
             {alergens
               .filter((alergen) => ingredient.alergens.includes(alergen.code))
               .map((alergen) => alergen.code + ": " + alergen.name)
-              .join(", ") || "žiadne"}
+              .join("\n") || "žiadne"}
           </p>
         </BorderedElement>
       </div>
       <div className="flex-1 basis-1/4 p-2">
         <BorderedElement>
-          Cena: {ingredient.cost || "nedefinovaná"}
+          Cena: {ingredient.cost ? ingredient.cost.toString() + " €" : "N/A"}
         </BorderedElement>
       </div>
       <div className="flex-1 basis-1/4 p-2">
         <BorderedElement>
           Na sklade: {ingredient.in_stock_amount}{" "}
-          {units.find((unit) => unit.id === ingredient.unit)?.name ||
-            "nedefinovaná"}
+          {units.find((unit) => unit.id === ingredient.unit)?.sign || "N/A"}
         </BorderedElement>
       </div>
       <div className="flex-1 basis-1/4 p-2">
         <Button
-          style="black"
+          style="warning"
+          dark
           href={`/management/ingredients/${ingredient.id}/edit/`}
         >
           Edit
         </Button>
       </div>
 
-      <div className="h-52 basis-full p-2">
-        <BorderedElement>{children}</BorderedElement>
+      <div className="mt-4 min-h-[256px] basis-full p-2">
+        <BorderedElement className="!p-0">{children}</BorderedElement>
       </div>
     </div>
   );
