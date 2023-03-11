@@ -13,7 +13,7 @@ export interface Ingredient {
 export default async function fetchIngredientsList(): Promise<Ingredient[]> {
   const ingredient = await fetch(
     `${process.env.SERVER_API_URL}/management/ingredients/`,
-    { next: { revalidate: 5 } }
+    { next: { revalidate: 1 } }
   );
 
   if (!ingredient.ok) {

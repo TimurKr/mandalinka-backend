@@ -3,7 +3,13 @@ from django.contrib import admin
 # Register your models here.
 
 from .models.affix import Attribute, Alergen, Diet, KitchenAccesory
-from .models.ingredients import Ingredient, IngredientVersion, IngredientStockChange
+from .models.ingredients import (
+    Ingredient,
+    IngredientVersion,
+    IngredientVersionStockChange,
+    IngredientVersionStockOrder,
+    IngredientVersionStockRemove
+)
 from .models.recipe_designs import RDStep, RDError, RDIngredient, RecipeDesign
 from .models.menus import RMIngredient, RecipeInMenu, Menu
 
@@ -13,7 +19,9 @@ admin.site.register(Diet)
 admin.site.register(KitchenAccesory)
 admin.site.register(Ingredient)
 admin.site.register(IngredientVersion)
-admin.site.register(IngredientStockChange)
+admin.site.register(IngredientVersionStockChange)
+admin.site.register(IngredientVersionStockOrder)
+admin.site.register(IngredientVersionStockRemove)
 admin.site.register(RDStep)
 admin.site.register(RDError)
 admin.site.register(RDIngredient)

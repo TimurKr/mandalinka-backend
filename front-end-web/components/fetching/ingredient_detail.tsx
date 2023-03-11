@@ -2,6 +2,24 @@ import "server-only";
 
 import { notFound } from "next/navigation";
 
+export interface Order {
+  id: number;
+  ingredient_version: number;
+  amount: number;
+  unit: number;
+  description: string;
+  order_date: string;
+  delivery_date: string;
+  is_delivered: boolean;
+}
+
+export interface StockChange {
+  id: number;
+  ingredient_version: number;
+  amount: number;
+  unit: number;
+}
+
 export interface IngredientVersion {
   id: number;
   ingredient: number;
@@ -13,11 +31,15 @@ export interface IngredientVersion {
   is_deleted: boolean;
   unit: number;
   source: string;
+  in_stock_amount: number;
+  stock_changes: StockChange[];
+  orders: Order[];
 }
 
 export interface IngredientDetail {
   id: number;
   name: string;
+  extra_info: string;
   unit: number;
   alergens: number[];
   status: string;
@@ -34,11 +56,9 @@ export interface IngredientDetail {
 export default async function fetchIngredientDetail(
   id: string
 ): Promise<IngredientDetail> {
-  console.log("fetchIngredientDetail", id);
-
   const ingredient = await fetch(
     `${process.env.SERVER_API_URL}/management/ingredients/${id}/`,
-    { next: { revalidate: 5 } }
+    { next: { revalidate: 1 } }
   );
 
   if (!ingredient.ok) {

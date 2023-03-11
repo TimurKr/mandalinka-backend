@@ -1,28 +1,11 @@
-import VersionSelector from "./[version_id]/version_selector";
+import VersionSelector from "./version_widget/version_selector";
 import Image from "next/image";
 
 import fetchIngredietDetail from "@/components/fetching/ingredient_detail";
 import fetchAlergens from "@/components/fetching/alergens";
 import fetchUnits from "@/components/fetching/units";
 import Button from "@/components/button";
-
-function BorderedElement({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <div
-      className={
-        className + " h-full w-full rounded-xl border border-gray-500 p-2"
-      }
-    >
-      {children}
-    </div>
-  );
-}
+import { BorderedElement } from "@/components/bordered_element";
 
 export default async function Layout({
   children,
@@ -42,7 +25,7 @@ export default async function Layout({
   ]);
 
   return (
-    <div className="flex h-full w-full max-w-4xl flex-row flex-wrap">
+    <div className="flex w-full max-w-4xl flex-row flex-wrap self-start justify-self-center">
       <div className="w-full flex-shrink-0 p-2">
         <h3
           className={`text-4xl ${
@@ -84,6 +67,11 @@ export default async function Layout({
           <p>TODO: Graf používanie v minulosti</p>
         </BorderedElement>
       </div>
+      <div className="flex-1 basis-1/4 p-2">
+        <BorderedElement>
+          Extra info: {ingredient.extra_info || "N/A"}
+        </BorderedElement>
+      </div>
       <div className="flex-1 shrink-0 basis-1/4 p-2">
         <BorderedElement>
           <h4>Alergény:</h4>
@@ -108,17 +96,14 @@ export default async function Layout({
       </div>
       <div className="flex-1 basis-1/4 p-2">
         <Button
-          style="warning"
-          dark
+          color="black"
           href={`/management/ingredients/${ingredient.id}/edit/`}
         >
           Edit
         </Button>
       </div>
 
-      <div className="mt-4 min-h-[256px] basis-full p-2">
-        <BorderedElement className="!p-0">{children}</BorderedElement>
-      </div>
+      <div className="mt-4 min-h-[256px] basis-full p-2">{children}</div>
     </div>
   );
 }

@@ -6,7 +6,7 @@ import ActionPanel from "./actions";
 
 import fetchIngredietDetail from "@/components/fetching/ingredient_detail";
 
-import IngredientVersionWidget from "./version_widget";
+import IngredientVersionWidget from "./version_widget/version_widget";
 
 export default async function Ingredient({
   params,

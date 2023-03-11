@@ -7,8 +7,6 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
-import { notFound } from "next/navigation";
-
 import {
   IngredientDetail,
   IngredientVersion,
@@ -34,7 +32,7 @@ export default function VersionSelector({
   }
 
   return (
-    <div className="absolute top-0 right-0 -translate-y-1/2 ">
+    <div className="absolute top-0 right-0 z-10 -translate-y-1/2 ">
       <Menu as="div" className="relative inline-block text-left">
         <div>
           <Menu.Button

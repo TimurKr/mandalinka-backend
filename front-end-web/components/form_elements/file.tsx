@@ -17,13 +17,11 @@ type FileInputProps = FieldHookConfig<File> & {
 const FileInput = ({ ...props }: FileInputProps) => {
   const [field, meta] = useField(props.name);
 
-  console.log(field.value);
-
   return (
-    <div className="flex w-full items-center justify-center">
+    <div className="flex h-full w-full items-center justify-center">
       <label
         htmlFor={props.id || props.name}
-        className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 "
+        className="flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 "
       >
         <div className="flex flex-col items-center justify-center pt-5 pb-6">
           {field.value || props.initial_url ? (
@@ -51,11 +49,10 @@ const FileInput = ({ ...props }: FileInputProps) => {
             <CloudArrowUpIcon className="h-10 w-10 text-gray-400" />
           )}
           <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-            <span className="font-semibold">Click to upload</span> or drag and
-            drop
+            <span className="font-semibold">Click to upload</span>
           </p>
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            SVG, PNG, JPG or GIF (MAX. 800x400px)
+            Any format right now...
           </p>
           <ErrorMessage meta={meta} />
         </div>

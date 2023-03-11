@@ -29,7 +29,7 @@ const Select = ({
       >
         {!field.value && (
           <option value="" disabled>
-            Zvolte jednotku
+            {label}
           </option>
         )}
         {options.map((option) => (

@@ -43,6 +43,14 @@ class IngredientVersion(TimeStampedMixin, StatusMixin, models.Model):
         return self._in_stock_amount
 
     @property
+    def orders(self) -> models.QuerySet:
+        return IngredientVersionStockOrder.objects.filter(ingredient_version=self)
+
+    @property
+    def removes(self) -> models.QuerySet:
+        return IngredientVersionStockRemove.objects.filter(ingredient_version=self)
+
+    @property
     def in_stock_amount_str(self) -> str:
         return f'{round(self._in_stock_amount,3)} {self.unit}'
 
@@ -116,6 +124,11 @@ class Ingredient(TimeStampedMixin, models.Model):
         max_length=31,
         unique=True,
         verbose_name=_("Názov"), help_text=_("Názov ingrediencie")
+    )
+
+    extra_info = models.TextField(
+        verbose_name=_("Extra informácie"), help_text=_("Extra informácie o ingrediencii"),
+        blank=True, null=True, default=None
     )
 
     def img_upload_to(instance, filename):
@@ -218,15 +231,21 @@ class Ingredient(TimeStampedMixin, models.Model):
             self.active_version.soft_delete()
 
 
-class IngredientStockChange(TimeStampedMixin, models.Model):
+class IngredientVersionStockChange(TimeStampedMixin, models.Model):
     """
-    Model representing a change in the stock amount of a paprticular IngredientVersion
+    Model representing a change in the stock amount of a paprticular IngredientVersion.
+    Should not be used by itself, always use children models.
+    Available children models:
+    - IngredientVersionStockRemove
+    - IngredientVersionStockOrder
+    - TODO: Order itself
     """
     ingredient_version = models.ForeignKey(IngredientVersion, related_name='stock_changes',
                                            on_delete=models.PROTECT
                                            )
     amount = models.FloatField(
-        verbose_name=_("Množstvo"), help_text=_("Kladné číslo znamená pridanie, záporné odobranie")
+        verbose_name=_("Množstvo"),
+        validators=[MinValueValidator(0)],
     )
     unit = models.ForeignKey(Unit,
                              on_delete=models.PROTECT, blank=True,
@@ -237,7 +256,7 @@ class IngredientStockChange(TimeStampedMixin, models.Model):
     def amount_str(self) -> str:
         return f'{round(self.in_stock_amount,3)} {self.unit}'
 
-    def _apply(self):
+    def _add(self):
         """
         Applies the change to the IngredientVersion
         Warning: This method does not check if the change has been applied before
@@ -246,7 +265,7 @@ class IngredientStockChange(TimeStampedMixin, models.Model):
             self.unit.to_base(self.amount))
         self.ingredient_version.save()
 
-    def _unapply(self):
+    def _remove(self):
         """
         Unapplies the change to the IngredientVersion
         WARNING: This method does not check if the change has been applied
@@ -256,7 +275,11 @@ class IngredientStockChange(TimeStampedMixin, models.Model):
         self.ingredient_version.save()
 
     def save(self, *args, **kwargs):
-        original = IngredientStockChange.objects.filter(pk=self.pk).first()
+        """
+        Checks if unit is the same property as the IngredientVersion's unit. 
+
+        Override this method and call it at the and to implement applying the change to the IngredientVersion
+        """
 
         if not self.unit:
             self.unit = self.ingredient_version.unit
@@ -264,11 +287,95 @@ class IngredientStockChange(TimeStampedMixin, models.Model):
             raise ValueError(
                 "Unit must be of the same property as the ingredient")
 
-        if original:
-            original._unapply()
-            self._apply()
-
-        super().save(*args, **kwargs)
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.ingredient_version}: {self.amount_str}'
+
+
+class IngredientVersionStockRemove(IngredientVersionStockChange):
+
+    parent = models.OneToOneField(IngredientVersionStockChange, parent_link=True,
+                                  on_delete=models.PROTECT, primary_key=True, related_name='removed')
+
+    class Reason:
+        EXPIRED = 'expired'
+        WENT_BAD = 'went_bad'
+        OTHER = 'other'     # Change meta constraints if you change this
+        CHOICES = (
+            (EXPIRED, _('Vypršal termín spotreby')),
+            (WENT_BAD, _('Pokazilo sa')),
+            (OTHER, _('Iný dôvod')),
+        )
+
+    reason = models.CharField(
+        max_length=20,
+        choices=Reason.CHOICES,
+        default=Reason.OTHER,
+        verbose_name=_("Dôvod"),
+        help_text=_("Zvolte dôvod odobratia")
+    )
+
+    description = models.TextField(
+        blank=True, null=True, default=None,
+        verbose_name=_("Popis"),
+        help_text=_("Zadajte popis odobratia")
+    )
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(reason__exact='other') & models.Q(
+                    description__isnull=True),
+                name='%(app_label)s_%(class)s_other_reason_has_no_description'
+            )
+        ]
+
+    def save(self, *args, **kwargs):
+        """Applies the change to the IngredientVersion always when being saved"""
+        original = IngredientVersionStockRemove.objects.filter(
+            pk=self.pk).first()
+
+        if original:
+            original._add()
+
+        self._remove()
+        return super().save(*args, **kwargs)
+
+
+class IngredientVersionStockOrder(IngredientVersionStockChange):
+
+    parent = models.OneToOneField(IngredientVersionStockChange, parent_link=True,
+                                  on_delete=models.CASCADE, primary_key=True, related_name='extension')
+
+    description = models.TextField(
+        blank=True, null=True, default=None,
+        verbose_name=_("Popis"),
+        help_text=_("Zadajte popis pridania")
+    )
+
+    order_date = models.DateTimeField(
+        verbose_name=_("Dátum objednávky"),
+        help_text=_("Zadajte dátum a čas objednávky")
+    )
+
+    delivery_date = models.DateTimeField(
+        verbose_name=_("Dátum dodania"),
+        help_text=_("Zadajte dátum a čas dodania")
+    )
+
+    is_delivered = models.BooleanField(
+        default=False,
+        verbose_name=_("Bolo dodané"),
+        help_text=_("Zaškrtnite, ak bolo dodané")
+    )
+
+    def save(self, *args, **kwargs):
+        original = IngredientVersionStockOrder.objects.filter(
+            pk=self.pk).first()
+
+        if original:
+            if not original.is_delivered and self.is_delivered:
+                self._add()
+            elif original.is_delivered and not self.is_delivered:
+                self._remove()

@@ -172,7 +172,7 @@ export default function Search({ ingredients }: { ingredients: Ingredient[] }) {
         id="add_new"
         className="absolute bottom-0 z-10 w-full flex-none p-3 backdrop-blur"
       >
-        <Button style="primary" dark href="/management/ingredients/new">
+        <Button color="primary" dark href="/management/ingredients/new">
           Pridať novú ingredienciu
         </Button>
       </div>

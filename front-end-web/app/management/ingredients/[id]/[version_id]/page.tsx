@@ -4,8 +4,9 @@ import React from "react";
 
 import fetchIngredietDetail from "@/components/fetching/ingredient_detail";
 
-import IngredientVersionWidget from "../version_widget";
+import IngredientVersionWidget from "../version_widget/version_widget";
 import { notFound } from "next/navigation";
+import { BorderedElement } from "../layout";
 
 export default async function Ingredient({
   params,

@@ -46,13 +46,13 @@ export default function ActionPanel({
       <div className="flex flex-wrap justify-end gap-2">
         {edit_url && (
           <div className="flex-none">
-            <Button style="black" href={edit_url} disabled={isMutating}>
+            <Button color="black" href={edit_url} disabled={isMutating}>
               Edit
             </Button>
           </div>
         )}
         {/* <div className="flex-none">
-          <Button style="danger" dark onClick={onDelete} disabled={isMutating}>
+          <Button color="danger" dark onClick={onDelete} disabled={isMutating}>
             Deaktivovať
           </Button>
         </div> */}

@@ -1,9 +1,66 @@
+from management.models.ingredients import IngredientVersionStockOrder
 from utils.models import Unit
 from rest_framework import serializers
 from rest_framework.fields import URLField
 
-from management.models.ingredients import Ingredient, IngredientVersion
+from management.models.ingredients import Ingredient, IngredientVersion, IngredientVersionStockChange, IngredientVersionStockOrder
 from utils.serializers import UnitSerializer
+
+
+class IngredientVersionStockChangeSerializer(serializers.ModelSerializer):
+    """Serializer for listing ingredient stock changes and creating new instances"""
+    unit = serializers.PrimaryKeyRelatedField(
+        queryset=Unit.objects.all(), required=False)
+    ingredient_version = serializers.PrimaryKeyRelatedField(
+        queryset=IngredientVersion.objects.all(), required=False)
+
+    class Meta:
+        model = IngredientVersionStockChange
+        fields = (
+            'id',
+            'ingredient_version',
+            'amount',
+            'unit'
+        )
+        read_only_fields = (
+            'id',
+            'ingredient_version'
+        )
+
+    def create(self, validated_data):
+        raise serializers.ValidationError(
+            'Creation not allowed for this endpoint.')
+
+    def update(self, instance, validated_data):
+        raise serializers.ValidationError(
+            'Updating not allowed for this endpoint.')
+
+
+class IngredientVersionStockOrderSerializer(serializers.ModelSerializer):
+    """
+    Serializer for listing the orders of IngredientVersions
+    """
+    unit = serializers.PrimaryKeyRelatedField(
+        queryset=Unit.objects.all(), required=False)
+    ingredient_version = serializers.PrimaryKeyRelatedField(
+        queryset=IngredientVersion.objects.all(), required=False)
+
+    class Meta:
+        model = IngredientVersionStockOrder
+        fields = (
+            'id',
+            'ingredient_version',
+            'amount',
+            'unit',
+            'description',
+            'order_date',
+            'delivery_date',
+            'is_delivered',
+        )
+        read_only_fields = (
+            'id',
+            'is_delivered',
+        )
 
 
 class IngredientVersionSerializer(serializers.ModelSerializer):
@@ -12,6 +69,9 @@ class IngredientVersionSerializer(serializers.ModelSerializer):
     amount = serializers.FloatField(required=False)
     unit = serializers.PrimaryKeyRelatedField(
         queryset=Unit.objects.all(), required=False)
+    stock_changes = IngredientVersionStockChangeSerializer(
+        many=True, read_only=True)
+    orders = IngredientVersionStockOrderSerializer(many=True, read_only=True)
 
     class Meta:
         model = IngredientVersion
@@ -27,6 +87,9 @@ class IngredientVersionSerializer(serializers.ModelSerializer):
             'unit',
             'amount',
             'source',
+            'in_stock_amount',
+            'stock_changes',
+            'orders',
         )
         read_only_fields = (
             'id',
@@ -37,6 +100,9 @@ class IngredientVersionSerializer(serializers.ModelSerializer):
             'is_deleted',
             'unit',
             'amount',
+            'in_stock_amount',
+            'stock_changes',
+            'orders',
         )
 
     def validate(self, data):
@@ -99,6 +165,7 @@ class IngredientDetailSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'name',
+            'extra_info',
             'unit',
             'alergens',
             'status',

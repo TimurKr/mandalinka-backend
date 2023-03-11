@@ -77,10 +77,13 @@ export default function IngredientVersionForm({
       console.log("Response: ", response_json);
     } else {
       console.log("Response ok: ", response_json);
-      // TODO: Force refresh fetches
-      Router.push(
-        `/management/ingredients/${response_json.ingredient}/${response_json.id}`
-      );
+      // Route to a new page in 10 ms
+      setTimeout(() => {
+        // TODO: Force refresh fetches
+        Router.push(
+          `/management/ingredients/${response_json.ingredient}/${response_json.id}`
+        );
+      }, 100);
     }
   }
 
@@ -140,7 +143,7 @@ export default function IngredientVersionForm({
         </div>
 
         <div className="col-span-2 grid place-content-center md:col-span-1">
-          <Button style="primary" dark type="submit">
+          <Button color="primary" dark type="submit">
             {method === "POST" ? "Pridať" : method === "PATCH" ? "Uložiť" : ""}
           </Button>
         </div>

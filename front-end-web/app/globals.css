@@ -4,7 +4,7 @@
 
 @layer components {
   .btn {
-    @apply block w-full rounded-full px-3 py-2 text-center shadow-md transition-all duration-300 hover:shadow-xl focus:shadow-xl disabled:opacity-50 disabled:shadow-none sm:text-sm;
+    @apply block w-full rounded-full px-3 py-1 text-center shadow-md transition-all duration-300 hover:shadow-xl focus:shadow-xl disabled:opacity-50 disabled:shadow-none sm:text-sm;
   }
   .btn-primary {
     @apply text-primary border-primary hover:bg-primary checked:bg-primary disabled:hover:text-primary border transition-all duration-300 checked:text-black hover:text-black disabled:hover:bg-inherit;
