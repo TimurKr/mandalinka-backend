@@ -34,7 +34,7 @@
     @apply border-success text-success checked:bg-success hover:bg-success disabled:hover:text-success border transition-all duration-300 checked:text-white hover:text-white disabled:hover:bg-inherit;
   }
   .btn-success-dark {
-    @apply hover:text-success checked:text-success hover:border-success checked:border-success bg-success disabled:hover:bg-success text-black transition-all duration-300 checked:border hover:border hover:bg-transparent disabled:hover:border-none disabled:hover:text-black;
+    @apply hover:text-success checked:text-success hover:border-success checked:border-success bg-success disabled:hover:bg-success text-white transition-all duration-300 checked:border hover:border hover:bg-transparent disabled:hover:border-none disabled:hover:text-black;
   }
   .btn-danger {
     @apply border-danger text-danger checked:bg-danger hover:bg-danger disabled:hover:text-danger border transition-all duration-300 checked:text-white hover:text-white disabled:hover:bg-inherit;

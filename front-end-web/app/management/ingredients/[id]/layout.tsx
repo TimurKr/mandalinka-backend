@@ -25,7 +25,7 @@ export default async function Layout({
   ]);
 
   return (
-    <div className="flex w-full max-w-4xl flex-row flex-wrap self-start justify-self-center">
+    <div className="flex w-full max-w-6xl flex-row flex-wrap self-start justify-self-center">
       <div className="w-full flex-shrink-0 p-2">
         <h3
           className={`text-4xl ${
@@ -90,8 +90,7 @@ export default async function Layout({
       </div>
       <div className="flex-1 basis-1/4 p-2">
         <BorderedElement>
-          Na sklade: {ingredient.in_stock_amount}{" "}
-          {units.find((unit) => unit.id === ingredient.unit)?.sign || "N/A"}
+          Na sklade: {ingredient.in_stock_amount} {ingredient.unit.sign}
         </BorderedElement>
       </div>
       <div className="flex-1 basis-1/4 p-2">

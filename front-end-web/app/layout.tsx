@@ -4,6 +4,7 @@ import { Noto_Serif_Display } from "next/font/google";
 
 import "material-symbols/outlined.css";
 import "material-symbols/rounded.css";
+import "react-datetime/css/react-datetime.css";
 
 import "flowbite/dist/flowbite.min.css";
 

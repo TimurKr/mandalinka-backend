@@ -2,15 +2,16 @@ from management.models.ingredients import IngredientVersionStockOrder
 from utils.models import Unit
 from rest_framework import serializers
 from rest_framework.fields import URLField
+from django.core.validators import MinValueValidator
 
-from management.models.ingredients import Ingredient, IngredientVersion, IngredientVersionStockChange, IngredientVersionStockOrder
+
+from management.models.ingredients import Ingredient, IngredientVersion, IngredientVersionStockChange, IngredientVersionStockOrder, IngredientVersionStockRemove
 from utils.serializers import UnitSerializer
 
 
 class IngredientVersionStockChangeSerializer(serializers.ModelSerializer):
     """Serializer for listing ingredient stock changes and creating new instances"""
-    unit = serializers.PrimaryKeyRelatedField(
-        queryset=Unit.objects.all(), required=False)
+    unit = UnitSerializer(read_only=True)
     ingredient_version = serializers.PrimaryKeyRelatedField(
         queryset=IngredientVersion.objects.all(), required=False)
 
@@ -24,7 +25,9 @@ class IngredientVersionStockChangeSerializer(serializers.ModelSerializer):
         )
         read_only_fields = (
             'id',
-            'ingredient_version'
+            'ingredient_version',
+            'amount',
+            'unit',
         )
 
     def create(self, validated_data):
@@ -34,6 +37,46 @@ class IngredientVersionStockChangeSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         raise serializers.ValidationError(
             'Updating not allowed for this endpoint.')
+
+
+class IngredientVersionStockRemoveSerializer(serializers.ModelSerializer):
+    """Serialer for creating stock changes for removing ingredients"""
+    unit = serializers.PrimaryKeyRelatedField(
+        queryset=Unit.objects.all(), required=False)
+
+    class Meta:
+        model = IngredientVersionStockRemove
+        fields = (
+            'id',
+            'ingredient_version',
+            'amount',
+            'unit',
+            'reason',
+            'description',
+            'date',
+        )
+        read_only_fields = (
+            'id',
+        )
+
+    def validate(self, data):
+        """Check if unit is valid property for the ingredient_version"""
+
+        if data.get('unit'):
+            if data['unit'].property != data['ingredient_version'].unit.property:
+                allowed_units = []
+                for unit in Unit.objects.all():
+                    if unit.property == data['ingredient_version'].unit.property:
+                        allowed_units.append(unit.sign)
+                raise serializers.ValidationError(
+                    f'Jednotky sa nezhodujú. Zvolte jednu z {", ".join(allowed_units)}')
+
+        return super().validate(data)
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['unit'] = UnitSerializer(instance.unit).data
+        return data
 
 
 class IngredientVersionStockOrderSerializer(serializers.ModelSerializer):
@@ -56,22 +99,46 @@ class IngredientVersionStockOrderSerializer(serializers.ModelSerializer):
             'order_date',
             'delivery_date',
             'is_delivered',
+            'expiration_date',
+            'is_expired',
+            'cost',
+            'in_stock_amount'
         )
         read_only_fields = (
             'id',
-            'is_delivered',
+            'in_stock_amount',
         )
+
+    def validate(self, data):
+        """Check if unit is valid property for the ingredient_version"""
+
+        if data.get('unit'):
+            if data['unit'].property != data['ingredient_version'].unit.property:
+                allowed_units = []
+                for unit in Unit.objects.all():
+                    if unit.property == data['ingredient_version'].unit.property:
+                        allowed_units.append(unit.sign)
+                raise serializers.ValidationError(
+                    f'Jednotky sa nezhodujú. Zvolte jednu z {", ".join(allowed_units)}')
+
+        return super().validate(data)
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['unit'] = UnitSerializer(instance.unit).data
+        return data
 
 
 class IngredientVersionSerializer(serializers.ModelSerializer):
     """Serializer for listing ingredient versions and creating new instances"""
     url = serializers.URLField(source='get_absolute_url', required=False)
-    amount = serializers.FloatField(required=False)
     unit = serializers.PrimaryKeyRelatedField(
         queryset=Unit.objects.all(), required=False)
     stock_changes = IngredientVersionStockChangeSerializer(
         many=True, read_only=True)
     orders = IngredientVersionStockOrderSerializer(many=True, read_only=True)
+    removals = IngredientVersionStockRemoveSerializer(
+        many=True, read_only=True)
 
     class Meta:
         model = IngredientVersion
@@ -85,46 +152,30 @@ class IngredientVersionSerializer(serializers.ModelSerializer):
             'is_inactive',
             'is_deleted',
             'unit',
-            'amount',
             'source',
+            'expiration_period',
             'in_stock_amount',
             'stock_changes',
             'orders',
+            'removals',
         )
         read_only_fields = (
             'id',
             'version_number',
+            'cost',
             'url',
+            'unit',
             'is_active',
             'is_inactive',
             'is_deleted',
-            'unit',
-            'amount',
             'in_stock_amount',
             'stock_changes',
             'orders',
         )
 
-    def validate(self, data):
-        """If unit has been provided, convert the amount to the correct unit """
-        if 'unit' not in data or 'amount' not in data:
-            raise serializers.ValidationError(
-                'If you want to create a new IngredientVersion, you must provide the unit and the amount for the given cost.')
-
-        if data['unit'].property != data['ingredient'].unit.property:
-            allowed_units = []
-            for unit in Unit.objects.all():
-                if unit.property == data['ingredient'].unit.property:
-                    allowed_units.append(unit.sign)
-            raise serializers.ValidationError(
-                f'Jednotky sa nezhodujú. Zvolte jednu z {", ".join(allowed_units)}')
-
-        data['cost'] = data['cost'] / data['ingredient'].unit.from_base(
-            data['unit'].to_base(data['amount']))
-
-        data.pop('unit')
-        data.pop('amount')
-
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['unit'] = UnitSerializer(instance.unit).data
         return data
 
 
@@ -159,6 +210,7 @@ class ListIngredientSerializer(serializers.ModelSerializer):
 class IngredientDetailSerializer(serializers.ModelSerializer):
     """Serializer for retrieving and updating ingredients"""
     versions = IngredientVersionSerializer(many=True, read_only=True)
+    unit = UnitSerializer(read_only=True)
 
     class Meta:
         model = Ingredient

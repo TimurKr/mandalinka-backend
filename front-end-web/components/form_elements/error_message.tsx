@@ -9,8 +9,8 @@ const ErrorMessage: React.FC<Props> = ({ meta }) => {
   return (
     <>
       {meta.touched && meta.error ? (
-        <div className="mt-1 flex items-center text-sm text-red-500">
-          <ExclamationCircleIcon className="mr-1 h-4 w-4" />
+        <div className="mt-1 flex w-full items-center text-sm text-red-500">
+          <ExclamationCircleIcon className="mr-1 h-4 w-4 shrink-0" />
           {meta.error}
         </div>
       ) : null}

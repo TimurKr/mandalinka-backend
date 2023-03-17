@@ -1,41 +1,90 @@
+import Alert from "@/components/alert";
 import Button from "@/components/button";
+import { IngredientVersion } from "@/components/fetching/ingredient_detail";
 import { Unit } from "@/components/fetching/units";
 import NumberInput from "@/components/form_elements/number";
+import parseInvalidResponse from "@/components/form_elements/parse_invalid_response";
 import Select from "@/components/form_elements/select";
 import TextInput from "@/components/form_elements/text";
-import { FaceSmileIcon } from "@heroicons/react/24/outline";
 import { Modal } from "flowbite-react";
 import { Form, Formik } from "formik";
-import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import * as Yup from "yup";
 
 export default function RemoveModal({
   show,
   units,
   onClose,
+  ingredientVersion,
+  submit_url,
+  router,
 }: {
   show: boolean;
   units: Unit[];
   onClose: () => void;
+  ingredientVersion: IngredientVersion;
+  submit_url: string;
+  router: ReturnType<typeof useRouter>;
 }) {
+  const [all, setAll] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   async function handleSubmit(
     values: any,
-    { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
+    {
+      setSubmitting,
+      setFieldError,
+    }: {
+      setSubmitting: (isSubmitting: boolean) => void;
+      setFieldError: (field: string, errorMsg: string) => void;
+    }
   ) {
-    console.log(values);
+    const formValues = new FormData();
+    formValues.append("ingredient_version", ingredientVersion.id.toString());
+    formValues.append("amount", values.amount);
+    formValues.append("unit", values.unit.toString());
+    formValues.append("reason", values.reason);
+    formValues.append("description", values.description);
+
+    const response = await fetch(submit_url, {
+      method: "POST",
+      body: formValues,
+    }).then((response) => {
+      if (response.status === 400) {
+        parseInvalidResponse(response, setFieldError, setErrorMessage);
+      }
+      return response;
+    });
   }
 
   return (
     <Modal dismissible={true} show={show} onClose={onClose} size="md">
-      <Modal.Header>Odoberte množstvo zo skladu</Modal.Header>
+      <Modal.Header>Odoberte zo skladu</Modal.Header>
       <Modal.Body>
+        {errorMessage && (
+          <Alert
+            version="danger"
+            className="!mb-3"
+            onClose={() => setErrorMessage(null)}
+          >
+            {errorMessage}
+          </Alert>
+        )}
         <Formik
-          initialValues={{ amount: 0, unit: 0, reason: "", description: "" }}
+          initialValues={{
+            amount: 0,
+            unit: ingredientVersion.unit.id,
+            reason: "",
+            description: "",
+            all: false,
+          }}
           onSubmit={handleSubmit}
           validationSchema={Yup.object().shape({
             amount: Yup.number()
               .required("Required")
               .min(0, "Zadajte kladné číslo"),
+            // .max(ingredientVersion.in_stock_amount, "Nedostatok množstva"),
             unit: Yup.number().required("Required"),
             reason: Yup.string().required("Required"),
             description: Yup.string().when("reason", {
@@ -44,50 +93,71 @@ export default function RemoveModal({
             }),
           })}
         >
-          <Form className="flex flex-wrap gap-2">
-            <div className="flex-auto">
-              <NumberInput
-                disabled
-                name="amount"
-                label="Množstvo"
-                className="flex-auto"
-              />
-            </div>
-            <div className="flex-auto">
-              <Select
-                name="unit"
-                label="Jednotka"
-                options={units.map((unit) => ({
-                  value: unit.id,
-                  label: unit.name,
-                }))}
-              />
-            </div>
-            <div className="flex-auto shrink-0">
-              <Select
-                name="reason"
-                label="Dôvod"
-                options={[
-                  { value: "expired", label: "Expirovalo" },
-                  { value: "went_bad", label: "Pokazilo sa pred expiráciou" },
-                  { value: "other", label: "Iné" },
-                ]}
-              />
-            </div>
-            <div className="flex-auto shrink-0">
-              <TextInput name="description" label="Popis" />
-            </div>
-          </Form>
+          {(props) => (
+            <Form className="flex flex-wrap items-center gap-2">
+              <div className="flex-auto">
+                <NumberInput name="amount" label="Množstvo" disabled={all} />
+              </div>
+              <div className="flex-auto">
+                <Select
+                  name="unit"
+                  label="Jednotka"
+                  options={units.map((unit) => ({
+                    value: unit.id,
+                    label: unit.name,
+                  }))}
+                  disabled={all}
+                />
+              </div>
+              <div className="flex flex-auto items-center">
+                <input
+                  id="all-checkbox"
+                  type="checkbox"
+                  className="text-primary focus:outline-primary focus:ring-primary rounded"
+                  onChange={(event) => {
+                    setAll(event.target.checked);
+                    props.setFieldValue(
+                      "amount",
+                      ingredientVersion.in_stock_amount
+                    );
+                    props.setFieldValue("unit", ingredientVersion.unit.id);
+                  }}
+                />
+                <label
+                  htmlFor="all-checkbox"
+                  className="px-2 text-sm text-gray-700"
+                >
+                  Všetko na sklade
+                </label>
+              </div>
+              <div className="flex-auto shrink-0">
+                <Select
+                  name="reason"
+                  label="Zadajte dôvod"
+                  options={[
+                    { value: "expired", label: "Expirovalo" },
+                    { value: "went_bad", label: "Pokazilo sa pred expiráciou" },
+                    { value: "other", label: "Iné" },
+                  ]}
+                />
+              </div>
+              <div className="flex-auto shrink-0">
+                <TextInput name="description" label="Poznámka" />
+              </div>
+              <div className="flex-auto">
+                <Button
+                  type="submit"
+                  color="primary"
+                  dark
+                  disabled={props.isSubmitting}
+                >
+                  Odobrať
+                </Button>
+              </div>
+            </Form>
+          )}
         </Formik>
       </Modal.Body>
-      <Modal.Footer>
-        <Button color="primary" dark onClick={onClose}>
-          I accept
-        </Button>
-        <Button color="secondary" onClick={onClose}>
-          Decline
-        </Button>
-      </Modal.Footer>
     </Modal>
   );
 }

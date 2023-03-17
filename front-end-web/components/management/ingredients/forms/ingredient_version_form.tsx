@@ -11,13 +11,12 @@ import { useRouter } from "next/navigation";
 import { Unit } from "@/components/fetching/units";
 import { IngredientDetail } from "../../../fetching/ingredient_detail";
 import { useState } from "react";
-import DangerAlert from "@/components/alerts/danger";
+import Alert from "@/components/alert";
+import parseInvalidResponse from "@/components/form_elements/parse_invalid_response";
 
 interface IngredientVersionValues {
-  cost: number;
-  amount: number;
-  unit: number;
   source: string;
+  expiration_period: number;
 }
 
 export default function IngredientVersionForm({
@@ -25,14 +24,12 @@ export default function IngredientVersionForm({
   submit_url,
   method,
   initial,
-  unit_options,
   ingredient,
 }: {
   title?: string;
   submit_url: string;
   method: "POST" | "PATCH";
   initial?: IngredientVersionValues;
-  unit_options: Unit[];
   ingredient: IngredientDetail;
 }) {
   const Router = useRouter();
@@ -51,103 +48,86 @@ export default function IngredientVersionForm({
   ) {
     const formData = new FormData();
     formData.append("ingredient", ingredient.id.toString());
-    formData.append("cost", values.cost.toString());
-    formData.append("amount", values.amount.toString());
-    formData.append("unit", values.unit.toString());
     formData.append("source", values.source);
-
-    // formData.forEach((value, key) => {
-    //   console.log(key, value);
-    // });
-
-    const response = await fetch(submit_url, {
+    formData.append("expiration_period", values.expiration_period.toString());
+    await fetch(submit_url, {
       method: method,
       body: formData,
-    });
-
-    let response_json = await response.json();
-    if (!response.ok) {
-      Object.keys(response_json).forEach((key: string) => {
-        if (key === "non_field_errors") {
-          setFormError(response_json[key]);
-        } else {
-          setFieldError(key, response_json[key]);
+    })
+      .then((response) =>
+        parseInvalidResponse(response, setFieldError, setFormError)
+      )
+      .then((response) => {
+        if (response.ok) {
+          setFormError(null);
+          Router.push(
+            `/management/ingredients/${response.ingredient}/${response.id}`
+          );
         }
+      })
+      .catch((error) => {
+        setFormError(error.message);
       });
-      console.log("Response: ", response_json);
-    } else {
-      console.log("Response ok: ", response_json);
-      // Route to a new page in 10 ms
-      setTimeout(() => {
-        // TODO: Force refresh fetches
-        Router.push(
-          `/management/ingredients/${response_json.ingredient}/${response_json.id}`
-        );
-      }, 100);
-    }
   }
 
   const initialValues = {
-    cost: initial?.cost || 0,
-    amount: 1,
-    unit: ingredient.unit,
     source: initial?.source || "",
+    expiration_period: initial?.expiration_period || 7,
   };
 
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={Yup.object({
-        cost: Yup.number()
-          .required("Povinné pole")
-          .moreThan(0, "Zadajte kladné číslo"),
         source: Yup.string().required("Povinné pole"),
+        expiration_period: Yup.number()
+          .min(1, "Musí byť viac ako 1")
+          .integer("Zadajte celé číslo")
+          .required("Povinné pole"),
       })}
       onSubmit={handleSubmit}
     >
-      <Form className="grid grid-cols-1 items-center gap-y-2 ">
-        {title && (
-          <div className="col-span-2 pb-3">
-            <h1 className="text-primary text-center text-2xl font-bold">
-              {title}
-            </h1>
+      {(props) => (
+        <Form className="flex flex-wrap items-center justify-between gap-2">
+          {title && (
+            <div className="w-full pb-2">
+              <h1 className="text-primary text-center text-2xl font-bold">
+                {title}
+              </h1>
+            </div>
+          )}
+          {formError && (
+            <div className="w-full">
+              <Alert version="danger" onClose={() => setFormError(null)}>
+                {formError}
+              </Alert>
+            </div>
+          )}
+          <div className="grow">
+            <TextInput label="Zdroj" name="source" />
           </div>
-        )}
-        {formError && (
-          <div className="py-2">
-            <DangerAlert>{formError}</DangerAlert>
-          </div>
-        )}
-        <div className="col-span-2 flex items-center justify-between gap-2">
-          <div className="flex-auto">
-            <NumberInput label="Cena" name="cost" />
-          </div>
-          <p className="shrink-0 self-center">€ na</p>
-          <div className="flex-auto">
-            <NumberInput label="Množstvo" name="amount" />
-          </div>
-          <div className="flex-none">
-            <Select
-              label="Jednotka"
-              name="unit"
-              options={unit_options.map((unit) => ({
-                value: unit.id,
-                label: unit.name,
-              }))}
+          <div className="">
+            <NumberInput
+              label="Priemerná doba trvanlivosti"
+              name="expiration_period"
             />
           </div>
-        </div>
-
-        <div className="col-span-2">
-          <TextInput label="Zdroj" name="source" />
-        </div>
-
-        <div className="col-span-2 grid place-content-center md:col-span-1">
-          <Button color="primary" dark type="submit">
-            {method === "POST" ? "Pridať" : method === "PATCH" ? "Uložiť" : ""}
-          </Button>
-        </div>
-      </Form>
+          <div className="grid place-content-center">
+            <Button
+              color="primary"
+              dark
+              type="submit"
+              disabled={props.isSubmitting}
+            >
+              {method === "POST"
+                ? "Vytvoriť"
+                : method === "PATCH"
+                ? "Uložiť"
+                : ""}
+            </Button>
+          </div>
+        </Form>
+      )}
     </Formik>
   );
 }

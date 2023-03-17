@@ -4,9 +4,19 @@ from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import AllowAny
 
-from management.models.ingredients import Ingredient, IngredientVersion
-from management.serializers.ingredients import ListIngredientSerializer, IngredientDetailSerializer, IngredientVersionSerializer
-
+from management.models.ingredients import (
+    Ingredient,
+    IngredientVersion,
+    IngredientVersionStockRemove,
+    IngredientVersionStockOrder,
+)
+from management.serializers.ingredients import (
+    ListIngredientSerializer,
+    IngredientDetailSerializer,
+    IngredientVersionSerializer,
+    IngredientVersionStockRemoveSerializer,
+    IngredientVersionStockOrderSerializer,
+)
 from management.models.affix import Alergen
 from management.serializers.affix import AlergenSerializer
 
@@ -14,6 +24,9 @@ from utils.models import Unit
 from utils.serializers import UnitSerializer
 
 
+### INGREDIENTS ###
+
+# List, create
 class IngredientListCreateAPI(generics.ListCreateAPIView):
     """
     Class based view for Ingredient API
@@ -40,15 +53,16 @@ class IngredientListCreateAPI(generics.ListCreateAPIView):
 
         return response
 
+# Retrieve, update
 
-class IngredientDetailAPI(generics.RetrieveUpdateAPIView):
+
+class IngredientRetrieveUpdateAPI(generics.RetrieveUpdateAPIView):
     """
     Class based view for Ingredient API
     Provides the following methods:
         GET - returns ingredient with given id
         PUT - updates ingredient with given id (only inactive ingredients can be updated)
         PATCH - updates ingredient with given id (only inactive ingredients can be updated)
-        DELETE - soft deletes ingredient with given id (only inactive ingredients can be deleted)
     """
     permission_classes = [AllowAny]
     queryset = Ingredient.objects.all()
@@ -76,6 +90,10 @@ class IngredientDetailAPI(generics.RetrieveUpdateAPIView):
     #     ingredient.soft_delete()
     #     return Response(status=status.HTTP_204_NO_CONTENT)
 
+### INGREDIENT VERSIONS ###
+
+# Create
+
 
 class IngredientVersionCreateAPI(generics.CreateAPIView):
     """
@@ -87,23 +105,15 @@ class IngredientVersionCreateAPI(generics.CreateAPIView):
     queryset = IngredientVersion.objects.all()
     serializer_class = IngredientVersionSerializer
 
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        unit = request.data.get('unit', False)
-
-        # Call serializer.save() instead of super().create()
-        serializer.save()
-
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+#  Retrieve, update
 
 
-class IngredientVersionModifyAPI(generics.RetrieveUpdateAPIView):
+class IngredientVersionRetrieveUpdateDestroyAPI(generics.RetrieveUpdateDestroyAPIView):
     """
     Class based view for IngredientVersion API
     Provides the following methods:
         GET - returns ingredient version with given id
-
+        PATCH - updates ingredient version with given id
     """
     permission_classes = [AllowAny]
     queryset = IngredientVersion.objects.all()
@@ -128,8 +138,73 @@ class IngredientVersionModifyAPI(generics.RetrieveUpdateAPIView):
                 return Response(status=status.HTTP_400_BAD_REQUEST, data={'message': e.message})
             return Response(serializer.data)
 
-        return Response(serializer.data)
-        # return super().patch(request, *args, **kwargs)
+        return super().patch(request, *args, **kwargs)
 
-    def delete(self, request, *args, **kwargs):
-        return super().delete(request, *args, **kwargs)
+### INGREDIENT VERSION STOCK ###
+
+# REMOVALS
+
+# Create
+
+
+class IngredientVersionStockRemovalCreateAPI(generics.CreateAPIView):
+    """
+    Class based view for IngredientVersionStockRemove API
+    Provides the following methods:
+        POST - creates a new removal from stock
+    """
+    permission_classes = [AllowAny]
+    queryset = IngredientVersionStockRemove.objects.all()
+    serializer_class = IngredientVersionStockRemoveSerializer
+
+# Delete
+
+
+class IngredientVersionStockRemovalDeleteAPI(generics.DestroyAPIView):
+    """
+    Class based view for IngredientVersionStockRemove API
+    Provides the following methods:
+        DELETE - deletes removal from stock
+    """
+    permission_classes = [AllowAny]
+    queryset = IngredientVersionStockRemove.objects.all()
+    serializer_class = IngredientVersionStockRemoveSerializer
+
+
+# ORDERS
+
+# Create
+
+class IngredientVersionStockOrderCreateAPI(generics.CreateAPIView):
+    """
+    Class based view for IngredientVersionStockOrder API
+    Provides the following methods:
+        GET - returns list of all orders to stock
+        POST - creates a new order to stock
+    """
+    permission_classes = [AllowAny]
+    queryset = IngredientVersionStockOrder.objects.all()
+    serializer_class = IngredientVersionStockOrderSerializer
+
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
+# Update
+
+
+class IngredientVersionStockOrderModifyAPI(generics.UpdateAPIView):
+    """
+    Class based view for IngredientVersionStockOrder API
+    Provides the following methods:
+        PUT - modifies order of and IngredientVersion
+        PATCH - partially modifies order of and IngredientVersion
+    """
+    permission_classes = [AllowAny]
+    queryset = IngredientVersionStockOrder.objects.all()
+    serializer_class = IngredientVersionStockOrderSerializer
+
+    def put(self, request, *args, **kwargs):
+        return super().put(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        return super().patch(request, *args, **kwargs)

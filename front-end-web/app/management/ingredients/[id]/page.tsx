@@ -2,8 +2,6 @@ import "server-only";
 
 import React from "react";
 
-import ActionPanel from "./actions";
-
 import fetchIngredietDetail from "@/components/fetching/ingredient_detail";
 
 import IngredientVersionWidget from "./version_widget/version_widget";

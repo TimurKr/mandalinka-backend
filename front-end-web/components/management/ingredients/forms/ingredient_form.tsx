@@ -12,7 +12,8 @@ import { Unit } from "@/components/fetching/units";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ErrorMessage from "@/components/form_elements/error_message";
-import DangerAlert from "@/components/alerts/danger";
+import Alert from "@/components/alert";
+import parseInvalidResponse from "@/components/form_elements/parse_invalid_response";
 
 interface IngredientValues {
   name: string;
@@ -51,7 +52,13 @@ export default function IngredientForm({
 
   async function handleSubmit(
     values: IngredientValues,
-    { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
+    {
+      setSubmitting,
+      setFieldError,
+    }: {
+      setSubmitting: (isSubmitting: boolean) => void;
+      setFieldError: (field: string, errorMsg: string) => void;
+    }
   ) {
     const formData = new FormData();
     formData.append("name", values.name);
@@ -70,16 +77,26 @@ export default function IngredientForm({
       body: formData,
     });
 
-    if (!response.ok) {
-      let response_json = await response.json();
-      console.log("Response: ", response_json);
-      setErrorMessage(response_json.detail);
-      throw new Error(`HTTP error! status: ${response.status}`);
-    } else {
-      let response_json = await response.json();
-      // TODO: Force refresh fetches
+    const response_json = await parseInvalidResponse(
+      response,
+      setFieldError,
+      setErrorMessage
+    );
+
+    if (response.ok) {
       Router.push(`/management/ingredients/${response_json.id}`);
     }
+
+    // if (!response.ok) {
+    //   let response_json = await response.json();
+    //   console.log("Response: ", response_json);
+    //   setErrorMessage(response_json.detail);
+    //   throw new Error(`HTTP error! status: ${response.status}`);
+    // } else {
+    //   let response_json = await response.json();
+    //   // TODO: Force refresh fetches
+    //   Router.push(`/management/ingredients/${response_json.id}`);
+    // }
 
     setSubmitting(false);
   }
@@ -102,49 +119,58 @@ export default function IngredientForm({
       })}
       onSubmit={handleSubmit}
     >
-      <Form className="m-2 grid grid-cols-2 items-center gap-2">
-        {title && (
-          <div className="col-span-2">
-            <h1 className="text-primary text-center text-2xl font-bold">
-              {title}
-            </h1>
+      {(props) => (
+        <Form className="m-2 grid grid-cols-2 items-center gap-2">
+          {title && (
+            <div className="col-span-2">
+              <h1 className="text-primary text-center text-2xl font-bold">
+                {title}
+              </h1>
+            </div>
+          )}
+          {errorMessage && (
+            <Alert onClose={() => setErrorMessage(null)}>{errorMessage}</Alert>
+          )}
+          <div className="row-span-3">
+            <FileInput
+              label="Obrázok"
+              name="img"
+              initial_url={
+                initial && initial.img && typeof initial.img === "string"
+                  ? initial.img
+                  : undefined
+              }
+            />
           </div>
-        )}
-        {errorMessage && (
-          <DangerAlert onClose={() => setErrorMessage(null)}>
-            {errorMessage}
-          </DangerAlert>
-        )}
-        <div className="row-span-3">
-          <FileInput
-            label="Obrázok"
-            name="img"
-            initial_url={
-              initial && initial.img && typeof initial.img === "string"
-                ? initial.img
-                : undefined
-            }
-          />
-        </div>
-        <div>
-          <TextInput label="Názov" name="name" />
-        </div>
-        <div>
-          <TextInput label="Extra informácie" name="extra_info" />
-        </div>
-        <div>
-          <Select label="Jednotka" name="unit" options={units} />
-        </div>
+          <div>
+            <TextInput label="Názov" name="name" />
+          </div>
+          <div>
+            <TextInput label="Extra informácie" name="extra_info" />
+          </div>
+          <div>
+            <Select label="Jednotka" name="unit" options={units} />
+          </div>
 
-        <div className="col-span-2 rounded-lg border border-gray-300 p-2 md:col-span-1">
-          <MultiSelect label="Alergeny" name="alergens" options={alergens} />
-        </div>
-        <div className="col-span-2 grid place-content-center md:col-span-1">
-          <Button color="primary" dark type="submit">
-            {method === "POST" ? "Pridať" : method === "PATCH" ? "Uložiť" : ""}
-          </Button>
-        </div>
-      </Form>
+          <div className="col-span-2 rounded-lg border border-gray-300 p-2 md:col-span-1">
+            <MultiSelect label="Alergeny" name="alergens" options={alergens} />
+          </div>
+          <div className="col-span-2 grid place-content-center md:col-span-1">
+            <Button
+              color="primary"
+              dark
+              type="submit"
+              disabled={props.isSubmitting}
+            >
+              {method === "POST"
+                ? "Pridať"
+                : method === "PATCH"
+                ? "Uložiť"
+                : ""}
+            </Button>
+          </div>
+        </Form>
+      )}
     </Formik>
   );
 }
