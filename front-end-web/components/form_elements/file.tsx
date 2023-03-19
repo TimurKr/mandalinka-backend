@@ -23,7 +23,7 @@ const FileInput = ({ ...props }: FileInputProps) => {
         htmlFor={props.id || props.name}
         className="flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 "
       >
-        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+        <div className="flex flex-col items-center justify-center px-5 pt-5 pb-6">
           {field.value || props.initial_url ? (
             <div className="mt-2">
               <div className="flex flex-col items-center">
@@ -49,10 +49,10 @@ const FileInput = ({ ...props }: FileInputProps) => {
             <CloudArrowUpIcon className="h-10 w-10 text-gray-400" />
           )}
           <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-            <span className="font-semibold">Click to upload</span>
+            <span className="font-semibold">Kliknite pre nahratie obrázku</span>
           </p>
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            Any format right now...
+            Hocijaký formát
           </p>
           <ErrorMessage meta={meta} />
         </div>

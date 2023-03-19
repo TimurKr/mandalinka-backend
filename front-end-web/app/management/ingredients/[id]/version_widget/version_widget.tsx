@@ -11,6 +11,8 @@ import GeneralInfo from "./general";
 import InStockManipulation from "./in_stock_manipulation";
 import Graph from "./graph";
 import StatusManipulation from "./status_manipulation";
+import { Suspense } from "react";
+import Loading from "@/components/loading_element";
 
 const OrdersTable = dynamic(() => import("./orders_table"), { ssr: false });
 
@@ -49,7 +51,7 @@ export default async function IngredientVersionWidget({
         <div>
           <VersionSelector ingredient={ingredient} current_id={version_id} />
         </div>
-        <div className="flex h-full flex-wrap justify-between gap-3 overflow-visible p-2 pt-4">
+        <div className="flex flex-wrap justify-between gap-3 overflow-visible p-2 pt-4">
           <div className="shrink-0">
             <BorderedElement title="Všeobecné informácie">
               <GeneralInfo data={current_version} />
@@ -62,18 +64,22 @@ export default async function IngredientVersionWidget({
           </div>
           <div className="flex-auto">
             <BorderedElement title="Objednávky">
-              <OrdersTable
-                data={current_version}
-                modify_url={`${process.env.CLIENT_API_URL}/management/ingredients/stock_orders/`}
-              />
+              <Suspense fallback={<Loading />}>
+                <OrdersTable
+                  data={current_version}
+                  modify_url={`${process.env.CLIENT_API_URL}/management/ingredients/stock_orders/`}
+                />
+              </Suspense>
             </BorderedElement>
           </div>
           <div className="flex-auto">
             <BorderedElement title="Odpisy">
-              <RemovalsTable
-                data={current_version}
-                delete_url={`${process.env.CLIENT_API_URL}/management/ingredients/stock_removals/`}
-              />
+              <Suspense fallback={<Loading />}>
+                <RemovalsTable
+                  data={current_version}
+                  delete_url={`${process.env.CLIENT_API_URL}/management/ingredients/stock_removals/`}
+                />
+              </Suspense>
             </BorderedElement>
           </div>
           {current_version.is_inactive && (
@@ -117,13 +123,13 @@ export default async function IngredientVersionWidget({
     return (
       <BorderedElement className="!border-primary-600 !p-0">
         <div className="relative h-full w-full overflow-visible p-2 pt-4">
+          <VersionSelector ingredient={ingredient} />
           <IngredientVersionForm
             title="Nová verzia ingrediencie"
             submit_url={`${process.env.CLIENT_API_URL}/management/ingredients/new_version/`}
             method="POST"
             ingredient={ingredient}
           />
-          <VersionSelector ingredient={ingredient} />
         </div>
       </BorderedElement>
     );

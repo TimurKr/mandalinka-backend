@@ -55,8 +55,11 @@ export default function InStockManipulation({
     }));
   const futureExpirations = ingredientVersion.orders
     .filter((order) => new Date(order.expiration_date) > new Date())
+    .filter((order) =>
+      order.is_delivered ? -order.in_stock_amount : -order.amount != 0
+    )
     .map((order) => ({
-      amount: -order.amount,
+      amount: order.is_delivered ? -order.in_stock_amount : -order.amount,
       unit: order.unit,
       date: new Date(order.expiration_date)
         .toDateString()
@@ -109,7 +112,7 @@ export default function InStockManipulation({
 
       <div className="flex h-full items-center">
         <Button
-          color="danger"
+          variant="danger"
           onClick={() => setRemoveModal(true)}
           className="w-auto flex-none !p-2"
           disabled={!ingredientVersion.in_stock_amount}
@@ -122,7 +125,7 @@ export default function InStockManipulation({
         </p>
 
         <Button
-          color="success"
+          variant="success"
           onClick={() => setOrderModal(true)}
           className="w-auto flex-none !p-2"
           disabled={!ingredientVersion.is_active}

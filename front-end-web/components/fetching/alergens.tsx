@@ -4,7 +4,6 @@ export interface Alergen {
   code: number;
   name: string;
 }
-[];
 
 export default async function fetchAlergens(): Promise<Alergen[]> {
   const alergens = await fetch(
@@ -14,6 +13,6 @@ export default async function fetchAlergens(): Promise<Alergen[]> {
   if (alergens.ok) {
     return await alergens.json();
   } else {
-    throw new Error("Failed to fetch data");
+    throw new Error("Failed to fetch alergens");
   }
 }

@@ -25,16 +25,16 @@
     @apply bg-black text-white transition-all duration-300 checked:border checked:border-black checked:text-black hover:border hover:border-black hover:bg-transparent hover:text-black disabled:hover:border-none disabled:hover:bg-black disabled:hover:text-white;
   }
   .btn-warning {
-    @apply border-warning text-warning checked:bg-warning hover:bg-warning disabled:hover:text-warning border transition-all duration-300 checked:text-black hover:text-black disabled:hover:bg-inherit;
+    @apply border-warning text-warning-600 checked:bg-warning hover:bg-warning disabled:hover:text-warning border transition-all duration-300 checked:text-black hover:text-black disabled:hover:bg-inherit;
   }
   .btn-warning-dark {
-    @apply hover:text-warning-600 checked:text-warning hover:border-warning checked:border-warning bg-warning disabled:hover:bg-warning text-black transition-all duration-300 checked:border hover:border hover:bg-transparent disabled:hover:border-none disabled:hover:text-black;
+    @apply hover:text-warning-600 checked:text-warning-600 hover:border-warning checked:border-warning bg-warning disabled:hover:bg-warning text-black transition-all duration-300 checked:border hover:border hover:bg-transparent disabled:hover:border-none disabled:hover:text-black;
   }
   .btn-success {
     @apply border-success text-success checked:bg-success hover:bg-success disabled:hover:text-success border transition-all duration-300 checked:text-white hover:text-white disabled:hover:bg-inherit;
   }
   .btn-success-dark {
-    @apply hover:text-success checked:text-success hover:border-success checked:border-success bg-success disabled:hover:bg-success text-white transition-all duration-300 checked:border hover:border hover:bg-transparent disabled:hover:border-none disabled:hover:text-black;
+    @apply hover:text-success checked:text-success hover:border-success checked:border-success bg-success disabled:hover:bg-success text-white transition-all duration-300 checked:border hover:border hover:bg-transparent disabled:hover:border-none disabled:hover:text-white;
   }
   .btn-danger {
     @apply border-danger text-danger checked:bg-danger hover:bg-danger disabled:hover:text-danger border transition-all duration-300 checked:text-white hover:text-white disabled:hover:bg-inherit;

@@ -13,9 +13,9 @@ const NumberInput: React.FC<NumberInputProps> = (props) => {
     <>
       <div className="relative">
         <input
-          type="number"
-          className="focus:border-primary peer block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2.5 pb-2.5 pt-4 text-sm text-gray-900 focus:outline-none focus:ring-0 disabled:bg-black/10"
           {...field}
+          type="number"
+          className="focus:border-primary focus:ring-primary peer block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2.5 pb-2.5 pt-4 text-sm text-gray-900 focus:outline-none focus:ring-0 disabled:bg-black/10"
           disabled={props.disabled}
           placeholder={props.placeholder}
         />

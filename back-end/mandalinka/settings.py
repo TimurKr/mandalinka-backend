@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-9li5q($ap3goxzqn#i0@f=6%d3a5tu--w(^ic8p8jr9512i*i8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [".localhost", "127.0.0.1", "mandalinka.api.com"]
+ALLOWED_HOSTS = [".localhost", "api.mandalinka.com"]
 
 
 # Application definition

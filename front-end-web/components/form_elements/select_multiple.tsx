@@ -1,7 +1,8 @@
 import { useField, Field } from "formik";
+import { BorderedElement } from "@/components/bordered_element";
 import ErrorMessage from "./error_message";
 
-const MultiSelect = ({
+const MultiSelectInput = ({
   label,
   name,
   options,
@@ -13,8 +14,10 @@ const MultiSelect = ({
   const [field, meta, helper] = useField(name);
 
   return (
-    <div>
-      <div className="pb-2">{label}:</div>
+    <BorderedElement
+      title={label}
+      className="!rounded-lg !border-gray-300 pt-4"
+    >
       <div
         role="group"
         aria-labelledby="checkbox-group"
@@ -23,7 +26,7 @@ const MultiSelect = ({
         {options.map((option) => (
           <span key={option.value}>
             <input
-              id={option.value?.toString()}
+              id={`${name}-${option.value?.toString()}`}
               type="checkbox"
               name={name}
               value={option.value}
@@ -39,12 +42,18 @@ const MultiSelect = ({
                   newValue = currentValue.filter((v: string) => v !== value);
                 }
                 helper.setValue(newValue);
+                console.log(
+                  "Just change value of ",
+                  field.name,
+                  " to : ",
+                  newValue
+                );
               }}
               className="peer hidden"
             />
             <label
               key={option.value}
-              htmlFor={option.value?.toString()}
+              htmlFor={`${name}-${option.value?.toString()}`}
               className="hover:bg-primary-200 peer-checked:bg-primary-400 peer-checked:hover:bg-primary-300 cursor-pointer rounded-full p-1 px-2 hover:shadow peer-checked:shadow-md"
             >
               {option.label}
@@ -53,8 +62,8 @@ const MultiSelect = ({
         ))}
       </div>
       <ErrorMessage meta={meta} />
-    </div>
+    </BorderedElement>
   );
 };
 
-export default MultiSelect;
+export default MultiSelectInput;

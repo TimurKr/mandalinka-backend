@@ -13,6 +13,7 @@ export default function ConfirmationModal({
   header,
   footer,
   children,
+  disableConfirm = false,
 }: {
   show: boolean;
   onClose: () => void;
@@ -41,6 +42,7 @@ export default function ConfirmationModal({
   header?: string | JSX.Element;
   footer?: string | JSX.Element;
   children?: string | JSX.Element | JSX.Element[];
+  disableConfirm?: boolean;
 }) {
   return (
     <Modal show={show} dismissible={true} onClose={onClose} size={size || "sm"}>
@@ -51,10 +53,15 @@ export default function ConfirmationModal({
           footer
         ) : (
           <>
-            <Button onClick={onClose} color="black">
+            <Button onClick={onClose} variant="black">
               {cancelText}
             </Button>
-            <Button onClick={onConfirm} color={version} dark>
+            <Button
+              onClick={onConfirm}
+              variant={version}
+              dark
+              disabled={disableConfirm}
+            >
               {confirmText}
             </Button>
           </>

@@ -35,14 +35,13 @@ export default function RemovalsTable({
       .then((response) => {
         setDeleteID(null);
         if (response.ok) {
-          setTimeout(router.refresh, 500);
+          window.location.reload();
         } else {
           return response.json();
         }
       })
       .catch((error) => {
         console.log("Error: ", error);
-        setDeleteID(null);
         setErrorMessage("Nastala chyba pri spracovaní odpovede zo servera");
       });
   }
@@ -72,11 +71,9 @@ export default function RemovalsTable({
       >
         Táto akcia je nevratná.
       </ConfirmationModal>
-      {errorMessage && (
-        <Alert onClose={() => setErrorMessage(null)} version="danger">
-          {errorMessage}
-        </Alert>
-      )}
+      <Alert onClose={() => setErrorMessage(null)} variant="danger">
+        {errorMessage}
+      </Alert>
       {removals.length > 0 ? (
         <Table className="w-full table-auto pt-1">
           <Table.Head className="w-full justify-between text-xs uppercase">

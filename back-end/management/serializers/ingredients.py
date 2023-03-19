@@ -1,8 +1,6 @@
 from management.models.ingredients import IngredientVersionStockOrder
 from utils.models import Unit
 from rest_framework import serializers
-from rest_framework.fields import URLField
-from django.core.validators import MinValueValidator
 
 
 from management.models.ingredients import Ingredient, IngredientVersion, IngredientVersionStockChange, IngredientVersionStockOrder, IngredientVersionStockRemove
@@ -109,8 +107,12 @@ class IngredientVersionStockOrderSerializer(serializers.ModelSerializer):
             'in_stock_amount',
         )
 
-    def validate(self, data):
-        """Check if unit is valid property for the ingredient_version"""
+    def validate(self, data: dict):
+        """
+        - Check if unit is valid property for the ingredient_version
+        - Check if delivery_date is after order_date
+        - Check if expiration_date is after delivery_date
+        """
 
         if data.get('unit'):
             if data['unit'].property != data['ingredient_version'].unit.property:
@@ -120,6 +122,25 @@ class IngredientVersionStockOrderSerializer(serializers.ModelSerializer):
                         allowed_units.append(unit.sign)
                 raise serializers.ValidationError(
                     f'Jednotky sa nezhodujú. Zvolte jednu z {", ".join(allowed_units)}')
+
+        if data.get('delivery_date') and data.get('order_date'):
+            if data['delivery_date'] < data['order_date']:
+                raise serializers.ValidationError(
+                    'Dátum dodania musí byť po dátume objednania.')
+
+        if data.get('expiration_date') and data.get('delivery_date'):
+            if data['expiration_date'] <= data['delivery_date'].date():
+                raise serializers.ValidationError(
+                    'Dátum expirácie musí byť po dátume dodania.')
+
+        if self.instance:
+            if not data.get('is_delivered', self.instance.is_delivered) and data.get('is_expired', self.instance.is_expired):
+                raise serializers.ValidationError(
+                    'Nedoručená objednávka nemôže byť expirovaná.')
+        else:
+            if not data.get('is_delivered', False) and data.get('is_expired', False):
+                raise serializers.ValidationError(
+                    'Nedoručená objednávka nemôže byť expirovaná.')
 
         return super().validate(data)
 

@@ -4,7 +4,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import TextInput from "@/components/form_elements/text";
 import NumberInput from "@/components/form_elements/number";
-import Select from "@/components/form_elements/select";
+import SelectInput from "@/components/form_elements/select";
 import Button from "@/components/button";
 import { useRouter } from "next/navigation";
 
@@ -57,16 +57,11 @@ export default function IngredientVersionForm({
       .then((response) =>
         parseInvalidResponse(response, setFieldError, setFormError)
       )
-      .then((response) => {
+      .then(async (response) => {
         if (response.ok) {
-          setFormError(null);
-          Router.push(
-            `/management/ingredients/${response.ingredient}/${response.id}`
-          );
+          let json = await response.json();
+          window.location.href = `/management/ingredients/${json.ingredient}/${json.id}`;
         }
-      })
-      .catch((error) => {
-        setFormError(error.message);
       });
   }
 
@@ -96,13 +91,13 @@ export default function IngredientVersionForm({
               </h1>
             </div>
           )}
-          {formError && (
-            <div className="w-full">
-              <Alert version="danger" onClose={() => setFormError(null)}>
-                {formError}
-              </Alert>
-            </div>
-          )}
+          <Alert
+            className="w-full"
+            variant="danger"
+            onClose={() => setFormError(null)}
+          >
+            {formError}
+          </Alert>
           <div className="grow">
             <TextInput label="Zdroj" name="source" />
           </div>
@@ -114,7 +109,7 @@ export default function IngredientVersionForm({
           </div>
           <div className="grid place-content-center">
             <Button
-              color="primary"
+              variant="primary"
               dark
               type="submit"
               disabled={props.isSubmitting}

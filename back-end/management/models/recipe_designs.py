@@ -18,6 +18,10 @@ class RDStep(TimeStampedMixin, models.Model):
     - recipe: recipe to which the step belongs
     """
 
+    recipe = models.ForeignKey('RecipeDesign',
+                               on_delete=models.CASCADE, related_name="steps"
+                               )
+    
     number = models.IntegerField(
         verbose_name=_("Poradie kroku"), validators=(MinValueValidator(1),))
 
@@ -31,10 +35,6 @@ class RDStep(TimeStampedMixin, models.Model):
         help_text=_("Pridajte thumbnail"),
         blank=True, null=True
     )
-
-    recipe = models.ForeignKey('RecipeDesign',
-                               on_delete=models.CASCADE, related_name="steps"
-                               )
 
     def __str__(self):
         return f'{self.recipe} step n. {self.number}: {self.text}'
@@ -177,6 +177,10 @@ class RecipeDesign(TimeStampedMixin, StatusMixin, models.Model):
     @property
     def price_str(self) -> str:
         return f'{round(self.price,2)} €'
+
+    @property
+    def get_absolute_url(self) -> str:
+        return f'/management/recipes/{self.id}/'
 
     # Errors
 

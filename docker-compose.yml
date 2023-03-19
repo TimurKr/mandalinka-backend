@@ -36,10 +36,10 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - SERVER_API_URL=http://mandalinka.api.com:8000
-      # CLIENT_API_URL is required while mandalinka.api.com is not public domain
+      - SERVER_API_URL=http://api.mandalinka.com:8000
+      # CLIENT_API_URL is required while api.mandalinka.com is not public domain
       - CLIENT_API_URL=http://localhost:8000
     depends_on:
       - back-end
     links:
-      - back-end:mandalinka.api.com
+      - back-end:api.mandalinka.com

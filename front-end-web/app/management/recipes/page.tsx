@@ -1,8 +1,12 @@
-export default function Recipes() {
+export default function Ingredients() {
   return (
-    <>
-      <h1>Recepty</h1>
-      <p>Recepty</p>
-    </>
+    <div className="grid h-full place-content-center">
+      <p className="flex justify-center text-neutral-600">
+        <span className="material-symbols-rounded animate-move-left-right mr-3">
+          arrow_back
+        </span>
+        Zvoľte si recept.
+      </p>
+    </div>
   );
 }

@@ -2,9 +2,10 @@ import Alert from "@/components/alert";
 import Button from "@/components/button";
 import { IngredientVersion } from "@/components/fetching/ingredient_detail";
 import { Unit } from "@/components/fetching/units";
+import DateTimeInput from "@/components/form_elements/date_time";
 import NumberInput from "@/components/form_elements/number";
 import parseInvalidResponse from "@/components/form_elements/parse_invalid_response";
-import Select from "@/components/form_elements/select";
+import SelectInput from "@/components/form_elements/select";
 import TextInput from "@/components/form_elements/text";
 import { Modal } from "flowbite-react";
 import { Form, Formik } from "formik";
@@ -29,14 +30,13 @@ export default function RemoveModal({
 }) {
   const [all, setAll] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   async function handleSubmit(
     values: any,
     {
-      setSubmitting,
       setFieldError,
     }: {
-      setSubmitting: (isSubmitting: boolean) => void;
       setFieldError: (field: string, errorMsg: string) => void;
     }
   ) {
@@ -44,6 +44,9 @@ export default function RemoveModal({
     formValues.append("ingredient_version", ingredientVersion.id.toString());
     formValues.append("amount", values.amount);
     formValues.append("unit", values.unit.toString());
+    values.order_date instanceof Date
+      ? formValues.append("date", values.date.toISOString())
+      : formValues.append("date", new Date(values.date).toISOString());
     formValues.append("reason", values.reason);
     formValues.append("description", values.description);
 
@@ -51,10 +54,7 @@ export default function RemoveModal({
       method: "POST",
       body: formValues,
     }).then((response) => {
-      if (response.status === 400) {
-        parseInvalidResponse(response, setFieldError, setErrorMessage);
-      }
-      return response;
+      parseInvalidResponse(response, setFieldError, setErrorMessage, true);
     });
   }
 
@@ -62,19 +62,18 @@ export default function RemoveModal({
     <Modal dismissible={true} show={show} onClose={onClose} size="md">
       <Modal.Header>Odoberte zo skladu</Modal.Header>
       <Modal.Body>
-        {errorMessage && (
-          <Alert
-            version="danger"
-            className="!mb-3"
-            onClose={() => setErrorMessage(null)}
-          >
-            {errorMessage}
-          </Alert>
-        )}
+        <Alert
+          variant="danger"
+          className="!mb-3"
+          onClose={() => setErrorMessage(null)}
+        >
+          {errorMessage}
+        </Alert>
         <Formik
           initialValues={{
             amount: 0,
             unit: ingredientVersion.unit.id,
+            date: new Date(),
             reason: "",
             description: "",
             all: false,
@@ -84,8 +83,14 @@ export default function RemoveModal({
             amount: Yup.number()
               .required("Required")
               .min(0, "Zadajte kladné číslo"),
-            // .max(ingredientVersion.in_stock_amount, "Nedostatok množstva"),
             unit: Yup.number().required("Required"),
+            // Date must be today or in the past
+            date: Yup.date()
+              .required("Required")
+              .max(
+                new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
+                "Nemôžete nastaviť dátum na viac ako 24 hod v budúcnosti."
+              ),
             reason: Yup.string().required("Required"),
             description: Yup.string().when("reason", {
               is: "other",
@@ -99,7 +104,7 @@ export default function RemoveModal({
                 <NumberInput name="amount" label="Množstvo" disabled={all} />
               </div>
               <div className="flex-auto">
-                <Select
+                <SelectInput
                   name="unit"
                   label="Jednotka"
                   options={units.map((unit) => ({
@@ -130,8 +135,11 @@ export default function RemoveModal({
                   Všetko na sklade
                 </label>
               </div>
+              <div className="flex-auto">
+                <DateTimeInput name="date" label="Dátum a čas" time />
+              </div>
               <div className="flex-auto shrink-0">
-                <Select
+                <SelectInput
                   name="reason"
                   label="Zadajte dôvod"
                   options={[
@@ -147,8 +155,7 @@ export default function RemoveModal({
               <div className="flex-auto">
                 <Button
                   type="submit"
-                  color="primary"
-                  dark
+                  variant="primary"
                   disabled={props.isSubmitting}
                 >
                   Odobrať

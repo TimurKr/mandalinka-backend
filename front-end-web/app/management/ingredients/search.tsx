@@ -138,7 +138,7 @@ export default function Search({ ingredients }: { ingredients: Ingredient[] }) {
                 className="block overflow-hidden p-2 hover:overflow-visible"
                 key={ingredient.id}
               >
-                <Link
+                {/* <Link
                   href={ingredient.url}
                   className={`focus:ring-primary focus:outline-primary focus:border-primary  whitespace-nowrap rounded-full p-1 px-2 shadow hover:shadow-lg active:shadow-inner 
                    ${
@@ -158,10 +158,31 @@ export default function Search({ ingredients }: { ingredients: Ingredient[] }) {
                        ? "bg-gray-400 text-black"
                        : "text-gray-500"
                    }`}
+                > */}
+                <Button
+                  href={ingredient.url}
+                  variant={
+                    ingredient.is_active
+                      ? "success"
+                      : ingredient.is_inactive
+                      ? "warning"
+                      : ingredient.is_deleted
+                      ? "danger"
+                      : "black"
+                  }
+                  dark={is_selected}
+                  className={`inline ${
+                    !ingredient.is_active &&
+                    !ingredient.is_inactive &&
+                    !ingredient.is_deleted
+                      ? "opacity-70"
+                      : ""
+                  }`}
                 >
                   {matchingIngredients[index].name} -{" "}
                   {matchingIngredients[index].usage_last_month}
-                </Link>
+                </Button>
+                {/* </Link> */}
               </div>
             );
           }}
@@ -172,7 +193,7 @@ export default function Search({ ingredients }: { ingredients: Ingredient[] }) {
         id="add_new"
         className="absolute bottom-0 z-10 w-full flex-none p-3 backdrop-blur"
       >
-        <Button color="primary" dark href="/management/ingredients/new">
+        <Button variant="primary" dark href="/management/ingredients/new">
           Pridať novú ingredienciu
         </Button>
       </div>

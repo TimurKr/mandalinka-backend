@@ -2,7 +2,7 @@ import Link from "next/link";
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   href?: string;
-  color: "primary" | "secondary" | "black" | "danger" | "warning" | "success";
+  variant: "primary" | "secondary" | "black" | "danger" | "warning" | "success";
   dark?: boolean;
   className?: string;
 }
@@ -17,27 +17,27 @@ const Button = (props: Props) => {
   }
 
   const buttonClassName = `${className} btn ${
-    props.color === "primary"
+    props.variant === "primary"
       ? props.dark
         ? "btn-primary-dark"
         : "btn-primary"
-      : props.color === "secondary"
+      : props.variant === "secondary"
       ? props.dark
         ? "btn-secondary-dark"
         : "btn-secondary"
-      : props.color === "black"
+      : props.variant === "black"
       ? props.dark
         ? "btn-black-dark"
         : "btn-black"
-      : props.color === "danger"
+      : props.variant === "danger"
       ? props.dark
         ? "btn-danger-dark"
         : "btn-danger"
-      : props.color === "warning"
+      : props.variant === "warning"
       ? props.dark
         ? "btn-warning-dark"
         : "btn-warning"
-      : props.color === "success"
+      : props.variant === "success"
       ? props.dark
         ? "btn-success-dark"
         : "btn-success"
@@ -52,7 +52,8 @@ const Button = (props: Props) => {
     );
   } else {
     return (
-      <button className={buttonClassName} {...buttonProps}>
+      // Spread all props to the button, but override the className
+      <button {...buttonProps} className={buttonClassName}>
         {children}
       </button>
     );

@@ -2,7 +2,8 @@ import datetime
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.dispatch import receiver
-from django.db.models.signals import pre_save, post_save, pre_delete
+from django.db.models.signals import pre_save, post_save, pre_delete, post_delete
+from django.core.exceptions import ValidationError
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
@@ -21,7 +22,7 @@ class IngredientVersion(TimeStampedMixin, StatusMixin, models.Model):
                                    on_delete=models.RESTRICT
                                    )
 
-    cost = models.FloatField(
+    _cost = models.FloatField(
         verbose_name=_("Cena na jednotku"),
         help_text=_("Zadajte cenu na zvolené množstvo zvolenej jednotky"),
         validators=[MinValueValidator(0, message=_("Cena musí byť kladná"))],
@@ -29,8 +30,23 @@ class IngredientVersion(TimeStampedMixin, StatusMixin, models.Model):
     )
 
     @property
+    def cost(self) -> float:
+        return self._cost
+
+    @property
     def cost_str(self) -> str:
         return f'{round(self.cost,2)} €'
+
+    def update_cost(self) -> None:
+        new_cost = None
+        last_order = self.orders.order_by('-order_date').first()
+        if last_order:
+            new_cost = last_order.cost / \
+                self.unit.from_base(last_order.unit.to_base(last_order.amount))
+
+        if new_cost != self._cost:
+            self._cost = new_cost
+            self.save()
 
     source = models.CharField(
         max_length=64,
@@ -47,9 +63,10 @@ class IngredientVersion(TimeStampedMixin, StatusMixin, models.Model):
 
     def update_in_stock_amount(self) -> None:
         in_stock_amount = 0
-        for order in self.orders.filter(in_stock_amount__gt=0):
+        for order in self.orders.filter(_in_stock_amount__gt=0):
             in_stock_amount += self.unit.from_base(
                 order.unit.to_base(order.in_stock_amount))
+
         if in_stock_amount != self._in_stock_amount:
             self._in_stock_amount = in_stock_amount
             self.save()
@@ -85,7 +102,7 @@ class IngredientVersion(TimeStampedMixin, StatusMixin, models.Model):
 
     @property
     def version_number(self) -> int:
-        return self.ingredient.versions.filter(created__lt=self.created).count()
+        return self.ingredient.versions.filter(created__lt=self.created).count() + 1
 
     class Meta:
         permissions = [
@@ -114,15 +131,16 @@ class IngredientVersion(TimeStampedMixin, StatusMixin, models.Model):
         original = self.__class__.objects.filter(pk=self.pk).first()
 
         if not original and self.is_active:
-            raise ValueError(
+            raise ValidationError(
                 _("Nemôžete vytvoriť aktívnu verziu ingrediencie."))
 
         return super().save(*args, **kwargs)
 
 
 @receiver(post_save, sender=IngredientVersion)
-def update_in_stock_amount(sender, instance, **kwargs):
+def update(sender: IngredientVersion, instance: IngredientVersion, **kwargs):
     instance.update_in_stock_amount()
+    instance.update_cost()
 
 
 class Ingredient(TimeStampedMixin, models.Model):
@@ -257,7 +275,7 @@ class IngredientVersionStockChange(TimeStampedMixin, models.Model):
                                            )
     amount = models.FloatField(
         verbose_name=_("Množstvo"),
-        validators=[MinValueValidator(0)],
+        validators=[MinValueValidator(0.000000001)],
     )
     unit = models.ForeignKey(
         Unit,
@@ -279,7 +297,7 @@ class IngredientVersionStockChange(TimeStampedMixin, models.Model):
         if not self.unit:
             self.unit = self.ingredient_version.unit
         elif self.unit.property != self.ingredient_version.unit.property:
-            raise ValueError(
+            raise ValidationError(
                 "Unit must be of the same property as the ingredient")
 
         return super().save(*args, **kwargs)
@@ -328,48 +346,43 @@ class IngredientVersionStockRemove(IngredientVersionStockChange):
 
     def _apply(self):
         orders = self.ingredient_version.orders.filter(
-            in_stock_amount__gt=0).order_by('delivery_date')
+            _in_stock_amount__gt=0).order_by('delivery_date')
+
+        self_amount = self.unit.to_base(self.amount)
+
         for order in orders:
             order_in_stock = order.unit.to_base(order.in_stock_amount)
-            self_amount = self.unit.to_base(self.amount)
             if order_in_stock >= self_amount:
-                order.in_stock_amount -= self.unit.from_base(self_amount)
+                order._in_stock_amount -= order.unit.from_base(self_amount)
                 order.save()
                 break
             else:
                 self_amount -= order_in_stock
-                order.in_stock_amount = 0
+                order._in_stock_amount = 0
                 order.save()
 
     def _unapply(self):
         orders = self.ingredient_version.orders.filter(
-            is_delivered=True).order_by('delivery_date')
+            is_delivered=True).order_by('-delivery_date')
+        self_amount = self.unit.to_base(self.amount)
         for order in orders:
             order_missing = order.unit.to_base(
                 order.amount - order.in_stock_amount)
-            self_amount = self.unit.to_base(self.amount)
             if order_missing >= self_amount:
-                order.in_stock_amount += order.unit.from_base(self_amount)
+                order._in_stock_amount += order.unit.from_base(self_amount)
                 order.save()
                 break
             else:
                 self_amount -= order_missing
-                order.in_stock_amount = order.amount
+                order._in_stock_amount = order.amount
                 order.save()
 
     class Meta:
         ordering = ('created',)
-        constraints = [
-            models.CheckConstraint(
-                check=models.Q(reason='other', description__isnull=False) | ~models.Q(
-                    reason='other'),
-                name='%(app_label)s_%(class)s_other_reason_has_no_description'
-            )
-        ]
 
 
 @receiver(pre_save, sender=IngredientVersionStockRemove)
-def apply_remove(sender, instance, **kwargs):
+def apply_remove(sender, instance: IngredientVersionStockRemove, **kwargs):
     original = sender.objects.filter(pk=instance.pk).first()
     if original:
         og_amount = original.unit.to_base(original.amount)
@@ -382,7 +395,7 @@ def apply_remove(sender, instance, **kwargs):
 
 
 @receiver(pre_delete, sender=IngredientVersionStockRemove)
-def unapply_remove(sender, instance, **kwargs):
+def unapply_remove(sender, instance: IngredientVersionStockRemove, **kwargs):
     instance._unapply()
 
 
@@ -430,47 +443,52 @@ class IngredientVersionStockOrder(IngredientVersionStockChange):
         help_text=_("Zadajte cenu")
     )
 
-    in_stock_amount = models.FloatField(
+    _in_stock_amount = models.FloatField(
         verbose_name=_("Množstvo v sklade"),
         validators=[MinValueValidator(0)],
         help_text=_("Zadajte množstvo na sklade"),
         default=0
     )
 
+    @property
+    def in_stock_amount(self) -> float:
+        return self._in_stock_amount
+
     class Meta:
         ordering = ('-order_date', 'delivery_date', 'created')
 
     def save(self, *args, **kwargs):
-        """
-        - Updates ingredient version cost if this is the newest order
-        """
-        last_order = IngredientVersionStockOrder.objects.all().order_by("-order_date").first()
-        if last_order and last_order.order_date <= self.order_date:
-            self.ingredient_version.cost = self.cost / self.ingredient_version.unit.from_base(
-                self.unit.to_base(self.amount))
-            self.ingredient_version.save()
+        if self.pk:
+            original = IngredientVersionStockOrder.objects.get(pk=self.pk)
+
+            if self.is_delivered and not original.is_delivered:
+                self._in_stock_amount = self.amount
+            elif not self.is_delivered and original.is_delivered:
+                self._in_stock_amount = 0
+
+            if self.is_expired and not original.is_expired:
+                IngredientVersionStockRemove.objects.create(
+                    ingredient_version=self.ingredient_version,
+                    amount=self.in_stock_amount,
+                    unit=self.unit,
+                    reason="expired",
+                    date=self.expiration_date
+                )
+                return
+            if self.in_stock_amount > 0:
+                self.is_expired = False
+            if self.is_expired:
+                self._in_stock_amount = 0
+        else:
+            if self.is_delivered:
+                self._in_stock_amount = self.amount
+            else:
+                self._in_stock_amount = 0
+
+        if self.is_delivered and self.in_stock_amount == 0:
+            self.is_expired = True
 
         return super().save(*args, **kwargs)
-
-
-@receiver(pre_save, sender=IngredientVersionStockOrder)
-def set_in_stock_amount(sender, instance: IngredientVersionStockOrder, **kwargs):
-    """
-    Sets the in_stock_amount to the correct amount
-    Prevents changing is_delivered to False if the order is already used
-    """
-    original = sender.objects.filter(pk=instance.pk).first()
-    if original:
-        if instance.is_delivered and not original.is_delivered:
-            instance.in_stock_amount = instance.amount
-        elif not instance.is_delivered and original.is_delivered:
-            if original.in_stock_amount != original.amount:
-                raise ValueError(
-                    f"Používaná objednávka č.{original.id} nemôže byť zmenená na nepoužívanú, ak je už použitá. \
-                        Z {original.amount} {original.unit} ostáva na sklade {original.in_stock_amount} {original.unit}.")
-    else:
-        if instance.is_delivered:
-            instance.in_stock_amount = instance.amount
 
 
 @receiver(post_save, sender=IngredientVersionStockOrder)
@@ -478,10 +496,19 @@ def update_in_stock_amount(sender, instance: IngredientVersionStockOrder, **kwar
     instance.ingredient_version.update_in_stock_amount()
 
 
+@receiver(post_save, sender=IngredientVersionStockOrder)
+def update_cost(sender, instance: IngredientVersionStockOrder, **kwargs):
+    instance.ingredient_version.update_cost()
+
+
 @receiver(pre_delete, sender=IngredientVersionStockOrder)
 def unapply_order(sender, instance, **kwargs):
-    pass
-    # if instance.is_delivered and instance.in_stock_amount != instance.amount:
-    #     raise ValueError(
-    #         f"Používaná objednávka nemôže byť vymazaná, ak je už použitá. \
-    #             Z {instance.amount} {instance.unit} ostáva na sklade {instance.in_stock_amount} {instance.unit}.")
+    if instance.is_delivered:
+        raise ValidationError(
+            f"Doručená objednávka č.{instance.id} nemôže byť zmazaná."
+        )
+
+
+@receiver(post_delete, sender=IngredientVersionStockOrder)
+def update_cost(sender, instance: IngredientVersionStockOrder, **kwargs):
+    instance.ingredient_version.update_cost()

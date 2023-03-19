@@ -68,8 +68,7 @@ export default function StatusManipulation({
     )
       .then((response) => {
         if (response.ok) {
-          setConfirmStatus(null);
-          return startTransition(() => router.refresh());
+          window.location.reload();
         } else {
           return response.json();
         }
@@ -100,7 +99,7 @@ export default function StatusManipulation({
             ? "zmazanie"
             : ""
         }`}
-        version={
+        variant={
           confirmStatus === "active"
             ? "success"
             : confirmStatus === "inactive"
@@ -111,10 +110,12 @@ export default function StatusManipulation({
         {confirmStatus === "DELETE" ? "Táto akcia je nevratná" : undefined}
       </ConfirmationModal>
       <div className="flex items-center gap-2">
-        {errorMessage && <Alert version="danger">{errorMessage}</Alert>}
+        <Alert variant="danger" onClose={() => setErrorMessage(null)}>
+          {errorMessage}
+        </Alert>
         {(ingredientVersion.is_active || ingredientVersion.is_deleted) && (
           <Button
-            color="warning"
+            variant="warning"
             onClick={() => setConfirmStatus("inactive")}
             className="w-auto flex-none"
           >
@@ -123,7 +124,7 @@ export default function StatusManipulation({
         )}
         {(ingredientVersion.is_inactive || ingredientVersion.is_active) && (
           <Button
-            color="danger"
+            variant="danger"
             onClick={() => setConfirmStatus("deleted")}
             className="w-auto flex-none"
           >
@@ -132,7 +133,7 @@ export default function StatusManipulation({
         )}
         {ingredientVersion.is_inactive && (
           <Button
-            color="success"
+            variant="success"
             onClick={() => setConfirmStatus("active")}
             className="w-auto flex-none"
           >
@@ -143,7 +144,7 @@ export default function StatusManipulation({
           ingredientVersion.orders.length == 0 &&
           ingredientVersion.removals.length == 0 && (
             <Button
-              color="danger"
+              variant="danger"
               dark
               onClick={() => setConfirmStatus("DELETE")}
               className="w-auto flex-none"

@@ -1,5 +1,4 @@
-from django.forms import ValidationError
-from rest_framework import generics, mixins, status
+from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import AllowAny
@@ -17,16 +16,12 @@ from management.serializers.ingredients import (
     IngredientVersionStockRemoveSerializer,
     IngredientVersionStockOrderSerializer,
 )
-from management.models.affix import Alergen
-from management.serializers.affix import AlergenSerializer
-
-from utils.models import Unit
-from utils.serializers import UnitSerializer
-
 
 ### INGREDIENTS ###
 
 # List, create
+
+
 class IngredientListCreateAPI(generics.ListCreateAPIView):
     """
     Class based view for Ingredient API
@@ -179,7 +174,6 @@ class IngredientVersionStockOrderCreateAPI(generics.CreateAPIView):
     """
     Class based view for IngredientVersionStockOrder API
     Provides the following methods:
-        GET - returns list of all orders to stock
         POST - creates a new order to stock
     """
     permission_classes = [AllowAny]

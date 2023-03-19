@@ -17,10 +17,10 @@ const CheckBoxInput: React.FC<CheckBoxInputProps> = ({
     <>
       <div className="flex flex-auto items-center">
         <input
+          {...field}
           id={props.name}
           type="checkbox"
           className="text-primary focus:outline-primary focus:ring-primary disabled:text-primary-600 peer rounded"
-          {...field}
           disabled={props.disabled}
           placeholder={placeholder}
         />

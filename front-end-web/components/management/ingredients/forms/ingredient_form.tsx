@@ -3,9 +3,9 @@
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import TextInput from "@/components/form_elements/text";
-import MultiSelect from "@/components/form_elements/select_multiple";
+import MultiSelectInput from "@/components/form_elements/select_multiple";
 import FileInput from "@/components/form_elements/file";
-import Select from "@/components/form_elements/select";
+import SelectInput from "@/components/form_elements/select";
 import Button from "@/components/button";
 import { Alergen } from "@/components/fetching/alergens";
 import { Unit } from "@/components/fetching/units";
@@ -72,31 +72,19 @@ export default function IngredientForm({
       formData.append("img", values.img);
     }
 
-    const response = await fetch(submit_url, {
+    await fetch(submit_url, {
       method: method,
       body: formData,
-    });
-
-    const response_json = await parseInvalidResponse(
-      response,
-      setFieldError,
-      setErrorMessage
-    );
-
-    if (response.ok) {
-      Router.push(`/management/ingredients/${response_json.id}`);
-    }
-
-    // if (!response.ok) {
-    //   let response_json = await response.json();
-    //   console.log("Response: ", response_json);
-    //   setErrorMessage(response_json.detail);
-    //   throw new Error(`HTTP error! status: ${response.status}`);
-    // } else {
-    //   let response_json = await response.json();
-    //   // TODO: Force refresh fetches
-    //   Router.push(`/management/ingredients/${response_json.id}`);
-    // }
+    })
+      .then((response) =>
+        parseInvalidResponse(response, setFieldError, setErrorMessage)
+      )
+      .then(async (response) => {
+        if (response.ok) {
+          let json = await response.json();
+          window.location.href = `/management/ingredients/${json.id}/`;
+        }
+      });
 
     setSubmitting(false);
   }
@@ -128,9 +116,9 @@ export default function IngredientForm({
               </h1>
             </div>
           )}
-          {errorMessage && (
-            <Alert onClose={() => setErrorMessage(null)}>{errorMessage}</Alert>
-          )}
+          <Alert variant="danger" onClose={() => setErrorMessage(null)}>
+            {errorMessage}
+          </Alert>
           <div className="row-span-3">
             <FileInput
               label="Obrázok"
@@ -149,15 +137,19 @@ export default function IngredientForm({
             <TextInput label="Extra informácie" name="extra_info" />
           </div>
           <div>
-            <Select label="Jednotka" name="unit" options={units} />
+            <SelectInput label="Jednotka" name="unit" options={units} />
           </div>
 
-          <div className="col-span-2 rounded-lg border border-gray-300 p-2 md:col-span-1">
-            <MultiSelect label="Alergeny" name="alergens" options={alergens} />
+          <div className="col-span-2 md:col-span-1">
+            <MultiSelectInput
+              label="Alergeny"
+              name="alergens"
+              options={alergens}
+            />
           </div>
           <div className="col-span-2 grid place-content-center md:col-span-1">
             <Button
-              color="primary"
+              variant="primary"
               dark
               type="submit"
               disabled={props.isSubmitting}

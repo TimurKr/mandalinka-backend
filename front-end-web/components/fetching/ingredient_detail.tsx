@@ -75,7 +75,7 @@ export default async function fetchIngredientDetail(
 ): Promise<IngredientDetail> {
   const ingredient = await fetch(
     `${process.env.SERVER_API_URL}/management/ingredients/${id}/`,
-    { next: { revalidate: 1 } }
+    { cache: "no-store" }
   );
 
   if (!ingredient.ok) {

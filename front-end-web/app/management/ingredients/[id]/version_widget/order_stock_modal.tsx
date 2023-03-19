@@ -6,7 +6,7 @@ import CheckBoxInput from "@/components/form_elements/checkbox";
 import DateTimeInput from "@/components/form_elements/date_time";
 import NumberInput from "@/components/form_elements/number";
 import parseInvalidResponse from "@/components/form_elements/parse_invalid_response";
-import Select from "@/components/form_elements/select";
+import SelectInput from "@/components/form_elements/select";
 import TextInput from "@/components/form_elements/text";
 import { Modal } from "flowbite-react";
 import { Form, Formik } from "formik";
@@ -35,10 +35,8 @@ export default function OrderModal({
   async function handleSubmit(
     values: any,
     {
-      setSubmitting,
       setFieldError,
     }: {
-      setSubmitting: (isSubmitting: boolean) => void;
       setFieldError: (field: string, errorMsg: string) => void;
     }
   ) {
@@ -71,16 +69,12 @@ export default function OrderModal({
         );
     formValues.append("is_delivered", values.is_delivered);
 
-    const response = await fetch(submit_url, {
+    await fetch(submit_url, {
       method: "POST",
       body: formValues,
     })
       .then((response) => {
-        if (response.ok) {
-          setErrorMessage(null);
-          startTransition(() => router.refresh());
-        }
-        parseInvalidResponse(response, setFieldError, setErrorMessage);
+        parseInvalidResponse(response, setFieldError, setErrorMessage, true);
       })
       .catch((error) => setErrorMessage(error.message));
   }
@@ -89,18 +83,16 @@ export default function OrderModal({
     <Modal dismissible={true} show={show} onClose={onClose} size="md">
       <Modal.Header>Zadajte objednávku</Modal.Header>
       <Modal.Body>
-        {errorMessage && (
-          <Alert
-            className="!mb-3"
-            onClose={() => setErrorMessage(null)}
-            version="danger"
-          >
-            {errorMessage}
-          </Alert>
-        )}
+        <Alert
+          className="!mb-3"
+          onClose={() => setErrorMessage(null)}
+          variant="danger"
+        >
+          {errorMessage}
+        </Alert>
         <Formik
           initialValues={{
-            amount: 0,
+            amount: 1,
             unit: ingredientVersion.unit.id,
             order_date: new Date(),
             delivery_date: new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
@@ -115,25 +107,25 @@ export default function OrderModal({
           onSubmit={handleSubmit}
           validationSchema={Yup.object().shape({
             amount: Yup.number()
-              .required("Required")
-              .min(0, "Zadajte kladné číslo"),
-            unit: Yup.number().required("Required"),
+              .required("Povinné pole")
+              .moreThan(0, "Množstvo musí byť kladné"),
+            unit: Yup.number().required("Povinné pole"),
+            cost: Yup.number().min(0, "Zadajte kladné číslo"),
             order_date: Yup.date().required("Required"),
             delivery_date: Yup.date()
-              .required("Required")
+              .required("Povinné pole")
               .min(
                 Yup.ref("order_date"),
                 "Dátum dodania musí byť neskôr ako dátum objednania"
               ),
             expiration_date: Yup.date()
-              .required("Required")
+              .required("Povinné pole")
               .min(
                 Yup.ref("delivery_date"),
                 "Dátum expirácie musí byť neskôr ako dátum dodania"
               ),
             is_delivered: Yup.boolean(),
             description: Yup.string(),
-            cost: Yup.number().min(0, "Zadajte kladné číslo"),
           })}
         >
           {(props) => (
@@ -142,10 +134,7 @@ export default function OrderModal({
                 <NumberInput name="amount" label="Množstvo" />
               </div>
               <div className="flex-auto">
-                <NumberInput name="cost" label="Cena" />
-              </div>
-              <div className="flex-auto">
-                <Select
+                <SelectInput
                   name="unit"
                   label="Jednotka"
                   options={units.map((unit) => ({
@@ -153,6 +142,9 @@ export default function OrderModal({
                     label: unit.name,
                   }))}
                 />
+              </div>
+              <div className="flex-auto">
+                <NumberInput name="cost" label="Cena" />
               </div>
               <div className="flex-auto">
                 <DateTimeInput
@@ -172,11 +164,11 @@ export default function OrderModal({
                   }átum dodania`}
                 />
               </div>
-              <div className="flex-auto">
-                <DateTimeInput name="expiration_date" label="Dátum expirácie" />
-              </div>
               <div className="flex-auto shrink-0">
                 <CheckBoxInput name="is_delivered" label="Dodané" />
+              </div>
+              <div className="flex-auto">
+                <DateTimeInput name="expiration_date" label="Dátum expirácie" />
               </div>
               <div className="flex-auto shrink-0">
                 <TextInput name="description" label="Poznámka" />
@@ -184,8 +176,7 @@ export default function OrderModal({
               <div className="flex-auto">
                 <Button
                   type="submit"
-                  color="primary"
-                  dark
+                  variant="primary"
                   disabled={props.isSubmitting}
                 >
                   Vytvoriť objednávku

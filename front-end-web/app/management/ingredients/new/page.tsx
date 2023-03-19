@@ -17,7 +17,7 @@ export default async function NewIngredient() {
     <div className="grid h-full place-content-center">
       <IngredientForm
         title="Pridajte novú ingredienciu"
-        submit_url={`${process.env.CLIENT_API_URL}/management/ingredients/new_version/`}
+        submit_url={`${process.env.CLIENT_API_URL}/management/ingredients/`}
         method="POST"
         options={{ alergens: alergens, units: units }}
       />

@@ -62,20 +62,22 @@ export default async function Layout({
         </BorderedElement>
       </div>
       <div className="shrink-0 flex-grow basis-full p-2 md:basis-2/3">
-        <BorderedElement>
-          <h4 className="text-xl">Graf používanie v minulosti</h4>
+        <BorderedElement title="Graf">
           <p>TODO: Graf používanie v minulosti</p>
         </BorderedElement>
       </div>
       <div className="flex-1 basis-1/4 p-2">
-        <BorderedElement>
-          Extra info: {ingredient.extra_info || "N/A"}
+        <BorderedElement title="Extra info">
+          {ingredient.extra_info ? (
+            <p>{ingredient.extra_info}</p>
+          ) : (
+            <p className="text-sm text-gray-400">N/A</p>
+          )}
         </BorderedElement>
       </div>
       <div className="flex-1 shrink-0 basis-1/4 p-2">
-        <BorderedElement>
-          <h4>Alergény:</h4>
-          <p className="text-sm text-gray-400">
+        <BorderedElement title="Alergény">
+          <p className="">
             {alergens
               .filter((alergen) => ingredient.alergens.includes(alergen.code))
               .map((alergen) => alergen.code + ": " + alergen.name)
@@ -84,18 +86,22 @@ export default async function Layout({
         </BorderedElement>
       </div>
       <div className="flex-1 basis-1/4 p-2">
-        <BorderedElement>
-          Cena: {ingredient.cost ? ingredient.cost.toString() + " €" : "N/A"}
+        <BorderedElement title="Cena">
+          {ingredient.cost ? (
+            <p>{ingredient.cost.toString()} €</p>
+          ) : (
+            <p className="text-sm text-gray-400">N/A</p>
+          )}
         </BorderedElement>
       </div>
       <div className="flex-1 basis-1/4 p-2">
-        <BorderedElement>
-          Na sklade: {ingredient.in_stock_amount} {ingredient.unit.sign}
+        <BorderedElement title="Na sklade">
+          {ingredient.in_stock_amount} {ingredient.unit.sign}
         </BorderedElement>
       </div>
       <div className="flex-1 basis-1/4 p-2">
         <Button
-          color="black"
+          variant="black"
           href={`/management/ingredients/${ingredient.id}/edit/`}
         >
           Edit

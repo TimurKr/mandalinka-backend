@@ -10,42 +10,47 @@ import {
 
 export default function Alert({
   children,
-  version,
+  variant,
+  show,
   onClose,
   className,
   icon = true,
 }: {
   children: React.ReactNode;
-  version: "danger" | "warning" | "success" | "black" | "primary" | "secondary";
+  variant: "danger" | "warning" | "success" | "black" | "primary" | "secondary";
+  show?: boolean;
   onClose?: () => void;
   className?: string;
   icon?: boolean | JSX.Element;
 }): ReactComponentElement<any> {
+  if (show === false) return <></>;
+  if (show === undefined && !children) return <></>;
+
   return (
     <div
       className={`${className} m-2 flex items-center gap-2 rounded-xl border p-2 ${
-        version === "danger"
+        variant === "danger"
           ? "border-red-600 text-red-600"
-          : version === "warning"
+          : variant === "warning"
           ? "border-yellow-600 text-yellow-600"
-          : version === "success"
+          : variant === "success"
           ? "border-green-600 text-green-600"
-          : version === "black"
+          : variant === "black"
           ? "border-gray-600 text-gray-600"
-          : version === "primary"
+          : variant === "primary"
           ? "border-primary-600 text-primary"
-          : version === "secondary"
+          : variant === "secondary"
           ? "border-secondary-600 text-secondary"
           : ""
       }`}
       role="alert"
     >
       {icon == true ? (
-        version === "danger" ? (
+        variant === "danger" ? (
           <ExclamationCircleIcon className="h-6 w-6" aria-hidden="true" />
-        ) : version === "warning" ? (
+        ) : variant === "warning" ? (
           <ExclamationTriangleIcon className="h-6 w-6" aria-hidden="true" />
-        ) : version === "success" ? (
+        ) : variant === "success" ? (
           <CheckCircleIcon className="h-6 w-6" aria-hidden="true" />
         ) : (
           <NoSymbolIcon className="h-6 w-6" aria-hidden="true" />

@@ -8,7 +8,7 @@ type SelectInputProps = FieldHookConfig<string | number> & {
   options: { value: string | number; label: string }[];
 };
 
-const Select: React.FC<SelectInputProps> = (props) => {
+const SelectInput: React.FC<SelectInputProps> = (props) => {
   const [field, meta, helper] = useField(props);
 
   // Raise error if value is not in options
@@ -24,8 +24,8 @@ const Select: React.FC<SelectInputProps> = (props) => {
   return (
     <div className="relative">
       <select
-        id={props.name}
         {...field}
+        id={props.name}
         disabled={props.disabled}
         className="focus:border-primary focus:ring-primary block w-full rounded-lg border border-gray-300 bg-inherit p-2.5 pr-4 text-sm text-gray-900 focus:outline-none focus:ring-0 disabled:bg-black/10"
       >
@@ -51,4 +51,4 @@ const Select: React.FC<SelectInputProps> = (props) => {
   );
 };
 
-export default Select;
+export default SelectInput;

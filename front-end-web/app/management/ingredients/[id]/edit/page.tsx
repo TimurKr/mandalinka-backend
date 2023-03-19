@@ -32,7 +32,7 @@ export default async function NewIngredient({
         <Button
           href={`/management/ingredients/${params.id}/`}
           className="absolute top-0 left-2 flex !w-auto items-center bg-inherit"
-          color="black"
+          variant="black"
         >
           <ArrowLeftIcon className="mr-1 h-4 w-4" />
           Verzie
@@ -42,7 +42,7 @@ export default async function NewIngredient({
           submit_url={`${process.env.CLIENT_API_URL}/management/ingredients/${params.id}/`}
           method="PATCH"
           options={{ alergens: alergens, units: units }}
-          initial={ingredient}
+          initial={{ ...ingredient, unit: ingredient.unit.id }}
         />
       </div>
     </BorderedElement>

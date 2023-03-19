@@ -39,9 +39,8 @@ class AbstractIngredientUse(TimeStampedMixin, models.Model):
         validators=(MinValueValidator(0),)
     )
 
-    @property
-    def unit(self) -> Unit:
-        return self.ingredient.unit
+    unit = models.ForeignKey(
+        Unit, on_delete=models.PROTECT, verbose_name=_("Jednotka"))
 
     @property
     def cost(self) -> float:
@@ -56,7 +55,6 @@ class AbstractIngredientUse(TimeStampedMixin, models.Model):
 
     class Meta:
         abstract = True
-        unique_together = ('ingredient', 'recipe')
 
 
 class Attribute(models.Model):
