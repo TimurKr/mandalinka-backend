@@ -20,6 +20,10 @@ google-cloud-storage==2.7.0
 google-crc32c==1.5.0
 google-resumable-media==2.4.0
 googleapis-common-protos==1.57.1
+graphene==3.2.2
+graphene-django==3.0.0
+graphql-core==3.2.3
+graphql-relay==3.2.0
 idna==3.4
 joblib==1.1.0
 nltk==3.7

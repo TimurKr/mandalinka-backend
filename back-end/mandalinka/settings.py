@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
+    'graphene_django',
     'corsheaders',
     'storages',
     'crispy_forms',
@@ -144,11 +145,6 @@ STATIC_URL = 'static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'static/'),
-#     os.path.join(BASE_DIR, 'node_modules/'),
-# ]
-
 WEBPACK_LOADER = {
     'DEFAULT': {
         'BUNDLE_DIR_NAME': 'bundles/',
@@ -159,6 +155,9 @@ WEBPACK_LOADER = {
     }
 }
 
+GRAPHENE = {
+    'SCHEMA': 'mandalinka.schema.schema',
+}
 
 # Media files
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
