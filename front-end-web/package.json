@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@apollo/client": "^3.8.0-alpha.10",
     "@headlessui/react": "^1.7.10",
     "@heroicons/react": "^2.0.15",
     "@types/node": "18.13.0",
@@ -21,8 +22,9 @@
     "flowbite-react": "^0.4.2",
     "formik": "^2.2.9",
     "fuse.js": "^6.6.2",
+    "graphql": "^16.6.0",
     "material-symbols": "^0.4.4",
-    "next": "^13.2.5-canary.8",
+    "next": "^13.2.5-canary.18",
     "react": "18.2.0",
     "react-datetime": "^3.2.0",
     "react-dom": "18.2.0",
