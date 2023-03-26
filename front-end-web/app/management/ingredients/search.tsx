@@ -1,84 +1,144 @@
-"use client";
-
 import { useEffect, useState } from "react";
-import { FixedSizeList as List } from "react-window";
 import { usePathname } from "next/navigation";
 
 import Fuse from "fuse.js";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { Ingredient } from "@/components/fetching/ingredients_list";
+// import { Ingredient } from "@/components/fetching/ingredients_list";
 import Button from "@/components/button";
-import { IncomingMessage } from "http";
 
-export default function Search({ ingredients }: { ingredients: Ingredient[] }) {
-  // States for searching
+import {
+  DocumentNode,
+  gql,
+  useQuery,
+  useSuspenseQuery_experimental as useSuspenseQuery,
+} from "@apollo/client";
+import Alert from "@/components/alert";
+import Loading from "@/components/loading_element";
+import Error from "@/components/error_element";
+import TextInput from "@/components/form_elements/text";
+import { Form, Formik } from "formik";
+
+type Ingredient = {
+  id: number;
+  name: string;
+  usageLastMonth: number;
+  url: string;
+  isActive: boolean;
+  isInactive: boolean;
+  isDeleted: boolean;
+};
+
+type IngredientsData = {
+  ingredients: Ingredient[];
+};
+
+const ingredientsQuery = gql`
+  query Ingredients {
+    ingredients {
+      id
+      name
+      usageLastMonth
+      url
+      isActive
+      isInactive
+      isDeleted
+    }
+  }
+`;
+
+export default function Search() {
+  // Declare states
+
   const [search, setSearch] = useState("");
   const [matchingIngredients, setMatchingIngredients] = useState<Ingredient[]>(
     []
   );
 
-  // Fuse.js for searching
-  const fuse = new Fuse(ingredients, { keys: ["name", "id"] });
-
   // Router for redirecting
   const router = useRouter();
   const path = usePathname();
 
-  // Handle some things on the client side only
-  const [placeholder, setPlaceholder] = useState("napr: ");
-  const [windowHeight, setWindowHeight] = useState(0);
-  useEffect(() => {
-    setWindowHeight(window.innerHeight);
-    setPlaceholder(
-      "napr: " +
-        ingredients[Math.floor(Math.random() * ingredients.length)].name
-    );
-    setMatchingIngredients(
-      moveSelectedIngredientToTop(
-        ingredients
-          .slice()
-          .sort((a, b) => b.usage_last_month - a.usage_last_month)
-      )
-    );
-  }, []);
+  // Fetch data
+  const { data, error } = useSuspenseQuery<IngredientsData>(ingredientsQuery, {
+    errorPolicy: "ignore",
+  });
+
+  console.log("error: ", error, error?.message);
+
+  // Fuse.js for searching
+  const fuse = new Fuse(data.ingredients, { keys: ["name", "id"] });
+
+  const currentIngredient = data.ingredients.find(
+    (ingredient: Ingredient) =>
+      path?.endsWith(`/management/ingredients/${ingredient.id}`) ||
+      path?.includes(`/management/ingredients/${ingredient.id}/`)
+  );
 
   function moveSelectedIngredientToTop(original: Ingredient[]): Ingredient[] {
-    // Move the ingredient that is currently selected to the top of the list
-    let id = -1;
-    ingredients.forEach((ingredient) => {
-      if (path?.includes(`/management/ingredients/${ingredient.id}`)) {
-        id = ingredient.id;
-      }
-    });
-    if (id === -1) {
-      router.refresh();
+    if (!currentIngredient) {
+      return original;
     }
 
-    const index = original.findIndex((ingredient) => ingredient.id === id);
+    const index = original.indexOf(currentIngredient);
     if (index !== -1) {
-      const ingredient = original[index];
       original.splice(index, 1);
-      original.unshift(ingredient);
+      original.unshift(currentIngredient);
     }
 
     return original;
   }
 
-  function handleSearch(event: React.ChangeEvent<HTMLInputElement>): void {
-    setSearch(event.target.value);
+  function handleSearch(value: string): void {
+    if (value === search && value !== "") {
+      return;
+    }
+    setSearch(value);
 
-    let results = fuse.search(event.target.value).map((result) => result.item);
-    if (results.length === 0) {
-      results = ingredients
-        .slice()
-        .sort((a, b) => b.usage_last_month - a.usage_last_month);
+    let results = data.ingredients;
+
+    if (value !== "") {
+      results = fuse.search(value).map((result) => result.item);
     }
 
-    setMatchingIngredients(moveSelectedIngredientToTop(results));
+    // Sort results to show the active first, then inactive, then deleted, then the rest
+    // The current ingredient is always first
+    results.sort((a, b) => {
+      if (a.isActive && !b.isActive) {
+        return -1;
+      }
+      if (!a.isActive && b.isActive) {
+        return 1;
+      }
+      if (a.isInactive && !b.isInactive) {
+        return -1;
+      }
+      if (!a.isInactive && b.isInactive) {
+        return 1;
+      }
+      if (a.isDeleted && !b.isDeleted) {
+        return -1;
+      }
+      if (!a.isDeleted && b.isDeleted) {
+        return 1;
+      }
+      if (!a.isActive && !a.isDeleted && !a.isInactive) {
+        return 1;
+      }
+      if (!b.isActive && !b.isDeleted && !b.isInactive) {
+        return -1;
+      }
+      return 0;
+    });
+    results = moveSelectedIngredientToTop(results);
+    setMatchingIngredients(results);
   }
+
+  useEffect(() => {
+    handleSearch(search);
+    console.log("search: ", search);
+  }, [search]);
 
   function handleSubmit(event: React.ChangeEvent<HTMLFormElement>): void {
     event.preventDefault();
@@ -89,110 +149,66 @@ export default function Search({ ingredients }: { ingredients: Ingredient[] }) {
   }
 
   return (
-    <div className="relative h-full w-[15rem]">
-      <div className="relative flex-grow">
-        <div
-          id="search"
-          className="absolute top-0 z-10 w-full flex-none p-3 backdrop-blur"
-        >
-          <form onSubmit={handleSubmit}>
-            <label
-              htmlFor="searchbar"
-              className="block pl-1 text-sm font-medium text-gray-700"
-            >
-              Hľadaj ingredienciu
-            </label>
-            <input
-              type="text"
-              name="searchbar"
-              id="searchbar"
-              autoComplete="off"
-              className="focus:outline-primary my-2 block w-full rounded-full px-3 py-2  shadow-md hover:shadow-lg focus:shadow-lg sm:text-sm"
-              placeholder={placeholder}
-              value={search}
-              onChange={handleSearch}
-            />
-          </form>
-        </div>
-
-        <List
-          height={windowHeight - 70}
-          itemCount={matchingIngredients.length}
-          itemSize={37}
-          width={"100%"}
-          className="overflow-x-visible overscroll-auto"
-        >
-          {({ index, style }) => {
-            let ingredient = matchingIngredients[index];
-
-            let is_selected =
-              path?.includes(`/management/ingredients/${ingredient.id}/`) ||
-              path === `/management/ingredients/${ingredient.id}`;
-
-            return (
-              <div
-                style={{
-                  ...style,
-                  top: `${parseFloat(style.top?.toString() || "0") + 100}px`,
-                }}
-                className="block overflow-hidden p-2 hover:overflow-visible"
-                key={ingredient.id}
-              >
-                {/* <Link
-                  href={ingredient.url}
-                  className={`focus:ring-primary focus:outline-primary focus:border-primary  whitespace-nowrap rounded-full p-1 px-2 shadow hover:shadow-lg active:shadow-inner 
-                   ${
-                     ingredient.is_active
-                       ? is_selected
-                         ? "bg-green-500"
-                         : "text-green-700"
-                       : ingredient.is_inactive
-                       ? is_selected
-                         ? "bg-yellow-400"
-                         : "text-yellow-600"
-                       : ingredient.is_deleted
-                       ? is_selected
-                         ? "bg-red-500"
-                         : "text-red-500"
-                       : is_selected
-                       ? "bg-gray-400 text-black"
-                       : "text-gray-500"
-                   }`}
-                > */}
-                <Button
-                  href={ingredient.url}
-                  variant={
-                    ingredient.is_active
-                      ? "success"
-                      : ingredient.is_inactive
-                      ? "warning"
-                      : ingredient.is_deleted
-                      ? "danger"
-                      : "black"
-                  }
-                  dark={is_selected}
-                  className={`inline ${
-                    !ingredient.is_active &&
-                    !ingredient.is_inactive &&
-                    !ingredient.is_deleted
-                      ? "opacity-70"
-                      : ""
-                  }`}
-                >
-                  {matchingIngredients[index].name} -{" "}
-                  {matchingIngredients[index].usage_last_month}
-                </Button>
-                {/* </Link> */}
-              </div>
-            );
-          }}
-        </List>
+    <div className="flex h-full w-[15rem] flex-col">
+      <div className="z-10 w-full flex-none p-3 backdrop-blur">
+        <form onSubmit={handleSubmit}>
+          <label
+            htmlFor="searchbar"
+            className="block pl-1 text-sm font-medium text-gray-700"
+          >
+            Hľadaj ingredienciu
+          </label>
+          <input
+            type="text"
+            name="searchbar"
+            id="searchbar"
+            autoComplete="off"
+            className="focus:outline-primary my-2 block w-full rounded-full px-3 py-2 shadow-md hover:shadow-lg focus:shadow-lg sm:text-sm"
+            placeholder={data?.ingredients[0].name}
+            value={search}
+            onChange={(event) => {
+              handleSearch(event.target.value);
+            }}
+          />
+        </form>
       </div>
+      <div className="z-0 w-full flex-grow overflow-y-scroll">
+        {matchingIngredients.length === 0 && (
+          <Alert variant="warning">
+            Nenašli sa žiadne výsledky pre hľadanie <strong>{search}</strong>
+          </Alert>
+        )}
 
-      <div
-        id="add_new"
-        className="absolute bottom-0 z-10 w-full flex-none p-3 backdrop-blur"
-      >
+        <ul className="h-full">
+          {matchingIngredients.map((ingredient) => (
+            <li key={ingredient.id} className="block p-2">
+              <Button
+                variant={
+                  ingredient.isActive
+                    ? "success"
+                    : ingredient.isInactive
+                    ? "warning"
+                    : ingredient.isDeleted
+                    ? "danger"
+                    : "black"
+                }
+                dark={currentIngredient?.id === ingredient.id}
+                href={ingredient.url}
+                className={`inline ${
+                  !ingredient.isActive &&
+                  !ingredient.isInactive &&
+                  !ingredient.isDeleted
+                    ? "opacity-70"
+                    : ""
+                }`}
+              >
+                {ingredient.name}
+              </Button>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="z-10 w-full flex-none p-3 backdrop-blur">
         <Button variant="primary" dark href="/management/ingredients/new">
           Pridať novú ingredienciu
         </Button>

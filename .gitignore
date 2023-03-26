@@ -163,6 +163,9 @@ coverage
 .next/
 out/
 
+# wundergraph
+generated
+
 # production
 build
 

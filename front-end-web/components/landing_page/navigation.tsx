@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Button from "components/button";
 
 export default function Navigation() {
   const pages = [
@@ -18,12 +19,9 @@ export default function Navigation() {
       <ol className="flex flex-col items-center sm:flex-row">
         {pages.map(([name, href]) => (
           <li className="py-2 px-2" key={name}>
-            <Link
-              href={href}
-              className="rounded-xl bg-transparent p-2 hover:bg-white hover:bg-opacity-10 hover:shadow-md"
-            >
+            <Button href={href} variant="black">
               {name}
-            </Link>
+            </Button>
           </li>
         ))}
       </ol>

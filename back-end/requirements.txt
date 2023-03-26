@@ -1,3 +1,4 @@
+aniso8601==9.0.1
 asgiref==3.5.2
 autopep8==1.7.0
 cachetools==5.2.0
@@ -22,12 +23,14 @@ google-resumable-media==2.4.0
 googleapis-common-protos==1.57.1
 graphene==3.2.2
 graphene-django==3.0.0
+graphene-file-upload==1.3.0
 graphql-core==3.2.3
 graphql-relay==3.2.0
 idna==3.4
 joblib==1.1.0
 nltk==3.7
 Pillow==9.2.0
+promise==2.3
 protobuf==4.21.12
 psycopg2-binary==2.9.5
 pyasn1==0.4.8
@@ -40,6 +43,7 @@ rsa==4.9
 ruby==0.0.2
 six==1.16.0
 sqlparse==0.4.2
+text-unidecode==1.3
 toml==0.10.2
 tqdm==4.64.1
 Unidecode==1.3.6

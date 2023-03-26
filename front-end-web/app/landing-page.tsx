@@ -2,9 +2,6 @@ import SubheadingText from "@/components/landing_page/subheading";
 import Navigation from "@/components/landing_page/navigation";
 
 export default function LandingPage() {
-  const subheadings = ["Vareni bez starostí", "Vareni bez stresu"];
-  // Change the subheading every 3 seconds with scroll animation
-
   return (
     <>
       <section className="bg-primary relative h-screen w-full items-center justify-center">

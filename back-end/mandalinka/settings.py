@@ -157,7 +157,15 @@ WEBPACK_LOADER = {
 
 GRAPHENE = {
     'SCHEMA': 'mandalinka.schema.schema',
+    'MIDDLEWARE': [
+
+        'graphene_file_upload.middleware.GrapheneFileUploadMiddleware',
+    ],
+    'SCALAR_TYPES': [
+        'graphene_file_upload.scalars.Upload',
+    ],
 }
+
 
 # Media files
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'

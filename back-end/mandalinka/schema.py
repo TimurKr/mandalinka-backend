@@ -1,6 +1,9 @@
 import graphene
 
-from management.schema import Query as ManagementQuery
+from management.graphql.schema import (
+    Query as ManagementQuery,
+    Mutation as ManagementMutation
+)
 from utils.schema import Query as UtilsQuery
 from accounts.schema import Query as AccountsQuery
 
@@ -14,4 +17,11 @@ class Query(
     pass
 
 
-schema = graphene.Schema(query=Query)
+class Mutation(
+    ManagementMutation,
+    graphene.ObjectType
+):
+    pass
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation)

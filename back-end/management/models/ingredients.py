@@ -239,8 +239,9 @@ class Ingredient(TimeStampedMixin, models.Model):
     def usage_last_month(self) -> int:
         """Returns the sum of of times any of its IngredientVersions was used last month"""
         result = 0
-        for version in self.versions.all():
-            result += 1  # TODO when DeliveryDays are done
+        # TODO when DeliveryDays are done
+        # for version in self.versions.all():
+        #     result += 1
         return result
 
     @property

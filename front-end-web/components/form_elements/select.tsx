@@ -1,3 +1,8 @@
+import {
+  DocumentNode,
+  gql,
+  useSuspenseQuery_experimental as useSuspenseQuery,
+} from "@apollo/client";
 import { useField, Field, FieldHookConfig } from "formik";
 import { useEffect } from "react";
 import { isPropertySignature } from "typescript";
@@ -5,19 +10,28 @@ import ErrorMessage from "./error_message";
 
 type SelectInputProps = FieldHookConfig<string | number> & {
   label: string;
-  options: { value: string | number; label: string }[];
+  query_options_schema: DocumentNode;
+  value_key?: string;
+  label_key?: string;
 };
 
 const SelectInput: React.FC<SelectInputProps> = (props) => {
+  const { data } = useSuspenseQuery(props.query_options_schema);
+
+  const options = data[Object.keys(data)[0]].map((option: any) => ({
+    value: option[props.value_key || "id"],
+    label: option[props.label_key || "name"],
+  }));
+
   const [field, meta, helper] = useField(props);
 
   // Raise error if value is not in options
   useEffect(() => {
     if (
       field.value &&
-      !props.options.find((option) => option.value == field.value)
+      !options.find((option: any) => option.value == field.value)
     ) {
-      console.error(`Value ${field.value} not in options:`, props.options);
+      console.error(`Value ${field.value} not in options:`, options);
     }
   });
 
@@ -34,7 +48,7 @@ const SelectInput: React.FC<SelectInputProps> = (props) => {
             {props.label}
           </option>
         )}
-        {props.options.map((option) => (
+        {options.map((option: any) => (
           <option key={option.value} value={option.value}>
             {option.label}
           </option>
