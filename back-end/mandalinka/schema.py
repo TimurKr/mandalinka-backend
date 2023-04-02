@@ -1,6 +1,6 @@
 import graphene
 
-from management.graphql.schema import (
+from management.schema import (
     Query as ManagementQuery,
     Mutation as ManagementMutation
 )

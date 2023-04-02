@@ -12,9 +12,7 @@ db.sqlite3
 secrets
 
 # Custom rules
-back-end/_ingredients_delete
-back-end/_recipes_delete
-back-end/_deliveries_delete
+*_deprecated
 
 # Backup files # 
 *.bak 

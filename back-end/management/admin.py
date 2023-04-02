@@ -2,16 +2,16 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models.affix import Attribute, Alergen, Diet, KitchenAccesory
-from .models.ingredients import (
+from .affix.models import Attribute, Alergen, Diet, KitchenAccesory
+from .ingredients.models import (
     Ingredient,
     IngredientVersion,
     IngredientVersionStockChange,
     IngredientVersionStockOrder,
     IngredientVersionStockRemove
 )
-from .models.recipe_designs import RDStep, RDError, RDIngredient, RecipeDesign
-from .models.menus import RMIngredient, RecipeInMenu, Menu
+from .recipe_designs.models import RDStep, RDError, RDIngredient, RecipeDesign
+from .menus.models import RMIngredient, RecipeInMenu, Menu
 
 admin.site.register(Attribute)
 admin.site.register(Alergen)
