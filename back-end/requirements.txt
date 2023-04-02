@@ -23,7 +23,6 @@ google-resumable-media==2.4.0
 googleapis-common-protos==1.57.1
 graphene==3.2.2
 graphene-django==3.0.0
-graphene-file-upload==1.3.0
 graphql-core==3.2.3
 graphql-relay==3.2.0
 idna==3.4

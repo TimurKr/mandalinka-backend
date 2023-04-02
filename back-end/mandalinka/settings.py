@@ -145,27 +145,9 @@ STATIC_URL = 'static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 
-WEBPACK_LOADER = {
-    'DEFAULT': {
-        'BUNDLE_DIR_NAME': 'bundles/',
-        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
-        'CACHE': not DEBUG,
-        'POLL_INTERVAL': 0.1,
-        'IGNORE': [r'.+\.hot-update.js', r'.+\.map'],
-    }
-}
-
 GRAPHENE = {
-    'SCHEMA': 'mandalinka.schema.schema',
-    'MIDDLEWARE': [
-
-        'graphene_file_upload.middleware.GrapheneFileUploadMiddleware',
-    ],
-    'SCALAR_TYPES': [
-        'graphene_file_upload.scalars.Upload',
-    ],
+    'SCHEMA': 'mandalinka.schema.schema'
 }
-
 
 # Media files
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
