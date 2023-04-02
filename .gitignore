@@ -11,6 +11,9 @@ db.sqlite3
 # secrets #
 secrets
 
+# Custom rules
+*_deprecated
+
 # Backup files # 
 *.bak 
 
@@ -135,7 +138,7 @@ Control.system-ca-bundle
 GitHub.sublime-settings 
 
 # Visual Studio Code # 
-.vscode/* 
+*/.vscode
 !.vscode/settings.json 
 !.vscode/tasks.json 
 !.vscode/launch.json 
@@ -144,4 +147,43 @@ GitHub.sublime-settings
 
 # Node automaticaly generated files #
 webpack-stats.json
-mandalinka/static/bundles/
+back-end/static/bundles/
+
+# dependencies
+node_modules
+.pnp
+.pnp.js
+
+# testing
+coverage
+
+# next.js
+.next/
+out/
+
+# wundergraph
+generated
+
+# production
+build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# local env files
+.env*.local
+
+# vercel
+.vercel
+
+
+# Custom rules
+back-end/_ingredients_delete
+back-end/_ingredients_delete
