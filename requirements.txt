@@ -9,6 +9,7 @@ debugpy==1.6.4
 Django==4.1
 django-cors-headers==3.14.0
 django-crispy-forms==1.14.0
+django-environ==0.10.0
 django-node-assets==0.9.11
 django-storages==1.13.2
 django-webpack-loader==1.8.0
@@ -16,6 +17,7 @@ djangorestframework==3.14.0
 google-api-core==2.11.0
 google-auth==2.15.0
 google-cloud-core==2.3.2
+google-cloud-secret-manager==2.16.1
 google-cloud-storage==2.7.0
 google-crc32c==1.5.0
 google-resumable-media==2.4.0

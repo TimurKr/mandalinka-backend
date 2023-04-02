@@ -22,7 +22,7 @@
       },
       "pathMappings": [
         {
-          "localRoot": "${workspaceFolder}/back-end",
+          "localRoot": "${workspaceFolder}",
           "remoteRoot": "/usr/src/mandalinka/back-end"
         }
       ],
