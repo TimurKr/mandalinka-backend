@@ -1,18 +1,25 @@
-# mandalinka
+# Mandalinka backend
 
-This is a the backend for mandalinka project. It provides GraphQL endpoint at the root url `/` and admin page at `/admin`
+This is the backend service for mandalinka. It provides GraphQL endpoint at the root url `/` and admin page at `/admin`
 
-It is currently designed to work with docker. To run the development server with database run:
+Related repositories: 
+- [web app](https://github.com/TimurKr/mandalinka-web)
 
+---
+
+## Currently working on
+
+Simplifying running in development and CI/CD using GitHub Actions is in proccess.
+
+The endgoal is that upon cloning this directory, starting development server will be as simple as running starting a virtual environment and running
 ```
-docker compose -f docker-compose.yml -f docker-compose.debug.yml up --build
+python manage.py runserver
 ```
-
-from the folder containing `docker.compose.yaml`.
-
-Link to the webpage is: `http://localhost:8000/`. 
-
-For proper functioning, you will need a `secrets` folder, which is not in VS due to safety reasons. To get this folder contact the author.
+The deployement shoud be as simple as merging a branch/pushing to master. Github actions should take care of:
+- collecting static files
+- running tests
+- migrating database
+- deploying to Google Cloud App Engine
 
 ---
 
@@ -23,16 +30,3 @@ For proper functioning, you will need a `secrets` folder, which is not in VS due
 username: admin<br>
 email: admin@mandalinka.sk<br>
 password: admin_heslo<br>
-
-### Accesing servers terminal
-
-Idealy use `Docker` plugin for VS Code. Right click athe desired container and select `attach shell`. 
-
-Alternatively list the running containers
-```
-docker ps
-```
-and than run shell in the desired, using the `CONTAINER ID`:
-```
-docker exec -it <CONTAINER_ID> bash
-```
