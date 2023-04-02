@@ -1,16 +1,16 @@
 # mandalinka
 
-This is a web application in development by Timur Kramar.
+This is a the backend for mandalinka project. It provides GraphQL endpoint at the root url `/` and admin page at `/admin`
 
 It is currently designed to work with docker. To run the development server with database run:
 
 ```
-docker compose up
+docker compose -f docker-compose.yml -f docker-compose.debug.yml up --build
 ```
 
 from the folder containing `docker.compose.yaml`.
 
-Link to open the webpage should be `http://127.0.0.1:8000/`. It will also be specified in the terminal output after the server is started.
+Link to the webpage is: `http://localhost:8000/`. 
 
 For proper functioning, you will need a `secrets` folder, which is not in VS due to safety reasons. To get this folder contact the author.
 
@@ -21,23 +21,18 @@ For proper functioning, you will need a `secrets` folder, which is not in VS due
 ### Superuser account:
 
 username: admin<br>
-email: admin@mandalinka.com<br>
+email: admin@mandalinka.sk<br>
 password: admin_heslo<br>
 
 ### Accesing servers terminal
 
+Idealy use `Docker` plugin for VS Code. Right click athe desired container and select `attach shell`. 
+
+Alternatively list the running containers
 ```
 docker ps
 ```
-
+and than run shell in the desired, using the `CONTAINER ID`:
 ```
-CONTAINER ID   IMAGE            COMMAND                  CREATED       STATUS         PORTS                                            NAMES
-7e94b9fe7cae   mandalinka-web   "python manage.py ru…"   7 weeks ago   Up 4 minutes   0.0.0.0:3000->3000/tcp, 0.0.0.0:8000->8000/tcp   mandalinka-web-1
-2d1a483705bb   postgres         "docker-entrypoint.s…"   7 weeks ago   Up 4 minutes   5432/tcp                                         mandalinka-db-1
-```
-
-Copy the **CONTAINER ID** from the _mandalinka-web_ **IMAGE** (in this case 7e94b9fe7cae) and use it here:
-
-```
-docker exec -it <here> bash
+docker exec -it <CONTAINER_ID> bash
 ```
