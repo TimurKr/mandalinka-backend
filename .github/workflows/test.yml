@@ -25,15 +25,14 @@ jobs:
         with:
           creds: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
           instance: mandalinka-382516:europe-west6:mandalinka
-      - name: Run Tests
+      - name: test
         run: |
           python manage.py test
-      # Write confirmation into pull request discussion
       - name: Write confirmation into pull request discussion
-        if: ${{ github.event_name == 'pull_request' }}
+        if: always()
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            :white_check_mark: **Tests passed** on commit ${{ github.sha }}.
-          reactions: rocket
+            ${{ job.status }}
+            ${{ steps.test.outputs.result }}
