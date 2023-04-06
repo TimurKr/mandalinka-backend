@@ -26,6 +26,8 @@ gcloud auth application-default login
 ```
 This runs the script in a virtual environment.
 
+> If the repozitory was just cloned, intelisense will not work. Run in the development to create the virtual environment with all requirements and than select the interpreter from the `venv`.
+
 ## Deployment
 
 1. Run 
