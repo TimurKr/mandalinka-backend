@@ -11,6 +11,7 @@ printf "\nActivating virtual environment...\n\n"
 source venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
+pip install debugpy
 
 # Download cloud-sql-proxy if not already downloaded
 if [ ! -f "cloud-sql-proxy" ]; then
@@ -25,7 +26,7 @@ printf "\nStarting cloud-sql-proxy...\n"
 
 # Run server
 printf "\nRunning server...\n\n"
-python manage.py runserver
+python -m debugpy --listen 5678 --wait-for-client ./manage.py runserver 0.0.0.0:8000
 
 # Clean up
 printf "\nCleaning up...\n\n"

@@ -1,18 +1,6 @@
 {
   "configurations": [
     {
-      "name": "Docker Node.js Launch",
-      "type": "docker",
-      "request": "launch",
-      "preLaunchTask": "docker-run: debug",
-      "platform": "node",
-      "node": {
-        "package": "${workspaceFolder}/front-end-web/package.json",
-        "localRoot": "${workspaceFolder}/front-end-web"
-      }
-    },
-
-    {
       "name": "Python: Remote Attach",
       "type": "python",
       "request": "attach",
@@ -23,7 +11,7 @@
       "pathMappings": [
         {
           "localRoot": "${workspaceFolder}",
-          "remoteRoot": "/usr/src/mandalinka/back-end"
+          "remoteRoot": "${workspaceFolder}"
         }
       ],
       "django": true

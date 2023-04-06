@@ -183,7 +183,8 @@ yarn-error.log*
 # vercel
 .vercel
 
-
 # Custom rules
 back-end/_ingredients_delete
 back-end/_ingredients_delete
+
+cloud-sql-proxy
