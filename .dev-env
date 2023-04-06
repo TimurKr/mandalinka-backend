@@ -1,6 +1,6 @@
 DEBUG=True
 GOOGLE_CLOUD_PROJECT=932434718756
 USE_CLOUD_SQL_AUTH_PROXY=true
-DATABASE_URL=postgres://django:d%28%2BF%28%3FEuq%3E3b%27hkb@//cloudsql/mandalinka-382516:europe-west6:mandalinka/mandalinka
+DATABASE_URL=postgres://django:d%28%2BF%28%3FEuq%3E3b%27hkb@//cloudsql/mandalinka-382516:europe-west6:mandalinka/development
 GS_BUCKET_NAME=mandalinka-382516_mandalinka-media
 SECRET_KEY=wMIjRVRzqcGfHOFDYNrEUugSQcyfsraGuyiOuZxXSPJjTIrBCq
