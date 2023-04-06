@@ -28,11 +28,19 @@ jobs:
       - name: test
         run: |
           python manage.py test
-      - name: Write confirmation into pull request discussion
-        if: always()
+      # Write success as a comment into the pull request
+      - name: Comment on PR
         uses: peter-evans/create-or-update-comment@v1
+        if: ${{ success() && github.event_name == 'pull_request' }}
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            ${{ job.status }}
-            ${{ steps.test.outputs.result }}
+            :white_check_mark: All tests passed!
+      # Write failure as a comment into the pull request
+      - name: Comment on PR
+        uses: peter-evans/create-or-update-comment@v1
+        if: ${{ failure() && github.event_name == 'pull_request' }}
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            :x: Some tests failed!
