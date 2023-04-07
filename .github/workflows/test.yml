@@ -39,6 +39,10 @@ jobs:
           creds: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
           instance: mandalinka-382516:europe-west6:mandalinka
 
+      - name: Print environment variables
+        run: |
+          printenv
+
       - name: test
         run: |
           python manage.py test
