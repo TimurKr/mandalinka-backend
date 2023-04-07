@@ -1,0 +1,70 @@
+name: Deploy to GAE
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+    types:
+      - closed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+
+    env:
+      STAGING: True
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Remove .dev-env
+        run: rm -rf .dev-env
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Authenticate with Google Cloud
+        id: "auth"
+        uses: "google-github-actions/auth@v1"
+        with:
+          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
+      - name: Run SQL Proxy
+        uses: mattes/gce-cloudsql-proxy-action@v1
+        with:
+          creds: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          instance: mandalinka-382516:europe-west6:mandalinka
+
+      - name: Collect static files
+        run: |
+          python manage.py collectstatic --noinput
+
+      - name: Migrate database
+        run: |
+          python manage.py migrate
+
+      - name: Deploy to Google App Engine
+        id: "deploy"
+        uses: "google-github-actions/deploy-appengine@v1"
+
+      # Example of using the output
+      - id: "test"
+        run: 'curl "${{ steps.deploy.outputs.url }}"'
+
+      - name: Comment into the pull request the url of the deployed app if successful
+        if: ${{ success() }}
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            The app has been deployed to ${{ steps.deploy.outputs.url }}
+          reactions: rocket

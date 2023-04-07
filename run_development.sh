@@ -26,6 +26,7 @@ printf "\nStarting cloud-sql-proxy...\n"
 
 # Run server
 printf "\nRunning server...\n\n"
+export DEVELOPMENT=True
 python -m debugpy --listen 5678 --wait-for-client ./manage.py runserver 0.0.0.0:8000
 
 # Clean up

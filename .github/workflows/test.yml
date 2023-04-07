@@ -1,4 +1,4 @@
-name: Django CI
+name: Django Test
 
 on:
   push:
@@ -11,25 +11,39 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
+    env:
+      DEVELOPMENT: True
+
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Run SQL Proxy
-      uses: mattes/gce-cloudsql-proxy-action@v1
-      with:
-        creds: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-        instance: mandalinka-382516:europe-west6:mandalinka
-    - name: Run Tests
-      run: |
-        python manage.py test
-        
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Authenticate with Google Cloud
+        id: "auth"
+        uses: "google-github-actions/auth@v1"
+        with:
+          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
+      - name: Run SQL Proxy
+        uses: mattes/gce-cloudsql-proxy-action@v1
+        with:
+          creds: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          instance: mandalinka-382516:europe-west6:mandalinka
+
+      - name: Print environment variables
+        run: |
+          printenv
+
+      - name: test
+        run: |
+          python manage.py test

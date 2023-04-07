@@ -22,49 +22,48 @@ from google.cloud import secretmanager
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-env = environ.Env(DEBUG=(bool, False))
+# Get environemt variables from google secret manager based on the environment
+env = environ.Env(
+    DEBUG=(bool, False),
+    USE_CLOUD_SQL_PROXY=(bool, False),
+    SECRET_KEY=(str, None),
+    APPENGINE_URL=(str, None),
+)
 
-# If there is local .dev-env file, use it
-env_file = os.path.join(BASE_DIR, ".dev-env")
-if os.path.isfile(env_file):
-    env.read_env(env_file)
+client = secretmanager.SecretManagerServiceClient()
 
-# # If testing, not implemented yet
-# elif os.getenv("TRAMPOLINE_CI", None):
-#     # Create local settings if running with CI, for unit testing
+# Get environment variables from secret manager
 
-#     placeholder = (
-#         f"SECRET_KEY=a\n"
-#         f"DATABASE_URL=sqlite://{os.path.join(BASE_DIR, 'db.sqlite3')}"
-#     )
-#     env.read_env(io.StringIO(placeholder))
+environment_type = None
 
-# If running on App Engine, pull secrets from Secret Manager
-elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
-    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
-    client = secretmanager.SecretManagerServiceClient()
-    settings_name = os.environ.get("SETTINGS_NAME", "django_settings")
-    name = f"projects/{project_id}/secrets/{settings_name}/versions/latest"
-    payload = client.access_secret_version(
-        name=name).payload.data.decode("UTF-8")
-
-    env.read_env(io.StringIO(payload))
-
+if os.getenv("DEVELOPMENT", None) in ("True", "true", "1", True):
+    environment_type = "development"
+elif os.getenv("STAGING", None) in ("True", "true", "1", True):
+    environment_type = "staging"
+elif os.getenv("PRODUCTION", None) in ("True", "true", "1", True):
+    environment_type = "production"
 else:
     raise Exception(
-        "No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found.")
+        "Environment not set, please set either DEVELOPMENT, STAGING or PRODUCTION to True")
+
+secret_env_name = f"projects/932434718756/secrets/django_settings_{environment_type}/versions/latest"
+
+env.read_env(io.StringIO(client.access_secret_version(
+    name=secret_env_name).payload.data.decode("UTF-8")))
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
+if not SECRET_KEY:
+    raise Exception("SECRET_KEY is not set")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", env("DEBUG")) in ("True", "true", "1", True)
+DEBUG = env("DEBUG")
 
-# [START gaestd_py_django_csrf]
 # SECURITY WARNING: It's recommended that you use this when
 # running in production. The URL will be known once you first deploy
 # to App Engine. This code takes the URL and converts it to both these settings formats.
-APPENGINE_URL = env("APPENGINE_URL", default=None)
+APPENGINE_URL = env("APPENGINE_URL")
 if APPENGINE_URL:
     # Ensure a scheme is present in the URL before it's processed.
     if not urlparse(APPENGINE_URL).scheme:
@@ -75,8 +74,16 @@ if APPENGINE_URL:
     SECURE_SSL_REDIRECT = True
 else:
     ALLOWED_HOSTS = ["*"]
-# [END gaestd_py_django_csrf]
 
+# Database
+# Use django-environ to parse the connection string
+DATABASES = {"default": env.db()}
+
+# If the flag as been set, configure to use proxy
+USE_CLOUD_SQL_PROXY = env("USE_CLOUD_SQL_PROXY")
+if USE_CLOUD_SQL_PROXY:
+    DATABASES["default"]["HOST"] = "127.0.0.1"
+    DATABASES["default"]["PORT"] = 5432
 
 PASSWORD_RESET_TIMEOUT = 14400
 
@@ -132,29 +139,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mandalinka.wsgi.application'
 
 
-# Database
-# [START db_setup]
-# [START gaestd_py_django_database_config]
-# Use django-environ to parse the connection string
-DATABASES = {"default": env.db()}
-
-# If the flag as been set, configure to use proxy
-if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
-    DATABASES["default"]["HOST"] = "127.0.0.1"
-    DATABASES["default"]["PORT"] = 5432
-
-# [END gaestd_py_django_database_config]
-# [END db_setup]
-
-# Use a in-memory sqlite3 database when testing in CI systems
-# TODO(glasnt) CHECK IF THIS IS REQUIRED because we're setting a val above
-if os.getenv("TRAMPOLINE_CI", None):
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-        }
-    }
+# # Use a in-memory sqlite3 database when testing in CI systems
+# # TODO(glasnt) CHECK IF THIS IS REQUIRED because we're setting a val above
+# if os.getenv("TRAMPOLINE_CI", None):
+#     DATABASES = {
+#         "default": {
+#             "ENGINE": "django.db.backends.sqlite3",
+#             "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+#         }
+#     }
 
 
 # Password validation
