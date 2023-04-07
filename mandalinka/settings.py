@@ -60,7 +60,6 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", env("DEBUG")) in ("True", "true", "1", True)
 
-# [START gaestd_py_django_csrf]
 # SECURITY WARNING: It's recommended that you use this when
 # running in production. The URL will be known once you first deploy
 # to App Engine. This code takes the URL and converts it to both these settings formats.
@@ -75,7 +74,6 @@ if APPENGINE_URL:
     SECURE_SSL_REDIRECT = True
 else:
     ALLOWED_HOSTS = ["*"]
-# [END gaestd_py_django_csrf]
 
 
 PASSWORD_RESET_TIMEOUT = 14400
@@ -133,28 +131,24 @@ WSGI_APPLICATION = 'mandalinka.wsgi.application'
 
 
 # Database
-# [START db_setup]
-# [START gaestd_py_django_database_config]
 # Use django-environ to parse the connection string
 DATABASES = {"default": env.db()}
 
 # If the flag as been set, configure to use proxy
-if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
+if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", env("USE_CLOUD_SQL_AUTH_PROXY")) in ("True", "true", "1", True):
     DATABASES["default"]["HOST"] = "127.0.0.1"
     DATABASES["default"]["PORT"] = 5432
 
-# [END gaestd_py_django_database_config]
-# [END db_setup]
 
-# Use a in-memory sqlite3 database when testing in CI systems
-# TODO(glasnt) CHECK IF THIS IS REQUIRED because we're setting a val above
-if os.getenv("TRAMPOLINE_CI", None):
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-        }
-    }
+# # Use a in-memory sqlite3 database when testing in CI systems
+# # TODO(glasnt) CHECK IF THIS IS REQUIRED because we're setting a val above
+# if os.getenv("TRAMPOLINE_CI", None):
+#     DATABASES = {
+#         "default": {
+#             "ENGINE": "django.db.backends.sqlite3",
+#             "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+#         }
+#     }
 
 
 # Password validation
