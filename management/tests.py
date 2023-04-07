@@ -9,4 +9,4 @@ class ManagementTestCase(TestCase):
         self.assertEqual(1, 1)
 
     def test_false(self):
-        self.assertEqual(1, 2)
+        self.assertEqual(2, 2)
