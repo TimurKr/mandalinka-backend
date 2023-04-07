@@ -37,7 +37,7 @@ jobs:
         id: "auth"
         uses: "google-github-actions/auth@v1"
         with:
-          workload_identity_provider: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 
       - name: Run SQL Proxy
         uses: mattes/gce-cloudsql-proxy-action@v1
