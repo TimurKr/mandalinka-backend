@@ -14,7 +14,7 @@ jobs:
     if: github.event.pull_request.merged == true
 
     env:
-      STAGING: TRUE
+      STAGING: True
       GOOGLE_CLOUD_PROJECT: 932434718756
 
     steps:
@@ -33,6 +33,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Authenticate with Google Cloud
+        id: "auth"
+        uses: "google-github-actions/auth@v1"
+        with:
+          workload_identity_provider: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
       - name: Run SQL Proxy
         uses: mattes/gce-cloudsql-proxy-action@v1
         with:
@@ -46,12 +52,6 @@ jobs:
       - name: Migrate database
         run: |
           python manage.py migrate
-
-      - name: Authenticate with Google Cloud
-        id: "auth"
-        uses: "google-github-actions/auth@v1"
-        with:
-          workload_identity_provider: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 
       - name: Deploy to Google App Engine
         id: "deploy"

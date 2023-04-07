@@ -20,7 +20,7 @@ runtime: python311
 
 env_variables:
   # This setting is used in settings.py to configure your ALLOWED_HOSTS
-  PRODUCTION: TRUE
+  PRODUCTION: True
   APPENGINE_URL: https://mandalinka-382516.oa.r.appspot.com
 
 handlers:
