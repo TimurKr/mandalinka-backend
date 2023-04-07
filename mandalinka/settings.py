@@ -30,27 +30,27 @@ env = environ.Env(
     APPENGINE_URL=(str, None),
 )
 
-project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
-if not project_id:
-    raise Exception("GOOGLE_CLOUD_PROJECT is not set")
-
 client = secretmanager.SecretManagerServiceClient()
 
-# If in development
+# Get environment variables from secret manager
+
+environment_type = None
+
 if os.getenv("DEVELOPMENT", None) in ("True", "true", "1", True):
-    env.read_env(io.StringIO(client.access_secret_version(
-        name=f"projects/{project_id}/secrets/django_settings_development/versions/latest").payload.data.decode("UTF-8")))
-# If in staging
+    environment_type = "development"
 elif os.getenv("STAGING", None) in ("True", "true", "1", True):
-    env.read_env(io.StringIO(client.access_secret_version(
-        name=f"projects/{project_id}/secrets/django_settings_staging/versions/latest").payload.data.decode("UTF-8")))
-# If running on App Engine, pull secrets from Secret Manager
+    environment_type = "staging"
 elif os.getenv("PRODUCTION", None) in ("True", "true", "1", True):
-    env.read_env(io.StringIO(client.access_secret_version(
-        name=f"projects/{project_id}/secrets/django_settings_production/versions/latest").payload.data.decode("UTF-8")))
+    environment_type = "production"
 else:
     raise Exception(
         "Environment not set, please set either DEVELOPMENT, STAGING or PRODUCTION to True")
+
+secret_env_name = f"projects/932434718756/secrets/django_settings_{environment_type}/versions/latest"
+
+env.read_env(io.StringIO(client.access_secret_version(
+    name=secret_env_name).payload.data.decode("UTF-8")))
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")

@@ -27,7 +27,6 @@ printf "\nStarting cloud-sql-proxy...\n"
 # Run server
 printf "\nRunning server...\n\n"
 export DEVELOPMENT=True
-export GOOGLE_CLOUD_PROJECT=932434718756
 python -m debugpy --listen 5678 --wait-for-client ./manage.py runserver 0.0.0.0:8000
 
 # Clean up
