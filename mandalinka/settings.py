@@ -22,48 +22,48 @@ from google.cloud import secretmanager
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-env = environ.Env(DEBUG=(bool, False))
+# Get environemt variables from google secret manager based on the environment
+env = environ.Env(
+    DEBUG=(bool, False),
+    USE_CLOUD_SQL_PROXY=(bool, False),
+    SECRET_KEY=(str, None),
+    APPENGINE_URL=(str, None),
+)
 
-# If there is local .dev-env file, use it
-env_file = os.path.join(BASE_DIR, ".dev-env")
-if os.path.isfile(env_file):
-    env.read_env(env_file)
+project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
+if not project_id:
+    raise Exception("GOOGLE_CLOUD_PROJECT is not set")
 
-# # If testing, not implemented yet
-# elif os.getenv("TRAMPOLINE_CI", None):
-#     # Create local settings if running with CI, for unit testing
+client = secretmanager.SecretManagerServiceClient()
 
-#     placeholder = (
-#         f"SECRET_KEY=a\n"
-#         f"DATABASE_URL=sqlite://{os.path.join(BASE_DIR, 'db.sqlite3')}"
-#     )
-#     env.read_env(io.StringIO(placeholder))
-
+# If in development
+if os.getenv("DEVELOPMENT", None) in ("True", "true", "1", True):
+    env.read_env(io.StringIO(client.access_secret_version(
+        name=f"projects/{project_id}/secrets/django_settings_development/versions/latest").payload.data.decode("UTF-8")))
+# If in staging
+elif os.getenv("STAGING", None) in ("True", "true", "1", True):
+    env.read_env(io.StringIO(client.access_secret_version(
+        name=f"projects/{project_id}/secrets/django_settings_staging/versions/latest").payload.data.decode("UTF-8")))
 # If running on App Engine, pull secrets from Secret Manager
-elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
-    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
-    client = secretmanager.SecretManagerServiceClient()
-    settings_name = os.environ.get("SETTINGS_NAME", "django_settings")
-    name = f"projects/{project_id}/secrets/{settings_name}/versions/latest"
-    payload = client.access_secret_version(
-        name=name).payload.data.decode("UTF-8")
-
-    env.read_env(io.StringIO(payload))
-
+elif os.getenv("PRODUCTION", None) in ("True", "true", "1", True):
+    env.read_env(io.StringIO(client.access_secret_version(
+        name=f"projects/{project_id}/secrets/django_settings_production/versions/latest").payload.data.decode("UTF-8")))
 else:
     raise Exception(
-        "No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found.")
+        "Environment not set, please set either DEVELOPMENT, STAGING or PRODUCTION to True")
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
+if not SECRET_KEY:
+    raise Exception("SECRET_KEY is not set")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", env("DEBUG")) in ("True", "true", "1", True)
+DEBUG = env("DEBUG")
 
 # SECURITY WARNING: It's recommended that you use this when
 # running in production. The URL will be known once you first deploy
 # to App Engine. This code takes the URL and converts it to both these settings formats.
-APPENGINE_URL = env("APPENGINE_URL", default=None)
+APPENGINE_URL = env("APPENGINE_URL")
 if APPENGINE_URL:
     # Ensure a scheme is present in the URL before it's processed.
     if not urlparse(APPENGINE_URL).scheme:
@@ -75,6 +75,15 @@ if APPENGINE_URL:
 else:
     ALLOWED_HOSTS = ["*"]
 
+# Database
+# Use django-environ to parse the connection string
+DATABASES = {"default": env.db()}
+
+# If the flag as been set, configure to use proxy
+USE_CLOUD_SQL_PROXY = env("USE_CLOUD_SQL_PROXY")
+if USE_CLOUD_SQL_PROXY:
+    DATABASES["default"]["HOST"] = "127.0.0.1"
+    DATABASES["default"]["PORT"] = 5432
 
 PASSWORD_RESET_TIMEOUT = 14400
 
@@ -128,16 +137,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'mandalinka.wsgi.application'
-
-
-# Database
-# Use django-environ to parse the connection string
-DATABASES = {"default": env.db()}
-
-# If the flag as been set, configure to use proxy
-if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", env("USE_CLOUD_SQL_AUTH_PROXY")) in ("True", "true", "1", True):
-    DATABASES["default"]["HOST"] = "127.0.0.1"
-    DATABASES["default"]["PORT"] = 5432
 
 
 # # Use a in-memory sqlite3 database when testing in CI systems
