@@ -49,7 +49,7 @@ elif len(environment_type) > 1:
     raise Exception(
         f"Multiple environments set, please set only one of DEVELOPMENT, STAGING or PRODUCTION to True")
 
-secret_env_name = f"projects/932434718756/secrets/django_settings_{environment_type}/versions/latest"
+secret_env_name = f"projects/932434718756/secrets/django_settings_{environment_type[0]}/versions/latest"
 
 env.read_env(io.StringIO(client.access_secret_version(
     name=secret_env_name).payload.data.decode("UTF-8")))
