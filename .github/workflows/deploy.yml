@@ -54,12 +54,3 @@ jobs:
       - name: Deploy to Google App Engine
         id: "deploy"
         uses: "google-github-actions/deploy-appengine@v1"
-
-      - name: Comment into the pull request the url of the deployed app if successful
-        if: ${{ success() }}
-        uses: peter-evans/create-or-update-comment@v3
-        with:
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            The app has been deployed to ${{ steps.deploy.outputs.url }}
-          reactions: rocket
