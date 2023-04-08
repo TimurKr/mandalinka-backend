@@ -34,17 +34,20 @@ client = secretmanager.SecretManagerServiceClient()
 
 # Get environment variables from secret manager
 
-environment_type = None
+environment_type = []
 
 if os.getenv("DEVELOPMENT", None) in ("True", "true", "1", True):
-    environment_type = "development"
-elif os.getenv("STAGING", None) in ("True", "true", "1", True):
-    environment_type = "staging"
-elif os.getenv("PRODUCTION", None) in ("True", "true", "1", True):
-    environment_type = "production"
-else:
+    environment_type.append("development")
+if os.getenv("STAGING", None) in ("True", "true", "1", True):
+    environment_type.append("staging")
+if os.getenv("PRODUCTION", None) in ("True", "true", "1", True):
+    environment_type.append("production")
+if not environment_type:
     raise Exception(
-        "Environment not set, please set either DEVELOPMENT, STAGING or PRODUCTION to True")
+        f"Environment not set, please set either DEVELOPMENT, STAGING or PRODUCTION to True")
+elif len(environment_type) > 1:
+    raise Exception(
+        f"Multiple environments set, please set only one of DEVELOPMENT, STAGING or PRODUCTION to True")
 
 secret_env_name = f"projects/932434718756/secrets/django_settings_{environment_type}/versions/latest"
 
