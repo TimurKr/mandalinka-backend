@@ -40,7 +40,7 @@ printf "\nRunning server...\n\n"
 if [ "$WAIT" = "True" ]
 then
   printf "\nWaiting for debugger to attach...\n\n"
-  python -m debugpy --listen 5678 --wait-for-client ./manage.py runserver 0.0.0.0:8000
+python -m debugpy --listen 5678 --wait-for-client ./manage.py runserver 0.0.0.0:8000
 else
   python -m debugpy --listen 5678 ./manage.py runserver 0.0.0.0:8000
 fi

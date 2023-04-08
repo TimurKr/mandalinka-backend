@@ -84,6 +84,7 @@ USE_CLOUD_SQL_PROXY = env("USE_CLOUD_SQL_PROXY")
 if USE_CLOUD_SQL_PROXY:
     DATABASES["default"]["HOST"] = "127.0.0.1"
     DATABASES["default"]["PORT"] = 5432
+DATABASES["default"]["TEST"] = {"NAME": "test_database"}
 
 PASSWORD_RESET_TIMEOUT = 14400
 

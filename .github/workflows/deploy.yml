@@ -14,10 +14,8 @@ jobs:
       STAGING: True
 
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Remove .dev-env
-        run: rm -rf .dev-env
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v4
@@ -56,10 +54,6 @@ jobs:
       - name: Deploy to Google App Engine
         id: "deploy"
         uses: "google-github-actions/deploy-appengine@v1"
-
-      # Example of using the output
-      - id: "test"
-        run: 'curl "${{ steps.deploy.outputs.url }}"'
 
       - name: Comment into the pull request the url of the deployed app if successful
         if: ${{ success() }}
