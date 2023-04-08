@@ -4,51 +4,68 @@
 
 This is the backend service for mandalinka. It provides GraphQL endpoint at the root url `/` and admin page at `/admin`
 
-Related repositories: 
+Related repositories:
+
 - [web app](https://github.com/TimurKr/mandalinka-web)
 
 ## Development
 
-To run this server in development, follow these steps:
+##### Running server in development
 
 1. Make sure you have downloaded gcloud CLI. [How?](https://cloud.google.com/sdk/docs/install)
 2. Initialize `gcloud` by running
+
 ```
 gcloud init
 ```
+
 3. Authenticate `gloud` by running
+
 ```
 gcloud auth application-default login
 ```
+
 4. Run the server with the script
+
 ```
 ./run_development.sh
 ```
+
 This runs the script in a virtual environment.
 
-> If the repozitory was just cloned, intelisense will not work. Run in the development to create the virtual environment with all requirements and than select the interpreter from the `venv`.
+##### Running django commandse using `manage.py`
+
+1. Run in parallel with the server
+
+- Run the server in one terminal `./run_development.sh`
+- Open new terminal and activate the virtual environment `source venv/bin/activate`. It will be activated automatically if using VSCode and you have selected the interpreter from the `venv`.
+- Run the command in the new terminal `python manage.py <command>`
+
+2. Run without running the server
+
+- Activate the virtual environment `source venv/bin/activate`. It will be activated automatically if using VSCode and you have selected the interpreter from the `venv`.
+- Start the Cloud SQL proxy. If it is not dowloaded, run the development script once to download it.
+
+```
+./cloud_sql_proxy -instances=mandalinka-275618:us-central1:mandalinka-db=tcp:5432
+```
+
+- Set the environment variables `export DEVELOPMENT=True`
+- Run the command `python manage.py <command>`
+
+> If the repozitory was just cloned, intelisense will not work. Run in the development to create the virtual environment with all requirements and then select the interpreter from the `venv`.
 
 ## Deployment
 
-1. Run 
-```
-gcloud app deploy
-```
+The app is deployed to Google Cloud App Engine. The deployment is done using GitHub Actions. The deployment is triggered when a new commit is pushed to the master branch. Avoid pushing to master directly. Create a new branch and create a pull request to master.
+Do not deploy deploy to production directly.
 
 #### Working on:
-
-Simplifying running in development and CI/CD using GitHub Actions is in proccess.
-
-The deployement shoud be as simple as merging a branch/pushing to master. Github actions should take care of:
-- collecting static files
-- running tests
-- migrating database
-- deploying to Google Cloud App Engine
 
 ## Useful info for developers:
 
 ### Superuser account:
 
-username: admin<br>
-email: admin@mandalinka.sk<br>
-password: admin_heslo<br>
+username: admin
+email: admin@mandalinka.sk
+password: admin_heslo
