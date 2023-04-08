@@ -37,3 +37,6 @@
 # virtualenv
 
 venv/
+
+run_development.sh
+README.md

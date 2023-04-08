@@ -194,8 +194,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_ROOT = "staticfiles"
-STATIC_URL = "static/"
-STATICFILES_DIRS = []
+STATIC_URL = "staticfiles/"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
 
 GRAPHENE = {
     'SCHEMA': 'mandalinka.schema.schema'

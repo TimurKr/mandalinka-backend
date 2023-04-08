@@ -39,6 +39,7 @@ This runs the script in a virtual environment.
 
 - Run the server in one terminal `./run_development.sh`
 - Open new terminal and activate the virtual environment `source venv/bin/activate`. It will be activated automatically if using VSCode and you have selected the interpreter from the `venv`.
+- Run `export DEVELOPMENT=True` to add the required environment variable
 - Run the command in the new terminal `python manage.py <command>`
 
 2. Run without running the server

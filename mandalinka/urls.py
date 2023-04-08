@@ -19,10 +19,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from graphene_django.views import GraphQLView
 from django.views.decorators.csrf import csrf_exempt
+from django.views.generic.base import RedirectView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('accounts/', include('accounts.urls')),
     path('', csrf_exempt(GraphQLView.as_view(graphiql=True))),
+    path('favicon.ico', RedirectView.as_view(
+        url='/staticfiles/favicon.ico', permanent=True)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
